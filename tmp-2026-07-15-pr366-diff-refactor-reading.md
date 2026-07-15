@@ -168,6 +168,59 @@ export function getColorFamilyLabel(slug: string): string {
 ```
 
 따라서 literal union을 없애도 새 slug 때문에 이 함수가 바로 `undefined`를 반환하는 구조는 아니었다.
+풀어서 보면 다음 순서다.
+
+```ts
+const slug = 'lavender_grey'
+
+_colorFamilyLabels[slug] // 맵에 없으면 undefined
+undefined ?? slug        // 오른쪽 fallback 선택
+// 최종 반환: 'lavender_grey'
+```
+
+함수가 아래처럼 fallback 없이 끝났다면 새 slug에서 진짜 `undefined`가 나왔을 것이다.
+
+```ts
+return _colorFamilyLabels[slug]
+```
+
+현재 함수는 `?? slug`가 있으므로 최소한 화면 문자가 사라지지는 않는다. 다만 이것은 “한글 라벨까지 정상이다”가 아니라 “라벨을 못 찾으면 raw slug라도 보여준다”는 마지막 안전망이다.
+
+### 현재 DB의 label_kr을 실제로 함께 읽고 있나
+
+그렇다. 다만 이번 quick에서 새로 만든 배선은 아니고 기존에 이미 있었다.
+
+`ensureLoaded()`가 catalog를 불러온 뒤 color family 목록을 별도로 조회한다.
+
+```ts
+const families = await fetchColorFamilies()
+_colorFamilyLabels = Object.fromEntries(
+  families.map((f) => [f.slug, f.labelKr || f.slug]),
+)
+```
+
+`fetchColorFamilies()`는 DB `color_families`를 조회하고 다음처럼 바꾼다.
+
+```text
+DB label_kr → ColorFamilyOption.labelKr → _colorFamilyLabels[slug]
+```
+
+그래서 정상 경로는 다음과 같다.
+
+```text
+DB: slug=lavender_grey, label_kr=라벤더 그레이
+→ fetchColorFamilies()
+→ _colorFamilyLabels['lavender_grey'] = '라벤더 그레이'
+→ getColorFamilyLabel('lavender_grey')
+→ 화면: 라벤더 그레이
+```
+
+DB 조회가 실패하면 `_colorFamilyLabels = {}`로 비우고, 그때만 `getColorFamilyLabel()`의 `?? slug`가 작동한다. 즉 우선순위는 `DB label_kr → raw slug fallback`이다.
+
+주의할 점: `supabaseAdapter`도 `color_families`를 조회하지만 그쪽은 shade의 `colorFamily: string[]`를 만들기 위한 `id → slug` 연결에 쓴다. 화면 라벨 맵은 `data/index.ts`의 `ensureLoaded() → fetchColorFamilies()` 경로가 따로 맡는다.
+
+이번 quick은 이 라벨 배선을 수정하지 않았다. 기존 배선이 새 slug를 이미 받을 수 있다는 것을 확인하고, 그 실제 동작과 충돌하던 거짓 literal union·타입 단언만 제거했다.
+
 
 ### 3. 직접 단언만 찾고 끝내지 않는다
 
