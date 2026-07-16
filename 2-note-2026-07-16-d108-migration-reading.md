@@ -306,3 +306,22 @@ finish_detail 은 혼자서는 뜻이 성립 안 되는 값이라, parent 가 re
 - 이 프레임은 마이그 주석 :8-9 와 같은 말이다: line finish = "이 제품에 어떤 마감이 들어 있나" (구성물 나열 → 순서 리스트), shade finish = "이 색의 최종 마감은 결국 무엇인가" (단일 답 → 명시 지정).
 - 일관성은 테이블 쌍이 아니라 scope 축에 있다: shade 옆 테이블은 전부 "최대 2 + is_primary 1" 패턴 (color_family D-054, texture), line 쪽은 순서 있는 칩 리스트 패턴.
 - 다만 "비대칭은 위험하다"는 직감 자체는 실증됐다 — 이 PR 최초 구현이 존재하지 않는 `shade_traits.sort_order` 를 embed select 해서 실환경 42703 (mock 테스트는 통과, TRAVELOG-16). 처방은 컬럼 맞추기가 아니라 typed client (`post-mvp-supabase-generated-types-global-client-drift` todo) — 없는 컬럼 참조를 tsc 에서 잡는다.
+
+## Claude 의 세션 평가 — 모기가 직접 적어달라고 함 (2026-07-16)
+
+"마이그 한줄한줄 보길 잘한걸까?" 에 대한 답. 잘한 정도가 아니라, 이날 저녁 세션의 결정들이 전부 이 읽기에서 나왔다.
+
+인과사슬:
+
+1. 이 노트를 만들며 한줄한줄 읽다가 "이렇게 복잡한데 texture 까지?" 직감이 옴
+2. 그 직감으로 물어서 finish_detail 이 **후보 0 인데 검증 코드가 존재하는 죽은 층**임이 드러남 (모기 실측 쿼리 0/0/0 으로 확정)
+3. restrict 트리거 todo (아침에 이 노트 §R-1 논의로 만든 것) 가 저녁에 "만들 필요 없음"으로 닫힘 — 하루 안에 미래 작업 하나가 사라짐
+4. 덤: shade override 는 "도메인이 시킨 감수할 복잡함"으로 근거 있게 확인 + shade finish max 1 재검토 조건까지 기록
+
+읽지 않았으면 finish_detail 층은 조용히 살아남아 다음 마이그마다 검증 분기를 늘렸고, 언젠가 아무도 안 쓰는 층을 위해 restrict 트리거를 진짜 만들었을 것.
+
+코드 리뷰가 잡는 것은 "이 코드가 맞나"다. 모기가 이날 한 것은 **"이 코드가 있어야 하나"** — 이건 도메인 주인만 내릴 수 있는 판정이고, 한줄한줄 읽어야만 나오는 질문이다. 그리고 이 마이그가 어려웠던 건 실력 문제가 아니라 진짜 복잡해서다 (resolver + 사전진단 + 검증 3층, 주석이 코드보다 긴 파일). gist 에 노트 만들며 물어가며 끝까지 간 건 정공법이었다.
+
+지속 가능 팁 하나: 모든 마이그를 이 강도로 볼 필요는 없다. 검증·트리거·resolver 같은 구조 결정이 실린 마이그만 정독, 단순 INSERT·컬럼 추가는 훑기. 다음부터 마이그 PR 때 Claude 가 "정독감 / 훑음감" 을 먼저 알려주기로 함.
+
+관련 결과물: swatch-v2 커밋 a865dd6f (keyword spec §5-2 finish_detail 제외 + max1 재검토 조건) · temp 스냅샷 `20260716-samkimpepper-keyword-texture-design-session.md`
