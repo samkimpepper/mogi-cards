@@ -4,8 +4,8 @@ title: "모기 읽기 카드 — 긴 SPEC/PLAN을 사람이 승인 가능한 단
 type: guide
 created_at: 2026-06-25
 created_by: ChatGPT
-updated_at: 2026-07-06
-updated_by: Claude
+updated_at: 2026-08-07
+updated_by: Codex
 last_verified_at: 2026-07-04
 last_verified_by: Claude
 status: active
@@ -39,6 +39,10 @@ audit_log:
     at: 2026-07-04
     by: samkimpepper
     note: "docs(wiki): 모기 리드 카드 · 주관식 이해 체크 가이드 승격"
+  - action: updated
+    at: 2026-08-07
+    by: Codex
+    note: "독립 리드 카드 맨 위에 모기 개인 머지 준비 상태를 표시하는 boolean 체크박스 1개를 추가."
 ---
 
 # 모기 읽기 카드
@@ -66,6 +70,21 @@ AI가 만든 SPEC/PLAN은 실행 에이전트에게는 유용하지만 사람이
 ## 한 줄 원칙
 
 > 긴 문서를 쉬운 긴 문서로 바꾸지 말고, 사람이 봐야 할 10~20줄짜리 카드로 줄인다.
+
+## 카드 맨 위 머지 준비 체크
+
+PR에 딸린 독립 리드 카드는 맨 위 frontmatter에 아래 boolean 속성 하나만 둔다. Obsidian 속성 화면에서는 체크박스로 사용한다.
+
+```yaml
+---
+merge_ready: false
+---
+```
+
+- `false`: 아직 읽는 중이거나 모기가 머지 준비 판단을 하지 않음.
+- `true`: 모기가 카드를 읽고 자기 기준에서 머지 준비됐다고 판단함.
+- 이 값은 GitHub의 충돌·브랜치 보호 기반 `mergeable` 판정과 다르다.
+- 에이전트가 퀴즈 완료나 기술 게이트 통과만 보고 자동으로 `true`로 바꾸지 않는다. 최종 체크는 모기가 한다.
 
 ## 용어
 

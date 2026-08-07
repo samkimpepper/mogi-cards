@@ -1,3 +1,7 @@
+---
+merge_ready: false
+---
+
 # 모기 리드 카드 — release v0.8.0: 한 달치 dev 가 라이브로 나가는 릴리즈 PR (#477)
 
 > 종류: RELEASE Read Card. 원문 SSOT = PR #477 본문 + swatch-ops `contracts/2026-08-06-qa-db-parity-REPORT.md` + `.github/workflows/deploy.yml` 헤더.
@@ -31,6 +35,12 @@
 - **R1.** 132커밋짜리 PR 인데 release 브랜치와 dev 의 diff 가 파일 2개뿐인 이유는? (읽을 대목: 2절 첫 항목)
 - **R2.** 이 머지가 눌리는 순간 배포는 어떤 경로로 나가고, Vercel git 연동이 아닌 근거 커밋은 뭔가? (읽을 대목: 3절 첫 항목)
 - **R3.** "마이그 36개가 같이 나가는데 왜 DB 장애 걱정이 없다" 는 논리를 네 말로 한 줄 설명하면? (읽을 대목: 2절 둘째 항목)
+
+## 모기 답변 — 과외 중 구술 정리
+
+- **R1.** main 이 dev 보다 따로 가진 것은 과거 릴리즈를 남긴 머지 기록이다. 그 실제 변경 내용은 이미 dev 계보에 들어가 있어서, main 을 되가져온 release 브랜치와 dev 의 내용 차이는 whitespace 정리 2파일뿐이다.
+- **R2.** main 에 머지하면 `deploy.yml`에 적힌 GitHub Actions가 실행되고 Vercel CLI로 production 배포한다. 예전 Vercel Git 자동배포는 커밋 작성자의 팀 권한과 유료 좌석 문제 때문에 끊었다.
+- **R3.** dev 와 main 이 같은 원격 QA·라이브 DB를 쓰고, dev 작업 중 마이그레이션이 이미 그 DB에 적용됐다. 원격과 저장소의 마이그레이션도 142/142 일치하므로, 이번 머지는 DB를 새로 바꾸는 게 아니라 main 코드가 이미 준비된 DB를 따라가는 방향이다.
 
 ## Appendix — 배포·릴리즈 브랜치·태그는 각각 무엇인가
 
