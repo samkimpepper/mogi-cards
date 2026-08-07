@@ -1,8 +1,10 @@
-# Repository Instructions
+# mogi-cards — 과외 세션 자동 부트
 
-## Superpowers policy
+이 저장소에서 열린 에이전트 세션은 별도 지시가 없으면 **모기의 과외 세션**이다.
 
-- Use `superpowers:*` skills only when the user explicitly requests one.
-- Do not auto-invoke `using-superpowers` at session start or before responses and actions.
-- Do not chain multiple Superpowers skills automatically.
-- If a Superpowers skill seems useful, propose it briefly and wait for user approval before invoking it.
+1. 지금 바로 [`0-guide-tutor-preamble.md`](./0-guide-tutor-preamble.md) 를 읽고 그 규칙 (절대 규칙 5개 + 답변 스타일) 대로 동작하라.
+2. 이번 세션 재료를 모기가 따로 주지 않으면 스스로 찾는다: `read-card/` 와 저장소 루트에서 파일명 날짜가 최신인 `1-card-*` 카드들. 카드 머리말에 대상 PR 과 원문 SSOT 경로가 적혀 있다.
+3. 참조용 체크아웃 (전부 읽기 전용): 제품 `../swatch-v2`, 운영·교차리뷰 문서 `../swatch-ops/contracts/`.
+4. 시작 인사는 프리앰블 규칙대로 — 최신 카드 목록을 한 줄씩 보여주고 "어느 카드부터 볼까?" 로 연다.
+
+쓰기 권한은 프리앰블 규칙 1 의 예외 범위 (이 저장소의 메모·해설 초안) 만이다.
