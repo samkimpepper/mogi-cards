@@ -1,5 +1,5 @@
 ---
-merge_ready: false
+merge_ready: true
 ---
 
 # 모기 리드 카드 — release v0.8.0: 한 달치 dev 가 라이브로 나가는 릴리즈 PR (#477)

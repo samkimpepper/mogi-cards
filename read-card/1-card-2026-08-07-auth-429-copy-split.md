@@ -1,5 +1,5 @@
 ---
-merge_ready: false
+merge_ready: true
 ---
 
 # 모기 리드 카드 — 매직링크 429 카피 분기 (PR #478): "1분 뒤" 가 거짓말이 되는 케이스 분리
