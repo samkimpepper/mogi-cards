@@ -33,4 +33,6 @@ merge_ready: true
 ## 4. 이해 체크 (주관식, 이 브랜치 1회)
 
 - **H1.** 이 불변식("핸들 바꾸면 검증 풀림")을 RLS WITH CHECK만으로 둘 때 뚫리는 경로는 뭐고, 왜 트리거는 어드민 검증 승인까지 풀어버리지 않나? (힌트: OLD/NEW 비교 · IS DISTINCT FROM → 읽을 대목: 2절 첫째, 마이그 주석)
+  - **모기 답:** RLS만으로는 이를 우회하는 `SECURITY DEFINER` 함수와 `service_role` 직접 UPDATE 경로를 놓친다. 트리거는 수정 전후 핸들을 비교하는데, 어드민 검증 승인은 `handle_verified`만 바꾸고 `twitter_handle`은 그대로 두므로 `OLD.twitter_handle IS DISTINCT FROM NEW.twitter_handle`가 거짓이고 승인값 `true`가 유지된다.
 - **H2.** 시트의 상태 3종을 각각 어떤 데이터 조합이 만드나? 그리고 검증 대기 중 핸들을 고치면 무슨 일이 생기나? (읽을 대목: 1절 첫째 + 트리거)
+  - **모기 답:** 핸들이 없으면 미요청, 핸들이 있고 `handle_verified=false`면 검증 대기, 핸들이 있고 `true`면 검증 완료다. 검증 대기 중 핸들을 고치면 같은 `user_profiles` 행의 핸들이 새 값으로 덮어써지고 `handle_verified`는 계속 `false`라서 새 핸들로 검증 대기 상태를 유지한다.
