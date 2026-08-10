@@ -1,12 +1,12 @@
 ---
-merge_ready: false
+merge_ready: true
 ---
 
 # 모기 리드 카드 — 핸들 검증 요청 시트 + 자동 해제 트리거 (PR #493): "저장이 곧 요청"이던 동선에 상태를 입히기
 
 > 종류: FEAT Read Card. 원문 SSOT = PR #493 본문 + swatch-ops `contracts/2026-08-10-author-verify-lane.md` + launch gate 재실측 §2.4·§2.5.
 > 작성: 2026-08-10 냐옹이 (Gen 2). 워커 = opus-5 레인. 이해 체크 H1~H2 = 이 브랜치 Review Gate Quiz.
-> **주의: 아직 머지 게이트 미완** — 워커 최종 READY 보고와 마스터 codex 교차 리뷰가 남았다. 카드는 먼저 읽되, 머지는 그 둘 확인 후. (완료되면 이 줄과 frontmatter 를 냐옹이가 갱신한다.)
+> **게이트 완료 (2026-08-10, head `14d19d4`)** — 워커 READY + 마스터 재측정 + codex 교차 리뷰(P1 0·P2 1·P3 3, 전건 fix 반영: 경고 카피 추가 → 귀속 풀림 안내 / timeout 전역 상향 되돌려 실측 2파일 스코프 / 프로필 지연 동기화 / try·finally / SQL 검증 강화). 최종 실측: 시트 10/10 · 스위트 556/558(Atlas 예외 2) · 트리거 SQL 7 PASS · MERGEABLE/CLEAN. 리뷰 보존본 = swatch-ops `contracts/2026-08-10-pr493-codex-review.md`. **머지 가능** — 머지 후 마이그 원격 적용(`db push`) + `needs-migration-applied` 라벨 해제는 소유자 몫.
 
 ## Auth 용어 미니 정리
 
