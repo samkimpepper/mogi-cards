@@ -15,6 +15,14 @@
 - [ ] 공개 프로필(`contributions_by_handle`)에 `created_by` 절 유지했는데(등록자 가시성 회귀 방지), "공개 프로필도 owner_uid 단일"을 원하면 한 줄 변경.
 - [ ] `removal_requested_at`을 authenticated는 여전히 읽음(게스트도 익명 로그인 = authenticated). 더 숨기려면 뷰/어드민 RPC 필요 — 지금 범위 밖 처리 동의?
 
+## 마스터 전달용 메모
+
+### 원작자 직접 수정·삭제권을 머지 전에 재확인
+
+- 근거: `.planning/threads/handle-attribution-owner-uid-20260810.md:21`, `supabase/migrations/20260803100000_retire_anon_null_owner_rls_branches.sql:93`
+- 모기 판단으로 대리등록은 초기 씨드 자료를 채우기 위한 예외에 가깝고, 원작자 검증 뒤에도 `created_by`만 직접 수정·삭제할 수 있으며 `owner_uid` 본인은 요청만 가능한 현재 모델은 사용자 기대와 어긋난다.
+- `created_by`는 입력 이력·원복 근거로 보존하되 `owner_uid` 본인에게 직접 수정·삭제권을 줄지, 귀속 이전 뒤 대리등록자의 기존 관리권은 유지할지를 PR #496 머지 전에 명시적으로 다시 결정해야 한다. 현재 카드의 "모기가 결정할 것 2건"은 이 권한 결정을 포함하지 않는다.
+
 ## 머지 후 UAT 체크리스트 (모기 실측)
 
 - [ ] 원격 db push 후 backfill 쿼리 실행 — transferred ≈ 15건 (쿼리 전문 = 보고서 §UAT ①)
