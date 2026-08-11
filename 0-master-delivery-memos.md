@@ -43,3 +43,9 @@
 - 근거: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:299`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:315`
 - 모기 결정은 "한 Swatch 사용자에게 계속 이어지는 트위터 정체성 하나"이며 핸들 변경은 그 계정의 이름 변경일 뿐이다. 어드민 un-verify는 사용자 단위 전량 원복으로 닫고, 특정 과거 핸들 승인만 취소하는 기능과 계정 이전은 현재 지원 범위에서 제거한다.
 - 이 결정이면 `owner_bound_handle` 값은 현재 판정에 쓰이지 않고 미래 이벤트 단위 취소 발판도 불필요하다. 검증 고정 여부는 이미 `owner_bound_at IS NOT NULL`로 구분할 수 있고 원본 핸들은 `author_handle`에 남으므로, 원격 적용 전 `owner_bound_handle` 컬럼·타입·테스트·문서 제거와 un-verify 술어의 `owner_bound_at IS NOT NULL` 교체를 검토한다.
+
+## 정정 — `author_handle`은 불변 감사 기록이 아님
+
+- 근거: `../swatch-v2/supabase/migrations/20260803100000_retire_anon_null_owner_rls_branches.sql:93`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:197`
+- 앞 메모에서 `owner_bound_handle` 제거 근거로 "원본 핸들은 `author_handle`에 남는다"고 적었지만, `author_handle`은 `swatches`의 일반 수정 가능 컬럼이고 현재 보호 트리거는 귀속 3컬럼만 복원한다. 따라서 등록자나 어드민 수정 뒤에도 최초 검증 핸들을 보존하는 불변 감사 기록으로 간주할 수 없다.
+- 특정 핸들 취소를 지원하지 않아도 최초 검증 핸들의 변경 불가능한 감사 기록이 제품 요구라면 보호된 `owner_bound_handle`을 유지하거나 별도 이력을 둬야 한다. 감사 요구 자체가 없다면 컬럼 제거는 가능하지만, `author_handle`이 같은 증거를 보존한다는 이유가 아니라 사용자 단위 전량 원복에 문자열 값이 불필요하다는 이유로 결정해야 한다.
