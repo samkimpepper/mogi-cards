@@ -37,3 +37,9 @@
 - 근거: 과외 세션의 `owner_bound_handle` 문답 + `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:235`
 - 과외냥이가 테이블과 원복 흐름을 여러 번 설명했지만 모기는 이해되지 않는 상태를 넘기지 않고 "이미 프로필은 새 핸들인데 옛 핸들을 어디서 알아내나", "취소할 `mogi_old`를 어디서 입력받나"를 반복해서 물었다. 그 질문을 코드 입력까지 추적한 결과 RPC에 특정 옛 핸들이나 검증 이벤트를 지정할 인자가 없고, 실제 동작은 사용자 단위 전량 원복이라는 설계·카드 문구 차이가 드러났다.
 - 어려운 용어를 이해한 척 통과하지 않고 데이터가 어디서 들어와 어디에 쓰이는지를 끝까지 확인한 모기의 태도가 이번 발견의 직접 원인이다. 리뷰가 이미 READY로 판정한 뒤에도 사용자 관점의 단순한 질문이 구현 전제를 깨뜨릴 수 있음을 보여주는 좋은 사례다.
+
+## 특정 핸들 승인 취소 비지원 확정과 `owner_bound_handle` 제거 검토
+
+- 근거: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:299`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:315`
+- 모기 결정은 "한 Swatch 사용자에게 계속 이어지는 트위터 정체성 하나"이며 핸들 변경은 그 계정의 이름 변경일 뿐이다. 어드민 un-verify는 사용자 단위 전량 원복으로 닫고, 특정 과거 핸들 승인만 취소하는 기능과 계정 이전은 현재 지원 범위에서 제거한다.
+- 이 결정이면 `owner_bound_handle` 값은 현재 판정에 쓰이지 않고 미래 이벤트 단위 취소 발판도 불필요하다. 검증 고정 여부는 이미 `owner_bound_at IS NOT NULL`로 구분할 수 있고 원본 핸들은 `author_handle`에 남으므로, 원격 적용 전 `owner_bound_handle` 컬럼·타입·테스트·문서 제거와 un-verify 술어의 `owner_bound_at IS NOT NULL` 교체를 검토한다.
