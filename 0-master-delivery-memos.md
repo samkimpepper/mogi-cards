@@ -31,3 +31,9 @@
 - 근거: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:235`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:310`
 - `verify_twitter_handle`은 `p_user_id`와 `p_verified`만 받고, 핸들 변경 뒤 `user_profiles`에는 새 핸들만 남으므로 어드민이 어떤 옛 핸들 승인을 취소하려는지 함수에 전달할 방법이 없다. `swatches.owner_bound_handle`에 옛 값들이 남아 있어도 한 유저에게 여러 값이 있으면 DB가 취소 대상을 스스로 고를 수 없다.
 - 따라서 현재 un-verify는 특정 핸들 검증분을 정확히 취소하는 동작이 아니라 해당 `owner_uid`에 검증으로 고정된 과거 행 전부를 원복하는 동작이다. 카드·SPEC에서 이 사용자 단위 전량 취소를 의도로 명시하거나, 특정 승인만 취소하려면 어드민 선택 동선과 `p_bound_handle` 또는 검증 이벤트 id 입력을 추가해야 한다.
+
+## 과외 관찰 — 모기의 집요한 질문이 입력 공백을 발견함
+
+- 근거: 과외 세션의 `owner_bound_handle` 문답 + `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:235`
+- 과외냥이가 테이블과 원복 흐름을 여러 번 설명했지만 모기는 이해되지 않는 상태를 넘기지 않고 "이미 프로필은 새 핸들인데 옛 핸들을 어디서 알아내나", "취소할 `mogi_old`를 어디서 입력받나"를 반복해서 물었다. 그 질문을 코드 입력까지 추적한 결과 RPC에 특정 옛 핸들이나 검증 이벤트를 지정할 인자가 없고, 실제 동작은 사용자 단위 전량 원복이라는 설계·카드 문구 차이가 드러났다.
+- 어려운 용어를 이해한 척 통과하지 않고 데이터가 어디서 들어와 어디에 쓰이는지를 끝까지 확인한 모기의 태도가 이번 발견의 직접 원인이다. 리뷰가 이미 READY로 판정한 뒤에도 사용자 관점의 단순한 질문이 구현 전제를 깨뜨릴 수 있음을 보여주는 좋은 사례다.
