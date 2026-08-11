@@ -1,8 +1,8 @@
 # 리드 카드 — PR #496 fix 패스 (owner_uid 귀속 고정, 8건 수리)
 
 > 얇은 카드 (card-thin-mode). 살은 과외냥이가 붙인다.
-> 원문: PR #496 (head `be17d63`) + swatch-ops `contracts/2026-08-10-pr496-fix-pass-report.md` (워커 완료 보고, UAT 쿼리 전문 포함) + 리뷰 증류본 `contracts/2026-08-10-pr496-codex-review.md`.
-> 상태: READY — 4조건 실측 충족. 머지는 모기 몫.
+> 원문: PR #496 (head `6985ac3` — 08-11 docs 정합 커밋 포함) + swatch-ops `contracts/2026-08-10-pr496-fix-pass-report.md` (워커 완료 보고, UAT 쿼리 전문 포함) + 리뷰 증류본 `contracts/2026-08-10-pr496-codex-review.md`.
+> 상태: READY 재확립 (2026-08-11) — 과외 발견 3지점 문서 정합 완료, 4조건 실측 충족. 머지는 모기 몫.
 
 ## 핵심 결정 (이미 판정됨)
 
