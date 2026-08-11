@@ -34,10 +34,10 @@ INSERT: verified 매칭이면 즉시 그 유저, 아니면 `created_by` / verify
 
 원작자 직접 수정·삭제권 + 삭제 요청 즉시 비공개 → sw-c2p (머지 후 브레인스토밍, spec 결정 3 재확인됨).
 
-## 모기가 결정할 것 2건 (워커 판단 지점)
+## 모기가 결정한 것 2건 (확정)
 
-- [ ] 공개 프로필 `created_by` 절 유지(현행) 동의 — "owner_uid 단일"을 원하면 한 줄 변경.
-- [ ] `removal_requested_at`을 authenticated가 읽는 현행(더 숨기려면 뷰/RPC 필요, 범위 밖 처리) 동의.
+- [x] 공개 프로필 기여 판정은 `owner_uid` 단일 — `created_by` 절 제거. 어드민 대리등록은 운영 이력이지 공개 기여가 아니다.
+- [x] `removal_requested_at`은 현행 authenticated 전체 읽기에 동의하지 않음 — 소유자·어드민만 읽도록 제한한다.
 
 ## 머지 후 UAT 체크리스트 (모기 실측)
 
