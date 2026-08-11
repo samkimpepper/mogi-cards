@@ -1,7 +1,7 @@
 # 리드 카드 — PR #498 등록 서버 게이트 (귀속 위조 차단)
 
 > 얇은 카드. 원문: PR #498 (base dev, head `871bbf3`) · 계약 `swatch-ops/contracts/2026-08-11-swatch-registration-gate.md`.
-> 상태: READY — 4조건 실측 충족. 머지는 모기 몫. **launch gate 필수 (트친 공개 전).**
+> 상태: READY 재확립 (2차 수리 완료) — 4조건 실측 충족. 머지는 모기 몫. **launch gate 필수 (트친 공개 전).**
 
 ## 무엇을 막나
 
@@ -22,6 +22,17 @@
 
 - 에러 코드는 레포 #277 컨벤션대로 전용 SQLSTATE: **P0406**(미검증) / **P0407**(타인 핸들). 메시지 파싱 금지 원칙 유지, 안내 카피 2건 추가.
 - 검증: registration_gate_verify ALL PASS(18) · 음성 대조 2회 · vitest 560/2(Atlas 알려진 예외) · build. SQL 스위트 1건 FAIL은 dev 기준 기존 실패(sw-rp3, 이 PR 무관 — 트리거 DISABLE 대조로 확인).
+
+## 2차 수리 (교차 리뷰 후 추가된 것)
+
+- **P0 dev 회귀 긴급 수리** — #496이 `swatches` 표 단위 SELECT를 회수하고 19/20 컬럼만 GRANT했는데 `create_swatch`·`update_swatch`가 `to_jsonb(swatches.*)`로 행 전체를 읽어서 **dev에서 모든 로그인 유저의 등록·수정이 42501로 죽어 있었다.** 네 결정(removal_requested_at 제한)은 유지한 채 RETURNING을 허용 컬럼 명시 목록으로 교체해 수리. **원격 미적용 상태에서 잡아 프로덕션 무피해.**
+- P2-1: 무변경 핸들 UPDATE도 `owner_uid = auth.uid()`(또는 어드민)일 때만 통과 — 기존 불일치 행의 영구 재활용 봉쇄.
+- P2-2: RPC에도 service_role 예외를 넣어 두 겹 규칙 일치.
+- 검증: 게이트 28 PASS · 귀속 32 PASS · SQL 전체 144 PASS · 음성 대조 4회 정확 · vitest 562/2 · build.
+
+## 원격 데이터 실측 결과 (sw-dzl, 완료)
+
+불일치 76건 중 검증 유저 관련 15건은 **전부 어드민 대리등록**(너 14 + 기니피그 1). 제3자 노출 0, 정리 불필요.
 
 ## 다음
 
