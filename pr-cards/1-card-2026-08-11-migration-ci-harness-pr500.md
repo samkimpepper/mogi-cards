@@ -1,6 +1,6 @@
 # 카드 — 마이그레이션 CI 하네스 (PR #500, samkimpepper/rls-ci-harness → dev)
 
-작성: 냐옹이 Gen 5, 2026-08-11. 원문 SSOT: PR #500 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](1-card-2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ① 이행분.
+작성: 냐옹이 Gen 5, 2026-08-11. 원문 SSOT: PR #500 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](../plan-cards/1-card-2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ① 이행분.
 
 ## 1. 반드시 읽을 결정
 

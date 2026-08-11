@@ -4,7 +4,7 @@
 
 ## 새 세션 최소 로딩
 
-세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [0-guide-tutor-preamble.md](./0-guide-tutor-preamble.md)와 `read-card/`의 최신 카드만 읽는다. 모기가 재료를 따로 주지 않아도 최신 카드를 스스로 찾는다.
+세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [0-guide-tutor-preamble.md](./0-guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)의 **최신 문서 각 1개씩**만 읽는다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `archive/`(7월까지의 자료)는 요청 시에만.
 
 **다른 `0-*` 가이드와 과거 카드 묶음을 선제적으로 전부 읽지 않는다.** 아래 작업이 실제로 생겼을 때 해당 문서만 추가로 연다.
 
@@ -16,7 +16,10 @@
 | `0-guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
 | `0-guide-operator-notification-links.md` | 모기가 운영자 알림 링크를 직접 발송할 때 |
 | `0-guide-mogi-head-test.md` | 모기가 인지 테스트를 명시적으로 하자고 할 때 |
-| `read-card/1-card-<날짜>-<주제>.md` | 해당 PR·계획을 공부하거나 승인할 때 |
+| `pr-cards/1-card-<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
+| `plan-cards/1-card-<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
+| `code-diff-notes/2-note-<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
+| `archive/` | 7월까지의 지난 자료 — 모기가 요청할 때만 |
 | `1-card-*-해설.md` | 과외 문답을 증류하거나 이어서 읽을 때 |
 
 제품 저장소는 읽기 전용이고, 쓰기는 이 저장소의 허용된 메모·해설에만 한다.
