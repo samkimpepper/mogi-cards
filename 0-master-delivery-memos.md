@@ -49,3 +49,9 @@
 - 근거: `../swatch-v2/supabase/migrations/20260803100000_retire_anon_null_owner_rls_branches.sql:93`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:197`
 - 앞 메모에서 `owner_bound_handle` 제거 근거로 "원본 핸들은 `author_handle`에 남는다"고 적었지만, `author_handle`은 `swatches`의 일반 수정 가능 컬럼이고 현재 보호 트리거는 귀속 3컬럼만 복원한다. 따라서 등록자나 어드민 수정 뒤에도 최초 검증 핸들을 보존하는 불변 감사 기록으로 간주할 수 없다.
 - 특정 핸들 취소를 지원하지 않아도 최초 검증 핸들의 변경 불가능한 감사 기록이 제품 요구라면 보호된 `owner_bound_handle`을 유지하거나 별도 이력을 둬야 한다. 감사 요구 자체가 없다면 컬럼 제거는 가능하지만, `author_handle`이 같은 증거를 보존한다는 이유가 아니라 사용자 단위 전량 원복에 문자열 값이 불필요하다는 이유로 결정해야 한다.
+
+## `owner_uid` 원칙은 유지하되 검증·원복 상태 모델 재점검
+
+- 근거: `.planning/threads/handle-attribution-owner-uid-20260810.md:13`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:74`
+- 핸들 대신 내부 UUID를 귀속의 진실로 삼는 핵심 원칙은 핸들 변경·재활용 문제를 해결한다. 그러나 `created_by`가 이력과 권한을 겸하고, `author_handle`이 출처와 과거 매칭 단서를 겸하며, `owner_bound_at`·`owner_bound_handle`이 구현 중 뒤늦게 provenance로 추가되고, un-verify 범위도 READY 뒤 과외에서 사용자 단위로 확정돼 주변 상태 모델은 구현 전에 충분히 닫히지 않았다.
+- 연속 발견은 독립적인 사소한 결함보다 "검증은 무엇을 증명하고 취소는 무엇을 되돌리며 어떤 값이 불변 기록인가"라는 계약 공백에서 파생된 것으로 보인다. 추가 컬럼·조건 패치를 이어가기 전에 사용자 단위 검증이라는 확정 의미를 기준으로 상태 전이표와 각 컬럼의 단일 역할을 다시 쓰고, `owner_uid`·`created_by`·필요 시 `owner_bound_at`만으로 최소 모델이 성립하는지 마스터가 재검토해야 한다.
