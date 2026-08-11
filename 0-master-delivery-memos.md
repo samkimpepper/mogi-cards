@@ -25,3 +25,9 @@
 - 근거: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:299`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:315`
 - verify 때 `lower(핸들)`을 저장하지만 un-verify 대상은 `owner_uid = p_user_id AND owner_bound_handle IS NOT NULL`로만 골라 실제 핸들값을 비교하지 않는다. 같은 행 집합을 이미 `owner_bound_at IS NOT NULL`로 식별할 수 있어 현재 동작만 보면 신설 문자열 컬럼이 원복 정확도를 추가하지 않는다.
 - 의도가 유저의 과거 검증 고정분 전부 원복이라면 핸들값은 감사 기록용임을 명시하고 기존 시각 표식으로 부족한 이유를 남겨야 한다. 특정 검증 이벤트가 만든 귀속만 원복하려는 의도라면 저장한 핸들값 또는 별도 이벤트 식별자를 실제 대상 판정에 사용해야 한다.
+
+## 특정 옛 핸들 취소를 지정할 입력이 없음
+
+- 근거: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:235`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:310`
+- `verify_twitter_handle`은 `p_user_id`와 `p_verified`만 받고, 핸들 변경 뒤 `user_profiles`에는 새 핸들만 남으므로 어드민이 어떤 옛 핸들 승인을 취소하려는지 함수에 전달할 방법이 없다. `swatches.owner_bound_handle`에 옛 값들이 남아 있어도 한 유저에게 여러 값이 있으면 DB가 취소 대상을 스스로 고를 수 없다.
+- 따라서 현재 un-verify는 특정 핸들 검증분을 정확히 취소하는 동작이 아니라 해당 `owner_uid`에 검증으로 고정된 과거 행 전부를 원복하는 동작이다. 카드·SPEC에서 이 사용자 단위 전량 취소를 의도로 명시하거나, 특정 승인만 취소하려면 어드민 선택 동선과 `p_bound_handle` 또는 검증 이벤트 id 입력을 추가해야 한다.
