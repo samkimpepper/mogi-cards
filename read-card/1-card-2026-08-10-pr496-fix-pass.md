@@ -49,3 +49,9 @@ INSERT: verified 매칭이면 즉시 그 유저, 아니면 `created_by` / verify
 - A1. 왜 소유자 이전 시 삭제 요청을 지우는 게 안전한가 — 안 지우면 생기는 사고는?
 - A2. un-verify가 "핸들 골라 취소"가 아니라 "사용자 전량 원복"인 이유를 정체성 모델로 설명하면?
 - A3. `owner_bound_handle`이 판정에 안 쓰이는데도 남는 이유는? `author_handle`로 대체 못 하는 이유까지.
+
+### 과외 중 바로잡은 혼동
+
+- A1의 소유자 이전은 핸들 변경이 아니라 `owner_uid` 변경이다. 핸들 변경은 같은 사용자 UUID의 이름표 변경이라 기존 귀속과 `owner_uid`가 그대로다.
+- 실제 정체성은 사용자 UUID이고, `owner_uid`는 `swatches`에서 그 UUID를 담는 귀속 컬럼이다.
+- `author_handle`은 소유권이 아니라 수정 가능한 현재 출처 라벨이다. `owner_bound_handle`은 등록 당시가 아니라 **검증으로 귀속시킨 순간**의 핸들을 고정한 감사 기록이다.
