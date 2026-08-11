@@ -15,3 +15,8 @@
 - 근거: `../swatch-v2/app/src/features/shade-detail/SwatchContributionSheet.tsx:422`, `../swatch-v2/app/src/features/shade-detail/SwatchContributionSheet.tsx:454`, `../swatch-v2/supabase/migrations/20260802000000_retire_device_id_write_path.sql:45`
 - 모기가 확정한 제품 규칙은 일반 사용자는 자기 트윗의 발색만 등록할 수 있고, 다른 사람 트윗의 대리등록은 초기 씨드·운영을 위한 어드민 예외로만 허용한다는 것이다. 현재 화면은 일반 사용자가 임의의 트윗 URL을 미리보기한 뒤 발행할 수 있고 `create_swatch`도 작성자 핸들이 호출자 본인인지 또는 호출자가 어드민인지 검사하지 않아 이 규칙을 위반한다.
 - 일반 사용자 요청은 서버에서 신뢰할 수 있게 확인한 트윗 작성자와 호출자의 본인 핸들이 일치할 때만 허용하고, 불일치 등록은 어드민에게만 열어야 한다. 화면 차단만으로는 RPC 직접 호출을 막지 못하므로 이 구분은 반드시 쓰기 서버 또는 RPC에서 강제해야 하며, 미검증 사용자의 자기 트윗 등록을 허용하려면 클라이언트 입력과 별개의 본인 확인 방법도 함께 정해야 한다.
+
+## 출시판은 미검증 일반 사용자의 발색 등록을 서버에서 차단
+
+- 근거: `../swatch-v2/app/src/features/shade-detail/SwatchContributionSheet.tsx:454`, `../swatch-v2/supabase/migrations/20260802000000_retire_device_id_write_path.sql:45`
+- 모기는 출시판에서 핸들이 검증되지 않은 일반 사용자의 발색 등록을 하드 게이트로 차단하고, 어드민만 운영상 예외로 허용하기로 확정했다. 검증 전에는 트윗 불러오기와 폼 작성 같은 화면 경험을 제공할 수 있지만 공개 등록과 `owner_uid` 부여는 서버가 거부해야 하며, 이후 실제 이탈이 문제일 때 작성 내용 보존 후 검증을 거쳐 등록을 재개하는 UX를 별도 개선한다.
