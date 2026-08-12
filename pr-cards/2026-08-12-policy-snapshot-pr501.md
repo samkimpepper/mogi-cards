@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # 카드 — 정책 스냅샷 + 사람말 요약 코멘트 (PR #501, samkimpepper/policy-snapshot → dev)
