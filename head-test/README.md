@@ -6,11 +6,13 @@
 
 ## 실행
 
-1. `runner.html`을 브라우저로 연다. `file://`로 열어도 된다.
-2. `cases/policy-snapshot-demo.json`을 선택한다.
+1. 저장소 루트에서 `python3 -m http.server 8765`를 실행한다.
+2. `http://localhost:8765/head-test/runner.html?case=cases/policy-snapshot-demo.json`처럼 참가자 케이스를 넣은 링크를 연다. 러너가 같은 서버에서 케이스를 자동으로 불러온다.
 3. 화면 순서대로 답하고, 끝이나 중단 시 `실행 JSON 저장`을 누른다.
-4. 완료 뒤에만 `keys/policy-snapshot-demo.answers.json` 같은 reviewer-only 정답 키를 선택해 조건별 구조 입력을 계산할 수 있다.
+4. 완료 뒤에만 나타나는 `서버에서 정답 키 불러오기`를 눌러 조건별 구조 입력을 계산한다. 러너는 참가자 케이스와 같은 basename의 `keys/*.answers.json`을 이때 처음 가져온다.
 5. 저장한 JSON을 `runs/`에 옮길지는 모기가 결정한다. 러너가 저장소에 직접 쓰지는 않는다.
+
+URL 자동 로드는 `cases/` 바로 아래 JSON만 허용한다. 파일 선택 입력도 비상용으로 남아 있지만, WSL2에서는 localhost 링크가 기본 경로다. `file://`로 열면 URL 자동 로드를 사용할 수 없다.
 
 PR #501 케이스는 이미 학습한 소재라 UI에도 `demo_only`로 표시된다. 조작 확인용이며 측정 결과로 쓰지 않는다.
 
@@ -41,7 +43,7 @@ PR #501 케이스는 이미 학습한 소재라 UI에도 `demo_only`로 표시�
 4. 각 규칙의 `fact`에 정보 출처·값의 주인·관측·이벤트·전후 값을 쓴다. 러너가 이 한 모델에서 문단과 표를 모두 생성한다.
 5. 고유명사는 `{{token}}`으로 쓰고 `variants.A`와 `variants.B`에 서로 다른 값을 넣는다. `token_roles`에는 두 값이 맡는 동일한 의미 역할을 적는다.
 6. `initial_questions` 네 개는 질문 종류를 하나씩 사용하고, 두 variant에 같은 추론 단계를 요구해야 한다.
-7. 참가자 케이스에는 `expected`를 넣지 않는다. 별도 `keys/*.answers.json`에 기계적으로 비교할 짧은 값만 두고, 모순 판단과 이유는 자유서술로 받아 사람이 본다.
+7. 참가자 케이스에는 `expected`를 넣지 않는다. 참가자 케이스와 같은 basename의 별도 `keys/<basename>.answers.json`에 기계적으로 비교할 짧은 값만 두고, 모순 판단과 이유는 자유서술로 받아 사람이 본다.
 8. validator를 통과해도 실제 인지 난도까지 같다는 뜻은 아니다. A/B 이름의 친숙도·길이·도메인 역할과 원문에 없는 외부 지식 여부를 블라인드로 별도 검토한다.
 
 검증 명령:

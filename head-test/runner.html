@@ -48,7 +48,7 @@
 
   <section id="loader" class="panel">
     <h2>1. 케이스 불러오기</h2>
-    <p>외부 서버로 전송하지 않아. <code>head-test/cases/*.json</code> 파일을 직접 골라.</p>
+    <p><code>?case=cases/파일.json</code> 링크로 들어오면 같은 서버에서 자동으로 불러와. 아래 파일 선택은 비상용이며 외부 서버로 전송하지 않아.</p>
     <input id="case-file" type="file" accept="application/json,.json">
     <pre id="load-error" class="warning" role="alert"></pre>
   </section>
@@ -92,6 +92,7 @@
   let caseData = null;
   let session = null;
   let answerKey = null;
+  let caseSourcePath = null;
   let storageAvailable = true;
   let orderLedger = core.emptyOrderLedger();
 
@@ -113,7 +114,7 @@
       previousLedger = localStorage.getItem(ledgerKey);
       previousSession = localStorage.getItem(storageKey);
       localStorage.setItem(ledgerKey, JSON.stringify(nextLedger));
-      localStorage.setItem(storageKey, JSON.stringify({ caseData, session:nextSession }));
+      localStorage.setItem(storageKey, JSON.stringify({ caseData, session:nextSession, caseSourcePath }));
       return true;
     } catch {
       try {
@@ -124,9 +125,35 @@
       return false;
     }
   }
-  const persist = () => writeStorage(storageKey, JSON.stringify({ caseData, session }));
+  const persist = () => writeStorage(storageKey, JSON.stringify({ caseData, session, caseSourcePath }));
   const persistLedger = () => writeStorage(ledgerKey, JSON.stringify(orderLedger));
   const phaseLabel = { intro:"시작 전", block_1:"초기 블록 1", block_2:"초기 블록 2", delay_wait:"지연 대기", delayed_no_support:"지연 검사·요약 없음", delayed_with_support:"지연 검사·표 있음", complete:"완료", fatigue_abort:"피로 중단", incomplete:"시간 초과", invalidated:"입력 결함으로 무효" };
+
+  async function fetchJson(path, label) {
+    const response = await fetch(path, { cache:"no-store", credentials:"same-origin" });
+    if (!response.ok) throw new Error(`${label}을 서버에서 불러오지 못함: HTTP ${response.status}`);
+    try { return await response.json(); } catch { throw new Error(`${label}이 유효한 JSON이 아님`); }
+  }
+
+  function installCase(parsed, sourcePath) {
+    if (session && !terminal() && session.phase !== "intro") throw new Error("활성 실행은 다른 케이스로 덮어쓸 수 없어. 먼저 중단하고 JSON을 저장해.");
+    const check = core.validateCase(parsed);
+    if (!check.ok) throw new Error(check.errors.join("\n"));
+    caseData = parsed;
+    caseSourcePath = sourcePath;
+    answerKey = null;
+    session = core.createSession(caseData, Date.now());
+    persist();
+    $("load-error").textContent = "";
+    render();
+  }
+
+  function installAnswerKey(parsed) {
+    const validation = core.validateAnswerKey(caseData, parsed);
+    if (!validation.ok) throw new Error(validation.errors.join("\n"));
+    answerKey = parsed;
+    render();
+  }
 
   function latestDraft(phase, questionId, fieldPath) {
     const matches = session.draft_events.filter((e) => e.phase === phase && e.question_id === questionId && e.field_path === fieldPath);
@@ -266,11 +293,20 @@
       if (out.review) {
         extra = `<h3>조건별 구조 입력</h3>${Object.entries(out.review.condition_summaries).map(([phase,summary])=>`<p><strong>${esc(phaseLabel[phase])}</strong>: ${summary.exact_by_question.map((item)=>`${esc(item.question_id)} ${item.exact_correct}/${item.exact_total}${item.before_after_reversal===true?" (전후 반전)":""}`).join(" · ")}</p>`).join("")}<p class="muted">전체 합계는 만들지 않아. 자유서술·모순 탐지 의미는 사람이 검토하고, 지연 결과는 서술 관찰로만 본다.</p>`;
       } else {
-        extra = `<p>참가자 케이스에는 정답이 없어. 완료 후 reviewer-only 정답 키를 골라야 조건별 구조 입력을 계산해.</p><label for="answer-key-file">정답 키 JSON</label><input id="answer-key-file" type="file" accept="application/json,.json">`;
+        const bundledButton = caseSourcePath ? `<button id="bundled-answer-key">서버에서 정답 키 불러오기</button>` : "";
+        extra = `<p>참가자 케이스에는 정답이 없어. 완료한 지금만 reviewer-only 정답 키를 불러와 조건별 구조 입력을 계산해.</p><div class="actions">${bundledButton}</div><label for="answer-key-file">정답 키 JSON 직접 선택(비상용)</label><input id="answer-key-file" type="file" accept="application/json,.json">`;
       }
     }
     $("screen").innerHTML = `<h2>${esc(phaseLabel[session.phase])}</h2>${extra}<p>실행 JSON을 저장해 원답·시간·전이·미시행 상태를 보존해.</p>`;
-    if ($("answer-key-file")) $("answer-key-file").onchange = async (event) => { try { const parsed=JSON.parse(await event.target.files[0].text()); const validation=core.validateAnswerKey(caseData,parsed); if(!validation.ok) throw new Error(validation.errors.join("\n")); answerKey=parsed; render(); } catch(error){ alert(error.message); } };
+    if ($("bundled-answer-key")) $("bundled-answer-key").onclick = async () => {
+      try {
+        const keyPath = core.answerKeyPathForCase(caseSourcePath);
+        installAnswerKey(await fetchJson(keyPath, "정답 키"));
+      } catch (error) { alert(error.message); }
+    };
+    if ($("answer-key-file")) $("answer-key-file").onchange = async (event) => {
+      try { installAnswerKey(JSON.parse(await event.target.files[0].text())); } catch (error) { alert(error.message); }
+    };
   }
 
   function render() {
@@ -292,25 +328,37 @@
 
   $("case-file").addEventListener("change", async (e) => {
     try {
-      if (session && !terminal() && session.phase !== "intro") throw new Error("활성 실행은 다른 케이스로 덮어쓸 수 없어. 먼저 중단하고 JSON을 저장해.");
-      const parsed = JSON.parse(await e.target.files[0].text());
-      const check = core.validateCase(parsed); if (!check.ok) throw new Error(check.errors.join("\n"));
-      caseData = parsed;
-      answerKey = null;
-      session = core.createSession(caseData,Date.now());
-      persist(); $("load-error").textContent=""; render();
+      installCase(JSON.parse(await e.target.files[0].text()), null);
     } catch (err) { $("load-error").textContent=err.message; }
   });
   $("export").onclick = downloadRun;
   $("abort").onclick = () => $("abort-dialog").showModal();
   $("defect").onclick = () => $("defect-dialog").showModal();
-  $("reset").onclick = () => { if (confirm("현재 실행과 로컬 저장 답변을 지울까? 활성 실행이면 제외 배정으로 기록돼. JSON을 먼저 저장했는지 확인해.")) { if(session && Array.isArray(session.order) && !terminal()){ orderLedger=core.recordOrderOutcome(orderLedger,{...session,phase:"reset"},Date.now());persistLedger(); } try{localStorage.removeItem(storageKey);}catch{} caseData=null;session=null;answerKey=null;location.reload(); } };
+  $("reset").onclick = () => { if (confirm("현재 실행과 로컬 저장 답변을 지울까? 활성 실행이면 제외 배정으로 기록돼. JSON을 먼저 저장했는지 확인해.")) { if(session && Array.isArray(session.order) && !terminal()){ orderLedger=core.recordOrderOutcome(orderLedger,{...session,phase:"reset"},Date.now());persistLedger(); } try{localStorage.removeItem(storageKey);}catch{} caseData=null;session=null;answerKey=null;caseSourcePath=null;location.reload(); } };
   $("abort-dialog").addEventListener("close", () => { if ($("abort-dialog").returnValue === "confirm") { session=core.transition(session,"fatigue_abort",{reason:$("abort-reason").value},caseData,Date.now()); orderLedger=core.recordOrderOutcome(orderLedger,session,Date.now());persistLedger(); persist(); render(); } });
   core.INPUT_DEFECT_REASONS.forEach((r)=>$("defect-reason").insertAdjacentHTML("beforeend",`<option>${esc(r)}</option>`));
   $("defect-dialog").addEventListener("close", () => { if ($("defect-dialog").returnValue === "confirm") { session=core.transition(session,"invalidate_input",{reason:$("defect-reason").value,question_id:$("defect-question").value,detail:$("defect-detail").value},caseData,Date.now()); orderLedger=core.recordOrderOutcome(orderLedger,session,Date.now());persistLedger(); persist(); render(); } });
 
   try { const storedLedger=JSON.parse(readStorage(ledgerKey)); if(core.validateOrderLedger(storedLedger)) orderLedger=storedLedger; else if(storedLedger) throw new Error("전역 순서 원장이 손상됨"); } catch(error) { storageAvailable=false; $("load-error").textContent=error.message; }
-  try { const raw=readStorage(storageKey); const saved=raw?JSON.parse(raw):null; if(saved && saved.caseData && saved.session){ const caseCheck=core.validateCase(saved.caseData); const sessionCheck=caseCheck.ok?core.validateSession(saved.session,saved.caseData):{ok:false,errors:caseCheck.errors}; if(!sessionCheck.ok) throw new Error(`저장 실행 복구 거부: ${sessionCheck.errors.join("; ")}`); if(Array.isArray(saved.session.order)){ const allocation=orderLedger.events.find((event)=>event.type==="allocate"&&event.run_id===saved.session.run_id); if(!allocation||allocation.order.join(",")!==saved.session.order.join(",")) throw new Error("저장 실행 복구 거부: 전역 순서 배정 원장과 불일치"); } caseData=saved.caseData;session=saved.session;render(); } } catch(error) { $("load-error").textContent=error.message; }
+  try { const raw=readStorage(storageKey); const saved=raw?JSON.parse(raw):null; if(saved && saved.caseData && saved.session){ const caseCheck=core.validateCase(saved.caseData); const sessionCheck=caseCheck.ok?core.validateSession(saved.session,saved.caseData):{ok:false,errors:caseCheck.errors}; if(!sessionCheck.ok) throw new Error(`저장 실행 복구 거부: ${sessionCheck.errors.join("; ")}`); if(Array.isArray(saved.session.order)){ const allocation=orderLedger.events.find((event)=>event.type==="allocate"&&event.run_id===saved.session.run_id); if(!allocation||allocation.order.join(",")!==saved.session.order.join(",")) throw new Error("저장 실행 복구 거부: 전역 순서 배정 원장과 불일치"); } caseData=saved.caseData;session=saved.session;caseSourcePath=saved.caseSourcePath?core.normalizeParticipantCasePath(saved.caseSourcePath):null;render(); } } catch(error) { $("load-error").textContent=error.message; }
+  (async () => {
+    const requested = new URLSearchParams(location.search).get("case");
+    if (!requested) return;
+    try {
+      const sourcePath = core.normalizeParticipantCasePath(requested);
+      const parsed = await fetchJson(sourcePath, "참가자 케이스");
+      const check = core.validateCase(parsed);
+      if (!check.ok) throw new Error(check.errors.join("\n"));
+      if (session && session.case_id === parsed.id) {
+        caseSourcePath = sourcePath;
+        persist();
+        $("load-error").textContent = "";
+        render();
+      } else {
+        installCase(parsed, sourcePath);
+      }
+    } catch (error) { $("load-error").textContent = error.message; }
+  })();
   setInterval(() => {
     if (!session) return;
     if (["block_1","block_2"].includes(session.phase)) {

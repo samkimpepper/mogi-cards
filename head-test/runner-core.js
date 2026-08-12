@@ -26,6 +26,7 @@
   const ID_PATTERN = /^[A-Za-z][A-Za-z0-9_]*$/;
   const TOKEN_ROLE_PATTERN = /^[a-z][a-z0-9_]*$/;
   const TOKEN_PATTERN = /\{\{([a-zA-Z0-9_]+)\}\}/g;
+  const PARTICIPANT_CASE_PATH_PATTERN = /^cases\/([A-Za-z0-9][A-Za-z0-9._-]*)\.json$/;
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -199,6 +200,19 @@
       assert(Object.prototype.hasOwnProperty.call(tokens, key), `토큰 값 누락: ${key}`);
       return tokens[key];
     });
+  }
+
+  function normalizeParticipantCasePath(value) {
+    assert(typeof value === "string", "참가자 케이스 경로는 문자열이어야 함");
+    const normalized = value.trim();
+    assert(PARTICIPANT_CASE_PATH_PATTERN.test(normalized), "참가자 케이스는 cases/ 바로 아래의 JSON만 자동 로드할 수 있음");
+    return normalized;
+  }
+
+  function answerKeyPathForCase(value) {
+    const normalized = normalizeParticipantCasePath(value);
+    const match = normalized.match(PARTICIPANT_CASE_PATH_PATTERN);
+    return `keys/${match[1]}.answers.json`;
   }
 
   function renderDeep(value, tokens) {
@@ -712,6 +726,8 @@
     TABLE_COLUMNS,
     validateCase,
     renderTemplate,
+    normalizeParticipantCasePath,
+    answerKeyPathForCase,
     renderRules,
     renderInitialQuestions,
     renderDelayedQuestion,

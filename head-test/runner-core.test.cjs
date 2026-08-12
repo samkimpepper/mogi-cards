@@ -61,6 +61,15 @@ test("validator는 정확히 5개 규칙과 네 질문 종류를 허용한다", 
   assert.match(result.errors.join("\n"), /정확히 하나씩/);
 });
 
+test("URL 자동 로드는 cases 바로 아래 JSON만 허용하고 정답 키 경로를 유도한다", () => {
+  const casePath = "cases/2026-08-12-searchpath-pin.json";
+  assert.equal(core.normalizeParticipantCasePath(casePath), casePath);
+  assert.equal(core.answerKeyPathForCase(casePath), "keys/2026-08-12-searchpath-pin.answers.json");
+  for (const invalid of ["../keys/secret.json", "/cases/test.json", "cases/nested/test.json", "keys/test.json", "cases/test.txt"]) {
+    assert.throws(() => core.normalizeParticipantCasePath(invalid), /cases\/ 바로 아래/);
+  }
+});
+
 test("validator는 템플릿 토큰 누락과 A/B 동일 라벨을 거부한다", () => {
   const invalid = structuredClone(demo);
   invalid.rules[0].fact["관측·판단"] += " {{missing_token}}";
