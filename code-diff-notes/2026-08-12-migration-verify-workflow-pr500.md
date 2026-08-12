@@ -104,6 +104,97 @@ SQL에서 오류나 `RAISE EXCEPTION`이 발생해도 `psql`의 종료 코드가
 
 PR #500 전의 `events_rls_verify.sql`이 그 사례였다. 파일은 실행됐지만 판정 단언이 없었다. PR #500에서 단언 16개를 넣어, 권한이 어긋나면 스크립트 자체가 실패하도록 바꿨다.
 
+수리 전 파일은 이런 조회를 실행했다.
+
+```sql
+SELECT has_function_privilege(
+  'anon',
+  'public.touch_last_seen()',
+  'EXECUTE'
+) AS anon_can_execute;
+```
+
+기대값은 `false`지만 실제 결과가 `true`여도 `SELECT` 문장은 정상 실행된 것이다. 사람은 출력표를 보고 잘못됐다고 알아낼 수 있지만, CI는 출력의 뜻을 읽지 않는다.
+
+자바로 비유하면 수리 전은 아래에 가깝다.
+
+```java
+System.out.println(anonCanExecute);
+```
+
+PR #500에서는 조회 결과를 기대값과 비교하는 자기 판정을 붙였다.
+
+```sql
+IF has_function_privilege(
+  'anon',
+  'public.touch_last_seen()',
+  'EXECUTE'
+) THEN
+  RAISE EXCEPTION 'FAIL: anon 에 touch_last_seen EXECUTE 잔존';
+END IF;
+```
+
+자바로 치면 다음과 같다.
+
+```java
+assertFalse(anonCanExecute);
+assertEquals(Set.of("INSERT", "SELECT"), authenticatedPrivileges);
+```
+
+수리된 단언은 다음 같은 계약을 검사한다.
+
+- `events` RLS 정책은 정해진 2개뿐이고 UPDATE·DELETE 정책은 없음
+- 클라이언트 역할에 UPDATE·DELETE·TRUNCATE·REFERENCES·TRIGGER 권한 없음
+- 실효 권한은 `authenticated = {INSERT, SELECT}`, `anon = {}`와 정확히 같음
+- `created_at` 강제 트리거는 정확히 하나이고 활성 상태
+- `touch_last_seen`은 `SECURITY DEFINER`이고 `search_path=public` 고정
+- 함수 실행권은 `anon`에게 없고 `authenticated`에게 있음
+
+### 4-1. `RAISE EXCEPTION`만으로는 왜 부족한가
+
+실패는 아래 세 층을 모두 건너야 CI 빨간불이 된다.
+
+```text
+PostgreSQL 문장
+→ psql 프로세스
+→ GitHub Actions
+```
+
+`RAISE EXCEPTION`은 PostgreSQL 안의 현재 SQL 문장을 실패시킨다. 그러나 기본 `psql`은 오류를 출력한 뒤 다음 문장을 계속 실행하고, 파일 끝에서 성공 종료 코드 `0`을 돌려줄 수 있다.
+
+자바 비유:
+
+```java
+try {
+    runSql();
+} catch (SQLException e) {
+    e.printStackTrace();
+    // 다시 throw하지 않음
+}
+System.exit(0);
+```
+
+그러면 GitHub Actions는 빨간 `ERROR` 로그의 의미가 아니라 프로세스 종료 코드 `0`을 보고 초록으로 판정한다.
+
+`-v ON_ERROR_STOP=1`을 주면 SQL 오류가 난 즉시 `psql`도 실패 코드로 종료한다. PR #500의 실측은 플래그 없이 `exit 0`, 플래그를 주면 `exit 3`이었다.
+
+```text
+잘못된 DB 상태
+→ IF 단언이 RAISE EXCEPTION
+→ ON_ERROR_STOP이 psql을 실패 코드로 종료
+→ 워크플로가 실패 파일을 기록
+→ 마지막 exit 1
+→ GitHub Actions 빨간불
+```
+
+즉 다음 셋은 서로 다른 사건이고, 연결을 코드로 만들어야 한다.
+
+```text
+오류 메시지가 출력됨
+≠ 프로그램이 실패 코드로 종료됨
+≠ CI가 실패함
+```
+
 따라서 CI 리뷰에서는 두 질문을 분리한다.
 
 ```text
