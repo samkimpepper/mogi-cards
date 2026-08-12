@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "protocol_version": "head-test-1.0",
+  "id": "searchpath-pin-pr504",
+  "title": "함수 이름 해석 고정 케이스",
+  "demo_only": false,
+  "description": "처음 보는 소형 카드 소재의 정식 측정 케이스. 참가자용 — 정답 없음.",
+  "block_limit_seconds": 270,
+  "delay_seconds": 300,
+  "variants": {
+    "A": {
+      "function": "update_note",
+      "pinned_schema": "public",
+      "shadow_schema": "scratch",
+      "migration": "20260812_note_pin.sql",
+      "verify_file": "notes_structure_verify.sql",
+      "snapshot_file": "supabase/POLICY-SNAPSHOT.md"
+    },
+    "B": {
+      "function": "rename_palette",
+      "pinned_schema": "core",
+      "shadow_schema": "sandbox",
+      "migration": "20260813_palette_pin.sql",
+      "verify_file": "palettes_structure_verify.sql",
+      "snapshot_file": "supabase/ACCESS-SNAPSHOT.md"
+    }
+  },
+  "token_roles": {
+    "function": "function_identifier",
+    "pinned_schema": "pinned_schema_name",
+    "shadow_schema": "caller_prepended_schema",
+    "migration": "migration_identifier",
+    "verify_file": "verify_script_path",
+    "snapshot_file": "repository_path"
+  },
+  "rules": [
+    {
+      "id": "unpinned_follows_caller",
+      "fact": {
+        "정보 출처": "pg_proc의 proconfig",
+        "값의 주인": "{{function}}의 이름 해석",
+        "관측·판단": "고정이 비어 있으면 호출자 세션의 검색 순서를 그대로 따름",
+        "이벤트": "호출자가 {{shadow_schema}}를 검색 순서 맨 앞에 둠",
+        "변경 전": "{{pinned_schema}}의 실제 객체를 읽음",
+        "변경 후": "{{shadow_schema}}의 동명 객체를 읽음"
+      }
+    },
+    {
+      "id": "pin_by_alter",
+      "fact": {
+        "정보 출처": "마이그레이션 {{migration}}",
+        "값의 주인": "{{function}}의 search_path 속성",
+        "관측·판단": "ALTER FUNCTION은 함수 본문을 바꾸지 않고 속성만 바꿈 (본문 사본 0개)",
+        "이벤트": "SET search_path = {{pinned_schema}} 적용",
+        "변경 전": "미고정 (호출자 위임)",
+        "변경 후": "고정"
+      }
+    },
+    {
+      "id": "verify_promotion",
+      "fact": {
+        "정보 출처": "검증 스크립트 {{verify_file}}",
+        "값의 주인": "{{function}}의 고정 여부 판정",
+        "관측·판단": "미고정 발견 시의 반응이 무엇인지",
+        "이벤트": "판정 승격",
+        "변경 전": "NOTICE (관찰만 남기고 통과)",
+        "변경 후": "EXCEPTION (실패, CI 빨간불)"
+      }
+    },
+    {
+      "id": "rollback_reset",
+      "fact": {
+        "정보 출처": "마이그레이션 주석의 롤백 절",
+        "값의 주인": "{{function}}의 search_path 속성",
+        "관측·판단": "RESET search_path 한 줄로 되돌릴 수 있음",
+        "이벤트": "RESET search_path 실행",
+        "변경 전": "고정",
+        "변경 후": "미고정 (호출자 위임)"
+      }
+    },
+    {
+      "id": "snapshot_scope",
+      "fact": {
+        "정보 출처": "스냅샷 파일 {{snapshot_file}}의 함수 표",
+        "값의 주인": "함수 표의 노출 범위",
+        "관측·판단": "SECURITY DEFINER 함수만 표에 실림 — {{function}}은 INVOKER라 대상 밖",
+        "이벤트": "{{function}}의 search_path 속성 변경",
+        "변경 전": "표에 없음",
+        "변경 후": "표에 여전히 없음 (자동 코멘트도 생성되지 않음)"
+      }
+    }
+  ],
+  "initial_questions": [
+    {
+      "id": "fact_pin_judge_source",
+      "type": "fact_recall",
+      "prompt": "{{function}}의 search_path 고정이 풀렸을 때 CI를 실패시키는 판정은 어느 정보 출처가 내리는 거야?",
+      "reasoning_label": "그렇게 답한 이유(자유서술, 수동 검토)",
+      "structured_fields": [
+        {
+          "id": "source",
+          "label": "정보 출처",
+          "type": "select",
+          "options": ["검증 스크립트", "스냅샷 파일의 함수 표", "마이그레이션 주석의 롤백 절"]
+        }
+      ]
+    },
+    {
+      "id": "track_pin_apply",
+      "type": "state_tracking",
+      "prompt": "마이그레이션 {{migration}}이 적용됐다. 무엇의 어떤 속성이 바뀌었는지 대상·이벤트·변경 전후를 적어줘.",
+      "reasoning_label": "추적 과정(자유서술, 수동 검토)",
+      "structured_fields": [
+        { "id": "subject", "label": "대상", "type": "text" },
+        { "id": "event", "label": "이벤트", "type": "text" },
+        { "id": "before", "label": "변경 전", "type": "select", "options": ["미고정", "고정"] },
+        { "id": "after", "label": "변경 후", "type": "select", "options": ["미고정", "고정"] }
+      ]
+    },
+    {
+      "id": "infer_reset_after_promotion",
+      "type": "novel_inference",
+      "prompt": "판정 승격이 이미 반영된 뒤에, 누군가 {{function}}에 RESET search_path를 실행하는 새 마이그레이션을 올렸다. CI 검증 잡의 결과는 어떻게 될까?",
+      "reasoning_label": "판단 근거(자유서술, 수동 검토)",
+      "structured_fields": [
+        {
+          "id": "result",
+          "label": "CI 결과",
+          "type": "select",
+          "options": ["초록불 (NOTICE만 남는다)", "빨간불 (EXCEPTION으로 실패)", "잡이 아예 돌지 않는다"]
+        }
+      ]
+    },
+    {
+      "id": "detect_snapshot_claim",
+      "type": "contradiction_detection",
+      "prompt": "PR 설명이 '{{function}}의 고정 상태는 이제 {{snapshot_file}}의 함수 표에서 확인할 수 있다'고 적었다. 이 문장을 판단해줘.",
+      "reasoning_label": "빠진 전제나 충돌(자유서술, 수동 검토)",
+      "structured_fields": [
+        {
+          "id": "scope",
+          "label": "판단",
+          "type": "select",
+          "options": ["확인할 수 있다", "확인할 수 없다 — 표의 노출 범위와 충돌"]
+        }
+      ]
+    }
+  ],
+  "delayed_question": {
+    "id": "delayed_reset_effect",
+    "prompt": "{{function}}에 RESET search_path가 실행됐다. 무엇의 어떤 속성이 바뀌는지 대상과 변경 전후를 다시 적어줘.",
+    "reasoning_label": "기억하거나 적용한 과정(자유서술, 수동 검토)",
+    "structured_fields": [
+      { "id": "subject", "label": "대상", "type": "text" },
+      { "id": "before", "label": "변경 전", "type": "select", "options": ["미고정", "고정"] },
+      { "id": "after", "label": "변경 후", "type": "select", "options": ["미고정", "고정"] }
+    ]
+  }
+}

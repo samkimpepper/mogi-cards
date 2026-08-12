@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "case_id": "searchpath-pin-pr504",
+  "answers": {
+    "fact_pin_judge_source": {
+      "source": "검증 스크립트"
+    },
+    "track_pin_apply": {
+      "subject": "{{function}}의 search_path 속성",
+      "event": "SET search_path = {{pinned_schema}} 적용",
+      "before": "미고정",
+      "after": "고정"
+    },
+    "infer_reset_after_promotion": {
+      "result": "빨간불 (EXCEPTION으로 실패)"
+    },
+    "detect_snapshot_claim": {
+      "scope": "확인할 수 없다 — 표의 노출 범위와 충돌"
+    },
+    "delayed_reset_effect": {
+      "subject": "{{function}}의 search_path 속성",
+      "before": "고정",
+      "after": "미고정"
+    }
+  }
+}
