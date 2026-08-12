@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "case_id": "policy-snapshot-pr501-demo",
+  "answers": {
+    "fact_rls_source": {
+      "source": "pg_class"
+    },
+    "track_grant_revoke": {
+      "subject": "{{grantee}}의 {{table}} SELECT 권한",
+      "event": "SELECT 권한 회수",
+      "before": "있음",
+      "after": "없음"
+    },
+    "infer_zero_rows": {
+      "result": "0 rows"
+    },
+    "detect_overclaim": {
+      "scope": "조회 가능은 아직 증명되지 않음"
+    },
+    "delayed_grant_revoke": {
+      "subject": "{{grantee}}의 {{table}} SELECT 권한",
+      "before": "있음",
+      "after": "없음"
+    }
+  }
+}

@@ -41,7 +41,7 @@
     <div class="actions">
       <button id="export" class="secondary" disabled>실행 JSON 저장</button>
       <button id="abort" class="danger" disabled>여기서 중단</button>
-      <button id="defect" class="secondary" disabled>입력 결함 신고</button>
+      <button id="defect" class="secondary" disabled>입력 결함·내용 도움 신고</button>
       <button id="reset" class="secondary">현재 실행 초기화</button>
     </div>
   </div>
@@ -53,8 +53,8 @@
     <pre id="load-error" class="warning" role="alert"></pre>
   </section>
 
-  <section id="status" class="panel" hidden></section>
-  <section id="screen" class="panel" hidden></section>
+  <section id="status" class="panel" aria-live="polite" hidden></section>
+  <section id="screen" class="panel" tabindex="-1" hidden></section>
 
   <dialog id="abort-dialog">
     <form method="dialog" id="abort-form">
@@ -68,7 +68,7 @@
 
   <dialog id="defect-dialog">
     <form method="dialog" id="defect-form">
-      <h2>입력 결함 신고</h2>
+      <h2>입력 결함·내용 도움 신고</h2>
       <p>내용 설명을 받기 전에 비교를 무효화하고 현재 실행을 잠가.</p>
       <label for="defect-reason">종류</label>
       <select id="defect-reason"></select>
@@ -88,13 +88,44 @@
   const core = window.HeadTestCore;
   const $ = (id) => document.getElementById(id);
   const storageKey = "mogi-head-test/current-v1";
+  const ledgerKey = "mogi-head-test/global-order-ledger-v1";
   let caseData = null;
   let session = null;
+  let answerKey = null;
+  let storageAvailable = true;
+  let orderLedger = core.emptyOrderLedger();
 
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const terminal = () => session && core.TERMINAL_PHASES.has(session.phase);
-  const persist = () => localStorage.setItem(storageKey, JSON.stringify({ caseData, session }));
-  const lastOrderKey = () => `mogi-head-test/last-order/${caseData.id}`;
+  function readStorage(key) {
+    if (!storageAvailable) return null;
+    try { return localStorage.getItem(key); } catch { storageAvailable = false; return null; }
+  }
+  function writeStorage(key, value) {
+    if (!storageAvailable) return false;
+    try { localStorage.setItem(key, value); return true; } catch { storageAvailable = false; return false; }
+  }
+  function commitStartStorage(nextLedger, nextSession) {
+    if (!storageAvailable) return false;
+    let previousLedger = null;
+    let previousSession = null;
+    try {
+      previousLedger = localStorage.getItem(ledgerKey);
+      previousSession = localStorage.getItem(storageKey);
+      localStorage.setItem(ledgerKey, JSON.stringify(nextLedger));
+      localStorage.setItem(storageKey, JSON.stringify({ caseData, session:nextSession }));
+      return true;
+    } catch {
+      try {
+        if (previousLedger === null) localStorage.removeItem(ledgerKey); else localStorage.setItem(ledgerKey, previousLedger);
+        if (previousSession === null) localStorage.removeItem(storageKey); else localStorage.setItem(storageKey, previousSession);
+      } catch {}
+      storageAvailable = false;
+      return false;
+    }
+  }
+  const persist = () => writeStorage(storageKey, JSON.stringify({ caseData, session }));
+  const persistLedger = () => writeStorage(ledgerKey, JSON.stringify(orderLedger));
   const phaseLabel = { intro:"시작 전", block_1:"초기 블록 1", block_2:"초기 블록 2", delay_wait:"지연 대기", delayed_no_support:"지연 검사·요약 없음", delayed_with_support:"지연 검사·표 있음", complete:"완료", fatigue_abort:"피로 중단", incomplete:"시간 초과", invalidated:"입력 결함으로 무효" };
 
   function latestDraft(phase, questionId, fieldPath) {
@@ -118,7 +149,8 @@
       timer = `<span class="timer">초기 블록 남은 시간 ${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}</span>`;
     }
     $("status").hidden = false;
-    $("status").innerHTML = `<div class="bar"><div><strong>${esc(caseData.title)}</strong><br><span class="muted">${esc(caseData.protocol_version)} · ${esc(phaseLabel[session.phase])}</span></div>${timer}</div>`;
+    const storageWarning = storageAvailable ? "" : `<div class="warning">브라우저 저장소를 쓸 수 없어. 새로고침 복구는 안 되며 종료 JSON 저장이 필수야.</div>`;
+    $("status").innerHTML = `<div class="bar"><div><strong>${esc(caseData.title)}</strong><br><span class="muted">${esc(caseData.protocol_version)} · ${esc(phaseLabel[session.phase])}</span></div>${timer}</div>${storageWarning}`;
     if (session.phase === "delay_wait" && $("begin-delay")) {
       const left = Math.max(0, Math.ceil((new Date(session.delay_unlock_at).getTime() - Date.now()) / 1000));
       $("begin-delay").disabled = left > 0;
@@ -137,13 +169,15 @@
   function fieldHtml(phase, question, field) {
     const path = `structured.${field.id}`;
     const value = latestDraft(phase, question.id, path);
-    if (field.type === "select") return `<label for="${esc(question.id)}-${esc(field.id)}">${esc(field.label)}</label><select data-q="${esc(question.id)}" data-path="${esc(path)}" id="${esc(question.id)}-${esc(field.id)}" required><option value="">선택</option>${field.options.map((o)=>`<option ${value===o?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
-    return `<label for="${esc(question.id)}-${esc(field.id)}">${esc(field.label)}</label><input data-q="${esc(question.id)}" data-path="${esc(path)}" id="${esc(question.id)}-${esc(field.id)}" type="text" value="${esc(value)}" ${field.optional?"":"required"}>`;
+    const id = `${question.id}__${field.id}`;
+    if (field.type === "select") return `<label for="${esc(id)}">${esc(field.label)}</label><select data-q="${esc(question.id)}" data-path="${esc(path)}" id="${esc(id)}" required><option value="">선택</option>${field.options.map((o)=>`<option ${value===o?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+    return `<label for="${esc(id)}">${esc(field.label)}</label><input data-q="${esc(question.id)}" data-path="${esc(path)}" id="${esc(id)}" type="text" value="${esc(value)}" ${field.optional?"":"required"}>`;
   }
 
   function questionHtml(phase, question, index) {
     const reasoning = latestDraft(phase, question.id, "reasoning");
-    return `<article class="question" data-question="${esc(question.id)}"><h3>${index+1}. ${esc(question.prompt)}</h3>${question.structured_fields.map((f)=>fieldHtml(phase,question,f)).join("")} ${question.reasoning_label ? `<label>${esc(question.reasoning_label)}</label><textarea data-q="${esc(question.id)}" data-path="reasoning">${esc(reasoning)}</textarea>` : ""}</article>`;
+    const reasoningId = `${question.id}__reasoning`;
+    return `<article class="question" data-question="${esc(question.id)}"><h3>${index+1}. ${esc(question.prompt)}</h3>${question.structured_fields.map((f)=>fieldHtml(phase,question,f)).join("")} ${question.reasoning_label ? `<label for="${esc(reasoningId)}">${esc(question.reasoning_label)}</label><textarea id="${esc(reasoningId)}" data-q="${esc(question.id)}" data-path="reasoning">${esc(reasoning)}</textarea>` : ""}</article>`;
   }
 
   function wireDrafts() {
@@ -156,7 +190,7 @@
   function collectAnswer(question) {
     const structured = {};
     for (const field of question.structured_fields) {
-      const el = $(`${question.id}-${field.id}`);
+      const el = $(`${question.id}__${field.id}`);
       if (!field.optional && !el.value.trim()) throw new Error(`${field.label} 답변이 비어 있어`);
       structured[field.id] = el.value;
     }
@@ -178,14 +212,26 @@
       const variant = core.variantForPhase(session, session.phase);
       const question = core.renderDelayedQuestion(caseData, variant);
       session = core.transition(session, "submit_delayed", { answer:collectAnswer(question) }, caseData, Date.now());
-      if (session.phase === "complete") localStorage.setItem(lastOrderKey(), JSON.stringify(session.order));
+      if (session.phase === "complete") { orderLedger = core.recordOrderOutcome(orderLedger, session, Date.now()); persistLedger(); }
       persist(); render();
     } catch (e) { alert(e.message); }
   }
 
   function renderIntro() {
-    $("screen").innerHTML = `<h2>2. 시작 확인</h2>${caseData.demo_only?`<p class="warning">데모 전용: 이미 익숙한 PR #501 소재라 측정 결과로 사용하면 안 돼.</p>`:""}<p>${esc(caseData.description || "")}</p><p>초기 두 블록은 총 ${caseData.initial_limit_seconds/60}분 안에 끝나며, 둘 다 제출하기 전에는 정답·피드백을 볼 수 없어.</p><label><input id="unfamiliar" type="checkbox"> 이 재료는 처음 보는 독립적인 기능이다</label><div class="actions"><button id="start">시작</button></div>`;
-    $("start").onclick = () => { try { session = core.transition(session,"start",{unfamiliar_material:$("unfamiliar").checked},caseData,Date.now()); persist(); render(); } catch(e){ alert(e.message); } };
+    $("screen").innerHTML = `<h2>2. 시작 확인</h2>${caseData.demo_only?`<p class="warning">데모 전용: 이미 익숙한 PR #501 소재라 측정 결과로 사용하면 안 돼.</p>`:""}<p>${esc(caseData.description || "")}</p><p>초기 두 블록은 각각 ${caseData.block_limit_seconds/60}분 제한이며, 둘 다 제출하기 전에는 정답·피드백을 볼 수 없어.</p><label><input id="unfamiliar" type="checkbox"> 이 재료는 처음 보는 독립적인 기능이다</label><div class="actions"><button id="start">시작</button></div>`;
+    $("start").onclick = () => {
+      try {
+        if (!storageAvailable && !caseData.demo_only) throw new Error("전역 순서 원장을 저장할 수 없어 정식 측정을 시작할 수 없어. 저장 가능한 브라우저나 localhost를 사용해.");
+        const now = Date.now();
+        const allocated = core.allocateOrder(session, orderLedger, now);
+        const started = core.transition(allocated.session, "start", { unfamiliar_material:$("unfamiliar").checked }, caseData, now);
+        if (!caseData.demo_only && !commitStartStorage(allocated.ledger, started)) throw new Error("순서 원장과 실행 상태를 함께 저장하지 못해 정식 측정을 시작하지 않았어.");
+        session = started;
+        orderLedger = allocated.ledger;
+        if (caseData.demo_only) { persistLedger(); persist(); }
+        render();
+      } catch (e) { alert(e.message); }
+    };
   }
 
   function renderBlock() {
@@ -193,7 +239,7 @@
     const variant = core.variantForPhase(session, phase);
     const presentation = core.presentationForPhase(session, phase);
     const questions = core.renderInitialQuestions(caseData, variant);
-    $("screen").innerHTML = `<h2>${esc(phaseLabel[phase])}</h2><p class="muted">조건: ${presentation === "table" ? "표 외부화" : "문단"} · 변형 ${variant}. 내용 피드백은 잠겨 있어.</p>${renderRules(presentation,variant)}<form id="answers">${questions.map((q,i)=>questionHtml(phase,q,i)).join("")}<div class="actions"><button>네 답변 모두 잠그고 다음으로</button></div></form>`;
+    $("screen").innerHTML = `<h2>${esc(phaseLabel[phase])}</h2><p class="muted">조건: ${presentation === "table" ? "표 외부화" : "문단"} · 변형 ${variant}. 이 블록은 독립적으로 ${caseData.block_limit_seconds/60}분을 받으며 내용 피드백은 잠겨 있어.</p>${renderRules(presentation,variant)}<form id="answers">${questions.map((q,i)=>questionHtml(phase,q,i)).join("")}<div class="actions"><button>네 답변 모두 잠그고 다음으로</button></div></form>`;
     wireDrafts(); $("answers").onsubmit = (e) => { e.preventDefault(); submitInitial(); };
   }
 
@@ -209,18 +255,22 @@
     const variant = core.variantForPhase(session, phase);
     const presentation = core.presentationForPhase(session, phase);
     const q = core.renderDelayedQuestion(caseData, variant);
-    $("screen").innerHTML = `<h2>${esc(phaseLabel[phase])}</h2>${renderRules(presentation,variant)}<form id="answers">${questionHtml(phase,q,0)}<div class="actions"><button>답변 잠그기</button></div></form>`;
+    $("screen").innerHTML = `<h2>${esc(phaseLabel[phase])}</h2><p class="warning">이 지연 구간은 기억 간격과 직전 회상 효과가 섞인 서술 관찰이야. 표의 인과효과로 비교하지 않아.</p>${renderRules(presentation,variant)}<form id="answers">${questionHtml(phase,q,0)}<div class="actions"><button>답변 잠그기</button></div></form>`;
     wireDrafts(); $("answers").onsubmit = (e) => { e.preventDefault(); submitDelayed(); };
   }
 
   function renderTerminal() {
-    const out = core.exportRun(session,caseData);
+    const out = core.exportRun(session,caseData,answerKey,orderLedger);
     let extra = "";
     if (session.phase === "complete") {
-      const t = out.review.totals;
-      extra = `<p>구조 입력 exact: ${t.exact_correct}/${t.exact_total}, 전후 반전: ${t.before_after_reversals}회.</p><p class="muted">자유서술·모순 탐지의 의미는 자동 채점하지 않아. JSON을 사람이 검토해야 해.</p>`;
+      if (out.review) {
+        extra = `<h3>조건별 구조 입력</h3>${Object.entries(out.review.condition_summaries).map(([phase,summary])=>`<p><strong>${esc(phaseLabel[phase])}</strong>: ${summary.exact_by_question.map((item)=>`${esc(item.question_id)} ${item.exact_correct}/${item.exact_total}${item.before_after_reversal===true?" (전후 반전)":""}`).join(" · ")}</p>`).join("")}<p class="muted">전체 합계는 만들지 않아. 자유서술·모순 탐지 의미는 사람이 검토하고, 지연 결과는 서술 관찰로만 본다.</p>`;
+      } else {
+        extra = `<p>참가자 케이스에는 정답이 없어. 완료 후 reviewer-only 정답 키를 골라야 조건별 구조 입력을 계산해.</p><label for="answer-key-file">정답 키 JSON</label><input id="answer-key-file" type="file" accept="application/json,.json">`;
+      }
     }
     $("screen").innerHTML = `<h2>${esc(phaseLabel[session.phase])}</h2>${extra}<p>실행 JSON을 저장해 원답·시간·전이·미시행 상태를 보존해.</p>`;
+    if ($("answer-key-file")) $("answer-key-file").onchange = async (event) => { try { const parsed=JSON.parse(await event.target.files[0].text()); const validation=core.validateAnswerKey(caseData,parsed); if(!validation.ok) throw new Error(validation.errors.join("\n")); answerKey=parsed; render(); } catch(error){ alert(error.message); } };
   }
 
   function render() {
@@ -232,37 +282,39 @@
     else if (session.phase === "delay_wait") renderDelayWait();
     else if (["delayed_no_support","delayed_with_support"].includes(session.phase)) renderDelayed();
     else renderTerminal();
+    $("screen").focus();
   }
 
   function downloadRun() {
-    const blob = new Blob([JSON.stringify(core.exportRun(session,caseData),null,2)],{type:"application/json"});
-    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${caseData.id}-${session.created_at.replace(/[:.]/g,"-")}.json`; a.click(); URL.revokeObjectURL(a.href);
+    const blob = new Blob([JSON.stringify(core.exportRun(session,caseData,answerKey,orderLedger),null,2)],{type:"application/json"});
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${caseData.id}-${session.created_at.replace(/[:.]/g,"-")}.json`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   }
 
   $("case-file").addEventListener("change", async (e) => {
     try {
+      if (session && !terminal() && session.phase !== "intro") throw new Error("활성 실행은 다른 케이스로 덮어쓸 수 없어. 먼저 중단하고 JSON을 저장해.");
       const parsed = JSON.parse(await e.target.files[0].text());
       const check = core.validateCase(parsed); if (!check.ok) throw new Error(check.errors.join("\n"));
       caseData = parsed;
-      let previous = null; try { previous=JSON.parse(localStorage.getItem(`mogi-head-test/last-order/${caseData.id}`)); } catch {}
-      session = core.createSession(caseData,previous,Date.now());
-      localStorage.setItem(lastOrderKey(), JSON.stringify(session.order));
+      answerKey = null;
+      session = core.createSession(caseData,Date.now());
       persist(); $("load-error").textContent=""; render();
     } catch (err) { $("load-error").textContent=err.message; }
   });
   $("export").onclick = downloadRun;
   $("abort").onclick = () => $("abort-dialog").showModal();
   $("defect").onclick = () => $("defect-dialog").showModal();
-  $("reset").onclick = () => { if (confirm("현재 실행과 로컬 저장 답변을 지울까? JSON을 먼저 저장했는지 확인해.")) { localStorage.removeItem(storageKey); caseData=null; session=null; location.reload(); } };
-  $("abort-dialog").addEventListener("close", () => { if ($("abort-dialog").returnValue === "confirm") { session=core.transition(session,"fatigue_abort",{reason:$("abort-reason").value},caseData,Date.now()); persist(); render(); } });
+  $("reset").onclick = () => { if (confirm("현재 실행과 로컬 저장 답변을 지울까? 활성 실행이면 제외 배정으로 기록돼. JSON을 먼저 저장했는지 확인해.")) { if(session && Array.isArray(session.order) && !terminal()){ orderLedger=core.recordOrderOutcome(orderLedger,{...session,phase:"reset"},Date.now());persistLedger(); } try{localStorage.removeItem(storageKey);}catch{} caseData=null;session=null;answerKey=null;location.reload(); } };
+  $("abort-dialog").addEventListener("close", () => { if ($("abort-dialog").returnValue === "confirm") { session=core.transition(session,"fatigue_abort",{reason:$("abort-reason").value},caseData,Date.now()); orderLedger=core.recordOrderOutcome(orderLedger,session,Date.now());persistLedger(); persist(); render(); } });
   core.INPUT_DEFECT_REASONS.forEach((r)=>$("defect-reason").insertAdjacentHTML("beforeend",`<option>${esc(r)}</option>`));
-  $("defect-dialog").addEventListener("close", () => { if ($("defect-dialog").returnValue === "confirm") { session=core.transition(session,"invalidate_input",{reason:$("defect-reason").value,question_id:$("defect-question").value,detail:$("defect-detail").value},caseData,Date.now()); persist(); render(); } });
+  $("defect-dialog").addEventListener("close", () => { if ($("defect-dialog").returnValue === "confirm") { session=core.transition(session,"invalidate_input",{reason:$("defect-reason").value,question_id:$("defect-question").value,detail:$("defect-detail").value},caseData,Date.now()); orderLedger=core.recordOrderOutcome(orderLedger,session,Date.now());persistLedger(); persist(); render(); } });
 
-  try { const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved && saved.caseData && saved.session){ const check=core.validateCase(saved.caseData); if(check.ok){caseData=saved.caseData;session=saved.session;render();} } } catch {}
+  try { const storedLedger=JSON.parse(readStorage(ledgerKey)); if(core.validateOrderLedger(storedLedger)) orderLedger=storedLedger; else if(storedLedger) throw new Error("전역 순서 원장이 손상됨"); } catch(error) { storageAvailable=false; $("load-error").textContent=error.message; }
+  try { const raw=readStorage(storageKey); const saved=raw?JSON.parse(raw):null; if(saved && saved.caseData && saved.session){ const caseCheck=core.validateCase(saved.caseData); const sessionCheck=caseCheck.ok?core.validateSession(saved.session,saved.caseData):{ok:false,errors:caseCheck.errors}; if(!sessionCheck.ok) throw new Error(`저장 실행 복구 거부: ${sessionCheck.errors.join("; ")}`); if(Array.isArray(saved.session.order)){ const allocation=orderLedger.events.find((event)=>event.type==="allocate"&&event.run_id===saved.session.run_id); if(!allocation||allocation.order.join(",")!==saved.session.order.join(",")) throw new Error("저장 실행 복구 거부: 전역 순서 배정 원장과 불일치"); } caseData=saved.caseData;session=saved.session;render(); } } catch(error) { $("load-error").textContent=error.message; }
   setInterval(() => {
     if (!session) return;
     if (["block_1","block_2"].includes(session.phase)) {
-      const next=core.enforceTimeout(session,Date.now()); if(next.phase!==session.phase){session=next;persist();render();return;}
+      const next=core.enforceTimeout(session,Date.now()); if(next.phase!==session.phase){session=next;orderLedger=core.recordOrderOutcome(orderLedger,session,Date.now());persistLedger();persist();render();return;}
     }
     updateStatus();
   },1000);
