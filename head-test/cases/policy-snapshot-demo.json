@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "protocol_version": "head-test-1.0",
+  "id": "policy-snapshot-pr501-demo",
+  "title": "PR #501 정책 스냅샷 데모",
+  "demo_only": true,
+  "description": "이미 과외에서 다룬 PR #501 소재다. 러너 조작 확인용이며 측정 결과로 사용하지 않는다.",
+  "initial_limit_seconds": 540,
+  "delay_seconds": 300,
+  "variants": {
+    "A": {
+      "table": "notes",
+      "role": "authenticated",
+      "grantee": "PUBLIC",
+      "policy": "notes_read_own",
+      "snapshot_file": "supabase/POLICY-SNAPSHOT.md",
+      "migration": "20260812_notes_policy.sql",
+      "row_owner": "민수"
+    },
+    "B": {
+      "table": "palettes",
+      "role": "anon",
+      "grantee": "guest_reader",
+      "policy": "palettes_read_visible",
+      "snapshot_file": "supabase/ACCESS-SNAPSHOT.md",
+      "migration": "20260813_palettes_access.sql",
+      "row_owner": "다래"
+    }
+  },
+  "rules": [
+    {
+      "id": "generated_copy",
+      "paragraph": "{{migration}}과 seed를 빈 로컬 DB에 모두 적용한 뒤 생성기 스크립트가 관측한 접근 구조를 {{snapshot_file}}에 기록한다. 이 문서는 DB의 원본이 아니라 생성된 사본이다.",
+      "table": {
+        "정보 출처": "재구성한 로컬 DB",
+        "값의 주인": "{{table}} 접근 구조",
+        "관측·판단": "생성기가 {{snapshot_file}} 사본을 만듦",
+        "이벤트": "{{migration}}과 seed 적용",
+        "변경 전": "커밋된 사본",
+        "변경 후": "재생성한 사본"
+      }
+    },
+    {
+      "id": "ci_comparison",
+      "paragraph": "CI는 PR에 커밋된 {{snapshot_file}}과 PR의 DB를 재구성해 즉석에서 만든 결과를 비교한다. 일치는 생성기가 관측하는 범위의 최신성만 증명하며 보안 구조 전체의 안전을 증명하지 않는다.",
+      "table": {
+        "정보 출처": "CI 비교",
+        "값의 주인": "{{snapshot_file}}",
+        "관측·판단": "생성기 관측 범위의 일치 여부",
+        "이벤트": "PR 검사",
+        "변경 전": "커밋본",
+        "변경 후": "CI 재생성본"
+      }
+    },
+    {
+      "id": "grant_gate",
+      "paragraph": "권한 정보는 {{grantee}}가 {{table}}에서 SELECT 명령을 시도할 자격이 있는지 보여준다. 이 권한이 없으면 보통 권한 오류가 나지만, 권한이 있다는 사실만으로 특정 행이 보인다고 단정할 수 없다.",
+      "table": {
+        "정보 출처": "권한 정보",
+        "값의 주인": "{{grantee}}의 {{table}} 권한",
+        "관측·판단": "SELECT 명령 자격",
+        "이벤트": "SELECT 권한 회수",
+        "변경 전": "있음",
+        "변경 후": "없음"
+      }
+    },
+    {
+      "id": "rls_switch",
+      "paragraph": "pg_class의 relrowsecurity는 {{table}} 테이블의 RLS 검사 장치가 켜졌는지 보여준다. true는 행 조회를 허용한다는 뜻이 아니라 개별 RLS 정책으로 행을 검사한다는 뜻이다.",
+      "table": {
+        "정보 출처": "pg_class",
+        "값의 주인": "{{table}} 테이블",
+        "관측·판단": "relrowsecurity로 RLS 작동 상태 확인",
+        "이벤트": "RLS 활성화",
+        "변경 전": "false",
+        "변경 후": "true"
+      }
+    },
+    {
+      "id": "individual_policy",
+      "paragraph": "pg_policies는 {{policy}}처럼 {{table}}에 붙은 개별 RLS 정책의 대상 역할·명령·조건·PERMISSIVE 또는 RESTRICTIVE 종류를 보여준다. RLS가 켜져 있고 {{role}}에게 적용되는 PERMISSIVE SELECT 정책이 하나도 없다면 기본 거부로 행이 보이지 않는다.",
+      "table": {
+        "정보 출처": "pg_policies",
+        "값의 주인": "{{policy}} 정책",
+        "관측·판단": "{{role}}의 SELECT 행 허용 조건",
+        "이벤트": "적용 가능한 PERMISSIVE 정책 없음",
+        "변경 전": "행 허용 조건 존재",
+        "변경 후": "기본 거부로 0 rows"
+      }
+    }
+  ],
+  "initial_questions": [
+    {
+      "id": "fact_rls_source",
+      "type": "fact_recall",
+      "prompt": "{{table}} 테이블의 RLS 장치가 켜졌는지를 보여주는 정보 출처는 어디야?",
+      "reasoning_label": "그렇게 답한 이유(자유서술, 수동 검토)",
+      "structured_fields": [
+        {
+          "id": "source",
+          "label": "정보 출처",
+          "type": "select",
+          "options": ["pg_class", "pg_policies", "권한 정보"],
+          "expected": "pg_class"
+        }
+      ]
+    },
+    {
+      "id": "track_grant_revoke",
+      "type": "state_tracking",
+      "prompt": "{{grantee}}가 갖던 {{table}} SELECT 권한을 회수했다. 대상·이벤트·변경 전후를 적어줘.",
+      "reasoning_label": "추적 과정(자유서술, 수동 검토)",
+      "structured_fields": [
+        { "id": "subject", "label": "대상", "type": "text", "expected": "{{grantee}}의 {{table}} SELECT 권한" },
+        { "id": "event", "label": "이벤트", "type": "text", "expected": "SELECT 권한 회수" },
+        { "id": "before", "label": "변경 전", "type": "select", "options": ["있음", "없음"], "expected": "있음" },
+        { "id": "after", "label": "변경 후", "type": "select", "options": ["있음", "없음"], "expected": "없음" }
+      ]
+    },
+    {
+      "id": "infer_zero_rows",
+      "type": "novel_inference",
+      "prompt": "{{role}}에게 {{table}} SELECT 권한은 있고 RLS도 켜져 있지만, 적용되는 PERMISSIVE SELECT 정책이 하나도 없다. 일반 사용자가 직접 조회하면 행 결과는 어떻게 될까?",
+      "reasoning_label": "판단 근거(자유서술, 수동 검토)",
+      "structured_fields": [
+        { "id": "result", "label": "행 결과", "type": "select", "options": ["0 rows", "권한 오류", "모든 행 표시"], "expected": "0 rows" }
+      ]
+    },
+    {
+      "id": "detect_overclaim",
+      "type": "contradiction_detection",
+      "prompt": "PR 코멘트가 '{{role}} 대상 SELECT 정책이 추가됐으므로 이제 {{table}} 조회가 가능하다'고 단정했다. 이 문장의 증명 범위를 판단해줘.",
+      "reasoning_label": "빠진 전제나 충돌(자유서술, 수동 검토)",
+      "structured_fields": [
+        {
+          "id": "scope",
+          "label": "판단",
+          "type": "select",
+          "options": ["조회 가능이 증명됨", "조회 가능은 아직 증명되지 않음"],
+          "expected": "조회 가능은 아직 증명되지 않음"
+        }
+      ]
+    }
+  ],
+  "delayed_question": {
+    "id": "delayed_grant_revoke",
+    "prompt": "{{grantee}}가 갖던 {{table}} SELECT 권한을 회수했다. 대상과 변경 전후를 다시 적어줘.",
+    "reasoning_label": "기억하거나 적용한 과정(자유서술, 수동 검토)",
+    "structured_fields": [
+      { "id": "subject", "label": "대상", "type": "text", "expected": "{{grantee}}의 {{table}} SELECT 권한" },
+      { "id": "before", "label": "변경 전", "type": "select", "options": ["있음", "없음"], "expected": "있음" },
+      { "id": "after", "label": "변경 후", "type": "select", "options": ["있음", "없음"], "expected": "없음" }
+    ]
+  }
+}
