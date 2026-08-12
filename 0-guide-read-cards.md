@@ -1,0 +1,21 @@
+
+## AskUserQuestion Decision Log (모기 상비 지시 2026-08-12)
+
+마스터가 AskUserQuestion으로 모기에게 사소하지 않은 결정을 받으면 — 특히 **도메인 결정·구현
+방식·DB 관련** — 그 결정이 실린 리드 카드에 아래 절을 기록한다. 질문-답 대화로 정해진 결정도
+카드에 남아야 과외냥이가 결정 경위까지 가르칠 수 있다.
+
+```markdown
+### AskUserQuestion Decision Log
+
+- 질문: 어떤 식별자를 영속적인 소유권 기준으로 사용할까요?
+- 선택지:
+  1. author_handle
+  2. owner_uid
+  3. owner_bound_handle
+  4. created_by
+- 모기 선택: owner_uid
+- 당시 맥락: 핸들 변경 후에도 기존 발색의 소유자를 유지하는 방식 결정
+```
+
+여러 질문이면 항목을 반복한다. 너무 사소한 확인성 질문(예: 진행 여부 재확인)은 제외.
