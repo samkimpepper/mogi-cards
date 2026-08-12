@@ -53,6 +53,10 @@ audit_log:
     note: "mogi-cards 문서의 숫자·종류 filename prefix를 없애고 폴더가 문서 종류를 표현하도록 명명 규칙 변경."
   - action: updated
     at: 2026-08-12
+    by: Claude
+    note: "사소하지 않은 AskUserQuestion의 질문·선택지·모기 선택·중립적인 당시 맥락을 카드에 사실 기록으로 남기는 규칙 추가."
+  - action: updated
+    at: 2026-08-12
     by: Codex
     note: "카드에 기록된 AskUserQuestion 선택을 정답으로 앵커링하지 않고 선택지 없는 백지 주관식으로 재검증하는 규칙 추가."
 ---
@@ -564,6 +568,25 @@ guest 는 authenticated role 이므로, guest 제한은 함수 내부 is_anonymo
 UI 가 안 보여주는 것과 서버가 막는 것은 다른 문제다.
 anon = 세션 없음, guest = authenticated + is_anonymous=true.
 ```
+
+## AskUserQuestion 결정 로그
+
+마스터가 AskUserQuestion으로 모기에게 사소하지 않은 결정을 받으면, 특히 **도메인 결정·구현 방식·DB 관련 결정**은 그 결정이 실린 리드 카드에 아래 형식으로 기록한다. 질문과 답을 주고받아 정한 결정도 포함한다. 진행 여부 재확인 같은 사소한 확인성 질문은 제외한다.
+
+```md
+### AskUserQuestion Decision Log
+
+- 질문: 어떤 식별자를 영속적인 소유권 기준으로 사용할까요?
+- 선택지:
+  1. author_handle
+  2. owner_uid
+  3. owner_bound_handle
+  4. created_by
+- 모기 선택: owner_uid
+- 당시 맥락: 영속적인 소유권 기준 식별자를 정하는 질문
+```
+
+여러 질문이면 항목을 반복한다. 기록은 **질문·선택지·모기 선택·당시 맥락 한 줄이라는 사실만** 담는다. 당시 맥락은 무엇을 정하는 질문이었는지 중립적으로 쓰고, 해설·채점·결정에 대한 논평이나 결과 해석은 붙이지 않는다.
 
 ## 이해 체크(퀴즈) 운영
 
