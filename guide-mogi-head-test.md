@@ -16,6 +16,8 @@
 
 새 정식 세션은 프롬프트만으로 아래 순서를 진행하지 않고 [`head-test/runner.html`](./head-test/runner.html)을 기본 실행 표면으로 쓴다. 사용법과 케이스 작성법은 [`head-test/README.md`](./head-test/README.md)가 정본이다.
 
+모기가 실제 참가자로서 따라 할 조작·중단·저장 순서는 [`head-test/2026-08-12-mogi-participant-guide.md`](./head-test/2026-08-12-mogi-participant-guide.md)에 분리했다.
+
 러너 `head-test-1.0`은 아래를 코드로 잠근다.
 
 - 정보 출처·값의 주인·이벤트·전후 값을 가진 canonical typed fact 5개에서 문단 조건과 표 조건을 함께 렌더한다.
