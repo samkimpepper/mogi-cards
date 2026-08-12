@@ -4,23 +4,25 @@
 
 ## 새 세션 최소 로딩
 
-세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [0-guide-tutor-preamble.md](./0-guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)에서 **`reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `archive/`(7월까지의 자료)는 요청 시에만.
+세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)에서 **`reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `archive/`(7월까지의 자료)는 요청 시에만.
 
-**다른 `0-*` 가이드와 과거 카드 묶음을 선제적으로 전부 읽지 않는다.** 아래 작업이 실제로 생겼을 때 해당 문서만 추가로 연다.
+**다른 `guide-*` 문서와 과거 카드 묶음을 선제적으로 전부 읽지 않는다.** 아래 작업이 실제로 생겼을 때 해당 문서만 추가로 연다.
 
 | 파일 | 읽는 때 |
 |---|---|
-| `0-guide-tutor-preamble.md` | 기본 과외 세션 부트 |
-| `0-master-delivery-memos.md` | 과외 발견물을 append하거나 마스터가 수신함을 처리할 때 |
-| `0-guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
-| `0-guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
-| `0-guide-operator-notification-links.md` | 모기가 운영자 알림 링크를 직접 발송할 때 |
-| `0-guide-mogi-head-test.md` | 모기가 인지 테스트를 명시적으로 하자고 할 때 |
-| `pr-cards/1-card-<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
-| `plan-cards/1-card-<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
-| `code-diff-notes/2-note-<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
+| `guide-tutor-preamble.md` | 기본 과외 세션 부트 |
+| `master-delivery-memos.md` | 과외 발견물을 append하거나 마스터가 수신함을 처리할 때 |
+| `guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
+| `guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
+| `guide-operator-notification-links.md` | 모기가 운영자 알림 링크를 직접 발송할 때 |
+| `guide-mogi-head-test.md` | 모기가 인지 테스트를 명시적으로 하자고 할 때 |
+| `pr-cards/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
+| `plan-cards/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
+| `code-diff-notes/<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
 | `archive/` | 7월까지의 지난 자료 — 모기가 요청할 때만 |
-| `1-card-*-해설.md` | 과외 문답을 증류하거나 이어서 읽을 때 |
+| `*-해설.md` | 과외 문답을 증류하거나 이어서 읽을 때 |
+
+파일명에 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 활성 문서의 종류는 `pr-cards/`·`plan-cards/`·`code-diff-notes/` 폴더가 표현하고, 파일명은 날짜와 주제만 담는다.
 
 제품 저장소는 읽기 전용이고, 쓰기는 이 저장소의 허용된 메모·해설과 카드 상태 갱신에만 한다.
 
@@ -35,7 +37,7 @@
 
 1. swatch 워크스페이스의 워커가 PR을 만들면, **마스터(냐옹이)가 카드를 여기 배달**한다.
 2. 모기는 카드를 읽고 — 더 파고 싶으면 **과외 세션**을 열어 카드·PR을 재료로 질문한다.
-3. 과외 중 나온 좋은 문답은 해설 파일로, 발견물(버그 의심 등)은 `0-master-delivery-memos.md` 단일 수신함으로 간다. 과외 세션은 제품 코드를 절대 고치지 않는다.
+3. 과외 중 나온 좋은 문답은 해설 파일로, 발견물(버그 의심 등)은 `master-delivery-memos.md` 단일 수신함으로 간다. 과외 세션은 제품 코드를 절대 고치지 않는다.
 4. **PR 머지는 항상 모기가 직접** 한다.
 
 ## 경계 (어기면 안 되는 것)

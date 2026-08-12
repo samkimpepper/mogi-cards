@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 장부 신선도 가드 (PR #482): "장부 갱신을 어떻게 강제하지?" 의 답
 
 > 종류: TOOLING Read Card (짧음). 원문 SSOT = PR #482 본문 + swatch-ops `contracts/2026-08-07-pr482-cross-review.md` + `.agent/workflows/harness-evolution.md` §M-011.
-> 작성: 2026-08-07 집냥이. 직전 카드 = `1-card-2026-08-07-idea-ledger.md`.
+> 작성: 2026-08-07 집냥이. 직전 카드 = `2026-08-07-idea-ledger.md`.
 > 이해 체크 F1 = 이 브랜치 Review Gate Quiz (1문항).
 
 ## 1. 뭐가 생겼나 `[READ]`

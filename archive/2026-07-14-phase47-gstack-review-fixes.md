@@ -1,7 +1,7 @@
 # 모기 리드 카드 — Phase 47 gstack 리뷰 + 수정 (커밋 게이트)
 
 > 종류: REVIEW + FIX Read Card. 원문 SSOT = PR #364 작업 트리 diff + `deferred-items.md` (3·4절 신규) + `TRAVELOG-15`.
-> 작성: 2026-07-14 Claude 세션. 직전 카드 = `1-card-2026-07-14-phase47-4703-migration-ship.md` (그 카드의 D1~D3 은 답 완료 — 이 카드는 그 뒤에 돌린 **리뷰와 수정** 이야기).
+> 작성: 2026-07-14 Claude 세션. 직전 카드 = `2026-07-14-phase47-4703-migration-ship.md` (그 카드의 D1~D3 은 답 완료 — 이 카드는 그 뒤에 돌린 **리뷰와 수정** 이야기).
 > 이 카드의 이해 체크 = **커밋 게이트 퀴즈** (Review Gate Quiz 대체). 이번엔 공부용으로 실제 코드도 같이 넣었다.
 
 ## 1. 무슨 일이 있었나 `[READ]`

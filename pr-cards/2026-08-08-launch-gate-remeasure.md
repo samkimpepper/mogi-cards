@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — launch gate 재실측 (PR #485): "출시까지 얼마나 남았나" 의 첫 정직한 지도
 
 > 종류: RECON Read Card. 원문 SSOT = `.planning/threads/launch-gate-remeasure-20260807.md` (PR #485) — §9 에 네 결정 12건 기록 포함.
-> 작성: 2026-08-08 집냥이. 직전 카드 = `1-card-2026-08-07-memory-router-measure.md` (여행기·문서정정 PR 은 카드 생략).
+> 작성: 2026-08-08 집냥이. 직전 카드 = `2026-08-07-memory-router-measure.md` (여행기·문서정정 PR 은 카드 생략).
 > 이해 체크 L1~L2 = 이 브랜치 Review Gate Quiz.
 
 ## 1. 헤드라인 숫자를 어떻게 읽어야 하나 `[READ]`

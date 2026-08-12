@@ -47,6 +47,10 @@ audit_log:
     at: 2026-08-12
     by: Codex
     note: "읽기 종료 reviewed와 실제 PR 머지 판단 merge_ready를 분리하고, 모기의 자연어 종료 신호를 과외 세션이 자동 기록하도록 규칙 추가."
+  - action: updated
+    at: 2026-08-12
+    by: Codex
+    note: "mogi-cards 문서의 숫자·종류 filename prefix를 없애고 폴더가 문서 종류를 표현하도록 명명 규칙 변경."
 ---
 
 # 모기 읽기 카드
@@ -140,10 +144,12 @@ merge_ready: false
 
 카드는 **원문(SPEC/PLAN/SUMMARY)이 있는 `.planning` 디렉토리**에 같이 둔다 (모기 결정 2026-07-04). GSD 산출물 옆에 있어야 카드에서 나온 지적이 todo/thread 후속으로 바로 이어진다. GSD 명령은 자기가 아는 파일명만 읽으므로 카드 파일이 실행을 방해하지 않는다.
 
+mogi-cards에 배달한 개인 공책 사본은 읽는 목적에 따라 `pr-cards/`·`plan-cards/`·`code-diff-notes/`에 둔다. 파일명은 `<날짜>-<주제>.md`로 시작하고 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 문서 종류는 폴더가 이미 표현한다.
+
 1. **원문 상단의 접힌 블록** — drift가 적다. 기본값.
 2. **원문 옆 별도 파일** — 카드가 길어질 때만.
 
-머지 게이트(Review Packet)는 파일이 아니라 **PR 코멘트**로 단다 — [mogi-review-packet.md](./mogi-review-packet.md).
+머지 게이트(Review Packet)는 파일이 아니라 **PR 코멘트**로 단다 — [mogi-review-packet.md](../swatch-v2/docs/wiki/guides/mogi-review-packet.md).
 
 예시:
 
@@ -482,7 +488,7 @@ SUMMARY Read Card   → 완료 의미 확인
 Review Packet       → 카드 여러 장 PR 의 머지 게이트
 ```
 
-경계 (모기 결정 2026-07-04): **PR 이 리드 카드 1장 범위면 그 카드가 Review Packet 을 대체한다.** 카드 여러 장에 걸친 PR 만 패킷으로 묶는다. 패킷은 앞 카드들을 다시 복사하지 않고 카드 링크·불변식 되쓰기·판정만 담는다 — [mogi-review-packet.md](./mogi-review-packet.md).
+경계 (모기 결정 2026-07-04): **PR 이 리드 카드 1장 범위면 그 카드가 Review Packet 을 대체한다.** 카드 여러 장에 걸친 PR 만 패킷으로 묶는다. 패킷은 앞 카드들을 다시 복사하지 않고 카드 링크·불변식 되쓰기·판정만 담는다 — [mogi-review-packet.md](../swatch-v2/docs/wiki/guides/mogi-review-packet.md).
 
 ---
 
@@ -557,7 +563,7 @@ anon = 세션 없음, guest = authenticated + is_anonymous=true.
 
 ## 이해 체크(퀴즈) 운영
 
-이해 체크의 기본 방식은 **주관식 진단 + 잘못된 리뷰 댓글 반박 + 에이전트 채점**이다 — [mogi-subjective-understanding-checks.md](./mogi-subjective-understanding-checks.md)를 따른다. 객관식은 행동 확인 워밍업 1~2문제로만 쓴다 (모델이 만든 객관식은 정답 보기가 요약문이 되어 키워드만 보고 풀리는 문제가 실험에서 반복 확인됨).
+이해 체크의 기본 방식은 **주관식 진단 + 잘못된 리뷰 댓글 반박 + 에이전트 채점**이다 — [guide-subjective-checks.md](./guide-subjective-checks.md)를 따른다. 객관식은 행동 확인 워밍업 1~2문제로만 쓴다 (모델이 만든 객관식은 정답 보기가 요약문이 되어 키워드만 보고 풀리는 문제가 실험에서 반복 확인됨).
 
 공통 운영 규칙:
 
@@ -776,7 +782,7 @@ SUMMARY에 대해 모기 읽기 카드를 만들어줘.
 
 - 2026-07-02 — LAUNCH-03 RPC 감사 카드로 첫 실전. 성과: 승인자 오해(게스트 role) 발견·교정, 숨은 변경(primary 버그) 표면화, 후속 액션 분리. 개선점 반영: 승인부/Appendix 분리, auth glossary 고정, 퀴즈 Appendix 화, 숨은 변경 [READ] 승격.
 - 2026-07-03 — LAUNCH-03 테이블 RLS 카드. 승인 중 질문 라운드에서 승인자 질문이 실제 후속 todo(slug backfill)를 만들어냄 — 카드가 승인 장치로 작동한 증거. 이해도 상승 곡선 확인 (20/40 → 55/70).
-- 2026-07-04 — 도리토 코드리뷰 라운드 카드에서 객관식 퀴즈를 6라운드 반복 실험. 생성 규칙을 아무리 보강해도 모델 객관식은 정답 보기가 요약문이 되는 경향을 못 없앰 → 이해 체크를 주관식 중심으로 전환 ([mogi-subjective-understanding-checks.md](./mogi-subjective-understanding-checks.md) 승격 근거).
+- 2026-07-04 — 도리토 코드리뷰 라운드 카드에서 객관식 퀴즈를 6라운드 반복 실험. 생성 규칙을 아무리 보강해도 모델 객관식은 정답 보기가 요약문이 되는 경향을 못 없앰 → 이해 체크를 주관식 중심으로 전환 ([guide-subjective-checks.md](./guide-subjective-checks.md) 승격 근거).
 
 ## 일회용 자료 운영 (모기 결정 2026-08-11, fdda95b 메모)
 

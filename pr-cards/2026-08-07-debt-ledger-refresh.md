@@ -1,7 +1,7 @@
 # 모기 리드 카드 — 부채 장부 8/7 갱신 (PR #479): 장부가 거짓말하기 전에 잡은 것들
 
 > 종류: DOCS Read Card (짧음). 원문 SSOT = PR #479 본문 + `.planning/threads/debt-audit-20260801.md` diff.
-> 작성: 2026-08-07 집냥이. 직전 카드 = `1-card-2026-08-07-auth-429-copy-split.md`.
+> 작성: 2026-08-07 집냥이. 직전 카드 = `2026-08-07-auth-429-copy-split.md`.
 > planning 문서만 바꾸는 PR 이라 퀴즈는 1문항만.
 
 ## 1. 왜 했나 `[READ]`

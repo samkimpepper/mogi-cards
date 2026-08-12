@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 라우터 측정 도구 (PR #480): "Memory 분리가 잘 되고 있나" 를 숫자로 만드는 법
 
 > 종류: TOOLING Read Card. 원문 SSOT = PR #480 본문 + swatch-ops `contracts/2026-08-07-pr480-cross-review.md` + `.agent/workflows/harness-evolution.md` §M-010.
-> 작성: 2026-08-07 집냥이. 직전 카드 = `1-card-2026-08-07-debt-ledger-refresh.md`.
+> 작성: 2026-08-07 집냥이. 직전 카드 = `2026-08-07-debt-ledger-refresh.md`.
 > 이해 체크 M1~M2 = 이 브랜치 Review Gate Quiz.
 
 ## 1. 이게 왜 필요했나 `[READ]`

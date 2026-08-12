@@ -1,6 +1,6 @@
 # 해설 — Phase 47 gstack 리뷰 카드 (커밋 게이트 퀴즈 채점 + 모기 질문 답)
 
-> 원본 카드 = `1-card-2026-07-14-phase47-gstack-review-fixes.md`. 작성: 2026-07-14 Claude 세션.
+> 원본 카드 = `2026-07-14-phase47-gstack-review-fixes.md`. 작성: 2026-07-14 Claude 세션.
 > 채점 결과: **D2·D3 정답, D1 반 정답** — D1 오해(조회 vs 저장) 정정 후 게이트 통과.
 
 ## 채점

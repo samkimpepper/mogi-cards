@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 알림 링크 src 계측 (PR #491): 가드레일이 "어느 방향으로 틀려도 되는지" 정하기
 
 > 종류: FEAT Read Card. 원문 SSOT = PR #491 본문 + swatch-ops `contracts/2026-08-09-pr491-notification-src-codex-review.md`.
-> 작성: 2026-08-09 집냥이 (Gen-4). 직전 카드 = `1-card-2026-08-08-funnel-instrumentation.md`. 이해 체크 S1~S2 = 이 브랜치 Review Gate Quiz.
+> 작성: 2026-08-09 집냥이 (Gen-4). 직전 카드 = `2026-08-08-funnel-instrumentation.md`. 이해 체크 S1~S2 = 이 브랜치 Review Gate Quiz.
 
 ## 1. 뭐가 생겼나 `[READ]`
 

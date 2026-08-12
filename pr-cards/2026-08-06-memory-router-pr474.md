@@ -1,6 +1,6 @@
 # 카드 — memory 팩 라우터 hook (PR #474, feat/memory-router-hook → dev)
 
-작성: 냐옹이, 2026-08-06. 원문 SSOT: PR #474. 짝: [1단계 분리 카드](./1-card-2026-08-06-memory-split-pr472.md)
+작성: 냐옹이, 2026-08-06. 원문 SSOT: PR #474. 짝: [1단계 분리 카드](./2026-08-06-memory-split-pr472.md)
 
 ## 1. 반드시 읽을 결정
 

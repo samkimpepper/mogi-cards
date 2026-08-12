@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 매직링크 429 카피 분기 (PR #478): "1분 뒤" 가 거짓말이 되는 케이스 분리
 
 > 종류: FIX Read Card. 원문 SSOT = PR #478 본문 + swatch-ops `contracts/2026-08-07-pr478-cross-review.md` + `.planning/todos/pending/custom-smtp-before-launch.md`.
-> 작성: 2026-08-07 집냥이. 직전 카드 = `1-card-2026-08-07-release-v0.8.0.md`. base = dev (릴리즈 #477 과 독립).
+> 작성: 2026-08-07 집냥이. 직전 카드 = `2026-08-07-release-v0.8.0.md`. base = dev (릴리즈 #477 과 독립).
 > 이해 체크 A1~A2 = 이 브랜치 Review Gate Quiz.
 
 ## 1. 무슨 문제였나 `[READ]`

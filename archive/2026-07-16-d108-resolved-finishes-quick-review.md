@@ -1,7 +1,7 @@
 # 모기 리드 카드 — D-108 resolved_finishes: 구현 + 리뷰 부대가 잡은 "테스트 전부 초록인데 실환경에서 죽는 코드"
 
 > 종류: PLAN→EXEC→REVIEW 통합 Read Card. 원문 SSOT = `docs/wiki/decisions/D-108.md` (2026-07-16 개정) + `.planning/quick/260716-c3a-*/` (PLAN·SUMMARY·REVIEW) + `TRAVELOG-16`.
-> 작성: 2026-07-16 Claude 세션. 직전 카드 = `1-card-2026-07-14-phase47-gstack-review-fixes.md`.
+> 작성: 2026-07-16 Claude 세션. 직전 카드 = `2026-07-14-phase47-gstack-review-fixes.md`.
 > 브랜치 `feat/d108-resolved-finishes` (push 완료, PR 은 아직). **이 카드의 이해 체크 D1~D3 = PR 승인 게이트 퀴즈 대체.** 모기가 "코드리뷰 어떻게 했는지 자세하게" 요청해서 2절이 평소보다 길다.
 
 ## 1. 무슨 일이 있었나 `[READ]`

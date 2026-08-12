@@ -1,7 +1,7 @@
 # 모기 리드 카드 — Phase 47 완주 (47-03 migration + 검증) · ship 게이트
 
 > 종류: EXECUTION + SHIP Read Card. 원문 SSOT = `47-03-SUMMARY.md` + `47-VERIFICATION.md` + `deferred-items.md` + `47-UAT.md`.
-> 작성: 2026-07-14 Claude 세션. 직전 카드 = `1-card-2026-07-13-phase47-4701-4702-exec.md` (47-01·47-02 내용은 거기, 여기선 반복 안 함).
+> 작성: 2026-07-14 Claude 세션. 직전 카드 = `2026-07-13-phase47-4701-4702-exec.md` (47-01·47-02 내용은 거기, 여기선 반복 안 함).
 > 이 카드의 이해 체크 = **PR 승인 게이트 퀴즈**. UAT 끝나고 답하면 됨.
 
 ## 1. 무슨 일이 있었나 `[READ]`

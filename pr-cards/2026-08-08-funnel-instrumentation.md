@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 등록 funnel 계측 (PR #489): "측정한다고 믿었지만 0건이던" 것 고치기
 
 > 종류: FEAT Read Card. 원문 SSOT = PR #489 본문 + swatch-ops `contracts/2026-08-08-pr489-cross-review.md`.
-> 작성: 2026-08-08 집냥이. 직전 카드 = `1-card-2026-08-08-launch-gate-remeasure.md`. 이해 체크 N1~N2 = 이 브랜치 Review Gate Quiz.
+> 작성: 2026-08-08 집냥이. 직전 카드 = `2026-08-08-launch-gate-remeasure.md`. 이해 체크 N1~N2 = 이 브랜치 Review Gate Quiz.
 
 ## 1. 뭐가 생겼나 `[READ]`
 

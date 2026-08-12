@@ -5,7 +5,7 @@ merge_ready: true
 # 모기 리드 카드 — 아이디어 장부 신설 (PR #481): "잃어버리면 아까운 것" 의 집
 
 > 종류: DOCS Read Card (짧음). 원문 SSOT = PR #481 본문 + `.planning/seeds/LEDGER.md`.
-> 작성: 2026-08-07 집냥이. 직전 카드 = `1-card-2026-08-07-memory-router-measure.md`.
+> 작성: 2026-08-07 집냥이. 직전 카드 = `2026-08-07-memory-router-measure.md`.
 > 네가 직접 시킨 작업이라 배경 설명은 최소, 퀴즈 1문항.
 
 ## 1. 뭐가 생겼나 `[READ]`
