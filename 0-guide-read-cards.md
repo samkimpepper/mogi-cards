@@ -4,7 +4,7 @@ title: "모기 읽기 카드 — 긴 SPEC/PLAN을 사람이 승인 가능한 단
 type: guide
 created_at: 2026-06-25
 created_by: ChatGPT
-updated_at: 2026-08-07
+updated_at: 2026-08-12
 updated_by: Codex
 last_verified_at: 2026-07-04
 last_verified_by: Claude
@@ -43,6 +43,10 @@ audit_log:
     at: 2026-08-07
     by: Codex
     note: "독립 리드 카드 맨 위에 모기 개인 머지 준비 상태를 표시하는 boolean 체크박스 1개를 추가."
+  - action: updated
+    at: 2026-08-12
+    by: Codex
+    note: "읽기 종료 reviewed와 실제 PR 머지 판단 merge_ready를 분리하고, 모기의 자연어 종료 신호를 과외 세션이 자동 기록하도록 규칙 추가."
 ---
 
 # 모기 읽기 카드
@@ -71,20 +75,25 @@ AI가 만든 SPEC/PLAN은 실행 에이전트에게는 유용하지만 사람이
 
 > 긴 문서를 쉬운 긴 문서로 바꾸지 말고, 사람이 봐야 할 10~20줄짜리 카드로 줄인다.
 
-## 카드 맨 위 머지 준비 체크
+## 카드 맨 위 상태 체크
 
-PR에 딸린 독립 리드 카드는 맨 위 frontmatter에 아래 boolean 속성 하나만 둔다. Obsidian 속성 화면에서는 체크박스로 사용한다.
+모든 새 활성 문서는 맨 위 frontmatter에 `reviewed`를 둔다. 대상 PR이 있는 카드는 `merge_ready`도 함께 둔다. Obsidian 속성 화면에서는 체크박스로 사용한다.
 
 ```yaml
 ---
+reviewed: false
 merge_ready: false
 ---
 ```
 
-- `false`: 아직 읽는 중이거나 모기가 머지 준비 판단을 하지 않음.
-- `true`: 모기가 카드를 읽고 자기 기준에서 머지 준비됐다고 판단함.
-- 이 값은 GitHub의 충돌·브랜치 보호 기반 `mergeable` 판정과 다르다.
-- 에이전트가 퀴즈 완료나 기술 게이트 통과만 보고 자동으로 `true`로 바꾸지 않는다. 최종 체크는 모기가 한다.
+- `reviewed: false`: 아직 모기가 이 문서를 보고 넘어가도 된다고 판단하지 않음.
+- `reviewed: true`: 충분히 봤거나, 지금은 더 보지 않고 넘어가기로 모기가 결정함. PR 머지 승인 뜻은 아니다.
+- `merge_ready: false`: 대상 PR에 대해 모기가 아직 머지 준비 판단을 하지 않음.
+- `merge_ready: true`: 모기가 자기 기준에서 실제 머지 준비됐다고 명시적으로 판단함. GitHub의 충돌·브랜치 보호 기반 `mergeable` 판정과는 다르다.
+- 모기가 "이건 됐어", "여기까지 읽으면 돼", "다음으로 넘어가자"처럼 종료 의사를 말하면 과외 세션이 재확인 없이 `reviewed: true`로 바꾸고 커밋한다.
+- `merge_ready: true`는 "머지해도 돼", "머지 준비됐어"처럼 모기가 실제 머지 판단을 명시한 경우에만 기록한다.
+- 에이전트가 퀴즈 완료·기술 게이트 통과·이해도 추정만 보고 어느 값도 자동으로 `true`로 바꾸지 않는다. 최종 판단의 주인은 모기다.
+- 새 세션은 활성 폴더마다 `reviewed: false`인 최신 문서 1개만 제시한다. `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 취급한다.
 
 ## 용어
 
