@@ -42,3 +42,31 @@ merge_ready: false
 ## 6. 안 읽어도 되는 세부
 
 - 워크플로 러너 구성·SHA 핀·타임아웃, ON_ERROR_STOP 실측 근거, psql exit code 의미 — PR diff와 계약에 있음.
+
+---
+
+## Appendix A. 과외 이해 체크 기록 (2026-08-12)
+
+### 판정
+
+**통과.** 카드의 이해 체크 4개를 자기 말로 설명했다. 이 판정은 과외 이해 확인이며 `reviewed` 종료나 PR `merge_ready` 판정은 아니다.
+
+### 모기가 설명한 핵심
+
+- `20/20 PASS`는 프로덕션·앱 전체가 안전하다는 뜻이 아니라, 마이그레이션과 seed를 적용한 로컬 DB에서 SQL 검증 20개가 통과했다는 뜻이다.
+- CI가 초록이어도 실행 대상에서 제외된 동시성 `.sh` 테스트의 race condition은 남을 수 있다.
+- `seed.sql`은 마이그레이션 뒤에 실행되며 blanket `GRANT`로 회수한 권한을 되살릴 수 있다. 최종 권한은 마이그레이션만이 아니라 seed까지 적용된 DB 상태에서 판단해야 한다.
+- `to_jsonb(swatches.*)` 42501 회귀는 전체 행 SELECT 요구와 컬럼 단위 GRANT가 충돌한 사건이다. 현재 `create_swatch`·`update_swatch`는 authenticated 공개 컬럼 집합과 RPC 반환 JSON 키 집합을 비교하는 테스트로 잠겨 있다.
+- `comparison_assessments.sql`의 선재 실패는 제품 규칙이 틀린 것이 아니라 테스트가 새 커스텀 에러코드(P0403·P0405)와 `owner_uid` 소유권 모델을 못 따라간 것이었다. 에러 기대값과 레거시 픽스처 생성법만 고쳤고 검증 의도는 유지됐다.
+- 워크플로 `paths`는 CI 결과를 바꿀 수 있는 입력 목록이다. `seed.sql`이나 워크플로 자신이 빠지면 해당 파일만 바꾼 PR에서 잡이 아예 실행되지 않는다.
+- 수리 전 `events_rls_verify.sql`은 결과를 출력만 해서 자바의 `System.out.println()`에 가까웠다. 수리 후 `RAISE EXCEPTION` 단언은 `assertFalse`·`assertEquals` 역할을 한다.
+- CI는 오류 문구를 읽지 않고 종료 코드를 본다. `RAISE EXCEPTION`이 SQL 문장을 실패시켜도 기본 `psql`이 계속 실행해 `0`으로 끝날 수 있으므로, `ON_ERROR_STOP=1`로 PostgreSQL 오류 → psql 실패 → GitHub Actions 빨간불을 연결한다.
+
+### 헷갈렸다가 교정된 지점
+
+- 처음에는 `seed.sql`이 마이그레이션보다 먼저 실행된다고 생각했으나, 이 `db reset` 흐름에서는 마이그레이션 전체 뒤에 적용된다는 점을 확인했다.
+- 처음에는 RPC의 입력 인자와 반환값을 비교한다고 표현했으나, 실제 비교 대상은 authenticated의 SELECT 허용 컬럼과 RPC 반환 JSON 키다.
+- 처음에는 공개 컬럼을 RPC가 빠뜨리면 RPC 자체가 권한 오류를 낸다고 보았으나, 이 경우 RPC는 성공할 수 있고 계약 비교 테스트가 집합 불일치로 실패시킨다는 점을 구분했다.
+- 일반적인 미처리 exception처럼 `RAISE EXCEPTION`만으로 프로세스가 실패 종료할 것으로 예상했으나, `psql`의 기본 계속 실행 동작과 `ON_ERROR_STOP`의 역할을 구분했다.
+
+자세한 코드 해설: [PR #500 migration workflow code diff note](../code-diff-notes/2026-08-12-migration-verify-workflow-pr500.md)
