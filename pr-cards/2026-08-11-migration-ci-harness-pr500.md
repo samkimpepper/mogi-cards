@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # 카드 — 마이그레이션 CI 하네스 (PR #500, samkimpepper/rls-ci-harness → dev)
