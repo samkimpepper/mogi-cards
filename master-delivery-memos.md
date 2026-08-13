@@ -48,3 +48,8 @@
 
 - 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:14`, `../swatch-v2/app/src/data/database.types.ts:547`, `../swatch-v2/supabase/migrations/20260802010000_drop_legacy_comparison_notes.sql:21`, `../swatch-v2/supabase/migrations/20260802010000_drop_legacy_comparison_notes.sql:43`
 - 현행 `comparison_assessments.evidence_swatch_id`의 `ON DELETE RESTRICT`와 달리, `ON DELETE CASCADE`였던 `comparison_note_swatches`는 2026-08-02에 `comparison_notes`와 함께 삭제됐고 현재 생성 타입에도 존재하지 않아 두 규칙이 동시에 살아 있는 것처럼 읽히는 카드 문장은 사실과 어긋난다. 카드의 현행 실물에서는 옛 CASCADE 설명을 제거하거나 역사적 대비라고 명시하고, 현재는 assessment가 근거로 참조한 발색의 삭제가 차단된다는 동작만 남겨야 모기가 삭제 정책을 잘못 판단하지 않는다.
+
+## 원작자 발색 삭제 뒤 비교평가 텍스트는 보존하고 사진 근거만 제거
+
+- 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:34`, `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:36`, `../swatch-v2/app/src/data/database.types.ts:524`, `../swatch-v2/app/src/data/database.types.ts:547`
+- 모기 확정(2026-08-13): 원작자가 발색을 삭제해도 타인이 작성한 비교평가의 텍스트·판단 데이터는 보존하되, `evidence_swatch_id`와 사진 번호 연결은 제거하고 평가 화면에는 근거 사진이 삭제됐다는 사실을 표시한다. 사진까지 계속 노출하면 원작자의 삭제 의사가 무효가 되고 평가 전체를 지우면 타인 작성 데이터까지 대신 삭제하므로, 사진 근거와 텍스트 판단을 분리해야 두 데이터 주인의 권리를 함께 보존할 수 있다.
