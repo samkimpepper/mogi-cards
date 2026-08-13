@@ -53,3 +53,8 @@
 
 - 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:34`, `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:36`, `../swatch-v2/app/src/data/database.types.ts:524`, `../swatch-v2/app/src/data/database.types.ts:547`
 - 모기 확정(2026-08-13): 원작자가 발색을 삭제해도 타인이 작성한 비교평가의 텍스트·판단 데이터는 보존하되, `evidence_swatch_id`와 사진 번호 연결은 제거하고 평가 화면에는 근거 사진이 삭제됐다는 사실을 표시한다. 사진까지 계속 노출하면 원작자의 삭제 의사가 무효가 되고 평가 전체를 지우면 타인 작성 데이터까지 대신 삭제하므로, 사진 근거와 텍스트 판단을 분리해야 두 데이터 주인의 권리를 함께 보존할 수 있다.
+
+## 등록자와 원작자가 다른 현행 발색은 모두 어드민 등록 — 역할 회수 뒤 created_by 권한 잔존을 막아야 함
+
+- 근거: `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:10`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:134`, QA 읽기 전용 실측(2026-08-13): `owner_uid IS DISTINCT FROM created_by AND owner_uid IS NOT NULL` 15행 중 현재 어드민 등록 15행·일반 사용자 등록 0행
+- 새 정상 쓰기에서는 일반 사용자가 자기 검증 핸들의 발색만 등록할 수 있고 QA의 이전된 발색도 전부 어드민 등록이므로, §1에서 일반 비어드민 등록자가 원작자와 갈라지는 경우를 주된 현행 시나리오처럼 강조할 필요는 없다. 그래도 수정·삭제 판정을 `owner_uid`로 바꿔야 어드민 역할 행을 제거한 뒤 전직 어드민이 `created_by`를 근거로 관리권을 영구 보유하지 않으며, 현직 어드민의 권한은 별도 override에서만 나오게 할 수 있다.
