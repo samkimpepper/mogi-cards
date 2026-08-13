@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # 카드 — 원작자 직접권 + 어드민 역할 테이블 설계안 (sw-c2p + sw-qd5, 착수 전 설계 카드)
