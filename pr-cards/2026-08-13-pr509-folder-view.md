@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # 카드 — PR #509: 읽기 전용 코어 폴더 화면 + 조회 계측 (런치 게이트 a13, 워커 트랙 마지막)

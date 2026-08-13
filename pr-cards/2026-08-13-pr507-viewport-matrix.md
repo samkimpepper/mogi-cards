@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # 카드 — PR #507: 뷰포트 매트릭스 회귀 하네스 (런치 게이트 a10, 교차 리뷰 + fix1 완료)
