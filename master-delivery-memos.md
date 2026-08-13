@@ -82,3 +82,8 @@
 
 - 근거: PR #507 `.github/workflows/viewport-matrix.yml`의 `pull_request.branches: [dev, main]`·`push.branches: [dev, main]`에 `paths` 제한 없음, PR #507 체크 실측(2026-08-13): `Viewport breakpoint matrix (320/375/499/500)` 약 1분(03:51:06Z→03:52:06Z)
 - 현재 실행시간은 약 1분이고 다른 체크와 병렬이라 당장 3~4분의 직렬 병목은 아니지만, 문서만 바꾼 PR에도 workspace 의존성과 Chromium system deps를 매번 설치한다. 모기는 사소한 변경마다 브라우저 CI가 시간을 잡아먹는 것을 우려했으므로, 필수 체크 이름·브랜치 보호의 skipped 처리까지 확인한 뒤 화면 소스·CSS·하네스·의존성·workflow 변경에만 실행되도록 안전한 `paths` 설계를 둘지 sw-8gm 또는 후속 CI 비용 정리에서 판단해야 한다.
+
+## WAC를 모기의 제품 판단 언어로 번역하는 짧은 운영 표면 필요
+
+- 근거: `../swatch-v2/.planning/PROJECT.md:81`, `../swatch-v2/.planning/PROJECT.md:85`, `../swatch-v2/supabase/queries/wac_weekly.sql:234`, `pr-cards/2026-08-13-pr509-folder-view.md:15`
+- 모기는 개발 구현에는 익숙하지만 WAC 같은 경영·제품 지표를 얼마나 중요하게 봐야 하는지 체감하기 어렵고, 그 결과 정의 변경이나 작은 표본의 수치를 제품 판단에서 과소평가할 수 있다고 직접 우려했다. 주간 전달 때 숫자만 제시하지 말고 `표본 수 / 이번 주 WAC를 만든 행동 / 외부 유입 오염·유효성 / 지난주와 정의가 같은지 / 이 수치로 해도 되는 판단과 하면 안 되는 판단`을 짧은 사람말로 함께 제시해, 모기에게 분석가 역할을 요구하지 않고도 제품 결정을 검토할 수 있게 해야 한다.
