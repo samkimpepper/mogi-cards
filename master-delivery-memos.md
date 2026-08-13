@@ -43,3 +43,8 @@
 - 근거: `AGENTS.md:8`, `README.md:5`, `read-card/2026-08-11-uat-briefing.md:1`, `2026-08-11-attribution-saga-timeline.md:1`
 - 현재 세션 부트가 날짜만으로 최신 카드를 나열해 PR 승인 카드·착수 전 설계 카드·코드 학습 노트를 한꺼번에 보여주므로, 모기가 첫 화면에서 읽을거리가 너무 많고 목적을 구분하기 어렵다. 모기 결정(2026-08-11)은 7월까지의 자료를 `archive/`로 보내고 8월 자료를 `pr-cards/`·`plan-cards/`·`code-diff-notes/`로 분류하되, PR 번호가 있어도 내용이 설계·SPEC이면 `plan-cards/`에 두며 세션 시작에는 각 활성 폴더의 최신 문서 1개씩만 보여주는 것이다.
 - 현재 `read-card/2026-08-11-uat-briefing.md`와 `2026-08-11-attribution-saga-timeline.md`는 삭제한다. 앞으로 UAT 브리핑 같은 일회용 안내장은 생성 → 읽기·실행 → 결과를 PR 카드나 원문에 반영 → 삭제 흐름으로 운영하고 영구 카드 목록에는 남기지 않는다.
+
+## 직접권 설계 카드의 현행 설명에 폐기된 비교 노트 CASCADE가 섞여 있음
+
+- 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:14`, `../swatch-v2/app/src/data/database.types.ts:547`, `../swatch-v2/supabase/migrations/20260802010000_drop_legacy_comparison_notes.sql:21`, `../swatch-v2/supabase/migrations/20260802010000_drop_legacy_comparison_notes.sql:43`
+- 현행 `comparison_assessments.evidence_swatch_id`의 `ON DELETE RESTRICT`와 달리, `ON DELETE CASCADE`였던 `comparison_note_swatches`는 2026-08-02에 `comparison_notes`와 함께 삭제됐고 현재 생성 타입에도 존재하지 않아 두 규칙이 동시에 살아 있는 것처럼 읽히는 카드 문장은 사실과 어긋난다. 카드의 현행 실물에서는 옛 CASCADE 설명을 제거하거나 역사적 대비라고 명시하고, 현재는 assessment가 근거로 참조한 발색의 삭제가 차단된다는 동작만 남겨야 모기가 삭제 정책을 잘못 판단하지 않는다.
