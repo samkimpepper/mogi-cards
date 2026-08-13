@@ -15,8 +15,8 @@
 | `guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
 | `guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
 | `guide-operator-notification-links.md` | 모기가 운영자 알림 링크를 직접 발송할 때 |
-| `guide-mogi-head-test.md` | 모기가 인지 테스트를 명시적으로 하자고 할 때 |
-| `head-test/README.md` | 인지 테스트 케이스를 만들거나 기계식 러너를 실행할 때 |
+| `guide-mogi-head-test.md` | 모기가 이해 방식·외부화 효과를 가볍게 관찰하자고 할 때 — 자유 학습 우선, 큰 규칙 4개 |
+| `head-test/README.md` | 모기가 통제된 A/B 러너를 명시적으로 다시 요청할 때만 |
 | `pr-cards/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
 | `plan-cards/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
 | `code-diff-notes/<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
