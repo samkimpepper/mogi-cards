@@ -59,3 +59,8 @@
 - 근거: `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:10`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:134`, QA 읽기 전용 실측(2026-08-13): `owner_uid IS DISTINCT FROM created_by AND owner_uid IS NOT NULL` 15행 중 현재 어드민 등록 15행·일반 사용자 등록 0행
 - 새 정상 쓰기에서는 일반 사용자가 자기 검증 핸들의 발색만 등록할 수 있고 QA의 이전된 발색도 전부 어드민 등록이므로, §1에서 일반 비어드민 등록자가 원작자와 갈라지는 경우를 주된 현행 시나리오처럼 강조할 필요는 없다. 그래도 수정·삭제 판정을 `owner_uid`로 바꿔야 어드민 역할 행을 제거한 뒤 전직 어드민이 `created_by`를 근거로 관리권을 영구 보유하지 않으며, 현직 어드민의 권한은 별도 override에서만 나오게 할 수 있다.
 - 모기 확정(2026-08-13): 어드민 역할을 회수한 뒤에는 그 사람이 과거에 대리등록한 발색에 수정·삭제·비공개 행 열람을 포함한 어떤 관리 권한도 남지 않아야 한다. `created_by`는 대리등록의 역사·감사 기록일 뿐 권한 근거가 아니며, 원작자가 사진과 연결 정보를 개인정보로 여길 수 있으므로 현재 역할이 없는 전직 운영자의 접근을 허용하지 않는다.
+
+## hidden_at을 swatches 읽기에만 적용하면 swatch_items 자식 데이터가 계속 공개됨
+
+- 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:34`, `../swatch-v2/supabase/migrations/20260421000000_restructure_swatches.sql:95`, `../swatch-v2/supabase/migrations/20260421000000_restructure_swatches.sql:96`, `../swatch-v2/app/src/data/database.types.ts:1974`
+- 설계안처럼 `swatches`의 공개 SELECT에만 `hidden_at IS NULL`을 넣으면 부모의 사진·출처 행은 숨지만, `swatch_items`의 독립 `anon_read USING (true)`가 남아 직접 API 조회에서 비공개 발색의 `swatch_id`·연결 색상·메모가 계속 노출된다. 비공개를 발색 단위의 접근 차단으로 보장하려면 `swatch_items` SELECT도 부모 `swatches`의 공개·원작자·현직 어드민 판정을 따르게 하고, `SECURITY DEFINER` RPC·뷰를 포함한 모든 발색 읽기 표면에 같은 필터가 적용되는지 계약에서 열거해 검증해야 한다.
