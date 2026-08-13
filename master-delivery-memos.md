@@ -77,3 +77,8 @@
 - 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:14`, `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:41`, `../swatch-v2/supabase/migrations/20260625000000_comparison_assessments_tables.sql:24`, QA 읽기 전용 FK 실측(2026-08-13): `swatches`를 참조하는 현행 FK는 `comparison_assessments.evidence_swatch_id ON DELETE RESTRICT`와 `swatch_items.swatch_id ON DELETE CASCADE` 두 개뿐
 - 모기 확정(2026-08-13): 비교평가가 사진을 근거로 인용하고 있어도 원작자의 삭제를 막지 않으며, 삭제 시 사진 근거 연결과 선택 사진 번호 행은 자동 제거하고 비교평가의 텍스트·축별 판단만 남긴다. 따라서 `RESTRICT` 때문에 "비공개 전환 + 어드민 정리 요청"으로 우회하는 경우 자체를 없애고, 이 용도만 남는다고 설계한 `request_swatch_removal`과 어드민 큐도 폐기 대상으로 돌려야 한다; 하드 삭제가 완료되는 경로에서는 `evidence_swatch_id = NULL`과 `comparison_assessment_evidence_images` 정리를 하나의 원자적 작업으로 보장해 근거 없는 사진 번호가 남지 않게 해야 한다.
 - 삭제 UX 확정(2026-08-13): 원작자가 삭제를 누른 순간 서비스의 공개 노출이 즉시 끝나야 하며 비교평가 작성자나 어드민의 승인·수동 처리를 기다리는 병목을 두지 않는다. 자동 하드 삭제 정리에서 예상 밖 오류가 나더라도 사진을 공개 상태로 계속 남겨 불쾌감 위험을 키우지 않도록, 공개 차단을 우선 보장하고 내부 정리는 자동 재시도 가능한 실패 폐쇄 방식으로 설계해야 한다.
+
+## PR #507 뷰포트 CI는 무관한 변경에도 실행됨 — 경로 제한 검토
+
+- 근거: PR #507 `.github/workflows/viewport-matrix.yml`의 `pull_request.branches: [dev, main]`·`push.branches: [dev, main]`에 `paths` 제한 없음, PR #507 체크 실측(2026-08-13): `Viewport breakpoint matrix (320/375/499/500)` 약 1분(03:51:06Z→03:52:06Z)
+- 현재 실행시간은 약 1분이고 다른 체크와 병렬이라 당장 3~4분의 직렬 병목은 아니지만, 문서만 바꾼 PR에도 workspace 의존성과 Chromium system deps를 매번 설치한다. 모기는 사소한 변경마다 브라우저 CI가 시간을 잡아먹는 것을 우려했으므로, 필수 체크 이름·브랜치 보호의 skipped 처리까지 확인한 뒤 화면 소스·CSS·하네스·의존성·workflow 변경에만 실행되도록 안전한 `paths` 설계를 둘지 sw-8gm 또는 후속 CI 비용 정리에서 판단해야 한다.
