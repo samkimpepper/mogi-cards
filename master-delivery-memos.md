@@ -64,3 +64,8 @@
 
 - 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:34`, `../swatch-v2/supabase/migrations/20260421000000_restructure_swatches.sql:95`, `../swatch-v2/supabase/migrations/20260421000000_restructure_swatches.sql:96`, `../swatch-v2/app/src/data/database.types.ts:1974`
 - 설계안처럼 `swatches`의 공개 SELECT에만 `hidden_at IS NULL`을 넣으면 부모의 사진·출처 행은 숨지만, `swatch_items`의 독립 `anon_read USING (true)`가 남아 직접 API 조회에서 비공개 발색의 `swatch_id`·연결 색상·메모가 계속 노출된다. 비공개를 발색 단위의 접근 차단으로 보장하려면 `swatch_items` SELECT도 부모 `swatches`의 공개·원작자·현직 어드민 판정을 따르게 하고, `SECURITY DEFINER` RPC·뷰를 포함한 모든 발색 읽기 표면에 같은 필터가 적용되는지 계약에서 열거해 검증해야 한다.
+
+## 대리등록을 타인 발색의 비교평가 근거 자격으로 인정하는 현행 규칙 재검토
+
+- 근거: `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:16`, `plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md:28`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:441`, QA 읽기 전용 실측(2026-08-13): 근거 발색이 있는 `comparison_assessments` 12행 중 현재 원작자 작성 10행·원작자가 아닌 등록자 작성 2행·둘 다 아닌 제3자 작성 0행
+- 모기는 다른 사람의 발색샷을 자기 비교판단의 근거로 쓰는 제품 동작 자체가 이상하다고 제기했다. 현행 `is_own_observation_swatch`가 원작자뿐 아니라 등록자도 허용하므로 어드민 대리등록을 자기 관찰로 간주하는데, 대리등록은 데이터 입력·운영 행위이지 사진 원작자의 관찰 권한을 넘겨받는 사건이 아니므로 근거 자격을 `owner_uid` 본인으로 좁힐지 계약 전에 다시 결정해야 한다. 좁힌다면 QA의 기존 2행은 평가 전체 삭제·사진 근거 연결만 제거·별도 예외 보존 중 어떤 전환을 할지도 함께 정해야 한다.
