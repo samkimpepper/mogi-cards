@@ -92,3 +92,8 @@
 
 - 근거: `../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md:35`, `../swatch-v2/supabase/migrations/20260803100000_retire_anon_null_owner_rls_branches.sql:93`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:211`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:329`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:228`
 - 현행 `update_owner`의 `WITH CHECK (created_by = auth.uid())`는 클라이언트 UPDATE 뒤에도 `created_by`가 호출자 uid인지 검사하지만, 계약대로 이 조건을 `owner_uid = auth.uid()`로 바꾸면 테이블 단위 UPDATE 권한을 가진 원작자가 직접 REST 경로에서 `created_by`를 바꿔도 기존 보호 트리거는 `owner_uid` 계열만 원복하므로 통과할 수 있다. `created_by`는 자기등록 evidence 예외의 판정값이자 un-verify 시 귀속 원복 기준이며 대리등록 감사 기록이므로, A레인에서 컬럼 UPDATE 권한 회수나 보호 트리거 고정과 그 직접 API 회귀 검증을 명시하지 않으면 인용 자격·귀속 원복·감사 이력이 함께 변조될 수 있다.
+
+## 미검증 자기등록 evidence 예외는 신규 사용자 검증 마찰을 줄이지 못함
+
+- 근거: `../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md:37`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:134`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:141`
+- 자기등록 evidence 예외는 `owner_bound_at IS NULL AND author_handle IS NULL`인 본인 등록 행을 허용하지만, 현행 등록 게이트는 일반 사용자가 새 발색을 발행하려면 핸들 검증을 마치고 자기 핸들을 `author_handle`에 반드시 넣도록 강제하므로 앞으로 생성되는 정상 행은 이 예외에 들어갈 수 없다. 따라서 모기가 밝힌 제품 의도인 "evidence를 붙이기 위해 검증까지 요구하면 사용자가 이탈할 수 있으니 마찰을 줄인다"는 효과는 신규 사용자에게 발생하지 않고 기존 레거시 자기등록 행의 호환만 보존하므로, 등록 게이트를 유지할지와 검증 전 evidence 흐름을 어디서 만들지 제품 결정을 다시 맞춰야 한다.
