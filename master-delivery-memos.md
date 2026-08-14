@@ -23,3 +23,9 @@
 근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:33`
 
 현재 설계의 `pending`은 원본 다운로드 실패와 자체 스토리지 업로드 실패를 구분하지 않지만, 원본이 살아 있는 후자는 `source_url`로 정상 표시할 수 있고 원본 자체가 안 열리는 전자는 깨진 발색을 공개하지 않도록 격리해야 한다. A레인 데이터 모델이나 서버 복사 결과에 실패 단계·원인 또는 그와 동등한 파생 상태를 남겨야 B레인이 공개 여부와 원작자용 재시도 안내를 정직하게 결정할 수 있다.
+
+## sw-u4r의 배치 재시도 시점과 영구 유실 확정 조건이 비어 있다
+
+근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:33`
+
+결정문은 등록 직후 동기 복사 실패를 `pending`으로 남겨 배치 재시도한다고만 정하고, 실행 주체·첫 재시도 시점·간격·상한·앱 종료 뒤 보장·수동 재시도 여부를 정하지 않았다. 영구 유실 판정 뒤 발색 전체를 삭제하는 현재 모기 결정에서는 이 공백이 일시 장애의 오삭제나 무한 `pending`으로 직결되므로, A레인 계약 전에 재시도 수명주기와 `lost` 전환 증거를 잠가야 한다.
