@@ -97,3 +97,8 @@
 
 - 근거: `../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md:37`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:134`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:141`
 - 자기등록 evidence 예외는 `owner_bound_at IS NULL AND author_handle IS NULL`인 본인 등록 행을 허용하지만, 현행 등록 게이트는 일반 사용자가 새 발색을 발행하려면 핸들 검증을 마치고 자기 핸들을 `author_handle`에 반드시 넣도록 강제하므로 앞으로 생성되는 정상 행은 이 예외에 들어갈 수 없다. 따라서 모기가 밝힌 제품 의도인 "evidence를 붙이기 위해 검증까지 요구하면 사용자가 이탈할 수 있으니 마찰을 줄인다"는 효과는 신규 사용자에게 발생하지 않고 기존 레거시 자기등록 행의 호환만 보존하므로, 등록 게이트를 유지할지와 검증 전 evidence 흐름을 어디서 만들지 제품 결정을 다시 맞춰야 한다.
+
+## D25의 X 정체성 격리 원칙과 현행 발색 카드가 충돌
+
+- 근거: `../swatch-v2/docs/wiki/decisions/D-025.md:47`, `../swatch-v2/docs/wiki/decisions/D-025.md:49`, `../swatch-v2/app/src/features/shade-detail/SwatchReviewCard.tsx:120`, `../swatch-v2/app/src/features/shade-detail/SwatchReviewCard.tsx:205`
+- D25는 이메일 로그인만 허용하고 공개 화면에는 페르소나만 보이며 X 핸들은 노출하지 않는다고 명시하지만, 현행 발색 카드에는 `@authorHandle`이 직접 표시되고 같은 카드에서 원본 트윗 링크도 제공된다. 발색 원문과 원작자를 보여주는 현재 제품에서는 엄격한 X 정체성 격리 전제가 이미 일부 폐기된 셈이므로, OAuth를 계속 배제할지 판단하기 전에 `비공개 소유권 증명 / 공개 byline / 관계 그래프 비수입`을 분리해 D25를 현행 제품 결정으로 다시 확정해야 한다.
