@@ -107,3 +107,9 @@
 
 - 근거: `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:9`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:113`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:117`, `../swatch-v2/app/src/features/auth/AuthCallbackRoute.tsx:12`, `../swatch-v2/app/.env.example:27`
 - 현행 기능 플래그 뒤 코드는 `signInWithOAuth({ provider: 'twitter' })`로 신규 로그인 세션을 만드는 입구일 뿐, 이메일로 로그인한 기존 MOGUI 사용자에게 X identity를 붙이는 `linkIdentity` 흐름과 연결·해제 상태 처리가 없다. 2026년 현행 Supabase 공식 가이드는 X OAuth 2.0의 provider 값을 `x`로 권장하고 legacy Twitter OAuth 1.0a는 향후 폐기 예정이라고 명시하므로, 플래그를 켜는 식으로 재활용하면 계정 분리·중복과 폐기 provider 의존 위험이 있다; D25를 좁게 개정한다면 기존 uid 보존, 수동 identity linking 설정, 콜백 목적 구분, 연결 해제 정책을 별도 계약해야 한다.
+
+## X 연결은 첫 발색 등록에서만 요구하고 구경 진입은 열어둠
+
+- 근거: 모기 확정(2026-08-14), `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:20`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:146`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:152`
+- 모기 확정: 발색을 구경하려는 사용자까지 X 연결을 요구하지 않고, 사용자가 첫 발색 등록을 시작한 맥락에서만 원작자 확인용 X 연결을 요청한다. X 연결은 비공개 소유권 증명에 쓰고 MOGUI의 공개 사용자 정체성은 페르소나로 유지하며, 팔로우·차단·뮤트 같은 관계 그래프는 가져오지 않는다.
+- 등록 흐름에서는 X의 고정 사용자 ID와 제출 트윗의 `author_id`를 서버에서 비교해 자기 트윗만 허용하고, 기존 이메일 uid와 발색 `owner_uid`는 보존한다. 따라서 D25는 "서버 내부에서도 X와 절대 연결하지 않음"만 좁게 번복하되, 비기여자의 열린 탐색과 SNS 관계 비수입 원칙은 유지하는 방향으로 계약을 다시 맞춰야 한다.
