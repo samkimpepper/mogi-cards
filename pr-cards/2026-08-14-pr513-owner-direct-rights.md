@@ -1,11 +1,11 @@
 ---
 reviewed: false
-merge_ready: false
+merge_ready: true
 ---
 
 # PR 카드 — #513 원작자 직접권 + 비공개 + 삭제 잠금 해제 + admin_users (A레인)
 
-작성: 냐옹이 Gen 7, 2026-08-14. **fix1 검증 완주 전 선배달** — 수리 8건 구현은 끝났고 최종 게이트 카운트·스냅샷 코멘트 갱신본만 READY 재보고 후 이 카드에 갱신한다. 그 전까지 merge_ready: false가 사실이다.
+작성: 냐옹이 Gen 7, 2026-08-14. fix1 READY 재보고 + 마스터 독립 재실측 완료(아래 갱신란) — **남은 것은 모기 퀴즈 + 머지뿐**.
 
 ## 원문 포인터
 
@@ -36,8 +36,9 @@ merge_ready: false
 - BEFORE DELETE 트리거의 NULL 반환 사고 — "정리는 됐는데 발색은 안 지워진" 상태가 왜 생기고 AFTER DELETE는 왜 안전한가
 - 이번 PR 머지 후 원격 적용 절차에서 확인해야 할 것 (PR 본문의 원격 재검증 절)
 
-## READY 후 갱신란
+## READY 후 갱신란 (2026-08-14 마스터 재실측)
 
-- 게이트 카운트: (READY 재보고 대기)
-- 스냅샷 코멘트 갱신본: (대기)
-- 수리 8건 커밋 해시: (대기)
+- 게이트: db reset 후 supabase/tests **20/20 PASS** · app build exit 0 · vitest **597/599**(실패 2건은 origin/dev 기저값) · viewport **12 passed** · `git diff --check` exit 0. CI 체크 7건 전부 결론(SUCCESS 5·SKIPPED 2), 미해결 스레드 0, MERGEABLE/CLEAN — 마스터 독립 재실측 일치 (`review_measured_at=2026-08-14T02:02:06Z`, 이후 봇 리뷰 0).
+- 스냅샷 코멘트: 같은 URL 제자리 갱신(01:58:56Z) — fix1의 swatch_items 필터·회수 함수까지 반영 확인.
+- 수리 커밋(발견물별): 1=f41ec0c · 2=0b3a7bd+b1ce2ae · 3=c7b6a74 · 4=4b0d184 · 5=dc8220f · 6=09f96e4 · 7=293f1f9 · 8=4f89663 (+스냅샷 c1c3bd8).
+- 구현 중 자가 적중 사고 1건: BEFORE DELETE 트리거 NULL 반환이 삭제를 조용히 취소 → AFTER DELETE로 수리, 회귀 이중 잠금 (이해 체크 3번 문항의 실물).
