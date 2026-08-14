@@ -53,3 +53,9 @@ D-118은 개인 홈에서 내 발색샷을 우선하고 없으면 공용 대표�
 근거: `../swatch-v2/app/src/features/explore/shade-feed/shadeFeedFilter.ts:108`, `../swatch-v2/app/src/features/explore/shade-feed/ShadeCardGrid.tsx:94`, `../swatch-v2/app/src/shared/components/ColorFallback.tsx:30` + 2026-08-14 QA 읽기 전용 실측(`is_deleted=false` shade 234개, 이미지 행 없음 137개, 그중 유효 색상값 110개·빈 값/placeholder 회색 27개)
 
 카드 컴포넌트는 이미지가 없으면 색상 그라디언트를 그릴 수 있지만, 그보다 앞선 탐색 필터가 `Boolean(getProductImage(p))` 조건으로 이미지 없는 shade를 전부 제거해 현재 공용 탐색에서는 색상칩 fallback이 실행되지 않는다. 모기가 확정한 `auto_single → labeled comparison fallback → 색상칩` 정책을 적용하려면 이미지 유무를 노출 자격으로 쓰는 필터를 제거하고, 유효 색상이 없는 27개를 어떻게 다룰지도 별도 계약과 테스트로 잠가야 한다.
+
+## sw-u4r는 구현 레인 발사 대신 결정문 수리부터 착수
+
+근거: `plan-cards/2026-08-14-swatch-media-self-preservation-design.md:8`, `plan-cards/2026-08-14-swatch-media-self-preservation-design.md:17`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:17`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:53` + 2026-08-14 과외 세션 모기 지시
+
+냐옹이는 A/B/C 구현 PR을 아직 발사하지 말고, 이 수신함의 이번 sw-u4r 결정들을 반영해 정본 결정문과 레인 경계를 먼저 개정한다. 개정안은 확정 사항과 미결정 사항을 분리하고 특히 실패 상태 구분·재시도와 영구 유실 판정·일부 사진 영구 유실 시 swatch 전체 삭제·동적 대표사진과 개인 홈 fallback을 새 계약으로 제시해야 하며, 코드와 마이그레이션은 모기가 개정안을 다시 확인한 뒤 착수한다.
