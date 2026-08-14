@@ -102,3 +102,8 @@
 
 - 근거: `../swatch-v2/docs/wiki/decisions/D-025.md:47`, `../swatch-v2/docs/wiki/decisions/D-025.md:49`, `../swatch-v2/app/src/features/shade-detail/SwatchReviewCard.tsx:120`, `../swatch-v2/app/src/features/shade-detail/SwatchReviewCard.tsx:205`
 - D25는 이메일 로그인만 허용하고 공개 화면에는 페르소나만 보이며 X 핸들은 노출하지 않는다고 명시하지만, 현행 발색 카드에는 `@authorHandle`이 직접 표시되고 같은 카드에서 원본 트윗 링크도 제공된다. 발색 원문과 원작자를 보여주는 현재 제품에서는 엄격한 X 정체성 격리 전제가 이미 일부 폐기된 셈이므로, OAuth를 계속 배제할지 판단하기 전에 `비공개 소유권 증명 / 공개 byline / 관계 그래프 비수입`을 분리해 D25를 현행 제품 결정으로 다시 확정해야 한다.
+
+## 숨겨진 Twitter OAuth 로그인 코드는 X 소유권 연결에 그대로 쓸 수 없음
+
+- 근거: `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:9`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:113`, `../swatch-v2/app/src/features/auth/AuthOnboardingGate.tsx:117`, `../swatch-v2/app/src/features/auth/AuthCallbackRoute.tsx:12`, `../swatch-v2/app/.env.example:27`
+- 현행 기능 플래그 뒤 코드는 `signInWithOAuth({ provider: 'twitter' })`로 신규 로그인 세션을 만드는 입구일 뿐, 이메일로 로그인한 기존 MOGUI 사용자에게 X identity를 붙이는 `linkIdentity` 흐름과 연결·해제 상태 처리가 없다. 2026년 현행 Supabase 공식 가이드는 X OAuth 2.0의 provider 값을 `x`로 권장하고 legacy Twitter OAuth 1.0a는 향후 폐기 예정이라고 명시하므로, 플래그를 켜는 식으로 재활용하면 계정 분리·중복과 폐기 provider 의존 위험이 있다; D25를 좁게 개정한다면 기존 uid 보존, 수동 identity linking 설정, 콜백 목적 구분, 연결 해제 정책을 별도 계약해야 한다.
