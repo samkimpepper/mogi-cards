@@ -17,3 +17,9 @@
 근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:19`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30` + 2026-08-14 과외 세션 모기 재결정
 
 모기는 사진 묶음 전체가 발색의 성립 조건이므로 여러 장 중 한 장만 영구 유실돼도 `swatches` 행 전체를 삭제 대상으로 본다고 확정했다. 단, 등록 직후 복사 실패나 일시적 원본 장애는 기존 `pending` 재시도로 보호하고 복구 불가능 판정 뒤에만 삭제해야 하므로, A레인 계약에는 영구 유실 확정 조건과 삭제 전 사용자 경험을 별도 경계로 잠가야 한다.
+
+## sw-u4r의 단일 `pending` 상태로는 안전한 원본 폴백과 공개 격리를 구분할 수 없다
+
+근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:33`
+
+현재 설계의 `pending`은 원본 다운로드 실패와 자체 스토리지 업로드 실패를 구분하지 않지만, 원본이 살아 있는 후자는 `source_url`로 정상 표시할 수 있고 원본 자체가 안 열리는 전자는 깨진 발색을 공개하지 않도록 격리해야 한다. A레인 데이터 모델이나 서버 복사 결과에 실패 단계·원인 또는 그와 동등한 파생 상태를 남겨야 B레인이 공개 여부와 원작자용 재시도 안내를 정직하게 결정할 수 있다.
