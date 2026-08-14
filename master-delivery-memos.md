@@ -47,3 +47,9 @@ D-118은 개인 홈에서 내 발색샷을 우선하고 없으면 공용 대표�
 근거: `../swatch-v2/docs/wiki/decisions/D-118.md:96`, `../swatch-v2/docs/wiki/decisions/D-118.md:101`, `../swatch-v2/docs/wiki/decisions/D-118.md:104` + 2026-08-14 과외 세션 모기 확정
 
 모기는 개인 홈의 시각 아카이브 기능을 약화시키지 않기 위해 `내 화장품` 카드에서 내 발색샷이 없으면 공용 대표사진을 제품 식별용으로 보여주되 `내 발색 없음`을 명시하고, 공용 대표도 없으면 색상칩과 같은 표식을 쓰기로 했다. `내 발색샷` 층은 내 사진만 보여주고 공용 사진으로 빈자리를 채우지 않아야 하므로, 홈 fallback과 공용 탐색 대표 선정은 서로 다른 화면 계약으로 구현해야 한다.
+
+## 공용 탐색 피드는 대표사진 없는 shade를 색상칩으로 대체하지 않고 제외한다
+
+근거: `../swatch-v2/app/src/features/explore/shade-feed/shadeFeedFilter.ts:108`, `../swatch-v2/app/src/features/explore/shade-feed/ShadeCardGrid.tsx:94`, `../swatch-v2/app/src/shared/components/ColorFallback.tsx:30` + 2026-08-14 QA 읽기 전용 실측(`is_deleted=false` shade 234개, 이미지 행 없음 137개, 그중 유효 색상값 110개·빈 값/placeholder 회색 27개)
+
+카드 컴포넌트는 이미지가 없으면 색상 그라디언트를 그릴 수 있지만, 그보다 앞선 탐색 필터가 `Boolean(getProductImage(p))` 조건으로 이미지 없는 shade를 전부 제거해 현재 공용 탐색에서는 색상칩 fallback이 실행되지 않는다. 모기가 확정한 `auto_single → labeled comparison fallback → 색상칩` 정책을 적용하려면 이미지 유무를 노출 자격으로 쓰는 필터를 제거하고, 유효 색상이 없는 27개를 어떻게 다룰지도 별도 계약과 테스트로 잠가야 한다.
