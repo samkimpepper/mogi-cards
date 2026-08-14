@@ -41,3 +41,9 @@
 근거: `../swatch-v2/docs/wiki/decisions/D-099.md:110`, `../swatch-v2/docs/wiki/decisions/D-099.md:122`, `../swatch-v2/docs/wiki/decisions/D-118.md:92`, `../swatch-v2/docs/wiki/decisions/D-118.md:101`, `../swatch-v2/supabase/migrations/20260814060000_revoke_public_copies_on_hide_or_delete.sql:34` + 2026-08-14 QA 읽기 전용 실측(shade 247개, primary 대표 97개 = 비교 fallback 77·자동 단독 15·팔레트 5, 무대표 150개, primary 97개 전부 swatch URL과 일치)
 
 D-118은 개인 홈에서 내 발색샷을 우선하고 없으면 공용 대표를 쓰되 탐색은 공용 위키로 유지하는 반면, D-099의 공용 대표는 첫 사용자 발색을 first-come으로 고정하고 원작자 숨김·삭제 때 현행 트리거가 회수한 뒤 재선정하지 않는다. `shade_images.media_id` FK만 추가하면 이 불안정한 정책을 구조화할 뿐이므로, B레인 전에 개인 홈의 공용 fallback 필요성·공용 탐색 대표의 선정과 자동 대체·사진 소유자의 회수권·사진별 shade 관계를 한 결정으로 다시 잠가야 한다.
+
+## 개인 홈은 공용 대표사진을 쓰되 `내 발색 없음`을 명시한다
+
+근거: `../swatch-v2/docs/wiki/decisions/D-118.md:96`, `../swatch-v2/docs/wiki/decisions/D-118.md:101`, `../swatch-v2/docs/wiki/decisions/D-118.md:104` + 2026-08-14 과외 세션 모기 확정
+
+모기는 개인 홈의 시각 아카이브 기능을 약화시키지 않기 위해 `내 화장품` 카드에서 내 발색샷이 없으면 공용 대표사진을 제품 식별용으로 보여주되 `내 발색 없음`을 명시하고, 공용 대표도 없으면 색상칩과 같은 표식을 쓰기로 했다. `내 발색샷` 층은 내 사진만 보여주고 공용 사진으로 빈자리를 채우지 않아야 하므로, 홈 fallback과 공용 탐색 대표 선정은 서로 다른 화면 계약으로 구현해야 한다.
