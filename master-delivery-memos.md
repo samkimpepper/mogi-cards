@@ -35,3 +35,9 @@
 근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:18`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-v2/app/src/shared/lib/tweetPreview.ts:33`, X 공식 도움말 `https://help.x.com/en/using-x/edit-post` + 2026-08-14 과외 세션 모기 확정
 
 모기는 정상·짧은 자동 재시도에는 아무 상태도 노출하지 않고 자동 복구가 계속 실패했을 때만 원작자에게 `사진 다시 가져오기`를 보여주는 UX로 확정했다. X Premium은 게시 후 1시간 동안 미디어 순서를 포함한 편집을 허용하므로 버튼이 현재 게시물을 다시 해석해 사진 묶음을 교체하면 등록 당시 `idx` 의미가 바뀔 수 있고, 등록 당시 저장한 사진별 원본 URL과 순서를 그대로 재시도한 뒤 그 사본을 못 얻을 때만 영구 유실 규칙으로 보내야 한다.
+
+## sw-u4r B레인 전에 D-099·D-118 대표사진 정책을 함께 재결정해야 한다
+
+근거: `../swatch-v2/docs/wiki/decisions/D-099.md:110`, `../swatch-v2/docs/wiki/decisions/D-099.md:122`, `../swatch-v2/docs/wiki/decisions/D-118.md:92`, `../swatch-v2/docs/wiki/decisions/D-118.md:101`, `../swatch-v2/supabase/migrations/20260814060000_revoke_public_copies_on_hide_or_delete.sql:34` + 2026-08-14 QA 읽기 전용 실측(shade 247개, primary 대표 97개 = 비교 fallback 77·자동 단독 15·팔레트 5, 무대표 150개, primary 97개 전부 swatch URL과 일치)
+
+D-118은 개인 홈에서 내 발색샷을 우선하고 없으면 공용 대표를 쓰되 탐색은 공용 위키로 유지하는 반면, D-099의 공용 대표는 첫 사용자 발색을 first-come으로 고정하고 원작자 숨김·삭제 때 현행 트리거가 회수한 뒤 재선정하지 않는다. `shade_images.media_id` FK만 추가하면 이 불안정한 정책을 구조화할 뿐이므로, B레인 전에 개인 홈의 공용 fallback 필요성·공용 탐색 대표의 선정과 자동 대체·사진 소유자의 회수권·사진별 shade 관계를 한 결정으로 다시 잠가야 한다.
