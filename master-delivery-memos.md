@@ -87,3 +87,8 @@
 
 - 근거: `../swatch-v2/.planning/PROJECT.md:81`, `../swatch-v2/.planning/PROJECT.md:85`, `../swatch-v2/supabase/queries/wac_weekly.sql:234`, `pr-cards/2026-08-13-pr509-folder-view.md:15`
 - 모기는 개발 구현에는 익숙하지만 WAC 같은 경영·제품 지표를 얼마나 중요하게 봐야 하는지 체감하기 어렵고, 그 결과 정의 변경이나 작은 표본의 수치를 제품 판단에서 과소평가할 수 있다고 직접 우려했다. 주간 전달 때 숫자만 제시하지 말고 `표본 수 / 이번 주 WAC를 만든 행동 / 외부 유입 오염·유효성 / 지난주와 정의가 같은지 / 이 수치로 해도 되는 판단과 하면 안 되는 판단`을 짧은 사람말로 함께 제시해, 모기에게 분석가 역할을 요구하지 않고도 제품 결정을 검토할 수 있게 해야 한다.
+
+## `owner_uid` RLS 전환 시 `created_by` 변조 방지 필요
+
+- 근거: `../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md:35`, `../swatch-v2/supabase/migrations/20260803100000_retire_anon_null_owner_rls_branches.sql:93`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:211`, `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:329`, `../swatch-v2/supabase/migrations/20260811000000_create_swatch_author_handle_gate.sql:228`
+- 현행 `update_owner`의 `WITH CHECK (created_by = auth.uid())`는 클라이언트 UPDATE 뒤에도 `created_by`가 호출자 uid인지 검사하지만, 계약대로 이 조건을 `owner_uid = auth.uid()`로 바꾸면 테이블 단위 UPDATE 권한을 가진 원작자가 직접 REST 경로에서 `created_by`를 바꿔도 기존 보호 트리거는 `owner_uid` 계열만 원복하므로 통과할 수 있다. `created_by`는 자기등록 evidence 예외의 판정값이자 un-verify 시 귀속 원복 기준이며 대리등록 감사 기록이므로, A레인에서 컬럼 UPDATE 권한 회수나 보호 트리거 고정과 그 직접 API 회귀 검증을 명시하지 않으면 인용 자격·귀속 원복·감사 이력이 함께 변조될 수 있다.
