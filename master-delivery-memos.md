@@ -11,3 +11,9 @@
 근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:11`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:19` + 2026-08-14 QA 읽기 전용 실측(`swatches.id=19`: 사진 2장 전부 유실, `swatch_items` 1행, 비교 근거 사용 0행, `shade_images` URL 참조 0행) + 2026-08-14 과외 세션 모기 재결정
 
 기존 결정은 발색 행을 남기고 유실된 두 사진을 `swatch_media.status='lost'`로 기록하지만, 모기는 백지 재검토에서 사진이 발색의 성립 조건이므로 두 장이 모두 유실된 `swatches.id=19`와 그 종속 `swatch_items`를 통째로 삭제한다고 판단했다. A레인 계약 전에 결정문·카드의 기존 선택을 현재 판단으로 다시 확정해야 하며, 이번 판단은 완전 유실 행에 한정되고 일부 사진만 유실된 일반 규칙은 아직 확정되지 않았다.
+
+## sw-u4r의 삭제 기준을 일부 사진 영구 유실까지 확대하고 일시 실패와 분리
+
+근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:19`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30` + 2026-08-14 과외 세션 모기 재결정
+
+모기는 사진 묶음 전체가 발색의 성립 조건이므로 여러 장 중 한 장만 영구 유실돼도 `swatches` 행 전체를 삭제 대상으로 본다고 확정했다. 단, 등록 직후 복사 실패나 일시적 원본 장애는 기존 `pending` 재시도로 보호하고 복구 불가능 판정 뒤에만 삭제해야 하므로, A레인 계약에는 영구 유실 확정 조건과 삭제 전 사용자 경험을 별도 경계로 잠가야 한다.
