@@ -29,3 +29,9 @@
 근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:33`
 
 결정문은 등록 직후 동기 복사 실패를 `pending`으로 남겨 배치 재시도한다고만 정하고, 실행 주체·첫 재시도 시점·간격·상한·앱 종료 뒤 보장·수동 재시도 여부를 정하지 않았다. 영구 유실 판정 뒤 발색 전체를 삭제하는 현재 모기 결정에서는 이 공백이 일시 장애의 오삭제나 무한 `pending`으로 직결되므로, A레인 계약 전에 재시도 수명주기와 `lost` 전환 증거를 잠가야 한다.
+
+## sw-u4r 재시도 UX는 실패 때만 노출하고 등록 당시 사진 묶음을 보존해야 한다
+
+근거: `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:18`, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:30`, `../swatch-v2/app/src/shared/lib/tweetPreview.ts:33`, X 공식 도움말 `https://help.x.com/en/using-x/edit-post` + 2026-08-14 과외 세션 모기 확정
+
+모기는 정상·짧은 자동 재시도에는 아무 상태도 노출하지 않고 자동 복구가 계속 실패했을 때만 원작자에게 `사진 다시 가져오기`를 보여주는 UX로 확정했다. X Premium은 게시 후 1시간 동안 미디어 순서를 포함한 편집을 허용하므로 버튼이 현재 게시물을 다시 해석해 사진 묶음을 교체하면 등록 당시 `idx` 의미가 바뀔 수 있고, 등록 당시 저장한 사진별 원본 URL과 순서를 그대로 재시도한 뒤 그 사본을 못 얻을 때만 영구 유실 규칙으로 보내야 한다.
