@@ -13,3 +13,11 @@
 - **전환 완료 조건:** 신규 등록 사진은 등록 시 Storage에 자동 복사되고 DB/화면은 X CDN URL이 아니라 자체 사본을 사용한다. 기존 콜드 백업 176/178장도 자체 서빙 경로로 전환하며, swatch 19의 유실 2장은 복구 또는 명시적 결손 처리가 필요하다.
 - **권한 경계:** 자체 저장과 공개 서빙은 별개다. 공개 URL을 단순 복사하는 데서 끝내지 말고, `hidden_at` 비공개와 삭제 시 우리 사이트의 이미지 노출도 실제로 종료되도록 Storage 접근·객체 수명주기를 함께 설계한다.
 - **근거:** `swatch-v2/docs/wiki/decisions/D-124.md` 46~60행(자체 복사 결정, 현행 X CDN 직접 서빙, 종전 출시 후 시점), `swatch-v2/.planning/workstreams/milestone/STATE.md` 24행(콜드 백업 176/178장), `pr-cards/2026-08-14-pr513-owner-direct-rights.md` 39~43행(#513 READY 재검증 완료).
+
+## 2026-08-14 — Storage 전환의 Kotlin Spring 이식성 제약 (모기 확정)
+
+- **배경:** 장차 백엔드를 Kotlin Spring으로 이전할 계획이 있으므로, 이번 자체 이미지 보존 작업이 Supabase 전용 데이터 모델 의존성을 더 굳히면 안 된다.
+- **모기 확정:** Supabase Storage는 현재의 **첫 저장소 구현체**로 사용할 수 있지만, 도메인·DB 계약을 Supabase 전용 공개 URL에 결합하지 않는다.
+- **설계 요구:** DB에는 완성된 공급자 URL보다 안정적인 `object_key`와 미디어 메타데이터를 저장하고, 가능하면 `swatch_media` 같은 미디어 엔티티를 통해 발색·대표사진이 같은 원본을 참조하게 한다. 업로드·읽기 URL 발급·비공개·삭제는 한 Storage 경계/어댑터가 담당한다.
+- **이전 경로:** Kotlin Spring 전환 시에는 같은 object key로 기존 Supabase Storage를 계속 읽거나, 파일을 S3 호환 등 다른 객체 저장소로 옮긴 뒤 Storage 구현체만 교체할 수 있어야 한다. Spring 이전 계획 때문에 현재의 X CDN 탈피를 미루지는 않는다.
+- **후속 설계 체크:** 기존 `swatches.image_urls`를 자체 Storage 절대 URL 문자열로 단순 치환하는 안은 피하고, 공개 URL 만료·버킷 변경·공급자 변경이 발색 행 전체 마이그레이션으로 번지지 않는 계약인지 확인한다.
