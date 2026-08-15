@@ -17,3 +17,9 @@
 근거: 2026-08-15 과외 세션 모기 전달
 
 바로 위 메모의 `pr-cards/`에 #518 카드가 없다는 사실은 운영 누락이 아니며, #518은 PR 본문이 승인 카드 역할을 대신하므로 새 PR 카드를 만들거나 전달할 필요가 없다. 위 메모에서는 과외용 plan card가 정본 개정 3·4와 게이트 상태를 따라오지 못한 문제만 유효하다.
+
+## PR #518 HEAD에는 결정문 개정 4가 완료로 기록한 CASCADE 폐지 fix1이 아직 없다
+
+근거: GitHub PR #518 HEAD `supabase/migrations/20260814100000_swatch_media_model.sql:45`의 `swatch_id bigint NOT NULL REFERENCES swatches(id) ON DELETE CASCADE`, PR 변경 파일 목록에 수명주기 outbox 신설 없음, `../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md:96` + 2026-08-15 원격 읽기 실측
+
+결정문 개정 4는 교차리뷰 전건 수리와 함께 A레인에서 outbox 큐를 먼저 신설하고 `swatch_media` CASCADE를 폐지했다고 기록했지만, 현재 PR HEAD와 본문은 여전히 CASCADE 모델이다. 이 상태로 머지하면 swatch 삭제 순간 object_key를 가진 media 행이 먼저 사라져 B레인 수명주기 소비자가 스토리지 정리 근거를 잃으므로, fix1 실제 커밋·PR 본문 갱신·해당 삭제 순서 검증이 반영되기 전에는 #518을 머지하면 안 된다.
