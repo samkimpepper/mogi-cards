@@ -11,3 +11,9 @@
 근거: PR #518 HEAD `supabase/migrations/20260814100000_swatch_media_model.sql:135-144`의 `anon_read`가 각 행의 `status IN ('stored', 'pending_upload')`만 검사함 + 2026-08-16 과외 세션 모기 확정
 
 현재 정책은 사진 2장 중 1장이 `stored`, 다른 1장이 `pending_download`이면 성공한 행만 공개 읽기에 남겨 반쪽짜리 발색이 노출될 수 있다. 모기는 사진별 복사·재시도는 독립적으로 유지하되 한 장이라도 표시 불가능하면 발색 전체를 격리하고 모든 사진이 `stored` 또는 안전한 `pending_upload`일 때만 묶음 전체를 공개한다고 확정했으므로, fix1에 swatch 단위 공개 판정과 부분 성공·복구 완료 전환 검증을 포함해야 한다.
+
+## PR #518 배치는 실제 시도 전에 최대 50행의 재시도 예산을 선차감한다
+
+근거: PR #518 HEAD `app/api/swatch-media-retry.ts:24-25`, `app/api/swatch-media-retry.ts:69-83`, `app/server/swatchMediaService.ts:102-113`, `supabase/migrations/20260814100000_swatch_media_model.sql:216-249`, PR 본문의 사진당 30초 타임아웃 + Vercel 공식 함수 실행 한도 문서 `https://vercel.com/docs/functions/configuring-functions/duration`
+
+현재 기본 배치는 due 50행을 한 번에 claim하면서 전부 `retry_count + 1` 한 뒤 `for`문으로 순차 복사하므로 최악 실행시간이 25분이고, Vercel 함수가 중간 종료되면 뒤쪽 행은 실제 다운로드를 시작하지도 않았는데 제한된 4회 예산을 잃는다. 자동 복구가 조기에 멈춰 불필요한 사용자 알림과 수동 재시도로 밀리지 않도록 실제 시도한 행만 예산을 소비하거나 만료 후 되살아나는 lease/claim과 실행시간 안에 끝나는 배치 경계를 두고, 중간 크래시·부분 처리·lease 회수 검증을 fix1에 포함해야 한다.
