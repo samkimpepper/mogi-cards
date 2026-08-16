@@ -6,11 +6,20 @@
 
 세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)에서 **`reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `archive/`(7월까지의 자료)는 요청 시에만.
 
+### 임시 자동 로딩 — PR raw diff 접촉 파일럿
+
+대상 PR이나 code diff note를 공부하는 세션은 카드 설명 전에 [PR raw diff 접촉 파일럿](./plan-cards/2026-08-16-raw-diff-contact-pilot.md)을 추가로 읽는다. 전체 변경 지도 → 주요 fix·구현 raw hunk → 연결 테스트 → 모기가 파일 목록에서 고르는 샛길 순서로 실제 코드 접촉을 돕는 임시 규칙이다.
+
+- **유효기간:** 파일럿 문서의 `## 실행 기록`이 3회에 도달하거나 모기가 중단을 선언할 때 중 먼저 오는 시점까지.
+- **만료 처리:** 자동 적용을 조용히 연장하지 않는다. 3회 기록을 보고 영구 승격·수정·제거 중 하나를 모기가 결정한 뒤 README와 프리앰블 포인터를 함께 정리한다.
+- 설계·SPEC처럼 아직 실제 diff가 없는 재료에는 적용하지 않는다.
+
 **다른 `guide-*` 문서와 과거 카드 묶음을 선제적으로 전부 읽지 않는다.** 아래 작업이 실제로 생겼을 때 해당 문서만 추가로 연다.
 
 | 파일 | 읽는 때 |
 |---|---|
 | `guide-tutor-preamble.md` | 기본 과외 세션 부트 |
+| `plan-cards/2026-08-16-raw-diff-contact-pilot.md` | 임시 자동 로딩 — 대상 PR·code diff note 과외, 실행 기록 3회 또는 모기 중단 선언까지 |
 | `master-delivery-memos.md` | 과외 발견물을 append하거나 마스터가 수신함을 처리할 때 |
 | `guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
 | `guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
