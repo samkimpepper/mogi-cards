@@ -7,7 +7,7 @@ merge_ready: false
 
 날짜: 2026-08-16
 
-재료: swatch-v2 PR #518 · `app/api/swatch-media-retry.ts` · `app/server/swatchMediaService.ts` · `supabase/migrations/20260814100000_swatch_media_model.sql`
+재료: swatch-v2 PR #518 · fix1 이전 HEAD `75665ad` · fix1 반영 HEAD `c19f702` · `app/api/swatch-media-retry.ts` · `app/server/swatchMediaService.ts` · `supabase/migrations/20260814110000_swatch_media_model.sql`
 
 ## 모기의 질문
 
@@ -15,13 +15,54 @@ merge_ready: false
 
 ## 한 줄 결론
 
-`retry_count`는 **실제로 복사를 시작한 횟수**, lease는 **어느 워커가 잠시 맡았는지**를 기록해야 한다. 여러 사진의 횟수를 먼저 차감한 뒤 순차 처리하지 말고, 소수 워커가 한 장씩 lease해 함수의 실행시간 안에서만 처리해야 서버가 중간에 죽어도 미시도 사진이 재시도 기회를 잃지 않는다.
+`retry_count`는 **실제로 복사를 시작한 횟수**여야 한다. fix1 반영 HEAD는 claim과 횟수 차감을 분리하고, 기본 10행을 8초 예산 안에서 순회하며 실제 다운로드 직전 `beginAttempt`에서만 횟수를 올린다. lease는 더 긴 작업이나 겹치는 워커 사이의 명시적 소유권까지 필요할 때 쓸 수 있는 일반적인 확장 대안이지, 현재 PR #518에 추가로 요구되는 fix는 아니다.
 
 이 문서의 개선 코드는 원리를 보여주는 축약 예제다. PR #518 fix의 최종 SQL·함수 이름을 미리 정하는 SSOT나 그대로 붙여 넣는 완성 구현은 아니다.
 
-## 현재 PR #518에서 생기는 일
+## 정정: 현재 HEAD에는 배치 선차감 문제가 없다
 
-현재 서버 코드는 먼저 due 행을 한꺼번에 가져온 뒤 한 장씩 처리한다.
+이 노트를 처음 쓸 때 fix1 이전 HEAD `75665ad`의 코드를 현재 상태로 오인했다. 판독 시점 PR HEAD `c19f702`에서는 기본 배치와 함수 내부 실행 예산이 다음처럼 바뀌어 있다.
+
+```ts
+const DEFAULT_LIMIT = 10
+const MAX_LIMIT = 50
+const SOFT_BUDGET_MS = 8_000
+```
+
+서버는 각 행에 도달한 뒤, 실제 복사를 호출하기 직전에만 횟수를 차감한다.
+
+```ts
+const due = await claimDue(service, limit)
+
+for (const row of due) {
+  if (Date.now() - startedAt >= SOFT_BUDGET_MS) break
+
+  await beginAttempt(service, row.id)
+  await copyOne(row.swatch_id, row, deps)
+}
+```
+
+현재 migration에서도 claim은 `last_attempt_at`만 갱신하고, 별도 `swatch_media_begin_attempt`가 `retry_count`를 올린다.
+
+```sql
+-- claim: 재시도 예약 시각만 기록
+UPDATE swatch_media m
+   SET last_attempt_at = now()
+  FROM due
+ WHERE m.id = due.id;
+
+-- 실제 다운로드 직전 호출
+UPDATE swatch_media
+   SET retry_count = retry_count + 1,
+       last_attempt_at = now()
+ WHERE id = p_media_id;
+```
+
+그러므로 8초 안에 도달하지 못한 행은 다음 due 시점까지 기다릴 수는 있어도 `retry_count`를 잃지는 않는다. 배치 선차감 항목은 이미 고쳐졌으며 추가 조치는 없다.
+
+## fix1 이전 HEAD에서 생겼던 일
+
+fix1 이전 서버 코드는 먼저 due 행을 한꺼번에 가져온 뒤 한 장씩 처리했다.
 
 ```ts
 const due = await claimDue(service, limit)
@@ -31,14 +72,14 @@ for (const row of due) {
 }
 ```
 
-기본 `limit`은 50이고 최대 200이다.
+당시 기본 `limit`은 50이고 최대 200이었다.
 
 ```ts
 const DEFAULT_LIMIT = 50
 const MAX_LIMIT = 200
 ```
 
-문제는 `claimDue`가 반환하기 전에 선택된 모든 행의 횟수를 먼저 올린다는 점이다.
+당시 문제는 `claimDue`가 반환하기 전에 선택된 모든 행의 횟수를 먼저 올린다는 점이었다.
 
 ```sql
 UPDATE swatch_media m
@@ -49,7 +90,7 @@ UPDATE swatch_media m
 RETURNING m.id, m.swatch_id, m.idx, m.source_url, m.retry_count;
 ```
 
-사진당 네트워크 타임아웃이 최대 30초이므로 50장을 순차 처리하는 최악 실행시간은 25분이다. PR이 전제한 Vercel Hobby의 함수 실행 한도보다 길다. 공식 한도 문서: `https://vercel.com/docs/functions/configuring-functions/duration`.
+사진당 네트워크 타임아웃이 최대 30초였으므로 50장을 순차 처리하는 최악 실행시간은 25분이었다. 이 역사 사례는 왜 claim과 실제 시도 횟수를 분리해야 하는지 보여준다.
 
 ## 실패 시나리오
 
@@ -88,7 +129,9 @@ claim 직후
 
 데이터가 자동 삭제되지는 않지만 자동 복구가 조기에 멈추고, 정상적으로 복구될 사진이 원작자의 `사진 다시 가져오기` 작업으로 밀린다.
 
-## 두 개념을 분리한다
+## 더 일반적인 lease 설계 대안
+
+현재 PR처럼 짧은 실행 예산 안에서 단일 흐름으로 처리한다면 `claim`과 `beginAttempt`의 분리만으로 미도달 행의 예산 손실을 막을 수 있다. 작업이 더 길어지거나 여러 워커가 겹쳐서 같은 행을 잡을 수 있다면, 아래처럼 명시적 lease를 더해 소유권과 시도 횟수도 분리할 수 있다.
 
 | 값 | 뜻 | 언제 바뀌나 |
 |---|---|---|
@@ -195,11 +238,11 @@ UPDATE swatch_media
 
 lease가 만료되어 새 워커가 새 token을 받은 뒤라면 옛 token의 update는 0행이므로 최신 상태를 덮지 않는다.
 
-## 5. 50장을 선점하지 않는 서버 예제
+## 5. 한 번에 많은 행을 선점하지 않는 lease 서버 예제
 
-고정된 10장을 먼저 잡는 방식도 안전하지 않다. 사진당 30초라면 10장 순차 처리만으로 5분이고 DB·업로드·응답 시간을 위한 여유가 없다.
+이 절은 현재 PR의 10행·8초 순회를 평가하는 코드가 아니라, 작업 하나가 오래 걸리는 별도 환경에서 lease를 적용하는 예제다. 그런 환경에서는 고정된 여러 행을 먼저 lease하기보다 소수 워커가 한 장씩 빌리고, 함수 종료 전에는 새 사진을 잡지 않는 편이 안전하다.
 
-대신 소수 워커가 한 장씩 빌리고, 함수 종료 전에는 새 사진을 잡지 않는다.
+소수 워커가 한 장씩 빌리고, 함수 종료 전에는 새 사진을 잡지 않는다.
 
 ```ts
 const STOP_CLAIMING_AT = Date.now() + 4 * 60_000
@@ -242,20 +285,22 @@ await Promise.all([
 ## before / after
 
 ```text
-before
+fix1 이전
 50장 선차감
 → 순차 처리
 → 함수 종료
 → 미시도 사진도 횟수 손실
 
-after
+일반적인 lease 대안
 최대 3장만 lease
 → 실제 시작 직전에만 횟수 차감
 → 완료하면 lease 해제
 → 서버가 죽으면 미시도 lease는 만료 뒤 회수
 ```
 
-## fix가 증명해야 하는 것
+현재 PR의 fix1은 lease 대신 `claim`과 `beginAttempt`를 분리하고 작은 시간 예산을 두는 방식으로 핵심 손실을 막았다.
+
+## lease 방식으로 확장한다면 증명할 것
 
 최종 구현의 함수명과 배치 크기는 달라질 수 있지만 아래 행동은 테스트로 고정해야 한다.
 
@@ -268,4 +313,4 @@ after
 
 ## 기억할 문장
 
-> lease는 “누가 잠시 맡았나”, retry count는 “실제로 몇 번 해봤나”다. 둘을 한 숫자로 표현하면 워커 장애가 사용자 사진의 재시도 기회를 먹는다.
+> claim과 실제 attempt는 같은 사건이 아니다. 현재 PR은 claim 시각과 `beginAttempt`로 둘을 분리했고, lease는 워커 소유권까지 분리해야 할 때 쓰는 확장 대안이다.
