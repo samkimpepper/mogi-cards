@@ -238,9 +238,124 @@ index 00000000..0a28d36c
 +})
 ```
 
+## 샛길 1 — 복사 완료 시점 숨김 재검사
+
+- 선택 이유: 주니어 백엔드가 비동기 작업 중 상태 변경, 완료 시점 재검사, 같은 트랜잭션의 outbox 기록, 함수 권한 재잠금을 한 파일에서 보기 좋음.
+- 판독 범위: `5cb3ad6155873eabba44e8ed3966a60190c1c810..43f983b1ce1061535a8970a18b8048fb4851262c`
+- 파일: `supabase/migrations/20260817030000_mark_stored_hidden_recheck.sql`
+
+```diff
+diff --git a/supabase/migrations/20260817030000_mark_stored_hidden_recheck.sql b/supabase/migrations/20260817030000_mark_stored_hidden_recheck.sql
+new file mode 100644
+index 00000000..2415e509
+--- /dev/null
++++ b/supabase/migrations/20260817030000_mark_stored_hidden_recheck.sql
+@@ -0,0 +1,96 @@
++-- =============================================================================
++-- 복사 완료 시점 숨김 재검사 — pending 중 숨김 잔존 차단 (PR #520 fix1 발견물 2)
++-- =============================================================================
++-- 구멍 (교차 리뷰 [높음], 마스터 실측 확정): 숨김 트리거
++-- queue_swatch_media_on_hidden_change (20260814110000)는 `object_key IS NOT NULL`
++-- 인 행만 revoke 를 큐잉한다 — 복사가 **아직 안 끝난**(pending, object_key NULL)
++-- 사진은 큐에 안 실린다. 그 뒤 복사가 완료되면 mark_stored 가 객체를 공개 버킷에
++-- 둔 채 stored 로 적고 끝난다 → 숨긴 발색의 사진이 공개 URL 로 잔류한다.
++--
++-- 수리: mark_stored 가 성공 기록 직후 **소속 발색의 숨김 여부를 재검사**하고,
++-- 숨김 상태면 그 자리에서 revoke 를 큐잉한다. 같은 트랜잭션이라 "stored 인데
++-- 회수 근거가 없는" 중간 상태가 존재하지 않고, 이 행이 그 객체의 첫 큐 행이라
++-- (이전에는 object_key 가 없어 어떤 트리거도 큐잉하지 못했다) claim 의 객체별
++-- 순서 보장과도 충돌하지 않는다.
++--
++-- mark_failed 는 재검사가 필요 없다 — 실패 경로는 공개 버킷에 객체를 만들지
++-- 않는다 (download 실패 = 받은 것 없음, upload 실패 = 올라간 것 없음. 업로드
++-- 성공 후 실패로 기록되는 경로는 없다 — copyOne 은 업로드 성공 시 mark_stored
++-- 만 부른다). 삭제와 복사가 겹친 경우는 기존 P0002 + queue_orphan 경로가 맡는다.
++--
++-- **이 파일이 신규 마이그레이션인 이유**: 원 정의가 있는 20260814110000 은 원격
++-- 기적용이라 수정 금지 — 재정의는 CREATE OR REPLACE 로만 한다 (#518 관례).
++-- =============================================================================
++
++BEGIN;
++
++-- 본문 출처 = 20260814110000 (6-d). 변경 = 숨김 재검사 블록 추가 하나.
++-- 보안 속성(SECURITY DEFINER + search_path 고정)·오류 코드·0행 P0002 는 그대로다.
++CREATE OR REPLACE FUNCTION swatch_media_mark_stored(
++  p_id           uuid,
++  p_object_key   text,
++  p_content_type text,
++  p_bytes        bigint
++)
++RETURNS void
++LANGUAGE plpgsql
++SECURITY DEFINER
++SET search_path = public
++AS $$
++DECLARE
++  v_swatch_id bigint;
++  v_hidden    boolean;
++BEGIN
++  IF p_object_key IS NULL OR p_object_key = '' THEN
++    RAISE EXCEPTION 'object_key required for stored media' USING ERRCODE = '22023';
++  END IF;
++
++  UPDATE swatch_media
++     SET status          = 'stored',
++         object_key      = p_object_key,
++         content_type    = p_content_type,
++         bytes           = p_bytes,
++         last_attempt_at = now()
++   WHERE id = p_id
++  RETURNING swatch_id INTO v_swatch_id;
++
++  IF NOT FOUND THEN
++    RAISE EXCEPTION 'swatch_media row % is gone — uploaded object % is orphaned',
++      p_id, p_object_key
++      USING ERRCODE = 'P0002';
++  END IF;
++
++  -- [fix1 발견물 2] 복사가 도는 사이 발색이 숨겨졌으면, 숨김 트리거가 이 행을
++  -- 못 봤다(당시 object_key NULL). 완료 시점에 재검사해 revoke 를 큐잉한다 —
++  -- 소비자가 집으면 방금 올라간 공개 객체가 private 으로 이사한다.
++  SELECT s.hidden_at IS NOT NULL INTO v_hidden
++    FROM swatches s
++   WHERE s.id = v_swatch_id;
++
++  IF COALESCE(v_hidden, false) THEN
++    INSERT INTO swatch_media_lifecycle_queue
++      (swatch_id, media_id, object_key, action, reason)
++    VALUES (v_swatch_id, p_id, p_object_key, 'revoke', 'stored_while_hidden');
++  END IF;
++END;
++$$;
++
++COMMENT ON FUNCTION swatch_media_mark_stored(uuid, text, text, bigint) IS
++  '복사 성공 기록. 대상 행이 사라졌으면 P0002 로 던진다(호출자가 수명주기 큐로 보낸다). 완료 시점에 소속 발색의 숨김 여부를 재검사해 숨김이면 revoke 를 큐잉한다 — 복사 중 숨긴 발색의 객체가 공개 버킷에 잔류하지 않게 (fix1 발견물 2). retry_count 는 남겨 둔다.';
++
++-- 권한 상태 보존 (repo 규칙: 재정의 때마다 명시 반복 — CREATE OR REPLACE 는
++-- ACL 을 유지하지만, seed 재-회수 목록과 같은 모양을 눈에 보이게 남긴다).
++REVOKE ALL ON FUNCTION swatch_media_mark_stored(uuid, text, text, bigint) FROM PUBLIC, anon, authenticated;
++GRANT EXECUTE ON FUNCTION swatch_media_mark_stored(uuid, text, text, bigint) TO service_role;
++
++COMMIT;
++
++-- ── 검증 (원격 재실행용, 읽기 전용) ─────────────────────────────────────────
++-- 1. 재검사 블록이 들어갔다.
++--    SELECT prosrc LIKE '%stored_while_hidden%' FROM pg_proc
++--     WHERE proname='swatch_media_mark_stored';                          -- 기대: t
++-- 2. 보안 속성·EXECUTE 는 그대로 service_role 전용 (구조 검증 (7) 블록이 함께 본다).
++--    SELECT prosecdef, proacl::text FROM pg_proc WHERE proname='swatch_media_mark_stored';
++--    기대: t, anon·authenticated 없음 + service_role=X
++-- 3. 운영 관찰 — 이 경로로 큐잉된 건수 (복사 중 숨김이 드물어 0 근처가 정상).
++--    SELECT count(*) FROM swatch_media_lifecycle_queue WHERE reason='stored_while_hidden';
+```
+
+### 샛길 1 — 모기의 첫 관찰
+
+> 이 파일에서 `swatch_media`의 어느 행이 언제 바뀌고, 그 사이 사용자가 무엇을 하면 공개 사본이 남는 것 같아?
+
 ## 아직 직접 보지 않은 fix1 파일
 
-핵심길 1에서 직접 본 파일은 `mediaAdapter.ts`, `supabaseAdapter.ts`, `supabaseAdapter.media.test.ts`다. 아래에서 샛길 파일은 모기가 직접 하나 고른다.
+핵심길 1에서 `mediaAdapter.ts`, `supabaseAdapter.ts`, `supabaseAdapter.media.test.ts`를 봤고, 샛길 1에서 `20260817030000_mark_stored_hidden_recheck.sql`을 골랐다. 아래는 아직 직접 보지 않은 파일이다.
 
 ```text
 app/api/swatch-media-lifecycle.ts
@@ -254,7 +369,6 @@ app/src/data/repos/swatchesRepo.blocked.test.ts
 app/src/data/repos/swatchesRepo.ts
 app/src/features/home/HomePage.tsx
 app/src/locales/ko/pages.json
-supabase/migrations/20260817030000_mark_stored_hidden_recheck.sql
 supabase/migrations/20260817040000_sync_insert_first_media_link.sql
 supabase/migrations/20260817050000_representative_media_swatch_scope.sql
 supabase/tests/shade_representative_reselection_fixture.sql
