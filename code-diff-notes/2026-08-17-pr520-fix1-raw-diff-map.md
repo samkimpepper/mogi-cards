@@ -78,7 +78,41 @@ index e9a5b631..638a69c2 100644
   * 발색의 행을 아예 감추므로 이 판정이 항상 false 다 — 공개 피드의 격리는
 ```
 
-### 연결: `app/src/data/supabase/supabaseAdapter.ts`
+### 중간 연결: `app/src/data/supabase/supabaseAdapter.ts`
+
+`shadeImageUrl`이라는 로컬 함수가 `shade_images.url`·`media_id`를 꺼내 `mediaAdapter.resolveShadeImageUrl`에 넘기는 hunk다.
+
+```diff
+diff --git a/app/src/data/supabase/supabaseAdapter.ts b/app/src/data/supabase/supabaseAdapter.ts
+index e6d03b2a..9da5b498 100644
+--- a/app/src/data/supabase/supabaseAdapter.ts
++++ b/app/src/data/supabase/supabaseAdapter.ts
+@@ -85,6 +91,22 @@ export async function loadFromSupabase(): Promise<AdaptedSeed | null> {
+       imagesByShade.set(img.shade_id as number, list)
+     }
+
++    // [fix1 발견물 1] media_id → 사본 요약. shade_images.url 원문 대신 자체 사본
++    // public URL 을 서빙하는 유일한 변환은 mediaAdapter 가 한다.
++    const mediaById = new Map<string, MediaRef>()
++    for (const m of mediaRows ?? []) {
++      mediaById.set(String(m.id), {
++        objectKey: (m.object_key as string | null) ?? null,
++        status: m.status as MediaRef['status'],
++      })
++    }
++    const shadeImageUrl = (img: Record<string, unknown> | undefined): string | null => {
++      const raw = (img?.url as string) ?? null
++      if (!raw) return null
++      const mediaId = img?.media_id as string | null | undefined
++      return resolveShadeImageUrl(raw, mediaId ? mediaById.get(String(mediaId)) : null)
++    }
++
+     // tweetIdMap for tweet lookup
+     const tweetIdMap = new Map<number, string>()
+     for (const t of tweets ?? []) {
+```
+
+### 최종 연결: `app/src/data/supabase/supabaseAdapter.ts`
 
 ```diff
 diff --git a/app/src/data/supabase/supabaseAdapter.ts b/app/src/data/supabase/supabaseAdapter.ts
