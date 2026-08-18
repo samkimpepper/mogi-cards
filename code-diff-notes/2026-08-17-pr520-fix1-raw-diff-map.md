@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # PR #520 fix1 — 실제 변경 지도와 raw diff 접촉
