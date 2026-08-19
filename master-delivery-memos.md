@@ -9,8 +9,6 @@
 ② **manual 후보 풀 좁힘** — 모기 fail-closed 판정(distinct shade 매핑 == 1 && 그 shade == 대상, 공개 사진만)을 **계약 개정 1 항목 1**로 반영(기존 "등록 전체 사진" 대체). 음성 대조 ⑤ 추가. plan card에도 동일 개정 절 반영.
 라우팅: 계약 `../swatch-ops/contracts/2026-08-19-sw-djc-representative-manual-curation.md` 개정 1 · plan card 개정 절 · 트래커 sw-djc 코멘트. 워커(PR #524, CI 대기 중)에는 worker_done 처리 시 개정 1을 후속 태스크로 전달 예정. 원문 = git 이력.)
 
-## 신규 어드민 RPC ACL에 authenticated 명시 GRANT가 빠짐
-
-- 근거: 현 계약 `../swatch-ops/contracts/2026-08-19-sw-djc-representative-manual-curation.md:25`은 신규 함수의 `SECURITY DEFINER`·고정 `search_path`·`REVOKE ... FROM PUBLIC, anon`·내부 `is_admin()`만 요구하고, 어드민 브라우저가 쓰는 `authenticated` 롤에 대한 명시적 `GRANT EXECUTE`는 적지 않았다. 제품의 기존 정본 관례는 `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql:628-634`처럼 `PUBLIC·anon` 회수와 `authenticated` 명시 허용을 한 묶음으로 두고, 어드민도 브라우저에서는 authenticated이므로 함수 본문 `is_admin()`으로 다시 가른다고 설명한다.
-- 왜 문제인지: 기본 PUBLIC 실행권을 회수한 뒤 authenticated에 실행권을 명시적으로 주지 않으면 정상 어드민 클라이언트도 RPC 입구에 도달하지 못할 수 있다. 반대로 default ACL에 기대면 환경별 권한 상태가 계약 밖에 남으므로, 두 신규 RPC 모두 `REVOKE ... FROM PUBLIC, anon` + `GRANT EXECUTE ... TO authenticated` + 내부 `is_admin()` 음성 대조를 명시해야 한다.
-- 판독 시점 커밋 SHA: swatch-v2 `8e62d32`, swatch-ops `1e0fd1f`
+(13차 비움 — 2026-08-19. 처리분 1건, 판독 도장 swatch-v2 `8e62d32`·swatch-ops `1e0fd1f` 대조: 계약은 당시 최신, 코드는 판독 후 워커 커밋 `25de3b13`이 존재.
+① **신규 RPC ACL의 authenticated 명시 GRANT 공백** — 지적은 **계약 문구**에 대해 유효(REVOKE만 요구하고 GRANT 누락). 구현 실물은 이미 정합 — 워커가 저장소 관례(20260810100000:628-634)를 따라 `20260819000000:311-314`에 REVOKE+GRANT 쌍을 넣었다(마스터 실측). 계약 개정 2에 ACL 문구 보강으로 반영, 코드 변경 없음.
+라우팅: 계약 개정 2. 원문 = git 이력.)
