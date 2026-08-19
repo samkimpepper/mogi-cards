@@ -4,20 +4,7 @@
 
 운영 규칙 (모기 확정 2026-08-14): 마스터가 메모를 확인·처리할 때마다 이 파일을 비운다. 처리 내역은 비움 표식 한 단락으로 남기고, 원문은 git 이력이 보존한다.
 
-(비어 있음 — 2026-08-18 마스터 11차 비움. 처리분 2건, 판독 SHA 대조 = PR HEAD `9ec4fe3`·mogi-cards `74f72fc` 모두 당시 최신 → 판독 유효.
-① **리드 카드 진행 중 문구 모순 2곳** — 지적 전건 수용(마스터 실수). `:35` "왜 아직 머지 불가인가" → "당시 머지 차단 사유", `:72` "지금 fix7로 진행 중" → "fix7로 반영 완료"로 역사 시점 고정. 최종 상태 문장은 안 건드렸다. 같은 판독에서 나온 상단/중간 충돌은 라운드마다 절을 덧붙이며 앞 절의 시제를 안 고친 탓 — 카드 갱신 시 **기존 절의 시제까지 훑는다**를 갱신 절차로 삼는다.
-② **self-thread 사진 중복** — 모기 결정대로 #520 fix 라운드로 되돌리지 않고 **머지 후 제품 설계 후보로 분리**(트래커 등재). fix2의 '발색 스코프 + 같은 URL 생존 사본 보존' 안전장치는 후속 정책과 무관하게 유지를 명시했다. 실측(다른 swatches 행 간 image_url 중복 0건)과 도달 경로(tweet-preview가 부모 트윗 사진을 평탄 병합)도 이슈에 그대로 옮겼다.
-원문 = git 이력.)
-
-## manual 대표사진 회수 정책이 결정문·신규 카드와 현재 구현에서 반대로 갈림
-
-- 근거: `../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md:32`는 manual 사진 자체가 회수되면 재선정한다고 명시하고, `plan-cards/2026-08-19-shade-representative-manual-curation-design.md:21`도 이를 #520 완료 동작으로 소비한다. 반면 `../swatch-v2/supabase/migrations/20260817070000_deadline_refund_and_url_serialization.sql:127-136,206-253`은 manual 대표의 `media_id` 연결만 끊고 대표 행은 남겨 자동 재선정을 명시적으로 막는다.
-- 왜 문제인지: 같은 사진의 사본 행이 삭제됐을 때 정본과 신규 설계는 남은 공개 후보로 대표가 바뀐다고 말하지만, 현재 구현은 관계가 끊긴 manual URL을 계속 대표로 유지한다. 신규 어드민 큐레이션 계약을 쓰기 전에 manual 지정 보호와 원본 회수 시 공개 경계 중 무엇이 우선인지 확정하고, 결정문·카드·구현을 한 방향으로 맞춰야 한다.
-- 도달 경로·모기 판단(2026-08-19): 일반 소유자가 `내 발색 → 수정`에서 사진 한 장의 선택을 해제하면 `update_swatch`가 그 URL을 `swatches.image_urls`에서 빼고, sync가 대응 `swatch_media` 행을 삭제한다(`app/src/features/profile/MyContributionsList.tsx:187-195`, `app/src/features/shade-detail/SwatchContributionSheet.tsx:198-205,599-624,425-433`). 모기는 이 정상 수정 경로에서는 `manual` 핀 보호보다 **사진 주인이 그 사진을 발색에서 뺐다는 사실이 우선**한다고 확정했다 — manual 대표 행을 회수하고 같은 작업 단위에서 자동 재선정하는 방향.
-- 판독 시점 커밋 SHA: `8e62d32`
-
-## manual 대표 후보를 단일-shade 발색의 공개 사진으로 좁혀야 함
-
-- 근거: 현 계약 `../swatch-ops/contracts/2026-08-19-sw-djc-representative-manual-curation.md:13-16,23-27`과 카드 `plan-cards/2026-08-19-shade-representative-manual-curation-design.md:20`은 대상 shade를 매핑한 등록의 전체 공개 사진을 manual 후보로 연다. 그러나 현재 `swatch_media`는 사진별 shade 관계 없이 `swatch_id`만 저장하고(`../swatch-v2/app/src/data/database.types.ts:2047-2095`), 등록 UI의 `perImageMap`도 게시 시 shade들을 합쳐 발색 단위 `swatch_items`로 평탄화한다(`../swatch-v2/app/src/features/shade-detail/SwatchContributionSheet.tsx:403-413`).
-- 왜 문제인지: 여러 shade가 매핑된 발색의 전체 사진을 A shade 후보로 열면 A 단독·B 단독·A/B 비교사진을 DB가 구분하지 못해 B 사진을 A의 sticky manual 대표로 오지정할 수 있다. 모기는 다중-shade 발색 안의 유효한 A 단독사진을 후보에서 놓치는 것은 아쉬움이지만 오매핑은 명백한 손해라고 구분해, **manual 후보는 부모 발색의 distinct shade 매핑이 정확히 1개이고 그 하나가 대상 shade인 공개 사진만 허용**하는 fail-closed 규칙을 확정했다(자동 비교 fallback·라벨은 현행 유지, 사진별 매핑 신설 없음).
-- 판독 시점 커밋 SHA: `8e62d32`
+(비어 있음 — 2026-08-19 마스터 12차 비움. 처리분 2건, 판독 도장 `8e62d32` = swatch-v2 dev HEAD 당시 최신 → 판독 유효(단, 워커 브랜치 `sw-djc-rep-curation`에 신규 커밋 `ac26c7b`이 판독 이후 존재 — 두 발견물 모두 기존 dev 코드·계약 문안에 대한 것이라 판독 유효성에 영향 없음, 마스터 실측 재확인 완료).
+① **manual 대표 회수 정책 분열** — 마스터가 `20260817070000` 실물로 재확인: manual 대표는 연결만 끊고 남긴다(주석 명시)가 결정문 §2와 반대, 숨김 경로(20260814060000)와도 비대칭. 모기 판정(정상 수정 경로에서 사진 주인의 제거 > manual 핀 → 회수 + 같은 작업 단위 재선정)을 **계약 개정 1 항목 2**로 반영, URL 폴백 추정 갈래 확장 금지 조건 부가. 음성 대조 ④ 추가.
+② **manual 후보 풀 좁힘** — 모기 fail-closed 판정(distinct shade 매핑 == 1 && 그 shade == 대상, 공개 사진만)을 **계약 개정 1 항목 1**로 반영(기존 "등록 전체 사진" 대체). 음성 대조 ⑤ 추가. plan card에도 동일 개정 절 반영.
+라우팅: 계약 `../swatch-ops/contracts/2026-08-19-sw-djc-representative-manual-curation.md` 개정 1 · plan card 개정 절 · 트래커 sw-djc 코멘트. 워커(PR #524, CI 대기 중)에는 worker_done 처리 시 개정 1을 후속 태스크로 전달 예정. 원문 = git 이력.)
