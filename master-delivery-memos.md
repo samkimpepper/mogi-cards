@@ -13,4 +13,5 @@
 
 - 근거: `../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md:32`는 manual 사진 자체가 회수되면 재선정한다고 명시하고, `plan-cards/2026-08-19-shade-representative-manual-curation-design.md:21`도 이를 #520 완료 동작으로 소비한다. 반면 `../swatch-v2/supabase/migrations/20260817070000_deadline_refund_and_url_serialization.sql:127-136,206-253`은 manual 대표의 `media_id` 연결만 끊고 대표 행은 남겨 자동 재선정을 명시적으로 막는다.
 - 왜 문제인지: 같은 사진의 사본 행이 삭제됐을 때 정본과 신규 설계는 남은 공개 후보로 대표가 바뀐다고 말하지만, 현재 구현은 관계가 끊긴 manual URL을 계속 대표로 유지한다. 신규 어드민 큐레이션 계약을 쓰기 전에 manual 지정 보호와 원본 회수 시 공개 경계 중 무엇이 우선인지 확정하고, 결정문·카드·구현을 한 방향으로 맞춰야 한다.
+- 도달 경로·모기 판단(2026-08-19): 일반 소유자가 `내 발색 → 수정`에서 사진 한 장의 선택을 해제하면 `update_swatch`가 그 URL을 `swatches.image_urls`에서 빼고, sync가 대응 `swatch_media` 행을 삭제한다(`app/src/features/profile/MyContributionsList.tsx:187-195`, `app/src/features/shade-detail/SwatchContributionSheet.tsx:198-205,599-624,425-433`). 모기는 이 정상 수정 경로에서는 `manual` 핀 보호보다 **사진 주인이 그 사진을 발색에서 뺐다는 사실이 우선**한다고 확정했다 — manual 대표 행을 회수하고 같은 작업 단위에서 자동 재선정하는 방향.
 - 판독 시점 커밋 SHA: `8e62d32`
