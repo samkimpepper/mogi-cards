@@ -12,3 +12,9 @@
 (13차 비움 — 2026-08-19. 처리분 1건, 판독 도장 swatch-v2 `8e62d32`·swatch-ops `1e0fd1f` 대조: 계약은 당시 최신, 코드는 판독 후 워커 커밋 `25de3b13`이 존재.
 ① **신규 RPC ACL의 authenticated 명시 GRANT 공백** — 지적은 **계약 문구**에 대해 유효(REVOKE만 요구하고 GRANT 누락). 구현 실물은 이미 정합 — 워커가 저장소 관례(20260810100000:628-634)를 따라 `20260819000000:311-314`에 REVOKE+GRANT 쌍을 넣었다(마스터 실측). 계약 개정 2에 ACL 문구 보강으로 반영, 코드 변경 없음.
 라우팅: 계약 개정 2. 원문 = git 이력.)
+
+## swatch_items.shade_slug 이중 참조 폐기 후보를 활성 부채로 승격 검토
+
+- 근거: 초기 마이그 `../swatch-v2/supabase/migrations/20260421120001_swatch_items_slug.sql:1-16`는 클라이언트 slug→bigint 조회 비용을 피하려 `shade_slug`를 추가하고 `shade_id` NOT NULL을 풀었다. 현재 `create_swatch`/`update_swatch`는 RPC 안에서 slug로 `shades.id`를 조회한 뒤 ID와 slug를 둘 다 저장하며(`app/src/data/repos/swatchesRepo.ts:100-143`, `supabase/migrations/20260814050000_write_rpc_returning_hidden_at.sql:214-236`), 2026-08-19 원격 QA 읽기 전용 실측은 `swatch_items` 201행 중 `shade_id IS NULL` 3행·전건 slug로 복구 가능·ID/slug 불일치 0·해석 불가 0이다. `archive/2026-07-03-table-rls.md:128`에도 근본 해결은 slug-only 행 ID 백필 후 slug 참조 폐기라고 todo 후보로 남아 있다.
+- 왜 문제인지: 같은 shade를 ID와 slug 두 컬럼이 동시에 표현하면 모든 판정·조인이 두 경로를 해석해야 하고, #524처럼 정상 ID·slug 중복과 죽은 slug를 별도로 방어해야 한다. #524 수리 범위를 키우지 말고, 별도 정리로 QA 3행 ID 백필 → `shade_id NOT NULL` 복구 → 현행 함수·조회의 slug fallback 제거 → `shade_slug` 컬럼·인덱스 폐기 → 타입 재생성 경로를 활성 트래커로 승격할지 판단이 필요하다.
+- 판독 시점 커밋 SHA: swatch-v2 dev `8e62d32` (PR #524 HEAD `25de3b13` 대조)
