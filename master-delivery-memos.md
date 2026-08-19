@@ -15,3 +15,9 @@
 - 왜 문제인지: 같은 사진의 사본 행이 삭제됐을 때 정본과 신규 설계는 남은 공개 후보로 대표가 바뀐다고 말하지만, 현재 구현은 관계가 끊긴 manual URL을 계속 대표로 유지한다. 신규 어드민 큐레이션 계약을 쓰기 전에 manual 지정 보호와 원본 회수 시 공개 경계 중 무엇이 우선인지 확정하고, 결정문·카드·구현을 한 방향으로 맞춰야 한다.
 - 도달 경로·모기 판단(2026-08-19): 일반 소유자가 `내 발색 → 수정`에서 사진 한 장의 선택을 해제하면 `update_swatch`가 그 URL을 `swatches.image_urls`에서 빼고, sync가 대응 `swatch_media` 행을 삭제한다(`app/src/features/profile/MyContributionsList.tsx:187-195`, `app/src/features/shade-detail/SwatchContributionSheet.tsx:198-205,599-624,425-433`). 모기는 이 정상 수정 경로에서는 `manual` 핀 보호보다 **사진 주인이 그 사진을 발색에서 뺐다는 사실이 우선**한다고 확정했다 — manual 대표 행을 회수하고 같은 작업 단위에서 자동 재선정하는 방향.
 - 판독 시점 커밋 SHA: `8e62d32`
+
+## manual 대표 후보를 단일-shade 발색의 공개 사진으로 좁혀야 함
+
+- 근거: 현 계약 `../swatch-ops/contracts/2026-08-19-sw-djc-representative-manual-curation.md:13-16,23-27`과 카드 `plan-cards/2026-08-19-shade-representative-manual-curation-design.md:20`은 대상 shade를 매핑한 등록의 전체 공개 사진을 manual 후보로 연다. 그러나 현재 `swatch_media`는 사진별 shade 관계 없이 `swatch_id`만 저장하고(`../swatch-v2/app/src/data/database.types.ts:2047-2095`), 등록 UI의 `perImageMap`도 게시 시 shade들을 합쳐 발색 단위 `swatch_items`로 평탄화한다(`../swatch-v2/app/src/features/shade-detail/SwatchContributionSheet.tsx:403-413`).
+- 왜 문제인지: 여러 shade가 매핑된 발색의 전체 사진을 A shade 후보로 열면 A 단독·B 단독·A/B 비교사진을 DB가 구분하지 못해 B 사진을 A의 sticky manual 대표로 오지정할 수 있다. 모기는 다중-shade 발색 안의 유효한 A 단독사진을 후보에서 놓치는 것은 아쉬움이지만 오매핑은 명백한 손해라고 구분해, **manual 후보는 부모 발색의 distinct shade 매핑이 정확히 1개이고 그 하나가 대상 shade인 공개 사진만 허용**하는 fail-closed 규칙을 확정했다(자동 비교 fallback·라벨은 현행 유지, 사진별 매핑 신설 없음).
+- 판독 시점 커밋 SHA: `8e62d32`
