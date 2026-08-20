@@ -1,0 +1,19 @@
+{
+  "description": "Load mogi-cards tutor guidance and the latest learning handoff at session start.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh \"$(git rev-parse --show-toplevel)/.codex/hooks/session-start-tutor-context.sh\"",
+            "timeout": 5,
+            "statusMessage": "최신 과외 인수인계 읽는 중",
+            "additionalContextLimit": 0
+          }
+        ]
+      }
+    ]
+  }
+}

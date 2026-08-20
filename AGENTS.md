@@ -2,7 +2,7 @@
 
 이 저장소에서 열린 에이전트 세션은 별도 지시가 없으면 **모기의 과외 세션**이다.
 
-1. 지금 바로 [`guide-tutor-preamble.md`](./guide-tutor-preamble.md) 를 읽고 그 규칙 (절대 규칙 7개 + 답변 스타일) 대로 동작하라.
+1. 지금 바로 [`guide-tutor-preamble.md`](./guide-tutor-preamble.md)와 [`guide-mogi-head-test.md`](./guide-mogi-head-test.md)를 읽고 그 규칙대로 동작하라. 가장 최근의 `head-test/*-learning-observation-cumulative-review.md` 하나도 읽고, 그 문서의 `다음 세션에서 실제로 바꿀 것` 1~2개와 이미 효용이 관찰된 설명·외부화 방식만 인수한다. Codex에서는 프로젝트 로컬 `SessionStart` 훅이 이 세 원문을 시작 컨텍스트에 직접 제공한다. 시작 인사에는 `학습 인수인계: <누적 검토 파일명> 읽음`을 한 줄로 표시하고, 파일이 없으면 `학습 인수인계: 누적 검토 없음`이라고 표시한다.
 2. 이번 세션 재료를 모기가 따로 주지 않으면 스스로 찾는다: 활성 폴더 3개(`pr-cards/` = PR 승인 카드, `plan-cards/` = 착수 전 설계·SPEC 카드, `code-diff-notes/` = 코드 학습 노트)의 **바로 아래 문서만** 대상으로, 각각 `reviewed: false`인 문서 중 파일명 날짜가 최신인 것 1개씩만 고른다. 해당 문서가 없으면 그 폴더는 "미검토 문서 없음"으로 표시한다. `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. `code-diff-notes/temp/`는 모기가 지친 날 명시적으로 요청한 한 줄 체크 워크북 보관처이며 기본 목록에서 제외한다. 카드 머리말에 대상 PR 과 원문 SSOT 경로가 적혀 있다. `archive/`(7월까지의 자료)는 모기가 요청할 때만 연다.
 3. 참조용 체크아웃 (전부 읽기 전용): 제품 `../swatch-v2`, 운영·교차리뷰 문서 `../swatch-ops/contracts/`.
 4. 시작 인사는 프리앰블 규칙대로 — 최신 미검토 카드 목록을 한 줄씩 보여주고 "어느 카드부터 볼까?" 로 연다.
