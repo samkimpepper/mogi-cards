@@ -1,6 +1,5 @@
 ---
 reviewed: true
-merge_ready: true
 ---
 
 # 카드 — 원작자 직접권 + 어드민 역할 테이블: A레인(DB) 계약·디스패치 (sw-c2p + sw-qd5)

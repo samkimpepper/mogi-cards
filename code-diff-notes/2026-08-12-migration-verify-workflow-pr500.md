@@ -1,6 +1,5 @@
 ---
 reviewed: false
-merge_ready: false
 ---
 
 # 모기 code diff note — `migration-verify.yml` 읽기

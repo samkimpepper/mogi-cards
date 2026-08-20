@@ -1,6 +1,5 @@
 ---
 reviewed: false
-merge_ready: false
 ---
 
 # PR #524 해설 — manual 대표는 언제 보호되고 언제 회수되는가

@@ -1,6 +1,5 @@
 ---
 reviewed: false
-merge_ready: false
 ---
 
 # 모기 code diff note — 재시도 횟수와 lease를 분리하는 이유

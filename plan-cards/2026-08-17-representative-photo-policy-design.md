@@ -1,6 +1,5 @@
 ---
 reviewed: true
-merge_ready: true
 ---
 
 # 카드 — 공용 대표사진 정책 재결정: 설계 확정 (sw-u4r B레인 선행 게이트)

@@ -1,6 +1,5 @@
 ---
 reviewed: true
-merge_ready: false
 ---
 
 # 카드 — shade 대표사진 수동 큐레이션: 설계 확정 (sw-djc, A안)

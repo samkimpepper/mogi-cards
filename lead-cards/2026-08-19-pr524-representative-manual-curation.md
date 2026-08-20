@@ -1,6 +1,5 @@
 ---
 reviewed: false
-merge_ready: false
 ---
 
 # 리드 카드 — PR #524: shade 대표사진 수동 큐레이션 (sw-djc)

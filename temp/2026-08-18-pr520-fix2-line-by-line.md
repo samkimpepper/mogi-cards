@@ -1,6 +1,5 @@
 ---
 reviewed: false
-merge_ready: false
 ---
 # PR #520 fix2 — 한 줄씩 읽는 공책
 
@@ -520,4 +519,3 @@ fix2는 느린 작업의 시간 독점, 거짓 성공, 거짓 빈 화면, 고장
 - fix2 delta 재판독 지시: `../../swatch-ops/contracts/2026-08-17-pr520-fix2delta-codex-review-prompt.md`
 - fix3 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix3.md`
 - PR 최종 리드 카드: `../pr-cards/2026-08-17-pr520-swatch-media-serving.md`
-
