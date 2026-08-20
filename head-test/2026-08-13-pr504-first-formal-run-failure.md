@@ -4,8 +4,8 @@
 
 대상:
 
-- 참가자 케이스: `cases/2026-08-12-searchpath-pin.json`
-- reviewer-only 키: `keys/2026-08-12-searchpath-pin.answers.json`
+- 참가자 케이스: [`archive/runner-1.0/cases/2026-08-12-searchpath-pin.json`](./archive/runner-1.0/cases/2026-08-12-searchpath-pin.json)
+- reviewer-only 키: [`archive/runner-1.0/keys/2026-08-12-searchpath-pin.answers.json`](./archive/runner-1.0/keys/2026-08-12-searchpath-pin.answers.json)
 - 원재료: PR #504 `update_swatch`의 `search_path` 고정
 - 러너: `head-test-1.0`
 
@@ -47,7 +47,7 @@ update_swatch의 호출자 권한과 함수 본문은 유지
 
 ### 1. 참가자 케이스 준비와 시작
 
-마스터가 참가자 케이스와 정답 키를 분리해 만들고 validator를 통과시켰다. WSL2 파일 선택의 불편을 줄이기 위해 러너에 `?case=cases/...json` URL 자동 로드도 추가했다.
+마스터가 참가자 케이스와 정답 키를 분리해 만들고 validator를 통과시켰다. WSL2 파일 선택의 불편을 줄이기 위해 러너에 `?case=cases/...json` URL 자동 로드도 추가했다. 해당 데이터는 현재 `archive/runner-1.0/` 아래에 보존돼 있다.
 
 모기는 원본 카드·PR·정답 키를 미리 읽지 않고 정식 케이스를 시작했다. 이 낯섦 조건은 지켜졌다.
 

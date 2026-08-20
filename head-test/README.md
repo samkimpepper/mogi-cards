@@ -2,6 +2,8 @@
 
 이 러너는 A/B 제시 순서와 시간·피드백·지연·중단 규칙을 브라우저 코드로 잠그는 실험 도구다.
 
+`cases/`, `keys/`, `runs/`는 현행 과외 자료가 아니라 `head-test-1.0`의 레거시 실험 데이터다. 2026-08-20부터 [`archive/runner-1.0/`](./archive/runner-1.0/)에 보존하며 새 기본 과외 자료로 만들거나 자동 로딩하지 않는다. 루트의 러너 코드와 테스트는 역사적 재현을 위해 보관 데이터 경로를 읽는다.
+
 **기본 과외에서는 사용하지 않는다.** 기본 흐름은 실제 diff와 설명의 핵심을 맞추고, 자유롭게 질문한 뒤, 원할 때만 새 사례 하나를 적용하는 [`guide-mogi-head-test.md`](../guide-mogi-head-test.md)의 약한 가드레일 세 개다.
 
 PR #504 첫 정식 실행에서 러너의 상세 절차는 정상 작동했지만, 실제 변경보다 테스트 재료가 훨씬 어려워져 목표를 잃었다. 실패 분석은 [`2026-08-13-pr504-first-formal-run-failure.md`](./2026-08-13-pr504-first-formal-run-failure.md)에 있다.
@@ -11,12 +13,12 @@ PR #504 첫 정식 실행에서 러너의 상세 절차는 정상 작동했지�
 ## 실행
 
 1. 저장소 루트에서 `python3 -m http.server 8765`를 실행한다.
-2. `http://localhost:8765/head-test/runner.html?case=cases/policy-snapshot-demo.json`처럼 참가자 케이스를 넣은 링크를 연다. 러너가 같은 서버에서 케이스를 자동으로 불러온다.
+2. `http://localhost:8765/head-test/runner.html?case=archive/runner-1.0/cases/policy-snapshot-demo.json`처럼 보관된 참가자 케이스를 넣은 링크를 연다. 러너가 같은 서버에서 케이스를 자동으로 불러온다.
 3. 화면 순서대로 답하고, 끝이나 중단 시 `실행 JSON 저장`을 누른다.
-4. 완료 뒤에만 나타나는 `서버에서 정답 키 불러오기`를 눌러 조건별 구조 입력을 계산한다. 러너는 참가자 케이스와 같은 basename의 `keys/*.answers.json`을 이때 처음 가져온다.
-5. 저장한 JSON을 `runs/`에 옮길지는 모기가 결정한다. 러너가 저장소에 직접 쓰지는 않는다.
+4. 완료 뒤에만 나타나는 `서버에서 정답 키 불러오기`를 눌러 조건별 구조 입력을 계산한다. 러너는 참가자 케이스와 같은 basename의 `archive/runner-1.0/keys/*.answers.json`을 이때 처음 가져온다.
+5. 새 실행 JSON은 기본적으로 저장소에 넣지 않는다. 과거 실행 보관 위치였던 `archive/runner-1.0/runs/`는 레거시 구조 확인용으로만 남긴다. 러너가 저장소에 직접 쓰지는 않는다.
 
-URL 자동 로드는 `cases/` 바로 아래 JSON만 허용한다. 파일 선택 입력도 비상용으로 남아 있지만, WSL2에서는 localhost 링크가 기본 경로다. `file://`로 열면 URL 자동 로드를 사용할 수 없다.
+URL 자동 로드는 `archive/runner-1.0/cases/` 바로 아래 JSON만 허용한다. 파일 선택 입력도 비상용으로 남아 있지만, WSL2에서는 localhost 링크가 기본 경로다. `file://`로 열면 URL 자동 로드를 사용할 수 없다.
 
 PR #501 케이스는 이미 학습한 소재라 UI에도 `demo_only`로 표시된다. 조작 확인용이며 측정 결과로 쓰지 않는다.
 
@@ -45,13 +47,13 @@ PR #501 케이스는 이미 학습한 소재라 UI에도 `demo_only`로 표시�
 
 아래는 권장 절차가 아니라 기존 JSON을 해석하기 위한 현행 기술 형식이다.
 
-1. `cases/policy-snapshot-demo.json`을 복사해 `<날짜>-<주제>.json`으로 이름을 바꾼다.
+1. 보관된 `archive/runner-1.0/cases/policy-snapshot-demo.json`이 기존 형식의 예시다. 새 케이스 제작은 현재 중지돼 있다.
 2. `id`, `title`, `description`을 바꾸고 실제 측정이면 `demo_only: false`로 둔다.
 3. 처음 보는 작고 독립적인 카드에서 구조화 규칙 5개만 뽑는다.
 4. 각 규칙의 `fact`에 정보 출처·값의 주인·관측·이벤트·전후 값을 쓴다. 러너가 이 한 모델에서 문단과 표를 모두 생성한다.
 5. 고유명사는 `{{token}}`으로 쓰고 `variants.A`와 `variants.B`에 서로 다른 값을 넣는다. `token_roles`에는 두 값이 맡는 동일한 의미 역할을 적는다.
 6. `initial_questions` 네 개는 질문 종류를 하나씩 사용하고, 두 variant에 같은 추론 단계를 요구해야 한다.
-7. 참가자 케이스에는 `expected`를 넣지 않는다. 참가자 케이스와 같은 basename의 별도 `keys/<basename>.answers.json`에 기계적으로 비교할 짧은 값만 두고, 모순 판단과 이유는 자유서술로 받아 사람이 본다.
+7. 참가자 케이스에는 `expected`를 넣지 않는다. 기존 정답 키는 참가자 케이스와 같은 basename으로 `archive/runner-1.0/keys/<basename>.answers.json`에 보관돼 있다.
 8. validator를 통과해도 실제 인지 난도까지 같다는 뜻은 아니다. A/B 이름의 친숙도·길이·도메인 역할과 원문에 없는 외부 지식 여부를 블라인드로 별도 검토한다.
 
 검증 명령:

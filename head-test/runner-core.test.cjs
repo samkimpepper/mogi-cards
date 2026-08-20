@@ -1,8 +1,8 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const core = require("./runner-core.js");
-const demo = require("./cases/policy-snapshot-demo.json");
-const answerKey = require("./keys/policy-snapshot-demo.answers.json");
+const demo = require("./archive/runner-1.0/cases/policy-snapshot-demo.json");
+const answerKey = require("./archive/runner-1.0/keys/policy-snapshot-demo.answers.json");
 
 function fresh(previousOrder) {
   const ledger = core.emptyOrderLedger();
@@ -61,12 +61,12 @@ test("validator는 정확히 5개 규칙과 네 질문 종류를 허용한다", 
   assert.match(result.errors.join("\n"), /정확히 하나씩/);
 });
 
-test("URL 자동 로드는 cases 바로 아래 JSON만 허용하고 정답 키 경로를 유도한다", () => {
-  const casePath = "cases/2026-08-12-searchpath-pin.json";
+test("URL 자동 로드는 보관된 runner-1.0 cases 바로 아래 JSON만 허용하고 정답 키 경로를 유도한다", () => {
+  const casePath = "archive/runner-1.0/cases/2026-08-12-searchpath-pin.json";
   assert.equal(core.normalizeParticipantCasePath(casePath), casePath);
-  assert.equal(core.answerKeyPathForCase(casePath), "keys/2026-08-12-searchpath-pin.answers.json");
-  for (const invalid of ["../keys/secret.json", "/cases/test.json", "cases/nested/test.json", "keys/test.json", "cases/test.txt"]) {
-    assert.throws(() => core.normalizeParticipantCasePath(invalid), /cases\/ 바로 아래/);
+  assert.equal(core.answerKeyPathForCase(casePath), "archive/runner-1.0/keys/2026-08-12-searchpath-pin.answers.json");
+  for (const invalid of ["../keys/secret.json", "/cases/test.json", "archive/runner-1.0/cases/nested/test.json", "archive/runner-1.0/keys/test.json", "archive/runner-1.0/cases/test.txt"]) {
+    assert.throws(() => core.normalizeParticipantCasePath(invalid), /archive\/runner-1\.0\/cases\/ 바로 아래/);
   }
 });
 
