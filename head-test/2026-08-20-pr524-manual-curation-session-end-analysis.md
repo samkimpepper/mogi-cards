@@ -131,5 +131,5 @@
 ## 8. 세션에 남은 외부화
 
 - [`PR #524 manual 대표 회수 해설`](../code-diff-notes/2026-08-20-pr524-manual-representative-revocation.md) — manual 보호와 원본 회수의 경계, SQL IF 역읽기, 다중-shade fail-closed, slug 중복 참조, ROI 오염을 한 문서로 정리.
-- [`PR #524 리드 카드`](../lead-cards/2026-08-19-pr524-representative-manual-curation.md) — 판독 시작점과 머지 게이트.
+- [`PR #524 리드 카드`](../pr-cards/2026-08-19-pr524-representative-manual-curation.md) — 판독 시작점과 머지 게이트.
 - [`manual 큐레이션 plan card`](../plan-cards/2026-08-19-shade-representative-manual-curation-design.md) — 모기가 확정한 후보 축소·회수 정책 개정 1.

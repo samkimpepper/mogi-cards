@@ -499,4 +499,4 @@ fix2 설명으로는 맞다.
 - fix2 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix2.md`
 - fix3 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix3.md`
 - fix4 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix4.md`
-- fix2 한줄읽기 공책: `../temp/2026-08-18-pr520-fix2-line-by-line.md`
+- fix2 한줄읽기 공책: `./temp/2026-08-18-pr520-fix2-line-by-line.md`

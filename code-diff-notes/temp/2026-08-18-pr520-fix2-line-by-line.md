@@ -6,7 +6,7 @@ reviewed: false
 대상 PR: #520
 
 판독 범위: fix1 완료 `9527c28` → fix2 완료 `8edb2bb`
-재료: `../../swatch-ops/contracts/2026-08-17-pr520-fix2.md`와 실제 fix2 diff
+재료: `../../../swatch-ops/contracts/2026-08-17-pr520-fix2.md`와 실제 fix2 diff
 
 이 문서는 정식 Review Gate Quiz 답안지가 아니다.
 
@@ -515,7 +515,7 @@ fix2는 느린 작업의 시간 독점, 거짓 성공, 거짓 빈 화면, 고장
 
 ## 원문 포인터
 
-- fix2 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix2.md`
-- fix2 delta 재판독 지시: `../../swatch-ops/contracts/2026-08-17-pr520-fix2delta-codex-review-prompt.md`
-- fix3 계약: `../../swatch-ops/contracts/2026-08-17-pr520-fix3.md`
-- PR 최종 리드 카드: `../pr-cards/2026-08-17-pr520-swatch-media-serving.md`
+- fix2 계약: `../../../swatch-ops/contracts/2026-08-17-pr520-fix2.md`
+- fix2 delta 재판독 지시: `../../../swatch-ops/contracts/2026-08-17-pr520-fix2delta-codex-review-prompt.md`
+- fix3 계약: `../../../swatch-ops/contracts/2026-08-17-pr520-fix3.md`
+- PR 최종 리드 카드: `../../pr-cards/2026-08-17-pr520-swatch-media-serving.md`

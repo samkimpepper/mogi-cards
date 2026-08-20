@@ -4,7 +4,7 @@
 
 ## 새 세션 최소 로딩
 
-세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)에서 **`reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `archive/`(7월까지의 자료)는 요청 시에만.
+세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `code-diff-notes/temp/`와 `archive/`는 자동으로 열지 않는다.
 
 ### 임시 자동 로딩 — PR raw diff 접촉 파일럿
 
@@ -29,10 +29,13 @@
 | `pr-cards/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
 | `plan-cards/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
 | `code-diff-notes/<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
+| `code-diff-notes/temp/<날짜>-<주제>.md` | 모기가 지친 날 요청한 경우에만 한 줄씩 체크하며 읽는 임시 워크북 |
 | `archive/` | 7월까지의 지난 자료 — 모기가 요청할 때만 |
 | `*-해설.md` | 과외 문답을 증류하거나 이어서 읽을 때 |
 
 파일명에 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 활성 문서의 종류는 `pr-cards/`·`plan-cards/`·`code-diff-notes/` 폴더가 표현하고, 파일명은 날짜와 주제만 담는다.
+
+`code-diff-notes/temp/`는 상시 산출물이나 네 번째 활성 큐가 아니다. 피로 때문에 일반 코드 읽기가 어려워 모기가 명시적으로 요청했을 때만 만들며, 기본 미검토 카드 목록에서는 제외한다.
 
 제품 저장소는 읽기 전용이고, 쓰기는 이 저장소의 허용된 메모·해설과 새 문서 상태 기본값 작성에만 한다. 기존 문서의 상태를 `true`로 바꾸는 일은 모기가 직접 한다.
 
