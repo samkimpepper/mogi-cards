@@ -5,7 +5,7 @@ merge_ready: false
 
 # 리드 카드 — PR #524: shade 대표사진 수동 큐레이션 (sw-djc)
 
-작성: 냐옹이(Gen 11), 2026-08-19. 워커 READY HEAD `25de3b13`. 교차 리뷰 진행 중(결과: `../../swatch-ops/contracts/2026-08-19-pr524-cross-review.md`).
+작성: 냐옹이(Gen 11), 2026-08-19. **갱신 2026-08-20: 최종 READY — HEAD `da672a0`, 리뷰 루프 종결(필수 0·후가능 0).** 라운드 이력: 1차 교차 리뷰 필수 3건(`../../swatch-ops/contracts/2026-08-19-pr524-cross-review.md`) → round 2 수리 → delta 리뷰가 fix2 교체 구현에서 신규 필수 2건(`2026-08-20-pr524-delta-review.md`) → round 3 수리(ROI 정리는 좁은 갈래 B — 비대표 행만, 대표 행 선재 노출은 sw-ber 보존 · shade 잠금 직렬화 + 2세션 하네스) → 2차 delta 클린(`2026-08-20-pr524-delta2-review.md`). 게이트 12/12 · 음성 대조 9/9 · CI 실패 0. 후속: sw-ber(ROI-FK 선재 노출) · sw-k6i(PK 정렬 감시선) · sw-hrh(전환기 문구). 남은 게이트 = 모기 본문 완독 + UAT(지정/해제 실물) → 머지(모기) → 원격 마이그 3건 적용 창(20260819000000·20260819010000·20260820000000).
 
 ## 정체 확인 (머지 인계 최소선)
 
