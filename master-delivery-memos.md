@@ -19,28 +19,8 @@
 
 ## 2026-08-20 과외 발견물 — self-thread 사진 중복 정책·URL 이름 경계 (지금 변경 아님)
 
-① **self-thread의 부모 사진이 서로 다른 발색 등록에 겹칠 수 있는 정책 공백**
-
-근거: `app/api/tweet-preview.ts:171-190`은 입력한 답글의 같은 작성자 부모 체인을 따라가며 부모 사진도 `images`에 합치고, `app/src/features/shade-detail/SwatchContributionSheet.tsx:454-465`는 선택된 사진 배열과 현재 입력 status URL을 한 `swatches` 행으로 발행한다. `app/src/data/repos/swatchesRepo.ts:116-149`와 `supabase/migrations/20260428000000_swatch_device_id_source_unique.sql:17-28`의 중복 방지는 X status URL 단위라, 같은 self-thread의 부모 status와 답글 status를 각각 등록하면 서로 다른 `swatches.source_url` 아래 같은 사진 URL이 중복될 수 있다.
-
-왜 문제인지: 타래로 발색샷을 추가하는 계정이 실제 제품 입력 대상이라, 부모·답글을 한 발색으로 묶을지 각각 허용할지, 겹친 사진을 어느 등록의 것으로 볼지 제품 정책이 필요하다. 2026-08-20 원격 QA 읽기 전용 실측에서는 `swatches.image_urls`와 `swatch_media.source_url`의 교차 발색 중복 URL이 각각 0건이었으므로 현재 데이터 수리가 아니라 도달 가능한 미래 경계이며, 모기는 “다음에 정책으로 판단, 지금 변경 아님”으로 명시했다.
-
-중복 판독 정정: 이 항목은 2026-08-18 과외에서 이미 같은 경로와 QA 0건을 확인해 커밋 `21898c5`로 전달했고, 마스터가 커밋 `3bee88e`에서 머지 후 제품 설계 후보로 처리했다. 운영 트래커 `sw-xvv`도 `open`·P3로 남아 있으므로 이번 절은 새 라우팅 요청이 아니라 기존 미결 항목의 재확인이다.
-
-판독 시점 커밋 SHA: `8e62d32`
-
-② **`source_url` 이름이 서로 다른 값의 주인을 가리키는 학습·유지보수 혼동**
-
-근거: `app/src/data/repos/swatchesRepo.ts:133-139`의 `swatches.source_url`은 X 게시물 주소이고, `supabase/migrations/20260814110000_swatch_media_model.sql:248-363`의 `swatch_media.source_url`은 `swatches.image_urls` 원소 한 장의 사진 URL이다. 같은 마이그의 동기화 함수는 `swatches.image_urls`를 목록·순서 정본으로 읽어 사진마다 `swatch_media` 행을 만들고, 그 한 장의 원본 URL을 다시 `swatch_media.source_url`에 적는다.
-
-왜 문제인지: 같은 `source_url`이라는 이름이 게시물 출처와 사진 원본이라는 서로 다른 대상을 가리켜 PR 본문과 과외에서 실제 혼동이 발생했다. 모기는 이름이 마음에 들지 않지만 지금 바꾸자는 요청은 아니라고 명시했으므로, 즉시 rename이 아니라 이후 스키마·용어 정리 시 호환 비용과 함께 판단할 부채로만 전달한다.
-
-판독 시점 커밋 SHA: `8e62d32`
-
-③ **전환기 `image_urls` 직접 소비처가 Storage 어댑터 계약을 우회하는지 점검 필요**
-
-근거: `app/src/data/media/mediaAdapter.ts:1-17`은 화면·리포가 이 모듈만 호출하고 `image_urls`는 C레인 백필 전의 전환기 폴백이라고 명시한다. 그러나 `app/src/data/repos/collectionsRepo.ts:59-95`는 폴더 썸네일을 `swatches.image_urls[0]`에서 직접 고르고, `app/src/data/repos/comparisonAssessmentsRepo.ts:242-280`은 비교 근거 사진 URL을 `image_urls[image_index]`에서 직접 조립한다.
-
-왜 문제인지: 해당 화면들이 의도적으로 원본 X CDN URL을 보여주는 예외가 아니라면, 사본이 `stored`가 된 뒤에도 자체 Storage URL로 전환되지 않아 어댑터의 단일 조립 계약과 어긋난다. 반대로 의도된 예외라면 `image_urls`를 장기 정본으로 유지할 이유와 예외 소비처를 계약에 명시해야 하므로, PR #524 범위에서 즉시 고치기보다 #520 전환 계약과 함께 소비처 감사를 요청한다.
-
-판독 시점 커밋 SHA: `25de3b13`
+(15차 비움 — 2026-08-20. 처리분 3건, 판독 도장 swatch-v2 `8e62d32`·PR #524 HEAD `25de3b13` 유효.
+① **self-thread 부모 사진 정책 공백** — 과외 자기 명시대로 신규가 아니라 기존 미결 sw-xvv의 재확인. 원격 QA 교차 중복 0건 재실측을 sw-xvv 코멘트로 추가, 새 등재 없음.
+② **source_url 동명이인** — 부채 등재 sw-g5t (소유자: 지금 rename 아님, 용어 정리 시 판단).
+③ **image_urls 직접 소비처의 어댑터 계약 우회 2곳** — 감사 태스크 등재 sw-d7x (#520 전환 계약과 함께, PR #524 범위 밖, C레인 연관).
+원문 = git 이력.)
