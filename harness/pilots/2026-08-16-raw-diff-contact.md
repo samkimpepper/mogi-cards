@@ -1,5 +1,6 @@
 ---
 reviewed: false
+status: pilot
 ---
 
 # 계획 — PR 과외에서 실제 raw diff 먼저 접촉하기
