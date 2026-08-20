@@ -34,3 +34,11 @@
 왜 문제인지: 같은 `source_url`이라는 이름이 게시물 출처와 사진 원본이라는 서로 다른 대상을 가리켜 PR 본문과 과외에서 실제 혼동이 발생했다. 모기는 이름이 마음에 들지 않지만 지금 바꾸자는 요청은 아니라고 명시했으므로, 즉시 rename이 아니라 이후 스키마·용어 정리 시 호환 비용과 함께 판단할 부채로만 전달한다.
 
 판독 시점 커밋 SHA: `8e62d32`
+
+③ **전환기 `image_urls` 직접 소비처가 Storage 어댑터 계약을 우회하는지 점검 필요**
+
+근거: `app/src/data/media/mediaAdapter.ts:1-17`은 화면·리포가 이 모듈만 호출하고 `image_urls`는 C레인 백필 전의 전환기 폴백이라고 명시한다. 그러나 `app/src/data/repos/collectionsRepo.ts:59-95`는 폴더 썸네일을 `swatches.image_urls[0]`에서 직접 고르고, `app/src/data/repos/comparisonAssessmentsRepo.ts:242-280`은 비교 근거 사진 URL을 `image_urls[image_index]`에서 직접 조립한다.
+
+왜 문제인지: 해당 화면들이 의도적으로 원본 X CDN URL을 보여주는 예외가 아니라면, 사본이 `stored`가 된 뒤에도 자체 Storage URL로 전환되지 않아 어댑터의 단일 조립 계약과 어긋난다. 반대로 의도된 예외라면 `image_urls`를 장기 정본으로 유지할 이유와 예외 소비처를 계약에 명시해야 하므로, PR #524 범위에서 즉시 고치기보다 #520 전환 계약과 함께 소비처 감사를 요청한다.
+
+판독 시점 커밋 SHA: `25de3b13`
