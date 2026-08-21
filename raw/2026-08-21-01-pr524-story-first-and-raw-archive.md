@@ -3,6 +3,7 @@ date: 2026-08-21
 session_number: 1
 slug: pr524-story-first-and-raw-archive
 scope: user-messages-and-final-answers
+codex_session_key: pending
 ---
 
 # 2026-08-21 세션 01 — PR #524 story-first와 대화 원문 보존
@@ -451,4 +452,86 @@ Orca terminal read: 지저분한 PTY 화면 기록
 - 기존 모기 변경 세 파일은 건드리거나 커밋하지 않았어.
 
 첫 raw 파일명은 `raw/2026-08-21-01-pr524-story-first-and-raw-archive.md`야. 앞으로 같은 날짜에는 `02`, `03` 순으로 올라가. 규칙과 첫 raw 파일은 커밋했어.
+~~~
+
+## Turn 14
+
+### 모기
+
+~~~text
+근데 이거 네가 매번. 그러니까 과외냥이 너는 명색이 mogi-cards의 마스터?머그런건데 네가 이런노가다를 해야되냐옹..? 그냥 아 이거 뭐 코드짜서 그런 스크립트가 알아서 하게할순없냐옹?
+~~~
+
+### 과외냥이
+
+~~~text
+할 수 있어. 그리고 그게 훨씬 맞아. 나는 마스터가 아니라 과외냥이니까, 더더욱 원문 복사에 모델 토큰을 쓸 이유가 없어.
+
+공식 Codex 훅을 확인해보니 필요한 값이 이미 따로 제공돼.
+
+- `UserPromptSubmit`: 모기의 원문 `prompt`
+- `Stop`: 과외냥이의 최종 답변 `last_assistant_message`
+- `SessionEnd`: 세션 종료 시 마지막 정리
+
+그러니까 작은 스크립트가 JSON을 받아 `raw/*.md`에 직접 쓰면 돼. transcript JSONL의 불안정한 내부 형식을 파싱할 필요도 없어.
+
+```text
+모기 메시지 제출
+→ UserPromptSubmit 훅
+→ raw 파일에 모기 원문 기록
+
+과외냥이 답변 완료
+→ Stop 훅
+→ 같은 Turn에 최종 답변 기록
+```
+
+이러면:
+
+- 매 턴 자동 저장이라 컴팩트 걱정 없음
+- 모델이 원문을 다시 출력하지 않으므로 추가 토큰 비용 거의 없음
+- 도구 출력과 중간 진행 메시지는 애초에 들어오지 않음
+- 3턴 배치 규칙도 필요 없어짐
+- 기존 SessionStart 훅과 같은 `.codex/hooks.json`에 두 이벤트만 추가하면 됨
+- 훅 변경 후 `/hooks`에서 한 번 신뢰 승인만 하면 됨
+
+유일하게 자동화하기 애매한 건 의미 있는 `slug`야. 스크립트는 세션 내용을 이해하지 못하니까 우선:
+
+```text
+2026-08-21-01-session.md
+```
+
+으로 만들고, 세션 주제가 잡힌 뒤 과외냥이가 한 번만:
+
+```text
+2026-08-21-01-pr524-story-first-and-raw-archive.md
+```
+
+로 이름을 바꾸는 게 가장 단순해. 원문 복사 노가다는 0이 되고 파일명 결정만 남아.
+
+이 `임시 session 이름 → 주제 확정 뒤 한 번 rename` 방식이면 바로 훅 스크립트로 바꿀 수 있어.
+~~~
+
+## Turn 15
+
+### 모기
+
+~~~text
+올ㅋ 짱이다. ㅇㅇ 좋아 그렇게 진행해달라옹
+~~~
+
+### 과외냥이
+
+~~~text
+자동화로 바꿨어.
+
+- [raw 기록 훅](/home/mogi/code/swatch/mogi-cards/.codex/hooks/raw_conversation_archive.py:1)이 모기 원문과 과외냥이 최종 답변을 매 턴 직접 append해.
+- `UserPromptSubmit`은 사용자 원문을, `Stop`은 `last_assistant_message`를 기록해. 모델이 대화를 다시 복사하지 않아.
+- 새 파일은 `날짜-번호-session.md`로 시작하고, 의미 있는 slug로 rename해도 해시된 세션 키로 계속 찾아가.
+- [현재 세션 raw 원문](/home/mogi/code/swatch/mogi-cards/raw/2026-08-21-01-pr524-story-first-and-raw-archive.md:1)은 Turn 15까지 보충했고, 다음 자동 훅이 이 파일을 인수하도록 표시했어.
+- 단위 테스트 3개와 훅 JSON 검사가 통과했어.
+- 기존 모기 변경 세 파일은 건드리거나 커밋하지 않았어.
+
+한 가지 사용자 동작만 남았어. Codex에서 `/hooks`를 열고 새 `UserPromptSubmit`·`Stop` 프로젝트 훅을 한 번 신뢰 승인해줘. 승인 전에는 Codex가 새 훅을 건너뛰고, 승인 뒤 다음 일반 메시지부터 자동 기록돼.
+
+훅 스크립트, 설정, 테스트, 프리앰블, 현재 raw 보충분은 함께 커밋했어.
 ~~~
