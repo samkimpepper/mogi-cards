@@ -1,6 +1,6 @@
 ---
-reviewed: false
-merge_ready: false
+reviewed: true
+merge_ready: true
 ---
 
 # 카드 — PR #511: 폴더 목록 대표 썸네일 (네 요청 → 당일 배달)

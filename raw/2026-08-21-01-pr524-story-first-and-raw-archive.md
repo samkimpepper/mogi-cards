@@ -3,7 +3,7 @@ date: 2026-08-21
 session_number: 1
 slug: pr524-story-first-and-raw-archive
 scope: user-messages-and-final-answers
-codex_session_key: pending
+codex_session_key: 836f7f0bfd913ee9
 ---
 
 # 2026-08-21 세션 01 — PR #524 story-first와 대화 원문 보존
@@ -534,4 +534,239 @@ Orca terminal read: 지저분한 PTY 화면 기록
 한 가지 사용자 동작만 남았어. Codex에서 `/hooks`를 열고 새 `UserPromptSubmit`·`Stop` 프로젝트 훅을 한 번 신뢰 승인해줘. 승인 전에는 Codex가 새 훅을 건너뛰고, 승인 뒤 다음 일반 메시지부터 자동 기록돼.
 
 훅 스크립트, 설정, 테스트, 프리앰블, 현재 raw 보충분은 함께 커밋했어.
+~~~
+
+## Turn 16
+
+Codex turn key: `ac3482fdcb80b7a4`
+
+### 모기
+
+~~~text
+안녕 난 모기야 ㅋ 넌 과외냥이라옹!
+~~~
+
+### 과외냥이
+
+~~~text
+안녕 모기야 ㅋ 과외냥이 왔다옹.
+
+학습 인수인계: 2026-08-20-learning-observation-cumulative-review.md 읽음
+
+- PR 카드: `PR #524 — shade 대표사진 수동 큐레이션`
+- 설계 카드: `이미지 자체 보존 트랙 — 설계 확정`
+- 코드 학습 노트: `PR #524 — 사진 관계 확정과 URL 폴백 추정은 왜 다르게 처리되는가`
+
+오늘도 원문과 실제 상태를 먼저 보고, 설명할 땐 어느 행·값·이벤트인지 분명히 나눌게. 어느 카드부터 볼까?
+~~~
+
+## Turn 17
+
+Codex turn key: `c302c53613087fa3`
+
+### 모기
+
+~~~text
+mogi-cards/code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md 아 이거 다 완독..하고메모도썼어.. 힘들군..
+~~~
+
+### 과외냥이
+
+~~~text
+완독 잘했어. 메모의 큰 흐름은 정확해. 딱 세 군데만 정리하면 돼.
+
+- 과거 대표를 캐싱하지 않고 해제 시점에 자동 규칙을 다시 돌린다는 이해는 맞아. 다만 이 테스트는 지정 전 대표가 `b1.jpg`였는지는 확인하지 않아. [`지정 전 상태는 별도 확인하지 않음`](</home/mogi/code/swatch/mogi-cards/code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md:109>)이라고 범위를 닫아뒀어.
+- “대표 자리 비우기 = `is_primary=false`”는 경우에 따라 달라. 테이블 이름은 `swatch_images`가 아니라 `shade_images`고, 좌표 참조가 있으면 `is_primary=false`, 없으면 행 자체를 삭제해. PR 소스 `20260819000000_admin_manual_shade_representative.sql:115`.
+- “부모 발색”은 별도 부모 개념이 아니라 표현이 별로였어. 정확히는 사진의 `swatch_media.swatch_id`가 가리키는 `swatches` 발색 등록 행이야. 그 발색 등록과 대상 호수의 연결은 `swatch_items.swatch_id → shade_id`로 확인해. `database.types.ts:2059`, `database.types.ts:2006-2008`.
+
+그리고 `shade_images는 대표가 된 적이 있으면 저장된다`는 절반만 맞아. 새 대표는 새 `shade_images` 행으로 만들지만, 옛 대표 행은 좌표 참조가 있을 때만 남고 아니면 삭제돼. 네가 이 테이블에서 계속 걸리는 건 이해 문제가 아니라, “현재 대표 관계”와 “좌표 때문에 보존된 옛 이미지 행”이 한 테이블에 섞여 있기 때문이야.
+
+오늘은 여기서 닫을까?
+~~~
+
+## Turn 18
+
+Codex turn key: `44c82523e77dd157`
+
+### 모기
+
+~~~text
+ㅇㅇ 네 피드백을 그 파일 맨 아래에 추가해달라옹! 네 피드백이라고 명시도해주고
+~~~
+
+### 과외냥이
+
+~~~text
+맨 아래에 `## 과외냥이 피드백`으로 명시해서 추가했어.
+
+- 문서: [PR #524 수동 지정·해제 흐름 노트](</home/mogi/code/swatch/mogi-cards/code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md>)
+- 커밋: `b1bf41c docs: add tutor feedback to pr524 flow note`
+
+다른 수정 중인 파일들은 건드리지 않았어.
+~~~
+
+## Turn 19
+
+Codex turn key: `9ec385ef51b0001b`
+
+### 모기
+
+~~~text
+암튼 흠흠. mogi-cards/code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md 이 CODE-DIFF 설명방식 아주 맘에든다옹! 냐옹~~ 근데 지금 524PR 하나 가지고 code-diff 노트가 네개..인데.. 흠.. 지금 내가 계속 하네스실험을 하고있어가지고. 방금 내가 언급한 이 파일이 제일 맘에드는데 앞으로 이형식 참고하라고 하고싶다옹.. 이거 code-diff 가이드 있으면 거기 수정을 할까?냥?
+~~~
+
+### 과외냥이
+
+~~~text
+응, 수정하는 게 맞아. 다만 `참조 완결성 감사 파일럿` 전체를 영구 승격하는 건 아니고, 모기가 실제로 완독하고 좋다고 확인한 “설명 순서”만 영구 참고 형식으로 떼어내면 돼.
+
+별도 code-diff 전용 가이드는 현재 없어. 가장 알맞은 정본은 [`guide-tutor-preamble.md`](</home/mogi/code/swatch/mogi-cards/guide-tutor-preamble.md>)야. 여기에 다음을 넣는 걸 추천해.
+
+- 기본 참고본으로 방금 파일을 직접 링크
+- 사용자에게 일어난 사건과 최종 화면·저장 상태를 먼저 설명
+- 지정·해제처럼 서로 다른 이벤트를 나눔
+- 중요한 상태 변화에는 `어느 테이블·행·컬럼인지`를 가까운 괄호로 보충
+- 함수명·파일명·raw diff·테스트는 뒤쪽 근거층에 배치
+- 마지막에 한 줄 요약과 아직 펼치지 않은 파일 목록을 둠
+- 고정 템플릿은 아니며, 작은 diff에는 필요한 부분만 사용
+- 평소에는 하나의 핵심 독해 흐름당 최종 노트 하나만 만들고, 파일럿 비교본을 상시 증식시키지 않음
+
+PR #524의 네 문서는 하네스 실험 과정 기록이라 예외야. 앞으로는 story-first 형식의 최종본 하나를 기본 산출물로 삼으면 돼.
+
+그리고 감사 파일럿은 아직 `2/3`이므로 그대로 한 번 더 진행하되, “감사 에이전트를 계속 쓸지”와 “story-first 설명 형식을 계속 쓸지”는 분리해야 해. 후자는 지금 영구 참고 형식으로 채택해도 근거가 충분해 보여.
+
+이 범위로 내가 지금 `guide-tutor-preamble.md`를 수정할까?
+~~~
+
+## Turn 20
+
+Codex turn key: `d5b2bfdd2ab5b5d3`
+
+### 모기
+
+~~~text
+"설명 순서"가 뭐 말하는거냐옹?
+~~~
+
+### 과외냥이
+
+~~~text
+내가 말한 “설명 순서”는 같은 구현 사실을 모기에게 어떤 차례로 보여주느냐는 뜻이야. 코드 실행 순서를 말한 게 아니야.
+
+방금 마음에 든 노트는 이렇게 읽히잖아.
+
+1. 판독 SHA와 변경 파일 목록을 먼저 고정하되, 외우지 않아도 된다고 함
+2. 사용자에게 일어난 사건부터 보여줌  
+   `a2 선택 → 화면 대표가 a2로 바뀜 → 해제 → 자동 규칙이 a1을 고름`
+3. 지정과 해제를 별개의 흐름으로 나눔
+4. 그다음 어떤 테이블·행·컬럼이 바뀌는지 붙임
+5. 왜 해제 뒤 `a1`이 선택됐는지 자동 선정 규칙을 설명함
+6. 이후에야 UI 함수 → repo → RPC → DB 함수 이름을 연결함
+7. 실제 raw diff와 테스트로 앞 설명을 증명함
+8. 마지막에 한 줄로 다시 접고, 아직 펼치지 않은 파일을 밝힘
+
+짧게 접으면 이거야.
+
+```text
+사용자가 한 일과 결과
+→ 이벤트별 상태 변화
+→ 어느 행·컬럼이 바뀌었는지
+→ 왜 그런 결과가 나왔는지
+→ 실제 함수·파일·raw diff
+→ 테스트 근거
+→ 한 줄 요약
+```
+
+반대편은 처음부터 migration 파일, RPC 입력·반환값, repo 함수, UI 함수, 테스트 변수 이름을 같은 중요도로 쏟아내는 방식이야. 사실은 정확해도 모기가 “그래서 사용자가 뭘 했고 화면이 어떻게 됐는데?”를 뒤에서 역산해야 했지.
+
+그러니까 가이드에는 “항상 목차를 정확히 복사하라”가 아니라, **사용자 사건을 먼저 이해하고 구현 이름은 뒤에서 근거로 연결하라**고 적자는 뜻이었어.
+~~~
+
+## Turn 21
+
+Codex turn key: `2ff1e770b05b6aba`
+
+### 모기
+
+~~~text
+아웅 맞다옹!! 그럼 수정진행해달라옹
+~~~
+
+### 과외냥이
+
+~~~text
+수정 완료했어.
+
+[`guide-tutor-preamble.md`](</home/mogi/code/swatch/mogi-cards/guide-tutor-preamble.md>)에 `코드 학습 노트 — 사용자 사건 먼저` 규칙을 추가했어.
+
+핵심은:
+
+- 방금 마음에 든 story-first 노트를 기본 참고본으로 지정
+- `사용자 사건 → 상태 변화 → 테이블·컬럼 → 구현·raw diff → 테스트` 순서
+- 고정 목차 복사는 금지
+- 작은 diff는 필요한 만큼만 축약
+- 하나의 핵심 독해 흐름당 최종 노트 하나
+- 하네스 실험이 아니면 같은 내용의 비교본을 계속 만들지 않음
+
+커밋은 `409179a docs: adopt story-first code diff notes`야. 다른 수정 중인 파일들은 건드리지 않았어.
+~~~
+
+## Turn 22
+
+Codex turn key: `ea775da3dcc82d66`
+
+### 모기
+
+~~~text
+그래... 524pr 끝이없네.. 더볼거있나?..
+~~~
+
+### 과외냥이
+
+~~~text
+과외 기준으로는 핵심 흐름은 다 봤어. 꼭 더 볼 만한 건 딱 하나야.
+
+| PR #524 노트 | 지금 의미 |
+|---|---|
+| `manual-set-clear-flow-story-first` | 수동 지정 → 해제 → 자동 복귀. 완독 완료 |
+| `manual-set-clear-flow` | 위 노트의 실험용 전신. 다시 읽을 필요 없음 |
+| `manual-representative-revocation` | 중간 SHA에서 만든 초기 해설. 개념 참고용이지 다시 완독할 최종본은 아님 |
+| `relation-vs-url-fallback` | `SCRATCHPAD.md`에 남은 유일한 `?`를 답하는 노트. 이것만 아직 의미 있음 |
+
+남은 질문은 이거야.
+
+```text
+사진 사본 행이 삭제될 때
+UUID로 그 사진임이 확정된 manual 대표는 회수하는데,
+URL 문자열만 같은 manual 대표는 왜 보존하는가?
+```
+
+[`relation-vs-url-fallback`](</home/mogi/code/swatch/mogi-cards/code-diff-notes/2026-08-21-pr524-relation-vs-url-fallback.md>)이 바로 그 질문용이야. 다만 지금 형식은 방금 좋아한 story-first보다 구현 설명이 먼저 나와. 다음에 본다면 새 다섯 번째 노트를 만들지 말고, 이 파일 하나를 story-first 형식으로 고쳐서 보면 돼.
+
+동시 `set/set`·`set/clear` 잠금과 ROI 보존 행 정리는 안전장치 샛길이야. 핵심 사용자 사건을 이해하기 위해 지금 추가로 완독할 필요는 없어. 실물 UAT는 코드 공부와 별개의 마스터 경로고.
+
+그러니까 오늘은 여기서 닫아도 돼. PR #524 공부에서 남은 건 저 한 갈래뿐이야.
+~~~
+
+## Turn 23
+
+Codex turn key: `e171d29a129e1e8f`
+
+### 모기
+
+~~~text
+ㅇㅋㅇㅋ 그것도 이전세션에서 한거라옹. 내가 reviewd true로바꾸는걸 깜빡해서. 아 그럼 이제 세션 종료일지를 써달라옹! head-test 뭔지알지? 냥
+~~~
+
+### 과외냥이
+
+~~~text
+세션 종료일지 작성하고 커밋했어.
+
+- 종료일지: [PR #524 story-first 코드 독해와 형식 채택](</home/mogi/code/swatch/mogi-cards/head-test/2026-08-21-pr524-story-first-code-diff-session-end-analysis.md>)
+- 커밋: `2a6b580 docs: record pr524 story-first tutoring session`
+
+story-first 형식의 긍정적 사용감, 막힌 표현, 바로 연결한 지점, 새 사례 적용은 미관찰이라는 경계까지 기록했어. 기존 문서의 `reviewed` 상태는 건드리지 않았어.
+
+오늘 과외는 여기서 끝이라옹. 푹 쉬어 모기야.
 ~~~
