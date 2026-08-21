@@ -121,7 +121,14 @@ shade_images
   representative_source = auto_single
   media_id = media-old
   url = old.jpg
+
+swatch_regions
+  image_id = image-old인 행 없음
 ```
+
+이 예시는 `swatch_regions`가 `image-old`를 참조하지 않는 상태다. 따라서 아래 지정
+흐름에서 `vacate_shade_primary_image(image-old)`는 `image-old`를 삭제한다. ROI 행이
+참조하는 예시라면 삭제하지 않고 `image-old.is_primary`를 `false`로 바꾼다.
 
 어드민이 `호수-A`의 새 대표로 `media-new`를 선택한다. RPC 입력은 다음 두 값이다.
 
@@ -220,8 +227,10 @@ p_media_id = media-new
 
 ## 6. 해제 raw hunk — manual 자리만 비우고 자동 사다리를 다시 부른다
 
-해제 RPC는 현재 대표가 없거나 이미 자동 대표면 성공 상태가 이미 충족됐다고 보고
-`noop`을 반환한다. 현재 대표가 `manual`일 때만 자리를 비우고 재선정한다.
+`admin_clear_shade_representative(p_shade_id)`는 `shade_images`에서
+`shade_id=p_shade_id AND is_primary=true`인 행을 읽는다. 그 행이 없거나
+`representative_source`가 이미 `auto_*`이면 `action='noop'`을 반환한다. 현재 행이
+`manual`일 때만 그 행을 비우고 `reselect_shade_representative(p_shade_id)`를 호출한다.
 
 ```diff
 +  SELECT id, representative_source
@@ -268,9 +277,10 @@ p_media_id = media-new
 >
 > 모기 메모:
 
-여기서 `reselected=false`는 재선정 함수를 호출하지 않았다는 뜻이 아니다.
-`reselect_shade_representative()`는 호출됐지만 살아 있는 자동 후보가 없어 새 대표 행을
-채우지 못했다는 뜻이다. 그때 화면은 대표 이미지 대신 색상칩을 보여준다.
+manual 행을 해제한 결과가 `action='cleared'`, `reselected=false`라면 재선정 함수를
+호출하지 않았다는 뜻이 아니다. `reselect_shade_representative(p_shade_id)`는 호출됐지만
+살아 있는 자동 후보가 없어 `shade_id=p_shade_id AND is_primary=true`인 새 행을 만들지
+못했다는 뜻이다. 그때 화면은 대표 이미지 대신 색상칩을 보여준다.
 
 자동 후보가 있다면 같은 트랜잭션 안에서 다음 순서가 끝난다.
 
@@ -370,8 +380,10 @@ async function onClear() {
 > 모기 메모:
 
 DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반환하므로, 화면은 중간 행
-상태를 조립하지 않는다. `refresh()`는 DB가 확정한 최종 대표를 다시 읽어 화면 목록을
-맞추는 단계다.
+상태를 조립하지 않는다. `refresh()`는 `fetchRepresentativeCuration()`을 호출하고,
+그 함수는 `shade_images`에서 `is_primary=true`인 행의 `shade_id`·`url`·
+`representative_source`·`media_id`를 다시 읽어 화면의 `representativeUrl`과
+`representativeSource`를 맞춘다.
 
 ## 8. 연결된 테스트 raw hunk — 지정과 해제의 최종 행을 본다
 
@@ -396,8 +408,9 @@ DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반
 +  END IF;
 ```
 
-해제 검사는 manual `a2`를 걷은 뒤 기존 자동 사다리가 더 오래된 발색의 첫 사진
-`a1`을 `auto_single`로 다시 골랐는지 확인한다.
+픽스처의 PASS(10) 해제 검사는 `admin_clear_shade_representative(v_a)`를 호출한다.
+그 호출이 manual `a2`를 걷은 뒤 기존 자동 사다리가 더 오래된 발색의 첫 사진 `a1`을
+`auto_single`로 다시 골랐는지 확인한다.
 
 ```diff
 +  v_res := admin_clear_shade_representative(v_a);
@@ -438,9 +451,10 @@ DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반
 ## 9. 한 줄로 이어 읽기
 
 ```text
-어드민 화면은 shade와 후보 media UUID만 RPC에 넘기고,
-서버는 기존 대표 행의 내용물을 바꾸지 않고 자리를 비운 뒤 새 manual 행을 넣으며,
-해제할 때는 그 manual 자리를 비운 같은 트랜잭션에서 기존 자동 사다리를 다시 부른다.
+onPick(candidate)는 선택한 shade ID와 candidate.mediaId를 setShadeRepresentative()에 넘기고,
+admin_set_shade_representative()는 기존 primary 행을 비운 뒤 새 manual primary 행을 넣는다.
+onClear()가 clearShadeRepresentative()를 호출하면 admin_clear_shade_representative()는
+현재 manual primary 행을 비우고 같은 트랜잭션에서 reselect_shade_representative()를 부른다.
 ```
 
 > [!note] 모기 박스
