@@ -54,6 +54,14 @@
 - 완료 보고가 실제로 도착한 세션만 파일럿 문서의 `completed_sessions`와 `remaining_sessions`에 반영하며, 한 세션에는 최대 1회만 센다.
 - 3회를 채우거나 모기가 중단을 선언하면 자동 적용을 멈춘다. 모기와 세 기록을 검토하기 전에는 영구 규칙으로 승격하지 않는다.
 
+## 임시 관찰 — Codex native compaction 자연 상태 2세션
+
+다음 Codex 과외 세션 2회는
+[`harness/pilots/2026-08-21-native-compaction-baseline.md`](./harness/pilots/2026-08-21-native-compaction-baseline.md)를
+따른다. 저컨텍스트 비율 경고·rolling checkpoint·컴팩트 직전 관찰일지를 만들지 않고,
+기존 `SessionStart` 훅과 native compaction만으로 계속한다. 모기가 실제 연속성 이상을
+말했을 때만 기록하고, checkpoint 파일럿으로 자동 승격하지 않는다.
+
 ## 코드 학습 노트 — 작은 모기 박스
 
 새 `code-diff-notes/` 문서를 만들 때는 각 핵심 소제목에 짧은 `모기 박스`를 하나 둔다. 박스는 설명을 그대로 되풀이하는 퀴즈가 아니라, 모기가 그 절에서 이해한 점·헷갈린 점·떠오른 질문·다음 상태에 대한 추측 중 아무거나 적는 작은 작업 공간이다.

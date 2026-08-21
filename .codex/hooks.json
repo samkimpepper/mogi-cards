@@ -1,5 +1,5 @@
 {
-  "description": "Load tutor guidance at session start and warn before the context budget gets tight.",
+  "description": "Load mogi-cards tutor guidance and the latest learning handoff at session start.",
   "hooks": {
     "SessionStart": [
       {
@@ -11,39 +11,6 @@
             "timeout": 5,
             "statusMessage": "최신 과외 인수인계 읽는 중",
             "additionalContextLimit": 0
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/sh -c 'exec node \"$(git rev-parse --show-toplevel)/.codex/hooks/context-budget-warning.js\"'",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/sh -c 'exec node \"$(git rev-parse --show-toplevel)/.codex/hooks/context-budget-warning.js\"'",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/sh -c 'exec node \"$(git rev-parse --show-toplevel)/.codex/hooks/context-budget-warning.js\"'",
-            "timeout": 5
           }
         ]
       }
