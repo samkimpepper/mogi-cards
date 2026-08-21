@@ -2,8 +2,8 @@
 reviewed: false
 status: pilot
 planned_sessions: 3
-completed_sessions: 0
-remaining_sessions: 3
+completed_sessions: 1
+remaining_sessions: 2
 ---
 
 # 코드 학습 노트 참조 완결성 감사 파일럿
@@ -91,6 +91,9 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
 
 전체 문서를 자유롭게 재작성하지 않는다. 발견마다 아래 한 묶음만 반환한다.
 
+`모호한 원문`은 초안에서 문자 그대로 복사한다. 빈칸·질문·예시 값을 감사자가 임의로
+채우거나 평서문으로 바꾼 인용은 finding으로 인정하지 않는다.
+
 ```yaml
 - 초안 위치: <소제목·문장>
   모호한 원문: <그대로 인용>
@@ -137,4 +140,12 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
 
 ## 실행 기록
 
-아직 실행 없음.
+### 세션 1 — 2026-08-21 · PR #524 manual 지정·해제·자동 복귀
+
+- 감사 초안: `code-diff-notes/2026-08-21-pr524-manual-set-clear-flow.md`
+- 판독 SHA·소스: HEAD `da672a05a9eb36cc158d0f120b2f9f673ba39ec0`; `20260819000000_admin_manual_shade_representative.sql`, `adminRepresentativeRepo.ts`, `AdminRepresentativeCuration.tsx`, `admin_manual_representative_fixture.sql`
+- 보고: 감사냥이 보고 8건. 과외냥이 재대조 결과 참조 누락 7건, 오판 1건.
+- 실제로 유용한 누락: 파일 역할 지도에서 두 RPC의 고유명사·각 트랜잭션 경계·반환 필드가 빠짐. ROI 조건 없는 예시 박스는 기존 행이 삭제되는지 데모트되는지 답이 하나로 정해지지 않음. 해제 박스의 RPC 이름·반환 필드, `refresh()`가 다시 부르는 repo 함수와 읽는 행 조건, PASS(10)의 호출·shade, 마지막 요약의 지정·해제 함수와 primary 행 조건이 빠졌음을 확인함.
+- 과잉 지적·오판: §1의 실제 빈칸 문장 `어드민이 선택한 후보 사진의 UUID = ___ 테이블의 ___ 컬럼`을 감사냥이가 `shade_images 테이블의 media_id 컬럼`이라고 이미 답이 적힌 문장처럼 바꿔 인용함. 원문 인용 계약을 어겼고, 빈칸의 목적도 잘못 해석했으므로 이 finding은 폐기함. 마지막 요약의 대체안은 근거는 맞지만 한 문장에 이름과 행 조건을 너무 많이 넣어 그대로 적용하면 읽기 부하가 커짐.
+- 모기가 표현한 도움·마찰: 독립 감사 구조와 3세션 파일럿 제안에는 긍정함. 이번 8건 보고를 실제로 읽은 뒤의 사용감은 아직 미관찰.
+- 다음 회차에서 한 가지만 바꿀 것: 감사 프롬프트에 `모호한 원문은 초안에서 문자 그대로 복사하고, 빈칸·질문을 감사자가 임의로 채워 평서문으로 바꾸지 않는다`를 추가한다.
