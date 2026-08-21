@@ -23,8 +23,9 @@ reviewed: false
 PR 전체 변경은 10개 파일, 총 `+2785/-1`이다. 아래 목록은 raw diff 판독 범위를
 고정하는 도장이다. 핵심 이야기를 이해하기 위해 파일명을 먼저 외울 필요는 없다.
 
-<details>
-<summary>변경 파일 전체 목록 펼치기</summary>
+### 변경 파일 전체 목록
+
+지금은 이 목록을 건너뛰고 바로 1번으로 가도 된다.
 
 - `app/src/data/repos/adminRepresentativeRepo.test.ts`
 - `app/src/data/repos/adminRepresentativeRepo.ts`
@@ -36,8 +37,6 @@ PR 전체 변경은 10개 파일, 총 `+2785/-1`이다. 아래 목록은 raw dif
 - `supabase/migrations/20260820000000_demoted_roi_revocation_parity.sql`
 - `supabase/tests/admin_manual_representative_fixture.sql`
 - `supabase/tests/admin_representative_race_concurrent.sh`
-
-</details>
 
 ## 1. 오늘 기억할 사건
 
