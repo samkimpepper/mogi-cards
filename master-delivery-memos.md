@@ -24,3 +24,11 @@
 ② **source_url 동명이인** — 부채 등재 sw-g5t (소유자: 지금 rename 아님, 용어 정리 시 판단).
 ③ **image_urls 직접 소비처의 어댑터 계약 우회 2곳** — 감사 태스크 등재 sw-d7x (#520 전환 계약과 함께, PR #524 범위 밖, C레인 연관).
 원문 = git 이력.)
+
+## 2026-08-21 모기 결정 — 기존 `sw-ber`의 MVP 수리 방향: ROI 폐기
+
+- **기존 이슈:** `sw-ber` (open). 새 이슈를 만들지 말고 이 결정만 기존 이슈에 연결한다.
+- **모기 결정:** MVP에서 쓰지 않는 `swatch_regions`(ROI)는 지금 폐기한다. 나중에 ROI가 실제로 필요해질 때 사진의 안정적인 정체성과 `shade → 현재 대표 사진` 포인터를 분리해서 다시 설계한다. 정확한 새 테이블 이름은 잠그지 않았고, 대표 교체는 기존 사진 행의 `url`·`media_id` 내용을 갈아끼우는 것이 아니라 포인터를 바꾸는 구조라는 원칙을 확정했다.
+- **근거:** `supabase/migrations/20260416063901_init_core.sql:153-170` (`shade_images` 행을 대표·갤러리 이미지로 쓰면서 `swatch_regions.image_id`도 같은 행 정체성을 참조), `supabase/migrations/20260819000000_admin_manual_shade_representative.sql:92-126` (ROI 보존 때문에 대표 행을 비대표로 데모트하는 우회), `app/src/data/supabase/supabaseAdapter.ts:210-218` (비대표 행을 `extraImgs`로 실제 노출), `../swatch-ops/.beads/issues.jsonl:19` (`sw-ber` 원문).
+- **왜 문제인지:** 같은 `shade_images.id`를 변경 가능한 대표 자리, 좌표가 붙은 변경 불가 사진 정체성, 비대표 갤러리 항목으로 동시에 해석해 제자리 교체는 ROI 오염, 삭제는 FK `23503`, 데모트는 의도하지 않은 `extraImgs` 노출을 만든다. 앱에서 ROI를 소비하지 않는 MVP인데도 이 레거시 관계 때문에 대표 교체·사진 회수 경로가 반복해서 예외와 리뷰 수리를 떠안는다.
+- **판독 시점 커밋 SHA:** PR #524 HEAD `da672a05a9eb36cc158d0f120b2f9f673ba39ec0`.
