@@ -2,8 +2,8 @@
 reviewed: false
 status: pilot
 planned_sessions: 3
-completed_sessions: 1
-remaining_sessions: 2
+completed_sessions: 2
+remaining_sessions: 1
 ---
 
 # 코드 학습 노트 참조 완결성 감사 파일럿
@@ -195,3 +195,25 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
 - 다음 회차 조정: 기존의 원문 인용 계약을 유지하고, 과외냥이 후처리에 `감사 결과는
   사실 근거로만 사용 → 사용자 사건 2~3문장 → 이벤트별 흐름 → 마지막 구현 근거` 순서를
   추가한다. 별도의 세 번째 에이전트는 추가하지 않는다.
+
+### 세션 2 — 2026-08-21 · PR #524 story-first 비교본
+
+- 감사 초안: `code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md`
+- 판독 SHA·소스: HEAD `da672a05a9eb36cc158d0f120b2f9f673ba39ec0`;
+  `20260819000000_admin_manual_shade_representative.sql`,
+  `adminRepresentativeRepo.ts`, `AdminRepresentativeCuration.tsx`,
+  `admin_manual_representative_fixture.sql`
+- 보고: 감사냥이 보고 7건. 확인된 참조 누락 6건과 소스에서 확인되지 않은 시작 상태
+  1건을 과외냥이가 재대조함.
+- 실제로 유용한 누락: 픽스처가 수동 지정 직전 대표를 `a1.jpg/auto_single`로 확인하지
+  않는다는 경계를 찾아 추정 상태를 삭제함. 구현 근거 구역에서
+  `shade_images.representative_source`, ROI 참조 조건, 두 RPC 이름, 해제 결과의 화면
+  분기 필드, `refresh()`의 재조회 함수와 행 조건, 마지막 구현 경로의 RPC 이름을 보강함.
+- 과잉 지적·오판: 없음. 다만 확인된 구현 이름은 사용자 사건과 `모기 박스`로 올리지
+  않고 §5 이후의 구현 근거층에만 반영함.
+- 모기가 표현한 도움·마찰: 새 비교본을 아직 읽지 않아 미관찰.
+- 최종 반영: 첫머리의 `a2 수동 지정 → 해제 → a1 자동 재선정`은 유지함. 지정 전 상태는
+  `이 테스트 hunk에서 별도 확인하지 않음`으로 고치고, 나머지 확인된 참조는 구현 근거
+  구역에만 최소 반영함.
+- 다음 회차에서 한 가지만 바꿀 것: 감사 finding을 반영하기 전에 사용자 사건층과 구현
+  근거층을 먼저 표시하고, 고유명사 보강은 구현 근거층 안에서만 수행한다.
