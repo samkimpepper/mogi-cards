@@ -1,7 +1,6 @@
 ---
 reviewed: false
 ---
-
 # PR #524 코드 독해 — manual 대표 지정에서 해제·자동 복귀까지
 
 날짜: 2026-08-21
@@ -29,41 +28,43 @@ reviewed: false
 
 이번 흐름에서 “사진”이나 “대표”라는 말만 쓰면 서로 다른 행이 섞인다.
 
-| 테이블·행 | 값의 주인 | 이번 흐름에서 맡는 일 |
-|---|---|---|
-| `swatch_media` 사진 사본 행 | 사용자가 등록한 발색의 사진 한 장 | 어드민이 고를 후보 사진의 UUID `media_id`와 사진 URL 제공 |
-| `swatch_items` 발색-호수 매핑 행 | 발색 등록 하나 | 후보 사진의 부모 발색이 대상 shade에 연결됐는지 증명 |
-| `shade_images`의 `is_primary=true` 행 | 제품 카탈로그의 shade 하나 | 탐색 화면에 현재 대표로 보일 사진 자리 |
-| `shade_images.representative_source` | 현재 대표를 세운 규칙 | `manual`이면 어드민 지정, `auto_*`이면 자동 사다리 결과 |
-| `shade_images.media_id` | 현재 대표와 사진 사본의 관계 | 대표가 어느 `swatch_media.id` 사진을 근거로 삼았는지 연결 |
+
+| 테이블·행                                | 값의 주인               | 이번 흐름에서 맡는 일                              |
+| ------------------------------------ | ------------------- | ----------------------------------------- |
+| `swatch_media` 사진 사본 행               | 사용자가 등록한 발색의 사진 한 장 | 어드민이 고를 후보 사진의 UUID `media_id`와 사진 URL 제공 |
+| `swatch_items` 발색-호수 매핑 행            | 발색 등록 하나            | 후보 사진의 부모 발색이 대상 shade에 연결됐는지 증명          |
+| `shade_images`의 `is_primary=true` 행  | 제품 카탈로그의 shade 하나   | 탐색 화면에 현재 대표로 보일 사진 자리                    |
+| `shade_images.representative_source` | 현재 대표를 세운 규칙        | `manual`이면 어드민 지정, `auto_*`이면 자동 사다리 결과   |
+| `shade_images.media_id`              | 현재 대표와 사진 사본의 관계    | 대표가 어느 `swatch_media.id` 사진을 근거로 삼았는지 연결  |
+
 
 여기서 어드민이 선택하는 것은 기존 `shade_images` 행의 내용물을 직접 고치는 일이
 아니다. 입력은 **대상 shade의 ID와 후보 `swatch_media` 사진의 UUID** 두 개다.
 
 > [!note] 모기 박스
-> 힌트 키워드: 테이블 / 행 / UUID 컬럼 / `is_primary`
-> 아래 빈칸에 테이블명과 컬럼명을 적어보자.
-> - 어드민이 선택한 후보 사진의 UUID = ___ 테이블의 ___ 컬럼
-> - 지정 완료 뒤 호수-A의 화면 대표 = ___ 테이블에서 `shade_id = 호수-A`이고 `is_primary = true`인 행
+> 힌트 키워드: `swatch_media` / `shade_images` / 후보 사진 / 화면 대표
+> 이 절에서 이해한 관계, 아직 헷갈리는 대상, 떠오른 질문 중 아무거나 자유롭게 적어도 돼.
 >
-> 모기 메모:
+> 모기 메모: 어흐흑..어흑..
 
 ## 2. 판독 범위와 전체 변경 지도
 
 PR #524 최종 변경은 10개 파일, 총 `+2785/-1`이다.
 
-| 상태 | 파일 |
-|---|---|
-| 추가 | `app/src/data/repos/adminRepresentativeRepo.test.ts` |
-| 추가 | `app/src/data/repos/adminRepresentativeRepo.ts` |
-| 수정 | `app/src/features/admin/routes/AdminPage.tsx` |
-| 추가 | `app/src/features/admin/routes/AdminRepresentativeCuration.tsx` |
-| 수정 | `supabase/POLICY-SNAPSHOT.md` |
-| 추가 | `supabase/migrations/20260819000000_admin_manual_shade_representative.sql` |
-| 추가 | `supabase/migrations/20260819010000_manual_representative_revocation_parity.sql` |
-| 추가 | `supabase/migrations/20260820000000_demoted_roi_revocation_parity.sql` |
-| 추가 | `supabase/tests/admin_manual_representative_fixture.sql` |
-| 추가 | `supabase/tests/admin_representative_race_concurrent.sh` |
+
+| 상태  | 파일                                                                               |
+| --- | -------------------------------------------------------------------------------- |
+| 추가  | `app/src/data/repos/adminRepresentativeRepo.test.ts`                             |
+| 추가  | `app/src/data/repos/adminRepresentativeRepo.ts`                                  |
+| 수정  | `app/src/features/admin/routes/AdminPage.tsx`                                    |
+| 추가  | `app/src/features/admin/routes/AdminRepresentativeCuration.tsx`                  |
+| 수정  | `supabase/POLICY-SNAPSHOT.md`                                                    |
+| 추가  | `supabase/migrations/20260819000000_admin_manual_shade_representative.sql`       |
+| 추가  | `supabase/migrations/20260819010000_manual_representative_revocation_parity.sql` |
+| 추가  | `supabase/migrations/20260820000000_demoted_roi_revocation_parity.sql`           |
+| 추가  | `supabase/tests/admin_manual_representative_fixture.sql`                         |
+| 추가  | `supabase/tests/admin_representative_race_concurrent.sh`                         |
+
 
 이번 핵심길에서는 아래 네 파일의 연결된 hunk만 직접 본다.
 
@@ -83,7 +84,7 @@ admin_manual_representative_fixture.sql
 
 > [!note] 모기 박스
 > 힌트 키워드: UI 이벤트 / repo / RPC / DB 행
-> 화면에서 후보 사진을 누른 뒤 `shade_images` 행이 바뀔 때까지의 경로를 화살표로 적어본다면?
+> 네가 파악한 파일 연결 순서나, 설명에서 이름이 빠져 보이는 대상을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -119,7 +120,7 @@ p_media_id = media-new
 
 > [!note] 모기 박스
 > 힌트 키워드: `image-old` / 제자리 UPDATE / 새 manual 행 / 포인터
-> 지정이 끝난 뒤 기존 `image-old` 행과 새 대표 자리에는 각각 어떤 일이 생길 것 같아?
+> 지정 뒤 바뀔 것 같은 행, 확실하지 않은 조건, 예상한 다음 상태를 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -160,7 +161,7 @@ p_media_id = media-new
 
 > [!note] 모기 박스
 > 힌트 키워드: SELECT 기존 대표 / vacate / INSERT / 순서
-> `INSERT`가 `vacate_shade_primary_image()`보다 먼저 실행되면 어떤 두 대표가 동시에 존재하려 할까?
+> 이 코드 순서에서 이해한 점이나 이상해 보이는 점을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -201,7 +202,7 @@ p_media_id = media-new
 
 > [!note] 모기 박스
 > 힌트 키워드: 발색 단위 매핑 / 사진별 관계 없음 / 다중-shade / sticky manual
-> 다중-shade 발색의 사진을 허용하려면 DB가 현재 추가로 알아야 하는 관계는 무엇일까?
+> 서버가 사진을 허용하거나 거부하는 기준에서 떠오른 생각이나 질문을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -250,8 +251,8 @@ p_media_id = media-new
 ```
 
 > [!note] 모기 박스
-> 힌트 키워드: manual 확인 / vacate / reselect 호출 / 후보 0
-> manual 해제 뒤 자동 후보가 하나도 없다면, RPC 호출 자체와 최종 대표 자리는 각각 어떻게 될까?
+> 힌트 키워드: `admin_clear_shade_representative` / manual 확인 / 재선정 / 후보 0
+> 해제 흐름에서 이해한 상태 변화나 아직 애매한 반환값을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -352,7 +353,7 @@ async function onClear() {
 
 > [!note] 모기 박스
 > 힌트 키워드: 버튼 / RPC / 반환값 / refresh
-> `onClear()`가 `shade_images`를 직접 수정하지 않고도 세 가지 안내 문구를 고를 수 있는 근거는 무엇일까?
+> 화면 코드와 DB 사이의 역할 구분에서 이해한 점이나 질문을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -406,19 +407,21 @@ DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반
 ```
 
 > [!note] 모기 박스
-> 힌트 키워드: `IF` / `RAISE EXCEPTION` / 실패 상태 / 최종 성공 행
-> 해제 테스트가 성공했을 때 `v_row.url`과 `v_row.representative_source`는 각각 무엇이어야 할까?
+> 힌트 키워드: `admin_clear_shade_representative(v_a)` / `IF` / 실패 조건 / 최종 대표 행
+> 테스트가 확인하는 상태나 읽다가 헷갈린 조건을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
 테스트의 `IF ... RAISE EXCEPTION` 안은 원하는 결과가 아니라 **나오면 실패할 상태**다.
 이 테스트가 증명하는 최종 흐름은 다음과 같다.
 
-| 시점 | 현재 대표 URL | source | 연결된 사진 |
-|---|---|---|---|
-| 지정 전 | 자동으로 뽑힌 사진 | `auto_*` | 기존 후보 사진 |
-| `a2` manual 지정 후 | `a2.jpg` | `manual` | `v_m_a2` |
-| manual 해제 후 | `a1.jpg` | `auto_single` | 자동 사다리가 고른 사진 |
+
+| 시점               | 현재 대표 URL  | source        | 연결된 사진        |
+| ---------------- | ---------- | ------------- | ------------- |
+| 지정 전             | 자동으로 뽑힌 사진 | `auto_*`      | 기존 후보 사진      |
+| `a2` manual 지정 후 | `a2.jpg`   | `manual`      | `v_m_a2`      |
+| manual 해제 후      | `a1.jpg`   | `auto_single` | 자동 사다리가 고른 사진 |
+
 
 ## 9. 한 줄로 이어 읽기
 
@@ -430,7 +433,7 @@ DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반
 
 > [!note] 모기 박스
 > 힌트 키워드: 지정 입력 / 대표 자리 / manual 행 / 자동 복귀
-> 이 흐름을 네 말로 가장 짧게 적는다면?
+> 지금까지 이어진 흐름에서 남기고 싶은 이해, 의문, 짧은 요약을 자유롭게 적어도 돼.
 >
 > 모기 메모:
 
@@ -446,3 +449,9 @@ DB가 후보 검증·대표 교체·자동 재선정을 끝낸 뒤 결과를 반
 - `supabase/migrations/20260820000000_demoted_roi_revocation_parity.sql`
 - `supabase/tests/admin_manual_representative_fixture.sql` — 지정·해제 성공 hunk만 봄
 - `supabase/tests/admin_representative_race_concurrent.sh`
+
+> [!note] 모기 박스
+> 힌트 키워드: 샛길 파일 / 더 보고 싶은 코드 / 지금은 건너뛰기
+> 다음에 보고 싶은 파일, 지금은 넘기고 싶은 부분, 궁금한 이유를 자유롭게 적어도 돼.
+>
+> 모기 메모:
