@@ -70,16 +70,28 @@ PR #524 최종 변경은 10개 파일, 총 `+2785/-1`이다.
 
 ```text
 20260819000000_admin_manual_shade_representative.sql
-  서버가 지정·해제를 한 트랜잭션으로 처리
+  admin_set_shade_representative(p_shade_id, p_media_id)는
+  shade_images에서 shade_id=p_shade_id이고 is_primary=true인 기존 행을 비운 뒤,
+  is_primary=true·representative_source=manual·media_id=p_media_id인 새 행을 넣는다.
+  admin_clear_shade_representative(p_shade_id)는 별도 호출이며,
+  같은 조건의 현재 행이 manual일 때 그 행을 비운 뒤 같은 트랜잭션에서
+  reselect_shade_representative(p_shade_id)를 부른다.
 
 adminRepresentativeRepo.ts
-  브라우저가 두 RPC를 호출하고 반환값을 화면용 값으로 바꿈
+  setShadeRepresentative(shadeId, mediaId)는 지정 RPC를 호출하고 action·url을 반환한다.
+  clearShadeRepresentative(shadeId)는 해제 RPC를 호출하고
+  action·reselected·representativeSource를 반환한다.
 
 AdminRepresentativeCuration.tsx
-  지정·해제 버튼 이벤트와 사용자 안내 문구
+  onPick(candidate)는 선택한 shade ID와 candidate.mediaId를 지정 함수에 넘긴다.
+  onClear()는 해제 결과의 action·reselected로 안내 문구를 고른다.
+  두 이벤트 모두 끝나면 refresh()가 fetchRepresentativeCuration()을 다시 호출한다.
 
 admin_manual_representative_fixture.sql
-  실제 DB 행의 지정 결과와 해제 뒤 자동 복귀를 검증
+  지정 뒤에는 shade_images에서 shade_id=v_a이고 is_primary=true인 행이
+  a2.jpg·manual·v_m_a2인지 검증한다.
+  해제 뒤에는 RPC 결과가 cleared·reselected=true이고, 다시 조회한 primary 행이
+  자동 사다리가 고른 a1.jpg·auto_single인지 검증한다.
 ```
 
 > [!note] 모기 박스
