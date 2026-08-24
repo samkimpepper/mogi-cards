@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 # PR #524 코드 독해 — manual 대표 지정에서 해제·자동 복귀까지
 

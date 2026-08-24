@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # 카드 — 이미지 자체 보존 트랙: 설계 확정 (sw-u4r)

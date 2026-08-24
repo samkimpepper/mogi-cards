@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # PR #520 code diff note — 공통 마감은 어떻게 코드 안으로 들어갔나

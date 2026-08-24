@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # 모기 code diff note — PostgreSQL `SELECT` 권한과 RLS의 두 관문

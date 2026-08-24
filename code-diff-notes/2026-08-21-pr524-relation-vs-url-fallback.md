@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # PR #524 코드 독해 — 사진 관계 확정과 URL 폴백 추정은 왜 다르게 처리되는가

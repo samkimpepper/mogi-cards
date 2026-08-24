@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 # PR #524 코드 독해 비교본 — 대표사진을 고르고 자동 선정으로 돌아가기
 
