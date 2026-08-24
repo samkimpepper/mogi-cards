@@ -11,6 +11,7 @@ import {
   markDocumentReviewed,
   startReviewServer,
 } from "./server.mjs";
+import { dashboardIsHealthy, ensureDashboard } from "./start.mjs";
 
 let repoRoot;
 
@@ -101,6 +102,12 @@ test("HTTP API로 목록을 읽고 체크를 반영한다", async (context) => {
 
   const dashboardHtml = await fetch(`${baseUrl}/`).then((response) => response.text());
   assert.match(dashboardHtml, /읽은 문서 상태판/);
+
+  assert.equal(await dashboardIsHealthy(address.port), true);
+  assert.deepEqual(await ensureDashboard({ port: address.port }), {
+    status: "already-running",
+    url: baseUrl,
+  });
 
   const listed = await fetch(`${baseUrl}/api/documents`).then((response) => response.json());
   assert.equal(listed.total, 1);

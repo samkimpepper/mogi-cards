@@ -6,6 +6,7 @@ mogi_repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 mogi_preamble="$mogi_repo_root/guide-tutor-preamble.md"
 mogi_head_guide="$mogi_repo_root/guide-mogi-head-test.md"
 mogi_head_dir="$mogi_repo_root/head-test"
+mogi_dashboard_url="http://127.0.0.1:8766"
 
 for mogi_required_file in "$mogi_preamble" "$mogi_head_guide"; do
   if [ ! -f "$mogi_required_file" ]; then
@@ -40,8 +41,11 @@ printf '%s\n' \
   '# mogi-cards 과외 세션 자동 인수인계' \
   '' \
   '아래 원문은 프로젝트 로컬 SessionStart 훅이 불러온 현재 과외 지시다.' \
-  '시작 인사에 반드시 다음 형식으로 실제 판독 파일을 알린다.' \
+  '시작 인사 전에 과외냥이는 `node review-dashboard/start.mjs`를 실행해 상태판을 시작하거나 기존 서버를 재사용한다.' \
+  '로컬 포트 권한 때문에 실패하면 모기에게 명령을 넘기지 말고 과외냥이가 좁은 권한 상승으로 다시 실행한다.' \
+  '시작 인사에 반드시 다음 두 줄로 실제 판독 파일과 확인된 상태판 링크를 알린다.' \
   "학습 인수인계: $mogi_review_label 읽음" \
+  "읽은 문서 상태판: $mogi_dashboard_url" \
   '' \
   "## $mogi_preamble" \
   ''

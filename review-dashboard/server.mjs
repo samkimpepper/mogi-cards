@@ -225,6 +225,11 @@ export function createReviewServer({ repoRoot = DEFAULT_REPO_ROOT } = {}) {
         return;
       }
 
+      if (request.method === "GET" && url.pathname === "/api/health") {
+        sendJson(response, 200, { service: "mogi-review-dashboard", version: 1 });
+        return;
+      }
+
       if (request.method === "POST" && url.pathname === "/api/review") {
         assertSafeMutationRequest(request);
         const body = await readJsonBody(request);
