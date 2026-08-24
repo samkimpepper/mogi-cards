@@ -1,6 +1,6 @@
 ---
 reviewed: true
-merge_ready: false
+merge_ready: true
 ---
 
 # 리드 카드 — PR #527: 회수·승격 트리거 executable spec (sw-20n)
