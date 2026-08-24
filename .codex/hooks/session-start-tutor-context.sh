@@ -28,38 +28,10 @@ mogi_total_bytes=$((mogi_total_bytes + $(wc -c < "$mogi_head_guide")))
 if [ -n "$mogi_latest_review" ]; then
   mogi_review_label=${mogi_latest_review##*/}
   mogi_review_route="head-test/$mogi_review_label"
-  mogi_review_handoff=$(
-    awk '
-      {
-        if ($0 == "**효용이 관찰된 방식:**") {
-          in_methods = 1
-        }
-        if (in_methods) {
-          if ($0 == "**근거:**") {
-            in_methods = 0
-            next
-          }
-          print
-          next
-        }
-
-        if ($0 ~ /^## 5[.] 다음 세션에서 실제로 바꿀 것/) {
-          in_next_session = 1
-        } else if (in_next_session && $0 ~ /^## /) {
-          in_next_session = 0
-        }
-        if (in_next_session) {
-          print
-        }
-      }
-    ' "$mogi_latest_review"
-  )
-  mogi_total_bytes=$((mogi_total_bytes + $(printf '%s\n' "$mogi_review_handoff" | wc -c)))
-  mogi_handoff_status="$mogi_review_label 발췌 읽음"
+  mogi_handoff_status="$mogi_review_label 읽음"
 else
   mogi_review_label="누적 검토 없음"
   mogi_review_route=""
-  mogi_review_handoff=""
   mogi_handoff_status="$mogi_review_label"
 fi
 
@@ -86,13 +58,9 @@ printf '\n%s\n\n' "## $mogi_head_guide"
 sed -n '1,$p' "$mogi_head_guide"
 
 if [ -n "$mogi_latest_review" ]; then
-  printf '\n%s\n\n' '## 최신 학습 관찰 누적 검토 인수인계'
+  printf '\n%s\n\n' '## 최신 학습 관찰 누적 검토 원문 라우팅'
   printf '%s\n\n' "원문 경로: $mogi_review_route"
-  if [ -n "$mogi_review_handoff" ]; then
-    printf '%s\n' "$mogi_review_handoff"
-  else
-    printf '%s\n' '인수인계 표식을 찾지 못했다. 원문의 `효용이 관찰된 방식`과 `다음 세션에서 실제로 바꿀 것`만 확인한다.'
-  fi
+  printf '%s\n' '시작 인사 전에 이 원문 전체를 직접 읽는다. 그중 `다음 세션에서 실제로 바꿀 것` 1~2개와 이미 효용이 관찰된 설명·외부화 방식만 이번 세션 행동으로 인수한다.'
 else
   printf '\n%s\n' '## 최신 학습 관찰 누적 검토: 없음'
 fi
