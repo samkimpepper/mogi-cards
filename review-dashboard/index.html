@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모기 읽은 문서 상태판</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #262922;
+      --muted: #6c7168;
+      --line: #d7dbd2;
+      --paper: #f7f4ed;
+      --panel: #fffefa;
+      --accent: #315f48;
+      --accent-soft: #e8f0ea;
+      --danger: #923c32;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+    main { width: min(820px, calc(100% - 28px)); margin: 38px auto 72px; }
+    h1, h2 { line-height: 1.25; }
+    h1 { margin-bottom: 6px; }
+    h2 { font-size: 18px; margin: 0; }
+    button { border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: white; padding: 8px 12px; font: inherit; cursor: pointer; }
+    button.secondary { background: white; color: var(--accent); }
+    button:disabled { cursor: wait; opacity: .55; }
+    code { overflow-wrap: anywhere; color: var(--muted); }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .muted { color: var(--muted); }
+    .panel { margin-top: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+    .panel-heading { padding: 15px 18px; border-bottom: 1px solid var(--line); background: #fbfaf5; }
+    .count { display: inline-block; min-width: 26px; margin-left: 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); padding: 1px 8px; text-align: center; font-size: 14px; }
+    .document { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 15px 18px; border-top: 1px solid var(--line); }
+    .document:first-child { border-top: 0; }
+    .document input { width: 21px; height: 21px; margin: 2px 0 0; accent-color: var(--accent); cursor: pointer; }
+    .document-title { display: block; margin-bottom: 3px; font-weight: 670; }
+    .empty { padding: 24px 18px; color: var(--muted); }
+    .notice { min-height: 24px; margin-top: 14px; color: var(--accent); font-weight: 650; }
+    .notice.error { color: var(--danger); }
+    .loading { padding: 28px 18px; color: var(--muted); }
+    footer { margin-top: 22px; color: var(--muted); font-size: 14px; }
+    @media (max-width: 620px) {
+      .document { grid-template-columns: auto 1fr; }
+      .copy { grid-column: 2; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="bar">
+    <div>
+      <h1>읽은 문서 상태판</h1>
+      <div class="muted">체크하면 해당 문서의 <code>reviewed: false</code>만 <code>true</code>로 바뀌어.</div>
+    </div>
+    <button id="refresh" class="secondary" type="button">목록 새로고침</button>
+  </div>
+
+  <div id="notice" class="notice" aria-live="polite"></div>
+  <div id="groups" aria-live="polite"><div class="panel loading">미검토 문서를 찾는 중이야.</div></div>
+
+  <footer>
+    활성 폴더 바로 아래 문서만 표시해. <code>temp/</code>와 <code>archive/</code>는 제외하며 commit과 push는 자동으로 하지 않아.
+  </footer>
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const groupsElement = document.getElementById("groups");
+  const noticeElement = document.getElementById("notice");
+  const refreshButton = document.getElementById("refresh");
+
+  function setNotice(message, error = false) {
+    noticeElement.textContent = message;
+    noticeElement.classList.toggle("error", error);
+  }
+
+  async function request(path, options) {
+    const response = await fetch(path, { cache: "no-store", ...options });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error || `HTTP ${response.status}`);
+    return body;
+  }
+
+  function copyButton(relativePath) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "secondary copy";
+    button.textContent = "경로 복사";
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(relativePath);
+        setNotice(`${relativePath} 경로를 복사했어.`);
+      } catch {
+        setNotice("브라우저가 클립보드 접근을 막았어. 아래 경로를 직접 복사해줘.", true);
+      }
+    });
+    return button;
+  }
+
+  function documentRow(documentInfo) {
+    const row = document.createElement("div");
+    row.className = "document";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.setAttribute("aria-label", `${documentInfo.title} 읽음으로 표시`);
+
+    const text = document.createElement("div");
+    const title = document.createElement("span");
+    title.className = "document-title";
+    title.textContent = documentInfo.title;
+    const path = document.createElement("code");
+    path.textContent = documentInfo.path;
+    text.append(title, path);
+
+    checkbox.addEventListener("change", async () => {
+      if (!checkbox.checked) return;
+      checkbox.disabled = true;
+      try {
+        await request("/api/review", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: documentInfo.path }),
+        });
+        setNotice(`${documentInfo.title}: 읽음으로 표시했어.`);
+        await loadDocuments(false);
+      } catch (error) {
+        checkbox.checked = false;
+        checkbox.disabled = false;
+        setNotice(error.message, true);
+      }
+    });
+
+    row.append(checkbox, text, copyButton(documentInfo.path));
+    return row;
+  }
+
+  function render(data) {
+    groupsElement.replaceChildren();
+    for (const group of data.groups) {
+      const panel = document.createElement("section");
+      panel.className = "panel";
+
+      const heading = document.createElement("div");
+      heading.className = "panel-heading";
+      const title = document.createElement("h2");
+      title.textContent = group.label;
+      const count = document.createElement("span");
+      count.className = "count";
+      count.textContent = String(group.documents.length);
+      title.append(count);
+      heading.append(title);
+      panel.append(heading);
+
+      if (group.documents.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "미검토 문서 없음";
+        panel.append(empty);
+      } else {
+        for (const documentInfo of group.documents) panel.append(documentRow(documentInfo));
+      }
+      groupsElement.append(panel);
+    }
+
+    if (data.total === 0) setNotice("활성 폴더의 문서를 모두 읽었어.");
+  }
+
+  async function loadDocuments(showNotice = true) {
+    refreshButton.disabled = true;
+    if (showNotice) setNotice("목록을 새로 읽는 중이야.");
+    try {
+      const data = await request("/api/documents");
+      render(data);
+      if (showNotice && data.total > 0) setNotice(`미검토 문서 ${data.total}개를 찾았어.`);
+    } catch (error) {
+      groupsElement.innerHTML = '<div class="panel empty">목록을 불러오지 못했어.</div>';
+      setNotice(error.message, true);
+    } finally {
+      refreshButton.disabled = false;
+    }
+  }
+
+  refreshButton.addEventListener("click", () => loadDocuments());
+  loadDocuments();
+})();
+</script>
+</body>
+</html>
