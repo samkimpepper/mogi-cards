@@ -997,3 +997,20 @@ Codex turn key: `5c28a1d2719c2086`
 ~~~text
 ㅇㅋㅇㅋ 세션 종료 일지 남기자옹
 ~~~
+
+### 과외냥이
+
+~~~text
+세션 종료 정리 완료했어.
+
+- 종료 관찰일지: [2026-08-25-pr527-pr529-trigger-spec-and-slug-removal-session-end-analysis.md](/home/mogi/code/swatch/mogi-cards/head-test/2026-08-25-pr527-pr529-trigger-spec-and-slug-removal-session-end-analysis.md)
+- `SCRATCHPAD.md`: 메모는 원래 비어 있었고 제목만 `[다음 PR]`로 복구
+- raw 원문: [2026-08-24-03-pr527-pr529-trigger-spec-slug-removal.md](/home/mogi/code/swatch/mogi-cards/raw/2026-08-24-03-pr527-pr529-trigger-spec-slug-removal.md)
+
+커밋도 분리해서 남겼어.
+
+- `9353a7f` — 종료 관찰일지 + SCRATCHPAD 정리
+- `6ccd7bc` — raw 대화 원문
+
+#529 설명의 불만족·거슬림·불안은 해결됐다고 덮지 않고 원인 미확정으로 기록했고, 하네스나 가이드 규칙은 바꾸지 않았어. 검증 시점 worktree는 깨끗하고 push는 하지 않았다옹.
+~~~
