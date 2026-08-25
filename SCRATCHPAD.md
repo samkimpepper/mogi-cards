@@ -1,7 +1,7 @@
 ---
 reviewed: false
 ---
-# PR 첫 완독 러프 메모: [524]
+# PR 첫 완독 러프 메모: [다음 PR]
 
 2026-08-31까지 형식 없이 편하게 쓴다.
 
@@ -19,4 +19,3 @@ reviewed: false
 
 
 <!-- mogi-session-notes:end -->
-
