@@ -2,7 +2,6 @@
 reviewed: true
 merge_ready: false
 ---
-
 # 리드 카드 — PR #529: swatch_items.shade_slug 근절 (sw-5m6 중형)
 
 작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `6ab9902`, 리뷰 2라운드 종결(필수 0·후가능 0).** 판정문: `../../swatch-ops/contracts/2026-08-24-pr529-cross-review-verdict.md` → `-delta-verdict.md`. 검증: 마이그 증분+fresh·SQL 27·하네스 6 전량 초록·음성 대조 3종·마스터 독립 재실측 매 라운드.
@@ -16,8 +15,11 @@ merge_ready: false
 ## 주관식 퀴즈 (등급 ③ — 머지 전 채팅으로 답해달라)
 
 1. 이 마이그가 원격에서 **백필 대상 행을 하나라도 못 채우면** 무슨 일이 일어나나? (한 줄)
+  1. 모기답: 롤백되나? 아예마이그실행이않되나? 흠냐 
 2. shade_id를 NOT NULL로 되돌려도 안전하다고 판단한 **실측 근거** 두 가지는? (원격 수치 하나 + 코드 조사 하나)
+  1. 호곡. 모름 헤헤
 3. 머지 후 남는 유일한 DB 절차는 뭔가?
+  1. db push 아님 ? 냥ㅋㅋ 
 
 ## 결정 골격 (원문 포인터)
 
