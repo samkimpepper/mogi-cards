@@ -970,3 +970,23 @@ Codex turn key: `c2759cfb71ffda2d`
 ~~~text
 ㅇㅇ 나이제 퇴근할거라 세션종료일지 남기자옹 오늘은 뭐 리허설만해서 딱히할건없으려나
 ~~~
+
+### 과외냥이
+
+~~~text
+종료 정리 완료했어. 오늘은 리허설뿐이었지만 관찰할 건 충분했어.
+
+- 유도 질문을 스스로 알아채고 즉시 폐기함
+- D7과 D8을 분리해 실제 사진 기반으로 진행함
+- F11에서 선택지를 심지 않고 첫 행동을 관찰함
+- Raw evidence와 Synthesis를 직접 작성하고 혼합된 부분을 교정함
+- 실제 참여자 인터뷰 결과는 아직 `미관찰`로 남김
+
+종료 관찰일지: [2026-08-25-learning-review-and-interview-rehearsal-session-end-analysis.md](/home/mogi/code/swatch/mogi-cards/head-test/2026-08-25-learning-review-and-interview-rehearsal-session-end-analysis.md)  
+커밋: `d12a8ea`
+
+대화 원문: [2026-08-25-01-learning-review-interview-rehearsal.md](/home/mogi/code/swatch/mogi-cards/raw/2026-08-25-01-learning-review-interview-rehearsal.md)  
+별도 커밋: `8e30979`
+
+`SCRATCHPAD.md`는 표식 안이 이미 비어 있고 제목도 `[다음 PR]`이라 수정하지 않았어. 오늘 과외 종료라옹. 얼른 퇴근하자옹.
+~~~
