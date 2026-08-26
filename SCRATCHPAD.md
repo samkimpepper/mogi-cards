@@ -19,3 +19,15 @@ reviewed: false
 
 
 <!-- mogi-session-notes:end -->
+
+## 모기 보존 메모
+
+세션이 끝나도 비우지 않는 모기 전용 메모다. 나중에 다시 보고 싶은 내용이나 까먹기
+싫은 것을 형식 없이 적는다. 과외냥이는 세션 종료 정리 때 아래 표식 사이를 건드리지
+않는다.
+
+<!-- mogi-personal-notes:start -->
+
+-
+
+<!-- mogi-personal-notes:end -->
