@@ -966,3 +966,18 @@ Codex turn key: `19a67f30fee995f4`
 ~~~text
 여기서 세션종료하자옹ㅋㅋ
 ~~~
+
+### 과외냥이
+
+~~~text
+세션 종료 정리 완료했어.
+
+- [종료 관찰일지](/home/mogi/code/swatch/mogi-cards/head-test/2026-08-27-harness-hypothesis-retirement-and-pr536-search-session-end-analysis.md) — `4334b8d`
+- [대화 raw 원문](/home/mogi/code/swatch/mogi-cards/raw/2026-08-26-03-harness-hypothesis-retirement-pr536-search.md) — `dddb234`
+- `SCRATCHPAD.md`는 이미 빈 상태라 변경 없음
+- code diff 노트는 만들지 않음
+- 제품 저장소 변경 없음
+- 푸시는 하지 않음
+
+오늘 과열됐을 때 #498을 바로 멈추고 #536의 좁은 질문으로 전환한 것도 그대로 기록했어. 푹 쉬자옹.
+~~~
