@@ -2,9 +2,11 @@
 
 이 저장소는 **모기 개인의 학습·승인 보조 공책**이다 (비공개). swatch 제품 저장소가 아니고, 여기 있는 문서는 제품의 SSOT가 아니다 — 원문(PR·결정 문서)을 읽으러 가는 길잡이다.
 
-## 새 세션 최소 로딩
+## 새 세션 자동 로딩
 
-세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. 기본 과외 세션은 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**만 읽는다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `code-diff-notes/temp/`와 `archive/`는 자동으로 열지 않는다.
+세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. Codex의 `SessionStart` 훅은 기본 과외 세션마다 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 [guide-mogi-head-test.md](./guide-mogi-head-test.md) 원문 전체를 시작 컨텍스트에 제공한다. 훅이 알려준 최신 `head-test/*-learning-observation-cumulative-review.md` 한 개도 과외냥이가 시작 인사 전에 원문 전체를 직접 읽는다.
+
+이와 별도로 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**만 기본 재료로 고른다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `code-diff-notes/temp/`와 `archive/`는 자동으로 열지 않는다.
 
 ### 임시 자동 로딩 — PR raw diff 접촉 파일럿
 
@@ -33,7 +35,8 @@
 | `guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
 | `guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
 | `guide-operator-notification-links.md` | 모기가 운영자 알림 링크를 직접 발송할 때 |
-| `guide-mogi-head-test.md` | 모기가 이해 방식·외부화 효과를 가볍게 관찰하자고 할 때 — 자유 학습 우선, 약한 가드레일 3개 |
+| `guide-mogi-head-test.md` | 기본 과외 세션 부트 — 자유 학습 우선, 약한 가드레일 3개와 종료 기록 규칙 |
+| `head-test/*-learning-observation-cumulative-review.md` | 세션 시작 때 최신 문서 1개 — 다음 세션에 적용할 변화 1~2개와 이미 효용이 관찰된 방식 인수 |
 | `head-test/README.md` | 모기가 통제된 A/B 러너를 명시적으로 다시 요청할 때만 |
 | `pr-cards/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
 | `plan-cards/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
