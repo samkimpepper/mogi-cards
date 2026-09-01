@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -118,6 +119,87 @@ class RawConversationArchiveTest(unittest.TestCase):
             text,
         )
         self.assertNotIn("codex_session_key: pending", text)
+
+    def test_stop_archives_tool_calls_without_reasoning_or_commentary(self) -> None:
+        turn_id = "turn-with-tools"
+        path = archive.archive_event(
+            self.payload("UserPromptSubmit", prompt="툴 호출도 남겨줘", turn_id=turn_id),
+            self.repo_root,
+            "2026-08-21",
+        )
+        assert path is not None
+
+        transcript = self.repo_root / "rollout.jsonl"
+        records = [
+            {
+                "type": "event_msg",
+                "payload": {"type": "task_started", "turn_id": turn_id},
+            },
+            {
+                "type": "response_item",
+                "payload": {
+                    "type": "reasoning",
+                    "encrypted_content": "숨은 추론",
+                    "summary": [],
+                },
+            },
+            {
+                "type": "response_item",
+                "payload": {
+                    "type": "message",
+                    "role": "assistant",
+                    "phase": "commentary",
+                    "content": [{"type": "output_text", "text": "중간 진행"}],
+                },
+            },
+            {
+                "type": "response_item",
+                "payload": {
+                    "type": "custom_tool_call",
+                    "call_id": "call-1",
+                    "name": "exec",
+                    "input": "await tools.exec_command({cmd: 'pwd'})",
+                    "status": "completed",
+                },
+            },
+            {
+                "type": "response_item",
+                "payload": {
+                    "type": "custom_tool_call_output",
+                    "call_id": "call-1",
+                    "output": [{"type": "text", "text": "/workspace"}],
+                },
+            },
+            {
+                "type": "event_msg",
+                "payload": {"type": "task_complete", "turn_id": turn_id},
+            },
+        ]
+        transcript.write_text(
+            "".join(json.dumps(record, ensure_ascii=False) + "\n" for record in records),
+            encoding="utf-8",
+        )
+
+        archive.archive_event(
+            self.payload(
+                "Stop",
+                turn_id=turn_id,
+                last_assistant_message="완료",
+                transcript_path=str(transcript),
+            ),
+            self.repo_root,
+            "2026-08-21",
+        )
+
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("scope: user-messages-tool-calls-and-final-answers", text)
+        self.assertIn("### 도구 호출·출력", text)
+        self.assertIn("#### 호출 01 — `exec`", text)
+        self.assertIn("Call ID: `call-1`", text)
+        self.assertIn("await tools.exec_command({cmd: 'pwd'})", text)
+        self.assertIn("/workspace", text)
+        self.assertNotIn("숨은 추론", text)
+        self.assertNotIn("중간 진행", text)
 
 
 if __name__ == "__main__":

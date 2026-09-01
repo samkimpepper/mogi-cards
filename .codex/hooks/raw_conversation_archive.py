@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Archive user prompts and final assistant messages from Codex hook events."""
+"""Archive user prompts, tool calls, and final assistant messages."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ TURN_KEY_RE = re.compile(r"^Codex turn key:\s*`([0-9a-f]{16})`\s*$", re.MULTILIN
 TURN_HEADING_RE = re.compile(r"^## Turn (\d+)\s*$")
 FENCE_RE = re.compile(r"^([~`]{3,})")
 DATE_NUMBER_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-(\d+)-")
+SESSION_ID_RE = re.compile(r"^[0-9a-f-]+$")
 
 
 def stable_key(value: str) -> str:
@@ -66,7 +67,7 @@ def create_session_file(raw_dir: Path, date_text: str, session_key: str) -> Path
             f"date: {date_text}\n"
             f"session_number: {number}\n"
             "slug: session\n"
-            "scope: user-messages-and-final-answers\n"
+            "scope: user-messages-tool-calls-and-final-answers\n"
             f"codex_session_key: {session_key}\n"
             "---\n\n"
             f"# {date_text} 세션 {number:02d} — 자동 원문 기록\n"
@@ -108,6 +109,119 @@ def markdown_fence(text: str) -> str:
     fence = "~" * max(3, longest + 1)
     body = text if text.endswith("\n") else text + "\n"
     return f"{fence}text\n{body}{fence}\n"
+
+
+def ensure_tool_scope(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+    updated = text.replace(
+        "scope: user-messages-and-final-answers\n",
+        "scope: user-messages-tool-calls-and-final-answers\n",
+        1,
+    )
+    if updated != text:
+        path.write_text(updated, encoding="utf-8")
+
+
+def find_transcript_file(session_id: str, sessions_root: Path | None = None) -> Path | None:
+    if not SESSION_ID_RE.fullmatch(session_id):
+        return None
+
+    root = sessions_root
+    if root is None:
+        codex_root = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+        root = codex_root / "sessions"
+    if not root.is_dir():
+        return None
+
+    matches = list(root.glob(f"*/*/*/rollout-*-{session_id}.jsonl"))
+    if not matches:
+        return None
+    return max(matches, key=lambda candidate: candidate.stat().st_mtime_ns)
+
+
+def tool_records_for_turn(transcript_path: Path, turn_id: str) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    in_turn = False
+
+    with transcript_path.open("r", encoding="utf-8") as handle:
+        for raw_line in handle:
+            try:
+                record = json.loads(raw_line)
+            except json.JSONDecodeError:
+                continue
+
+            payload = record.get("payload")
+            if not isinstance(payload, dict):
+                continue
+
+            if record.get("type") == "event_msg" and payload.get("type") == "task_started":
+                in_turn = payload.get("turn_id") == turn_id
+                continue
+
+            if (
+                in_turn
+                and record.get("type") == "response_item"
+                and payload.get("type") in {"custom_tool_call", "custom_tool_call_output"}
+            ):
+                records.append(payload)
+                continue
+
+            if (
+                in_turn
+                and record.get("type") == "event_msg"
+                and payload.get("type") == "task_complete"
+                and payload.get("turn_id") == turn_id
+            ):
+                break
+
+    return records
+
+
+def payload_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True)
+
+
+def tool_records_markdown(records: list[dict[str, Any]]) -> str:
+    if not records:
+        return ""
+
+    blocks = ["\n### 도구 호출·출력\n"]
+    call_numbers: dict[str, int] = {}
+    next_number = 0
+
+    for record in records:
+        record_type = record.get("type")
+        call_id = record.get("call_id")
+        call_id_text = call_id if isinstance(call_id, str) else "unknown"
+
+        if record_type == "custom_tool_call":
+            next_number += 1
+            call_numbers[call_id_text] = next_number
+            name = record.get("name")
+            name_text = name if isinstance(name, str) else "unknown"
+            blocks.append(
+                f"\n#### 호출 {next_number:02d} — `{name_text}`\n\n"
+                f"Call ID: `{call_id_text}`\n\n"
+                "입력:\n\n"
+                f"{markdown_fence(payload_text(record.get('input')))}"
+            )
+            continue
+
+        number = call_numbers.get(call_id_text)
+        if number is None:
+            next_number += 1
+            number = next_number
+            call_numbers[call_id_text] = number
+        blocks.append(
+            f"\n#### 출력 {number:02d}\n\n"
+            f"Call ID: `{call_id_text}`\n\n"
+            "출력:\n\n"
+            f"{markdown_fence(payload_text(record.get('output')))}"
+        )
+
+    return "".join(blocks)
 
 
 def top_level_turn_positions(text: str) -> list[tuple[int, int]]:
@@ -209,7 +323,12 @@ def append_user_turn(path: Path, turn_key: str, prompt: str) -> None:
         handle.write(block)
 
 
-def append_assistant_turn(path: Path, turn_key: str, message: str | None) -> None:
+def append_assistant_turn(
+    path: Path,
+    turn_key: str,
+    message: str | None,
+    tool_records: list[dict[str, Any]] | None = None,
+) -> None:
     text = path.read_text(encoding="utf-8")
     section = section_for_turn_key(text, turn_key)
     if section is None:
@@ -221,7 +340,8 @@ def append_assistant_turn(path: Path, turn_key: str, message: str | None) -> Non
         return
 
     assistant_text = message if message is not None else "[원문 미확보]"
-    block = f"\n### 과외냥이\n\n{markdown_fence(assistant_text)}"
+    block = tool_records_markdown(tool_records or [])
+    block += f"\n### 과외냥이\n\n{markdown_fence(assistant_text)}"
     with path.open("a", encoding="utf-8") as handle:
         handle.write(block)
 
@@ -256,7 +376,22 @@ def archive_event(
         message = payload.get("last_assistant_message")
         if message is not None and not isinstance(message, str):
             raise ValueError("Stop payload has an invalid last_assistant_message")
-        append_assistant_turn(path, turn_key, message)
+        transcript_path_value = payload.get("transcript_path")
+        if isinstance(transcript_path_value, str):
+            transcript_path = Path(transcript_path_value)
+            if not transcript_path.is_file():
+                transcript_path = None
+        else:
+            transcript_path = None
+        if transcript_path is None:
+            transcript_path = find_transcript_file(session_id)
+        tool_records = (
+            tool_records_for_turn(transcript_path, turn_id)
+            if transcript_path is not None
+            else []
+        )
+        ensure_tool_scope(path)
+        append_assistant_turn(path, turn_key, message, tool_records)
 
     return path
 
