@@ -5,7 +5,7 @@ merge_ready: false
 
 # 카드 — PR #540 홈탭 발색샷을 그 자리에서 수정·삭제·비공개 전환 (sw-ypn, 예쁜필기노트TDD 2호)
 
-**최종 READY — HEAD `b446f68`(커밋 6), 교차 리뷰 3라운드 종결(fix2 델타 필수 0). 소유자 UAT 완료(A 채택). 남은 것 = 삭제 확인창 탭 1회 실물 확인 → 모기 머지.** 판정문: `../../swatch-ops/contracts/2026-09-02-sw-ypn-cross-review-verdict.md`
+**최종 READY — HEAD `ea0b53b`(커밋 8). 교차 리뷰 3라운드 + cubic 스레드 2건 종결(미해결 0), 소유자 UAT 완료·삭제 실물 재확인 통과. 델타3 리뷰(fix3) 판정 나오면 머지.** 판정문: `../../swatch-ops/contracts/2026-09-02-sw-ypn-cross-review-verdict.md`
 
 작성: 냐옹이 Gen 18, 2026-09-02. 머지 게이트 등급: **② UAT 필수** (UI). 원문 = PR 본문(첫 절이 필기노트 N1~N5 통과 표). 계약 swatch-ops `contracts/2026-09-02-sw-ypn-home-manage.md`, 목업 https://claude.ai/code/artifact/3c21a875-3e1d-49df-ae77-96077fcd9855
 
