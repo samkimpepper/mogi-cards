@@ -4,7 +4,7 @@ merge_ready: false
 # UAT 통과 (2026-09-02 모기: "굵은 폰트들 뭔가 예쁘게 바뀜") — 머지 대기
 ---
 
-# 카드 — PR #541 Pretendard 가변 웹폰트 실제 로드 (sw-oqfc)
+# 카드 — PR #541 Pretendard 가변 웹폰트 실제 로드 (sw-oqfc) — 머지됨 2026-09-02
 
 작성: 냐옹이 Gen 18, 2026-09-02. 머지 게이트 등급: **② UAT 필수** (앱 전역 글꼴). 원문 = PR 본문. 계약 swatch-ops `contracts/2026-09-02-sw-oqfc-pretendard.md`.
 
