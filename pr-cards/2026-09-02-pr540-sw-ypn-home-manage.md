@@ -5,6 +5,8 @@ merge_ready: false
 
 # 카드 — PR #540 홈탭 발색샷을 그 자리에서 수정·삭제·비공개 전환 (sw-ypn, 예쁜필기노트TDD 2호)
 
+**최종 READY — HEAD `31e46b2`, 교차 리뷰 2라운드 종결(필수 0·후가능 0). 남은 게이트 = 모기 미리보기(② UAT 필수).** 판정문: `../../swatch-ops/contracts/2026-09-02-sw-ypn-cross-review-verdict.md`
+
 작성: 냐옹이 Gen 18, 2026-09-02. 머지 게이트 등급: **② UAT 필수** (UI). 원문 = PR 본문(첫 절이 필기노트 N1~N5 통과 표). 계약 swatch-ops `contracts/2026-09-02-sw-ypn-home-manage.md`, 목업 https://claude.ai/code/artifact/3c21a875-3e1d-49df-ae77-96077fcd9855
 
 ## 결정 목록
@@ -33,4 +35,5 @@ gh pr checkout 540 -b preview-540
 
 - 1차 워커 opus 5: RED 0baa426 → GREEN 14dc5cd. 교차 리뷰 1차: 머지 전 필수 2(상세 수정이 프로필과 다른 제약을 받음 / 수정 버튼 오터치 가드 없음).
 - fix1 워커 opus 5: RED b5eab67 → GREEN 31e46b2 — `returnToDetail` 표식 분리, 수정 버튼 tapGuard, 순서 단언. 마스터 재실측 vitest 932/932 · tsc 0. PR head = 31e46b2(커밋 4).
-- 델타 재리뷰(codex) 진행 중 — 종결되면 `merge_ready` 판정. **그 전엔 미리보기 안 해도 된다.**
+- 델타 재리뷰(codex) 종결: 필수 0·후가능 0·정보 4. **이제 미리보기 차례다.** 머지는 모기가 직접(merge-authority). 머지 뒤 preview 브랜치 정리(위 4번).
+- A/B 가벼운 회차: 대조군 B(노트 없음, 별도 워크트리) 발주됨 — 모기는 B PR을 읽지 않아도 된다. 블라인드 심판 뒤 비교표로 보고.
