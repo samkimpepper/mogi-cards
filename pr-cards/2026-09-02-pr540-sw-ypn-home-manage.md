@@ -31,5 +31,6 @@ gh pr checkout 540 -b preview-540
 
 ## 상태
 
-- 워커 opus 5, RED 0baa426 → GREEN 14dc5cd, vitest 930/930 · tsc 0 (마스터 재실측 일치).
-- 교차 리뷰(codex gpt-5.6-sol, 읽기 전용) 진행 중 — 판정 나오면 이 카드 갱신.
+- 1차 워커 opus 5: RED 0baa426 → GREEN 14dc5cd. 교차 리뷰 1차: 머지 전 필수 2(상세 수정이 프로필과 다른 제약을 받음 / 수정 버튼 오터치 가드 없음).
+- fix1 워커 opus 5: RED b5eab67 → GREEN 31e46b2 — `returnToDetail` 표식 분리, 수정 버튼 tapGuard, 순서 단언. 마스터 재실측 vitest 932/932 · tsc 0. PR head = 31e46b2(커밋 4).
+- 델타 재리뷰(codex) 진행 중 — 종결되면 `merge_ready` 판정. **그 전엔 미리보기 안 해도 된다.**
