@@ -1,6 +1,7 @@
 ---
 reviewed: false
 merge_ready: false
+# UAT 통과 (2026-09-02 모기: "굵은 폰트들 뭔가 예쁘게 바뀜") — 머지 대기
 ---
 
 # 카드 — PR #541 Pretendard 가변 웹폰트 실제 로드 (sw-oqfc)
