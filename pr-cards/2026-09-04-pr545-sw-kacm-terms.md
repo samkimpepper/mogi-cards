@@ -23,4 +23,5 @@ merge_ready: true
 ## 상태
 
 - 워커 opus 5: RED 5d7fef7(감시선 29건) → GREEN 0b30d29. 마스터 재실측 vitest 953/953 · tsc 0 · vite build 0. 잔존 금지어 = 주석뿐.
+- cubic 스레드 2건(감시선의 주석 휴리스틱 오탐·누락) → fix1 7dd6753: 문자열 리터럴만 보는 스캐너로 교체, 단위 테스트 4건. 답글·resolve 완료(미해결 0). 마스터 재실측 vitest 957/957. PR head = 7dd6753(커밋 4).
 - 교차 리뷰 생략(카피 + 감시선 — 마스터 전수 grep 대체). 머지는 모기 직접(dev). 머지 뒤 릴리즈 카드 범위를 새 dev head로 갱신해 v0.9.0 컷.
