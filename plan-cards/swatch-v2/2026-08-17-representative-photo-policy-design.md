@@ -19,9 +19,9 @@ reviewed: true
 
 ## 원문 포인터 (SSOT 순서대로)
 
-1. [재결정 결정문](../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) — **정본**. 실측 기반·확정 4절·결정 로그 전부 여기.
-2. [자체 보존 결정문](../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) 개정 6 — 미결정 1 해소 기록, B레인 게이트 조건.
-3. 재결정 대상 원문: `../swatch-v2/docs/wiki/decisions/D-099.md`(사다리·first-come·업그레이드) · `D-118.md`(홈 계약, 결정 10) · `D-100.md`(팔레트 예외).
+1. [재결정 결정문](../../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) — **정본**. 실측 기반·확정 4절·결정 로그 전부 여기.
+2. [자체 보존 결정문](../../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) 개정 6 — 미결정 1 해소 기록, B레인 게이트 조건.
+3. 재결정 대상 원문: `../../swatch-v2/docs/wiki/decisions/D-099.md`(사다리·first-come·업그레이드) · `D-118.md`(홈 계약, 결정 10) · `D-100.md`(팔레트 예외).
 4. 실측 지형: shade 247 중 primary 97(fallback 77·자동 단독 15·팔레트 5)·무대표 150·hex 없음 27 (2026-08-14 과외 QA 실측 — 착수 시 재실측).
 
 ## AskUserQuestion Decision Log

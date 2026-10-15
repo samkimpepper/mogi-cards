@@ -85,7 +85,7 @@
 ### 2026-08-26 소급 기록 — `shade_id` / `shade_slug` 이중 정체성
 
 - 출처: 모기의 소급 자기보고와
-  [`PR #529 카드`](../pr-cards/2026-08-24-pr529-shade-slug-removal.md),
+  [`PR #529 카드`](../pr-cards/swatch-v2/2026-08-24-pr529-shade-slug-removal.md),
   [`2026-08-24 PR #527·#529 과외 원문`](../raw/2026-08-24-03-pr527-pr529-trigger-spec-slug-removal.md)
 - fix 유형: 구현 디테일 수정이 아니라 스키마 결정 수정. `swatch_items` 한 행이
   `shade_id` FK와 `shade_slug` 캐시로 같은 shade 정체성을 중복 보유하던 구조를 PR

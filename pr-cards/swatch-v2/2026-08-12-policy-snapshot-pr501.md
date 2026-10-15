@@ -5,7 +5,7 @@ merge_ready: true
 
 # 카드 — 정책 스냅샷 + 사람말 요약 코멘트 (PR #501, samkimpepper/policy-snapshot → dev)
 
-작성: 냐옹이 Gen 5, 2026-08-12. 원문 SSOT: PR #501 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](../plan-cards/2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ② 이행분.
+작성: 냐옹이 Gen 5, 2026-08-12. 원문 SSOT: PR #501 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](../../plan-cards/swatch-v2/2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ② 이행분.
 
 **상태: 수리 완료 (2026-08-12 갱신).** 교차 리뷰 8건 전부 커밋 `6e1d872`로 수리, 마스터가 소스·PR 재측정으로 확인. **머지 판단 가능 상태.**
 

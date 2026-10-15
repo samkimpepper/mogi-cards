@@ -4,8 +4,8 @@
 
 재료:
 
-- [PR #501 승인 카드](../pr-cards/2026-08-12-policy-snapshot-pr501.md)
-- [PostgreSQL SELECT·RLS 두 관문 공부 노트](../code-diff-notes/2026-08-12-postgresql-select-rls-two-gates-pr501.md)
+- [PR #501 승인 카드](../pr-cards/swatch-v2/2026-08-12-policy-snapshot-pr501.md)
+- [PostgreSQL SELECT·RLS 두 관문 공부 노트](../code-diff-notes/swatch-v2/2026-08-12-postgresql-select-rls-two-gates-pr501.md)
 - swatch-v2 PR #501 · 정책 스냅샷 생성기와 CI 요약
 
 ## 판정

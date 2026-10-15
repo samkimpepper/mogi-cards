@@ -8,9 +8,9 @@ reviewed: true
 
 ## 원문 포인터 (SSOT 순서대로)
 
-1. [설계 결정문 + 부록 A](../../swatch-ops/docs/decisions/2026-08-13-owner-direct-rights-admin-roles.md) — **설계의 정본**. 전편 설계 카드(2026-08-13-…-design.md)와 §1 인용 자격·§3이 다르다 — 결정문이 우선.
-2. [A레인 계약서](../../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md) — 워커에게 간 전문. 체인 실측 11개 전제 + 15조 원격 재검증 절 포함.
-3. 현행 스키마 실물: `../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql` (owner_uid 체계 전부), `20260803100000`(현행 RLS), `20260428230000`(현행 is_admin), `20260625000000:27`(RESTRICT FK).
+1. [설계 결정문 + 부록 A](../../../swatch-ops/docs/decisions/2026-08-13-owner-direct-rights-admin-roles.md) — **설계의 정본**. 전편 설계 카드(2026-08-13-…-design.md)와 §1 인용 자격·§3이 다르다 — 결정문이 우선.
+2. [A레인 계약서](../../../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md) — 워커에게 간 전문. 체인 실측 11개 전제 + 15조 원격 재검증 절 포함.
+3. 현행 스키마 실물: `../../swatch-v2/supabase/migrations/20260810100000_swatch_owner_uid_attribution.sql` (owner_uid 체계 전부), `20260803100000`(현행 RLS), `20260428230000`(현행 is_admin), `20260625000000:27`(RESTRICT FK).
 
 ## 전편 설계 카드에서 바뀐 것 (결정 3건, 전부 모기 확정)
 

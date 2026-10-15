@@ -4,8 +4,8 @@
 
 재료:
 
-- [PR #500 리드카드](../pr-cards/2026-08-11-migration-ci-harness-pr500.md)
-- [migration workflow code diff note](../code-diff-notes/2026-08-12-migration-verify-workflow-pr500.md)
+- [PR #500 리드카드](../pr-cards/swatch-v2/2026-08-11-migration-ci-harness-pr500.md)
+- [migration workflow code diff note](../code-diff-notes/swatch-v2/2026-08-12-migration-verify-workflow-pr500.md)
 - swatch-v2 PR #500 · `.github/workflows/migration-verify.yml`
 
 ## 판정

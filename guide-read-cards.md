@@ -4,7 +4,7 @@ title: "모기 읽기 카드 — 긴 SPEC/PLAN을 사람이 승인 가능한 단
 type: guide
 created_at: 2026-06-25
 created_by: ChatGPT
-updated_at: 2026-08-20
+updated_at: 2026-10-15
 updated_by: Codex
 last_verified_at: 2026-07-04
 last_verified_by: Claude
@@ -78,6 +78,8 @@ audit_log:
 ---
 
 # 모기 읽기 카드
+
+현재 공책 운영(2026-10-15): 자료는 `종류/<레포>/`로 나누며 기본 대상은 `mogi-productivity`다. 카드 없이 채팅에서 바로 질문할 수 있다. 아래 swatch의 승인·GSD·게이트 사례를 다른 제품의 필수 절차로 자동 적용하지 않는다. 현재 시작·상태 규칙은 [AGENTS.md](./AGENTS.md)를 따른다.
 
 모기 읽기 카드는 긴 SPEC/PLAN/SUMMARY를 다시 긴 쉬운 문서로 번역하지 않고, **사람이 직접 읽고 결정해야 하는 부분만 짧게 뽑아주는 카드**다.
 
@@ -168,9 +170,9 @@ merge_ready: false
 
 카드는 **원문(SPEC/PLAN/SUMMARY)이 있는 `.planning` 디렉토리**에 같이 둔다 (모기 결정 2026-07-04). GSD 산출물 옆에 있어야 카드에서 나온 지적이 todo/thread 후속으로 바로 이어진다. GSD 명령은 자기가 아는 파일명만 읽으므로 카드 파일이 실행을 방해하지 않는다.
 
-mogi-cards에 배달한 개인 공책 사본은 읽는 목적에 따라 `pr-cards/`·`plan-cards/`·`code-diff-notes/`에 둔다. 실제 PR 승인 카드는 `pr-cards/`, 구현 전 설계·SPEC은 `plan-cards/`, 실제 코드·diff 학습은 `code-diff-notes/`다. 파일명은 `<날짜>-<주제>.md`로 시작하고 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 문서 종류는 폴더가 이미 표현한다.
+mogi-cards에 남기는 개인 공책 사본은 읽는 목적에 따라 `pr-cards/<레포>/`·`plan-cards/<레포>/`·`code-diff-notes/<레포>/`에 둔다. 레포는 `mogi-productivity` 또는 `swatch-v2`이며 당분간 기본 대상은 `mogi-productivity`다. 카드 작성·읽기는 채팅 과외의 선행 조건이 아니다. 실제 PR 승인 카드는 `pr-cards/`, 구현 전 설계·SPEC은 `plan-cards/`, 실제 코드·diff 학습은 `code-diff-notes/`다. 파일명은 `<날짜>-<주제>.md`로 시작하고 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 문서 종류는 폴더가 이미 표현한다.
 
-`code-diff-notes/temp/`는 모기가 피곤한 세션에 한 줄씩 체크하며 읽고 싶다고 명시적으로 요청했을 때만 만드는 임시 워크북 보관처다. 상시 산출물이나 독립 활성 큐가 아니며 세션 부트에서 자동 제시하지 않는다.
+`code-diff-notes/<레포>/temp/`는 모기가 피곤한 세션에 한 줄씩 체크하며 읽고 싶다고 명시적으로 요청했을 때만 만드는 임시 워크북 보관처다. 상시 산출물이나 독립 활성 큐가 아니며 세션 부트에서 자동 제시하지 않는다.
 
 1. **원문 상단의 접힌 블록** — drift가 적다. 기본값.
 2. **원문 옆 별도 파일** — 카드가 길어질 때만.
@@ -890,8 +892,8 @@ UAT 브리핑처럼 한 번 쓰고 마는 안내장은 영구 카드 목록에 �
 **생성 → 읽기·실행 → 결과를 PR 카드나 원문에 반영 → 삭제.** 남길 가치가 생긴 내용은
 삭제 전에 해당 PR 카드·원문으로 옮긴다. 디렉토리 구조: 활성 폴더는 `pr-cards/`(PR 승인)·
 `plan-cards/`(착수 전 설계·SPEC — PR 번호가 있어도 내용이 설계면 여기)·`code-diff-notes/`
-(코드 학습)이고, 지난 자료는 `archive/`다. `code-diff-notes/temp/`는 요청형 한 줄 체크
-워크북 예외이며 활성 큐가 아니다. 세션 부트는 세 활성 폴더 바로 아래 문서 중 최신 1개만 보여준다.
+(코드 학습)이고, 지난 자료는 `archive/`다. `code-diff-notes/<레포>/temp/`는 요청형 한 줄 체크
+워크북 예외이며 활성 큐가 아니다. 세션에 재료가 없을 때만 선택한 레포의 각 종류 폴더 바로 아래에서 `reviewed: false` 최신 문서 1개씩을 보여준다.
 
 ## 부록: 머지 게이트 등급표 (모기 확정 2026-08-14 — 퀴즈 게이트 사소 기준 명문화, retro §7 ⑤ 이행)
 

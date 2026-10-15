@@ -20,9 +20,9 @@ PR #520 머지됨(merge commit `6c49bc62`, head `9ec4fe3`, 28커밋). PR #519(ty
 ## 원문 포인터
 
 1. PR: https://github.com/baksohyeon/swatch-v2/pull/520
-2. [B레인 계약](../../swatch-ops/contracts/2026-08-17-swatch-media-b-serving.md) — 범위 5개·재실측 전제·검증 조건 원문
-3. [교차 리뷰 판정](../../swatch-ops/contracts/2026-08-17-pr520-codex-review.md) + [fix1 계약](../../swatch-ops/contracts/2026-08-17-pr520-fix1.md)
-4. 설계 정본: [대표사진 재결정 결정문(개정 1)](../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) · [자체 보존 결정문(개정 6)](../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) · [설계 plan card](../plan-cards/2026-08-17-representative-photo-policy-design.md)
+2. [B레인 계약](../../../swatch-ops/contracts/2026-08-17-swatch-media-b-serving.md) — 범위 5개·재실측 전제·검증 조건 원문
+3. [교차 리뷰 판정](../../../swatch-ops/contracts/2026-08-17-pr520-codex-review.md) + [fix1 계약](../../../swatch-ops/contracts/2026-08-17-pr520-fix1.md)
+4. 설계 정본: [대표사진 재결정 결정문(개정 1)](../../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) · [자체 보존 결정문(개정 6)](../../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) · [설계 plan card](../../plan-cards/swatch-v2/2026-08-17-representative-photo-policy-design.md)
 5. DB 전편: A레인 PR #518 (머지·원격 적용 완료 2026-08-16)
 
 ## 이 PR이 하는 것 (골격)
@@ -70,7 +70,7 @@ PR #520 머지됨(merge commit `6c49bc62`, head `9ec4fe3`, 28커밋). PR #519(ty
 
 ## 2026-08-18 결정 2개 (네가 정한 것)
 
-1. **자체 사본 "채택" 경로 폐기** — 우리 버킷에 이미 있는 객체를 재사용하던 절약 기능을 없애고, 모든 사본을 우리가 `swatch/<발색id>/…`에 새로 만든다. 소유가 규칙이 아니라 **구조**가 된다. 대가: 어드민이 올린 사진은 바이트가 두 벌(원본은 고아로 남고, 고아 정리는 C레인 일감). → fix7로 반영 완료. 경위: [결정 카드](../plan-cards/2026-08-18-object-key-adoption-boundary.md)
+1. **자체 사본 "채택" 경로 폐기** — 우리 버킷에 이미 있는 객체를 재사용하던 절약 기능을 없애고, 모든 사본을 우리가 `swatch/<발색id>/…`에 새로 만든다. 소유가 규칙이 아니라 **구조**가 된다. 대가: 어드민이 올린 사진은 바이트가 두 벌(원본은 고아로 남고, 고아 정리는 C레인 일감). → fix7로 반영 완료. 경위: [결정 카드](../../plan-cards/swatch-v2/2026-08-18-object-key-adoption-boundary.md)
 2. **어드민 shade 갤러리 업로드 경로 폐기 + 기존 갤러리 사진 전량 삭제** — 보안 필수가 아니라 제품·저작권 판단이라 **#520이 아닌 별도 레인**(트래커 sw-yvb, 머지 후). 착수 시 조사표부터 뽑는다 — `shade_images`에는 **유저 발색에서 승격된 대표 행이 섞여 있어서**, 그것까지 지우면 이번 PR의 대표사진 재선정 설계를 되돌리게 된다. 눈에 보이는 결과: 사다리의 '공용 대표' 칸이 비어 색상칩/회색칩 표시로 내려간다.
 
 ## 이해 체크 골격 (퀴즈 재료 — 정식, fix4 기준)

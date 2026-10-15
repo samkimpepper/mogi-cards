@@ -5,7 +5,7 @@ merge_ready: true
 
 # 카드 — 마이그레이션 CI 하네스 (PR #500, samkimpepper/rls-ci-harness → dev)
 
-작성: 냐옹이 Gen 5, 2026-08-11. 원문 SSOT: PR #500 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](../plan-cards/2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ① 이행분.
+작성: 냐옹이 Gen 5, 2026-08-11. 원문 SSOT: PR #500 + 계약 2장·교차 리뷰 문서(swatch-ops/contracts/). 계획 카드([RLS 절감 계획](../../plan-cards/swatch-v2/2026-08-11-rls-relief-plan-sw-tw7.md))의 산출물 ① 이행분.
 
 ## 1. 반드시 읽을 결정
 
@@ -69,4 +69,4 @@ merge_ready: true
 - 처음에는 공개 컬럼을 RPC가 빠뜨리면 RPC 자체가 권한 오류를 낸다고 보았으나, 이 경우 RPC는 성공할 수 있고 계약 비교 테스트가 집합 불일치로 실패시킨다는 점을 구분했다.
 - 일반적인 미처리 exception처럼 `RAISE EXCEPTION`만으로 프로세스가 실패 종료할 것으로 예상했으나, `psql`의 기본 계속 실행 동작과 `ON_ERROR_STOP`의 역할을 구분했다.
 
-자세한 코드 해설: [PR #500 migration workflow code diff note](../code-diff-notes/2026-08-12-migration-verify-workflow-pr500.md)
+자세한 코드 해설: [PR #500 migration workflow code diff note](../../code-diff-notes/swatch-v2/2026-08-12-migration-verify-workflow-pr500.md)

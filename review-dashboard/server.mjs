@@ -16,6 +16,8 @@ export const ACTIVE_GROUPS = [
   { directory: "plan-cards", label: "설계 카드" },
   { directory: "code-diff-notes", label: "코드 학습 노트" },
 ];
+export const REPOSITORIES = ["mogi-productivity", "swatch-v2"];
+export const DASHBOARD_VERSION = 2;
 
 export class ReviewStatusError extends Error {
   constructor(message, status = 400) {
@@ -32,24 +34,38 @@ function resolveActiveDocument(repoRoot, relativePath) {
 
   const parts = relativePath.split("/");
   const allowedDirectory = ACTIVE_GROUPS.some((group) => group.directory === parts[0]);
-  const filename = parts[1];
+  const repository = parts[1];
+  const filename = parts[2];
   if (
-    parts.length !== 2 ||
+    parts.length !== 3 ||
     !allowedDirectory ||
+    !REPOSITORIES.includes(repository) ||
     !filename ||
     filename === "." ||
     filename === ".." ||
     !filename.endsWith(".md")
   ) {
-    throw new ReviewStatusError("활성 폴더 바로 아래의 Markdown 문서만 바꿀 수 있어");
+    throw new ReviewStatusError("활성 폴더의 등록된 레포 바로 아래 Markdown 문서만 바꿀 수 있어");
   }
 
-  const directoryPath = resolve(repoRoot, parts[0]);
+  const directoryPath = resolve(repoRoot, parts[0], repository);
   const documentPath = resolve(directoryPath, filename);
   if (dirname(documentPath) !== directoryPath) {
     throw new ReviewStatusError("활성 폴더 밖의 문서는 바꿀 수 없어");
   }
   return documentPath;
+}
+
+async function inspectDirectory(repoRoot, directory) {
+  // 종류 폴더와 레포 폴더 모두 링크를 따라가지 않는다.
+  let current = repoRoot;
+  for (const part of directory.split("/")) {
+    current = resolve(current, part);
+    const info = await lstat(current);
+    if (!info.isDirectory() || info.isSymbolicLink()) {
+      throw new ReviewStatusError("실제 레포 문서 폴더만 읽고 바꿀 수 있어");
+    }
+  }
 }
 
 export function inspectDocument(content, relativePath = "문서") {
@@ -81,30 +97,40 @@ export function inspectDocument(content, relativePath = "문서") {
 export async function listUnreviewedDocuments(repoRoot = DEFAULT_REPO_ROOT) {
   const groups = [];
 
-  for (const group of ACTIVE_GROUPS) {
-    const directoryPath = resolve(repoRoot, group.directory);
-    const entries = await readdir(directoryPath, { withFileTypes: true });
-    const documents = [];
-
-    for (const entry of entries) {
-      if (!entry.isFile() || !entry.name.endsWith(".md")) continue;
-      const relativePath = `${group.directory}/${entry.name}`;
-      const documentPath = resolveActiveDocument(repoRoot, relativePath);
-      const content = await readFile(documentPath, "utf8");
-      let inspected;
+  for (const repository of REPOSITORIES) {
+    for (const group of ACTIVE_GROUPS) {
+      const directory = `${group.directory}/${repository}`;
+      const directoryPath = resolve(repoRoot, directory);
+      let entries;
       try {
-        inspected = inspectDocument(content, relativePath);
+        await inspectDirectory(repoRoot, directory);
+        entries = await readdir(directoryPath, { withFileTypes: true });
       } catch (error) {
-        if (error instanceof ReviewStatusError) continue;
-        throw error;
+        if (error.code !== "ENOENT") throw error;
+        entries = [];
       }
-      if (!inspected.reviewed) {
-        documents.push({ path: relativePath, title: inspected.title });
-      }
-    }
+      const documents = [];
 
-    documents.sort((left, right) => right.path.localeCompare(left.path, "ko"));
-    groups.push({ ...group, documents });
+      for (const entry of entries) {
+        if (!entry.isFile() || !entry.name.endsWith(".md")) continue;
+        const relativePath = `${directory}/${entry.name}`;
+        const documentPath = resolveActiveDocument(repoRoot, relativePath);
+        const content = await readFile(documentPath, "utf8");
+        let inspected;
+        try {
+          inspected = inspectDocument(content, relativePath);
+        } catch (error) {
+          if (error instanceof ReviewStatusError) continue;
+          throw error;
+        }
+        if (!inspected.reviewed) {
+          documents.push({ path: relativePath, title: inspected.title });
+        }
+      }
+
+      documents.sort((left, right) => right.path.localeCompare(left.path, "ko"));
+      groups.push({ directory, repository, label: group.label, documents });
+    }
   }
 
   return {
@@ -118,6 +144,7 @@ export async function markDocumentReviewed(repoRoot, relativePath) {
   let documentStat;
   let content;
   try {
+    await inspectDirectory(repoRoot, relativePath.split("/").slice(0, -1).join("/"));
     documentStat = await lstat(documentPath);
     if (!documentStat.isFile()) {
       throw new ReviewStatusError("일반 Markdown 파일만 바꿀 수 있어", 409);
@@ -226,7 +253,7 @@ export function createReviewServer({ repoRoot = DEFAULT_REPO_ROOT } = {}) {
       }
 
       if (request.method === "GET" && url.pathname === "/api/health") {
-        sendJson(response, 200, { service: "mogi-review-dashboard", version: 1 });
+        sendJson(response, 200, { service: "mogi-review-dashboard", version: DASHBOARD_VERSION, repoRoot: resolvedRoot });
         return;
       }
 

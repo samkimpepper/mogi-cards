@@ -1,36 +1,40 @@
 # mogi-cards — 모기의 이해부채 공책
 
-이 저장소는 **모기 개인의 학습·승인 보조 공책**이다 (비공개). swatch 제품 저장소가 아니고, 여기 있는 문서는 제품의 SSOT가 아니다 — 원문(PR·결정 문서)을 읽으러 가는 길잡이다.
+이 저장소는 **모기 개인의 학습·승인 보조 공책**이다 (비공개). `mogi-productivity`·`swatch-v2`의 제품 저장소와 분리된 공책이며, 여기 있는 문서는 제품의 SSOT가 아니다 — 원문(PR·결정 문서)을 읽으러 가는 길잡이다.
 
 ## 새 세션 자동 로딩
 
 세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. Codex의 `SessionStart` 훅은 기본 과외 세션마다 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 [guide-mogi-head-test.md](./guide-mogi-head-test.md) 원문 전체를 시작 컨텍스트에 제공한다. 훅이 알려준 최신 `head-test/*-learning-observation-cumulative-review.md` 한 개도 과외냥이가 시작 인사 전에 원문 전체를 직접 읽는다.
 
-이와 별도로 활성 폴더 3개(`pr-cards/`·`plan-cards/`·`code-diff-notes/`)의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**만 기본 재료로 고른다. 해당 문서가 없으면 "미검토 문서 없음"으로 표시하며, `reviewed`가 없는 기존 문서는 이미 처리한 레거시로 본다. 모기가 재료를 따로 주지 않아도 스스로 찾는다. `code-diff-notes/temp/`와 `archive/`는 자동으로 열지 않는다.
+기본 학습 대상은 **`mogi-productivity`**다. `swatch-v2`를 지정한 세션은 그 레포를 따른다. 질문·PR·코드를 받으면 채팅에서 바로 시작하며, 카드 작성·읽기를 선행 단계로 요구하지 않는다. 정리를 요청받거나 다시 볼 가치가 있는 설명이 생겼을 때 해당 제품 폴더에 남긴다.
 
-### 임시 자동 로딩 — PR raw diff 접촉 파일럿
+재료가 없을 때만 `pr-cards/<레포>/`·`plan-cards/<레포>/`·`code-diff-notes/<레포>/`의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**을 제시한다. 없으면 "미검토 문서 없음"으로 표시하며 다른 레포의 자료를 대신 제시하지 않는다. `reviewed`가 없는 문서는 처리한 레거시로 보고 `temp/`·`archive/`·`raw/`는 기본 목록에서 제외한다.
 
-대상 PR이나 code diff note를 공부하는 세션은 카드 설명 전에 [PR raw diff 접촉 파일럿](./harness/pilots/2026-08-16-raw-diff-contact.md)을 추가로 읽는다. 전체 변경 지도 → 주요 fix·구현 raw hunk → 연결 테스트 → 모기가 파일 목록에서 고르는 샛길 순서로 실제 코드 접촉을 돕는 임시 규칙이다.
+과외 하네스 개발·개선과 재가동을 전제로 한 파일럿은 동결 상태를 유지한다. 과거 파일럿은 `harness/pilots/`에 결과·이력으로 보존하며 자동 실행하지 않는다. 복귀나 폴더 정리를 파일럿 재개 허가로 해석하지 않는다.
 
-- **유효기간:** 파일럿 문서의 `## 실행 기록`이 3회에 도달하거나 모기가 중단을 선언할 때 중 먼저 오는 시점까지.
-- **만료 처리:** 자동 적용을 조용히 연장하지 않는다. 3회 기록을 보고 영구 승격·수정·제거 중 하나를 모기가 결정한 뒤 README와 프리앰블 포인터를 함께 정리한다.
-- 설계·SPEC처럼 아직 실제 diff가 없는 재료에는 적용하지 않는다.
+## 두 제품의 자료 위치
 
-### 임시 조건부 호출 — 발견물 중복 확인 관문
+```text
+pr-cards/{mogi-productivity,swatch-v2}/
+plan-cards/{mogi-productivity,swatch-v2}/
+code-diff-notes/{mogi-productivity,swatch-v2}/
+```
 
-과외 중 새 발견물을 `master-delivery-memos.md`에 append하려는 순간에만 [발견물 중복 확인 관문 파일럿](./harness/pilots/2026-08-20-discovery-dedupe-gate.md)을 읽는다. 현재 수신함, 비워진 과거 원문의 git 이력, 열린 운영 트래커를 대조해 신규 원인·같은 영향·새 영향을 구분한다.
+| 종류 | 남기는 내용 |
+|---|---|
+| `pr-cards/<레포>/` | 구현된 PR의 변경 내용과 검토할 대목 |
+| `plan-cards/<레포>/` | 구현을 맡기기 전 기능·설계·SPEC의 결정과 남은 질문 |
+| `code-diff-notes/<레포>/` | 실제 코드·diff를 읽으며 나눈 설명과 값의 흐름 |
 
-- **유효기간:** baseline 이후 자연 발생하는 발견물 후보 3건 또는 모기의 중단 선언 중 먼저 오는 시점까지.
-- **만료 처리:** 3건 뒤 자동 중단한다. 기록을 다시 본 뒤에만 유지·수정·폐기를 결정하며 영구 규칙으로 자동 승격하지 않는다.
-- 세션 시작이나 일반 질문 때는 읽지 않으며, 과거 세션 JSONL 전수 검색도 기본 동작이 아니다.
+공통 과외 지침, `raw/`, `head-test/`, `SCRATCHPAD.md`, `master-delivery-memos.md`는 루트에서 함께 관리한다. 제품별 PR 번호는 해당 레포 문맥 안에서 읽고 새 발견물 메모 제목에는 제품명을 붙인다. 기존 swatch 자료 68개(요청형 워크북 포함)는 `swatch-v2` 아래로 옮겼으며 상태 값은 보존했다.
 
 **다른 `guide-*` 문서와 과거 카드 묶음을 선제적으로 전부 읽지 않는다.** 아래 작업이 실제로 생겼을 때 해당 문서만 추가로 연다.
 
 | 파일 | 읽는 때 |
 |---|---|
 | `guide-tutor-preamble.md` | 기본 과외 세션 부트 |
-| `harness/pilots/2026-08-16-raw-diff-contact.md` | 임시 자동 로딩 — 대상 PR·code diff note 과외, 실행 기록 3회 또는 모기 중단 선언까지 |
-| `harness/pilots/2026-08-20-discovery-dedupe-gate.md` | 임시 조건부 호출 — 새 마스터 전달 메모를 쓰기 직전, prospective 실행 3회 또는 모기 중단 선언까지 |
+| `harness/pilots/2026-08-16-raw-diff-contact.md` | 과거 파일럿 결과·이력을 명시적으로 재검토할 때만 |
+| `harness/pilots/2026-08-20-discovery-dedupe-gate.md` | 과거 파일럿 결과·이력을 명시적으로 재검토할 때만 |
 | `master-delivery-memos.md` | 과외 발견물을 append하거나 마스터가 수신함을 처리할 때 |
 | `guide-read-cards.md` | 리드카드 운영 형식 자체를 만들거나 고칠 때 |
 | `guide-subjective-checks.md` | 주관식 이해 체크 형식 자체를 만들거나 고칠 때 |
@@ -38,18 +42,18 @@
 | `guide-mogi-head-test.md` | 기본 과외 세션 부트 — 자유 학습 우선, 약한 가드레일 3개와 종료 기록 규칙 |
 | `head-test/*-learning-observation-cumulative-review.md` | 세션 시작 때 최신 문서 1개 — 다음 세션에 적용할 변화 1~2개와 이미 효용이 관찰된 방식 인수 |
 | `head-test/README.md` | 모기가 통제된 A/B 러너를 명시적으로 다시 요청할 때만 |
-| `pr-cards/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
-| `plan-cards/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
-| `code-diff-notes/<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
-| `code-diff-notes/temp/<날짜>-<주제>.md` | 모기가 지친 날 요청한 경우에만 한 줄씩 체크하며 읽는 임시 워크북 |
+| `pr-cards/<레포>/<날짜>-<주제>.md` | 해당 PR을 공부하거나 승인할 때 |
+| `plan-cards/<레포>/<날짜>-<주제>.md` | 착수 전 설계·SPEC을 공부할 때 |
+| `code-diff-notes/<레포>/<날짜>-<주제>.md` | 코드 읽기를 연습·복기할 때 |
+| `code-diff-notes/<레포>/temp/<날짜>-<주제>.md` | 모기가 지친 날 요청한 경우에만 한 줄씩 체크하며 읽는 임시 워크북 |
 | `archive/` | 7월까지의 지난 자료 — 모기가 요청할 때만 |
 | `*-해설.md` | 과외 문답을 증류하거나 이어서 읽을 때 |
 
-파일명에 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 활성 문서의 종류는 `pr-cards/`·`plan-cards/`·`code-diff-notes/` 폴더가 표현하고, 파일명은 날짜와 주제만 담는다.
+파일명에 `0-`·`1-card-`·`2-note-` 같은 숫자·종류 prefix를 붙이지 않는다. 문서 종류는 첫 폴더, 제품은 그 아래 레포 폴더가 표현하고, 파일명은 날짜와 주제만 담는다.
 
-`code-diff-notes/temp/`는 상시 산출물이나 네 번째 활성 큐가 아니다. 피로 때문에 일반 코드 읽기가 어려워 모기가 명시적으로 요청했을 때만 만들며, 기본 미검토 카드 목록에서는 제외한다.
+`code-diff-notes/<레포>/temp/`는 상시 산출물이나 네 번째 활성 큐가 아니다. 피로 때문에 일반 코드 읽기가 어려워 모기가 명시적으로 요청했을 때만 만들며, 기본 미검토 카드 목록에서는 제외한다.
 
-제품 저장소는 읽기 전용이고, 쓰기는 이 저장소의 허용된 메모·해설과 새 문서 상태 기본값 작성에만 한다. 기존 문서의 상태를 `true`로 바꾸는 일은 모기가 직접 한다.
+제품 저장소는 읽기 전용이다. 이 공책에는 허용된 메모·해설과 새 문서 상태 기본값을 쓰며, 모기가 명시적으로 요청한 공책 정리도 수행한다. 기존 문서의 상태를 `true`로 바꾸는 일은 모기가 직접 한다.
 
 ## 카드 상태
 
@@ -62,13 +66,13 @@
 
 Orca의 Markdown 체크박스 대신 로컬 상태판에서 읽은 문서를 한 번 클릭해 표시할 수 있다. 과외 세션의 `SessionStart` 훅이 과외냥이에게 자동 시작을 지시하고, 과외냥이가 상태판을 시작하거나 이미 실행 중인 서버를 재사용하므로 모기가 실행 명령을 외울 필요는 없다. 과외냥이는 시작 인사에 `http://127.0.0.1:8766` 링크를 함께 보여준다.
 
-자동 시작이 고장 났을 때의 수동 복구 명령은 다음과 같다. 평소에는 모기가 직접 실행하지 않고 과외냥이가 복구한다.
+상태판 재사용 시 버전과 대상 공책 경로를 함께 확인한다. 다른 체크아웃의 상태판을 현재 공책으로 간주하지 않는다. 자동 시작이 고장 났을 때의 수동 복구 명령은 다음과 같다. 평소에는 모기가 직접 실행하지 않고 과외냥이가 복구한다.
 
 ```bash
 node review-dashboard/server.mjs
 ```
 
-실행 뒤 Orca 브라우저에서 `http://127.0.0.1:8766`을 연다. 상태판은 `pr-cards/`·`plan-cards/`·`code-diff-notes/` 바로 아래의 `reviewed: false` 문서만 보여주며, 모기가 체크한 문서의 frontmatter만 `reviewed: true`로 바꾼다. `temp/`·`archive/`·상태 필드가 없는 레거시는 제외하고 commit과 push는 자동으로 하지 않는다. 종료할 때는 상태판을 실행한 터미널에서 `Ctrl+C`를 누른다.
+실행 뒤 Orca 브라우저에서 `http://127.0.0.1:8766`을 연다. 상태판은 기본으로 `mogi-productivity`를 보여주고 레포 선택으로 `swatch-v2`로 전환할 수 있다. 선택한 레포의 각 종류 폴더 바로 아래 `reviewed: false` 문서만 보여주며, 모기가 체크한 문서의 frontmatter만 `reviewed: true`로 바꾼다. `temp/`·`archive/`·상태 필드가 없는 레거시는 제외하고 commit과 push는 자동으로 하지 않는다. 종료할 때는 상태판을 실행한 터미널에서 `Ctrl+C`를 누른다.
 
 ## 기록된 선택 다시 판단하기
 
@@ -80,8 +84,8 @@ node review-dashboard/server.mjs
 
 ## 흐름 (누가 뭘 하나)
 
-1. swatch 워크스페이스의 워커가 PR을 만들면, **마스터(냐옹이)가 카드를 여기 배달**한다.
-2. 모기는 카드를 읽고 — 더 파고 싶으면 **과외 세션**을 열어 카드·PR을 재료로 질문한다.
+1. 모기는 선택한 제품의 PR·코드·설계를 채팅에 가져와 질문한다. 기존 카드가 있으면 함께 참고한다.
+2. 과외 세션은 실제 원문을 읽고 답한다. 카드 작성·읽기는 필수가 아니다.
 3. 과외 중 나온 좋은 문답은 해설 파일로, 발견물(버그 의심 등)은 `master-delivery-memos.md` 단일 수신함으로 간다. 과외 세션은 제품 코드를 절대 고치지 않는다.
 4. **PR 머지는 항상 모기가 직접** 한다.
 
@@ -93,5 +97,7 @@ node review-dashboard/server.mjs
 
 ## 관련 저장소
 
+- 기본 제품: `mogi-productivity` (`../mogi-productivity`) — 원문 SSOT, 읽기 전용
+- 이전 과외 기록: `mogi-whiteboard` (`../mogi-whiteboard`) — 필요한 과거 문맥만 참조, 읽기 전용
 - 제품: `swatch-v2` (github.com/baksohyeon/swatch-v2) — 원문 SSOT
 - 운영: `swatch-ops` (github.com/samkimpepper/swatch-ops, 비공개) — 워커 계약·조사 보고서·교차 리뷰 문서

@@ -3,16 +3,18 @@
 import { spawn } from "node:child_process";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { DASHBOARD_VERSION } from "./server.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SERVER_PATH = resolve(HERE, "server.mjs");
 const DEFAULT_PORT = 8766;
+const REPO_ROOT = resolve(HERE, "..");
 
 function delay(milliseconds) {
   return new Promise((accept) => setTimeout(accept, milliseconds));
 }
 
-export async function dashboardIsHealthy(port = DEFAULT_PORT) {
+export async function dashboardIsHealthy(port = DEFAULT_PORT, repoRoot = REPO_ROOT) {
   try {
     const response = await fetch(`http://127.0.0.1:${port}/api/health`, {
       cache: "no-store",
@@ -20,7 +22,8 @@ export async function dashboardIsHealthy(port = DEFAULT_PORT) {
     });
     if (!response.ok) return false;
     const body = await response.json();
-    return body.service === "mogi-review-dashboard" && body.version === 1;
+    return body.service === "mogi-review-dashboard" &&
+      body.version === DASHBOARD_VERSION && body.repoRoot === resolve(repoRoot);
   } catch {
     return false;
   }

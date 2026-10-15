@@ -25,6 +25,7 @@
     button { border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: white; padding: 8px 12px; font: inherit; cursor: pointer; }
     button.secondary { background: white; color: var(--accent); }
     button:disabled { cursor: wait; opacity: .55; }
+    select { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); padding: 8px 12px; font: inherit; }
     code { overflow-wrap: anywhere; color: var(--muted); }
     .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .muted { color: var(--muted); }
@@ -53,14 +54,22 @@
       <h1>읽은 문서 상태판</h1>
       <div class="muted">체크하면 해당 문서의 <code>reviewed: false</code>만 <code>true</code>로 바뀌어.</div>
     </div>
-    <button id="refresh" class="secondary" type="button">목록 새로고침</button>
+    <div class="bar">
+      <label>레포
+        <select id="repository">
+          <option value="mogi-productivity">mogi-productivity</option>
+          <option value="swatch-v2">swatch-v2</option>
+        </select>
+      </label>
+      <button id="refresh" class="secondary" type="button">목록 새로고침</button>
+    </div>
   </div>
 
   <div id="notice" class="notice" aria-live="polite"></div>
   <div id="groups" aria-live="polite"><div class="panel loading">미검토 문서를 찾는 중이야.</div></div>
 
   <footer>
-    활성 폴더 바로 아래 문서만 표시해. <code>temp/</code>와 <code>archive/</code>는 제외하며 commit과 push는 자동으로 하지 않아.
+    선택한 레포의 PR 카드·설계 카드·코드 학습 노트만 표시해. <code>temp/</code>와 <code>archive/</code>는 제외하며 commit과 push는 자동으로 하지 않아.
   </footer>
 </main>
 
@@ -70,6 +79,7 @@
   const groupsElement = document.getElementById("groups");
   const noticeElement = document.getElementById("notice");
   const refreshButton = document.getElementById("refresh");
+  const repositorySelect = document.getElementById("repository");
 
   function setNotice(message, error = false) {
     noticeElement.textContent = message;
@@ -139,14 +149,16 @@
 
   function render(data) {
     groupsElement.replaceChildren();
-    for (const group of data.groups) {
+    const selectedGroups = data.groups.filter((group) => group.repository === repositorySelect.value);
+    const selectedTotal = selectedGroups.reduce((sum, group) => sum + group.documents.length, 0);
+    for (const group of selectedGroups) {
       const panel = document.createElement("section");
       panel.className = "panel";
 
       const heading = document.createElement("div");
       heading.className = "panel-heading";
       const title = document.createElement("h2");
-      title.textContent = group.label;
+      title.textContent = `${group.repository} · ${group.label}`;
       const count = document.createElement("span");
       count.className = "count";
       count.textContent = String(group.documents.length);
@@ -165,7 +177,9 @@
       groupsElement.append(panel);
     }
 
-    if (data.total === 0) setNotice("활성 폴더의 문서를 모두 읽었어.");
+    setNotice(selectedTotal === 0
+      ? `${repositorySelect.value}: 미검토 문서 없음`
+      : `${repositorySelect.value}: 미검토 문서 ${selectedTotal}개를 찾았어.`);
   }
 
   async function loadDocuments(showNotice = true) {
@@ -174,7 +188,6 @@
     try {
       const data = await request("/api/documents");
       render(data);
-      if (showNotice && data.total > 0) setNotice(`미검토 문서 ${data.total}개를 찾았어.`);
     } catch (error) {
       groupsElement.innerHTML = '<div class="panel empty">목록을 불러오지 못했어.</div>';
       setNotice(error.message, true);
@@ -184,6 +197,7 @@
   }
 
   refreshButton.addEventListener("click", () => loadDocuments());
+  repositorySelect.addEventListener("change", () => loadDocuments());
   loadDocuments();
 })();
 </script>

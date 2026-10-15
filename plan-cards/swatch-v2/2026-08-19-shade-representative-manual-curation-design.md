@@ -28,7 +28,7 @@ reviewed: true
 ## 원문 포인터 (SSOT 순서대로)
 
 1. 트래커 sw-djc — 발견 경위·착수 시 결정 4개(이 카드가 그 4개의 답).
-2. [대표사진 정책 재결정 결정문](../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) — 사다리·재선정·재진입 정본(D-127로 승격됨).
+2. [대표사진 정책 재결정 결정문](../../../swatch-ops/docs/decisions/2026-08-17-representative-photo-policy.md) — 사다리·재선정·재진입 정본(D-127로 승격됨).
 3. 재선정·manual 가드 실물: `swatch-v2/supabase/migrations/20260817020000_shade_images_media_fk_reselection.sql`(FK + 재선정 원자성 주석) · `20260817040000_sync_insert_first_media_link.sql`(D-099 manual 가드).
 4. 기존 RPC: `20260817050000_representative_media_swatch_scope.sql` — auto 3종만 허용, "manual은 어드민 direct 경로 전용" 주석이 이번에 입구를 새로 받는 대상.
 5. 지워진 옛 입구: PR #523이 삭제한 `AdminImageUpload.tsx`의 '대표 이미지로 설정'(직접 UPDATE — 재도입 금지 반면교사).

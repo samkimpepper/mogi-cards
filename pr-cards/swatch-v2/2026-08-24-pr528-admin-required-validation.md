@@ -5,7 +5,7 @@ merge_ready: false
 
 # 리드 카드 — PR #528: 어드민 수정·인라인 편집 필수 검증 (sw-417)
 
-작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `1b12b94`, 교차 리뷰 1라운드 Approve(필수 0).** 테스트 13/13(마스터 독립 재실행 2회) · 음성 대조 2라운드 각각 통과. 판정문: `../../swatch-ops/contracts/2026-08-24-pr528-cross-review-verdict.md`.
+작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `1b12b94`, 교차 리뷰 1라운드 Approve(필수 0).** 테스트 13/13(마스터 독립 재실행 2회) · 음성 대조 2라운드 각각 통과. 판정문: `../../../swatch-ops/contracts/2026-08-24-pr528-cross-review-verdict.md`.
 
 ## 정체 확인 (머지 인계 최소선)
 
@@ -19,7 +19,7 @@ merge_ready: false
 
 ## 결정 골격 (원문 포인터)
 
-- 계약 2부: `../../swatch-ops/contracts/2026-08-24-sw-417-admin-required-update.md` + `-inline-round.md` · 리뷰: `-pr528-cross-review-verdict.md` (원문 .out 보존)
+- 계약 2부: `../../../swatch-ops/contracts/2026-08-24-sw-417-admin-required-update.md` + `-inline-round.md` · 리뷰: `-pr528-cross-review-verdict.md` (원문 .out 보존)
 - 후속 1건: 테스트를 실제 저장 배선까지 확장(sw-kjp, 후가능 등재) · 참고: Atlas 테스트 플레이크는 이 PR과 무관(단독 42/42, 기존 flaky)
 
 ## 머지 후

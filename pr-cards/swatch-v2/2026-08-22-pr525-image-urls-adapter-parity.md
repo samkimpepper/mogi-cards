@@ -5,7 +5,7 @@ merge_ready: false
 
 # 리드 카드 — PR #525: image_urls 직접 소비처 4곳 mediaAdapter 전환 (sw-d7x)
 
-작성: 집냥이(Gen 12), 2026-08-22. **최종 READY — HEAD `413fcae`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 3건 중 2건 확정·1건 선재 재분류(`../../swatch-ops/contracts/2026-08-22-pr525-cross-review-verdict.md`) → fix 라운드(커밋 2) → delta 리뷰 "3건 닫힘·1건 잔존"(`-delta-verdict.md`) → 마이크로 라운드(가드 한 줄+테스트 2)로 종결. vitest **831/831**(+43) · 뮤테이션 실측 3회 · tsc · 마이그 fresh+증분 · 스냅샷 diff 0. CI는 마이그 검증 잡 대기 중이었음 — 머지 전 초록 확인만.
+작성: 집냥이(Gen 12), 2026-08-22. **최종 READY — HEAD `413fcae`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 3건 중 2건 확정·1건 선재 재분류(`../../../swatch-ops/contracts/2026-08-22-pr525-cross-review-verdict.md`) → fix 라운드(커밋 2) → delta 리뷰 "3건 닫힘·1건 잔존"(`-delta-verdict.md`) → 마이크로 라운드(가드 한 줄+테스트 2)로 종결. vitest **831/831**(+43) · 뮤테이션 실측 3회 · tsc · 마이그 fresh+증분 · 스냅샷 diff 0. CI는 마이그 검증 잡 대기 중이었음 — 머지 전 초록 확인만.
 
 ## 정체 확인 (머지 인계 최소선)
 
@@ -20,7 +20,7 @@ merge_ready: false
 
 ## 결정 골격 (원문 포인터)
 
-- 감사: `../../swatch-ops/contracts/2026-08-21-image-urls-consumer-audit-report.md` (+ 08-22 정정 절) · 계약: `2026-08-22-sw-d7x-fix.md`
+- 감사: `../../../swatch-ops/contracts/2026-08-21-image-urls-consumer-audit-report.md` (+ 08-22 정정 절) · 계약: `2026-08-22-sw-d7x-fix.md`
 - 리뷰 3부: `2026-08-22-pr525-cross-review-verdict.md` → `-delta-verdict.md` (원문 .out 2본 보존)
 - 후속 등재: sw-57g(판단 2건) · sw-j7n(이번 PR에 흡수, 마감 예정) · 서명 API 선형 비용(후가능 — sw-kya 아님, 미등재 메모)
 

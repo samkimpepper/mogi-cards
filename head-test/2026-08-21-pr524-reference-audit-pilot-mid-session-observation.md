@@ -31,7 +31,7 @@ reviewed: false
 
 ### 현재 파일
 
-- 감사 초안: `code-diff-notes/2026-08-21-pr524-manual-set-clear-flow.md`
+- 감사 초안: `code-diff-notes/swatch-v2/2026-08-21-pr524-manual-set-clear-flow.md`
 - 파일럿 정본: `harness/pilots/2026-08-21-reference-completeness-audit.md`
 - 제품 판독 범위: `8e62d328248dd46476d5ae581f59c9164082869f..da672a05a9eb36cc158d0f120b2f9f673ba39ec0`
 

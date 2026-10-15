@@ -10,10 +10,10 @@ merge_ready: true
 ## 원문 포인터
 
 1. PR: https://github.com/baksohyeon/swatch-v2/pull/513 — **정책 스냅샷 사람말 코멘트(제도 첫 실전)부터 읽기 추천**
-2. [설계 결정문 + 부록 A](../../swatch-ops/docs/decisions/2026-08-13-owner-direct-rights-admin-roles.md) — 설계 정본
-3. 계약 2장: [A레인](../../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md) · [fix1](../../swatch-ops/contracts/2026-08-14-pr513-fix1.md)
-4. [교차 리뷰 판정](../../swatch-ops/contracts/2026-08-14-pr513-codex-review.md) — 높음 2건이 왜 "결정문이 안 덮은 파생물 영역"인지
-5. 설계 이해는 [계약·디스패치 카드](../plan-cards/2026-08-14-owner-direct-rights-db-contract.md)가 전편 (결정 로그 2건 포함)
+2. [설계 결정문 + 부록 A](../../../swatch-ops/docs/decisions/2026-08-13-owner-direct-rights-admin-roles.md) — 설계 정본
+3. 계약 2장: [A레인](../../../swatch-ops/contracts/2026-08-14-owner-direct-rights-db.md) · [fix1](../../../swatch-ops/contracts/2026-08-14-pr513-fix1.md)
+4. [교차 리뷰 판정](../../../swatch-ops/contracts/2026-08-14-pr513-codex-review.md) — 높음 2건이 왜 "결정문이 안 덮은 파생물 영역"인지
+5. 설계 이해는 [계약·디스패치 카드](../../plan-cards/swatch-v2/2026-08-14-owner-direct-rights-db-contract.md)가 전편 (결정 로그 2건 포함)
 
 ## 이 PR이 하는 것 (골격)
 

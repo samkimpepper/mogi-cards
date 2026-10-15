@@ -5,7 +5,7 @@ merge_ready: false
 
 # 리드 카드 — PR #526: swatch_items 직접 쓰기 가드 — 회수 트리거 신설 (sw-3lj)
 
-작성: 집냥이(Gen 12), 2026-08-22. **최종 READY — HEAD `0067207`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 3건(`../../swatch-ops/contracts/2026-08-22-pr526-cross-review-verdict.md`) → 필수 1·2 fix + 동시성 1건 분리(sw-kya) → delta 클린(`-delta-verdict.md`). 픽스처 **17 PASS** + 음성 대조 2종(두 트리거 모두 진짜 일함을 실증) · 전량 25/25 · CI 마이그 검증 잡 **독립 재실행 pass** · 스냅샷 +1 함수.
+작성: 집냥이(Gen 12), 2026-08-22. **최종 READY — HEAD `0067207`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 3건(`../../../swatch-ops/contracts/2026-08-22-pr526-cross-review-verdict.md`) → 필수 1·2 fix + 동시성 1건 분리(sw-kya) → delta 클린(`-delta-verdict.md`). 픽스처 **17 PASS** + 음성 대조 2종(두 트리거 모두 진짜 일함을 실증) · 전량 25/25 · CI 마이그 검증 잡 **독립 재실행 pass** · 스냅샷 +1 함수.
 
 ## 정체 확인 (머지 인계 최소선)
 
@@ -20,7 +20,7 @@ merge_ready: false
 
 ## 결정 골격 (원문 포인터)
 
-- 감사 B-1: `../../swatch-ops/contracts/2026-08-20-direct-write-audit-report.md` · 계약: `2026-08-22-sw-3lj-fix.md`
+- 감사 B-1: `../../../swatch-ops/contracts/2026-08-20-direct-write-audit-report.md` · 계약: `2026-08-22-sw-3lj-fix.md`
 - 리뷰 2부: `2026-08-22-pr526-cross-review-verdict.md` → `-delta-verdict.md` (원문 .out 보존)
 - 파생: sw-kya(동시성) · sw-6fc(slug 비동기화 — fix로 좁은 결정판 해소, 넓은 판단 여지 기록) · sw-2cx(낡은 주석 정정으로 재목적화)
 

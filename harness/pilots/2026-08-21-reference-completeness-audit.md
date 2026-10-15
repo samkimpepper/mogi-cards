@@ -175,7 +175,7 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
 
 ### 세션 1 — 2026-08-21 · PR #524 manual 지정·해제·자동 복귀
 
-- 감사 초안: `code-diff-notes/2026-08-21-pr524-manual-set-clear-flow.md`
+- 감사 초안: `code-diff-notes/swatch-v2/2026-08-21-pr524-manual-set-clear-flow.md`
 - 판독 SHA·소스: HEAD `da672a05a9eb36cc158d0f120b2f9f673ba39ec0`; `20260819000000_admin_manual_shade_representative.sql`, `adminRepresentativeRepo.ts`, `AdminRepresentativeCuration.tsx`, `admin_manual_representative_fixture.sql`
 - 보고: 감사냥이 보고 8건. 과외냥이 재대조 결과 참조 누락 7건, 오판 1건.
 - 실제로 유용한 누락: 파일 역할 지도에서 두 RPC의 고유명사·각 트랜잭션 경계·반환 필드가 빠짐. ROI 조건 없는 예시 박스는 기존 행이 삭제되는지 데모트되는지 답이 하나로 정해지지 않음. 해제 박스의 RPC 이름·반환 필드, `refresh()`가 다시 부르는 repo 함수와 읽는 행 조건, PASS(10)의 호출·shade, 마지막 요약의 지정·해제 함수와 primary 행 조건이 빠졌음을 확인함.
@@ -198,7 +198,7 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
 
 ### 세션 2 — 2026-08-21 · PR #524 story-first 비교본
 
-- 감사 초안: `code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md`
+- 감사 초안: `code-diff-notes/swatch-v2/2026-08-21-pr524-manual-set-clear-flow-story-first.md`
 - 판독 SHA·소스: HEAD `da672a05a9eb36cc158d0f120b2f9f673ba39ec0`;
   `20260819000000_admin_manual_shade_representative.sql`,
   `adminRepresentativeRepo.ts`, `AdminRepresentativeCuration.tsx`,

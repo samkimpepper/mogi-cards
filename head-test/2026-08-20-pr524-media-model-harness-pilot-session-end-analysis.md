@@ -42,4 +42,4 @@ reviewed: false
 - [`과외 하네스 디렉터리 안내`](../harness/README.md) — 제품 설계 카드와 과외 운영 문서의 위치를 분리함.
 - [`과외 프리앰블`](../guide-tutor-preamble.md) — 발견물 append 직전에만 파일럿을 조건부로 읽도록 연결함.
 - 파일럿 도입 커밋: `8efefc4`. SessionStart 훅 출력에서 호출부 노출을 확인했고, 주입 크기 `28,104 / 40,000 bytes`로 안전 한도 안이었다. 훅 구현 파일은 수정하지 않았다.
-- 사용자 소유 미커밋 변경 `SCRATCHPAD.md`, `pr-cards/2026-08-13-pr511-folder-thumbs.md`는 건드리거나 스테이징하지 않았다.
+- 사용자 소유 미커밋 변경 `SCRATCHPAD.md`, `pr-cards/swatch-v2/2026-08-13-pr511-folder-thumbs.md`는 건드리거나 스테이징하지 않았다.

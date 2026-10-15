@@ -4,9 +4,9 @@
 
 재료:
 
-- [원작자 직접권·어드민 역할 설계 카드](../plan-cards/2026-08-13-owner-direct-rights-admin-roles-design.md)
-- [PR #507 viewport matrix 카드](../pr-cards/2026-08-13-pr507-viewport-matrix.md)
-- [PR #509 코어 폴더 조회 카드](../pr-cards/2026-08-13-pr509-folder-view.md)
+- [원작자 직접권·어드민 역할 설계 카드](../plan-cards/swatch-v2/2026-08-13-owner-direct-rights-admin-roles-design.md)
+- [PR #507 viewport matrix 카드](../pr-cards/swatch-v2/2026-08-13-pr507-viewport-matrix.md)
+- [PR #509 코어 폴더 조회 카드](../pr-cards/swatch-v2/2026-08-13-pr509-folder-view.md)
 
 ## 판정 경계
 

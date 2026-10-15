@@ -22,10 +22,10 @@ reviewed: true
 
 ## 원문 포인터 (SSOT 순서대로)
 
-1. [설계 결정문](../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) — **설계의 정본**. 실측 기반·결정 6절·레인 분할·결정 로그 전부 여기.
-2. 상위 결정: `../swatch-v2/docs/wiki/decisions/D-124.md` (복사 보존 채택, 2026-07-31) — 이 트랙은 그 '출시 후' 시점을 당긴 실행 설계. 제품 D-NNN 승격은 A레인 포함.
+1. [설계 결정문](../../../swatch-ops/docs/decisions/2026-08-14-swatch-media-self-preservation.md) — **설계의 정본**. 실측 기반·결정 6절·레인 분할·결정 로그 전부 여기.
+2. 상위 결정: `../../swatch-v2/docs/wiki/decisions/D-124.md` (복사 보존 채택, 2026-07-31) — 이 트랙은 그 '출시 후' 시점을 당긴 실행 설계. 제품 D-NNN 승격은 A레인 포함.
 3. 트래커 sw-u4r — 소유자 확정 완료 조건 5개(신규 자동 복사·자체 사본 서빙·백필 176/178·노출 실제 종료·Spring 이식성) 원문.
-4. 현행 실물: `../swatch-v2/supabase/migrations/20260814070000_swatch_storage_object_cleanup.sql` (#513 임시 조치 — 이 트랙이 교체), 콜드 백업 manifest = swatch-images 버킷 `backup/_manifest-2026-07-31.json`.
+4. 현행 실물: `../../swatch-v2/supabase/migrations/20260814070000_swatch_storage_object_cleanup.sql` (#513 임시 조치 — 이 트랙이 교체), 콜드 백업 manifest = swatch-images 버킷 `backup/_manifest-2026-07-31.json`.
 
 ## 결정 골격 (6개)
 

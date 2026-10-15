@@ -4,7 +4,7 @@ merge_ready: false
 ---
 # 리드 카드 — PR #529: swatch_items.shade_slug 근절 (sw-5m6 중형)
 
-작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `6ab9902`, 리뷰 2라운드 종결(필수 0·후가능 0).** 판정문: `../../swatch-ops/contracts/2026-08-24-pr529-cross-review-verdict.md` → `-delta-verdict.md`. 검증: 마이그 증분+fresh·SQL 27·하네스 6 전량 초록·음성 대조 3종·마스터 독립 재실측 매 라운드.
+작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `6ab9902`, 리뷰 2라운드 종결(필수 0·후가능 0).** 판정문: `../../../swatch-ops/contracts/2026-08-24-pr529-cross-review-verdict.md` → `-delta-verdict.md`. 검증: 마이그 증분+fresh·SQL 27·하네스 6 전량 초록·음성 대조 3종·마스터 독립 재실측 매 라운드.
 
 ## 정체 확인 (머지 인계 최소선)
 
@@ -23,7 +23,7 @@ merge_ready: false
 
 ## 결정 골격 (원문 포인터)
 
-- 결정문: `../../swatch-ops/docs/decisions/2026-08-24-swatch-items-slug-removal.md` · 조사표·원격 창: `contracts/2026-08-24-sw-5m6-slug-survey-report.md`·`-remote-window-report.md`
+- 결정문: `../../../swatch-ops/docs/decisions/2026-08-24-swatch-items-slug-removal.md` · 조사표·원격 창: `contracts/2026-08-24-sw-5m6-slug-survey-report.md`·`-remote-window-report.md`
 - 계약 2부: `-sw-5m6-slug-removal.md`(+추가 조항 2-b) + `-pr529-fix1.md` · 리뷰 2부: `-pr529-cross-review-verdict.md` → `-delta-verdict.md`
 - 이월: write-skew(sw-kya — 하네스 보존됨)·source_url rename(sw-g5t, 다음 swatch_media 창)·잔여 이중 정체성 2곳(sw-d7h)
 

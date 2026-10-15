@@ -63,7 +63,7 @@ reviewed: false
 
 ## 남은 외부화와 변경 기록
 
-- [`story-first 코드 독해 비교본`](../code-diff-notes/2026-08-21-pr524-manual-set-clear-flow-story-first.md)
+- [`story-first 코드 독해 비교본`](../code-diff-notes/swatch-v2/2026-08-21-pr524-manual-set-clear-flow-story-first.md)
   맨 아래에 `과외냥이 피드백`을 추가했다. 모기 메모를 보존하면서 지정 전 상태의
   판독 범위, 대표 자리 삭제·데모트 갈래, `부모 발색`의 정확한 관계를 분리했다.
   커밋: `b1bf41c`.

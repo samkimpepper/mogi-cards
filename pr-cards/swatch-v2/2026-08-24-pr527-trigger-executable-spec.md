@@ -5,7 +5,7 @@ merge_ready: true
 
 # 리드 카드 — PR #527: 회수·승격 트리거 executable spec (sw-20n)
 
-작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `9455c21`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 2·후가능 3(`../../swatch-ops/contracts/2026-08-24-pr527-cross-review-verdict.md`) → fix1(5건) → delta 신규 필수 1(fix1이 심은 실패 흡수) → fix2 → delta2 클린(`-delta2-verdict.md`). 픽스처 7 PASS · 전량 27/27+하네스 6/6 · 음성 대조 3종 · 마스터 독립 재실측 매 라운드.
+작성: 냐옹이(Gen 13), 2026-08-24. **최종 READY — HEAD `9455c21`, 리뷰 루프 종결(필수 0).** 라운드 이력: 교차 리뷰 필수 2·후가능 3(`../../../swatch-ops/contracts/2026-08-24-pr527-cross-review-verdict.md`) → fix1(5건) → delta 신규 필수 1(fix1이 심은 실패 흡수) → fix2 → delta2 클린(`-delta2-verdict.md`). 픽스처 7 PASS · 전량 27/27+하네스 6/6 · 음성 대조 3종 · 마스터 독립 재실측 매 라운드.
 
 ## 정체 확인 (머지 인계 최소선)
 
@@ -22,7 +22,7 @@ merge_ready: true
 
 ## 결정 골격 (원문 포인터)
 
-- 설계: `../../swatch-ops/docs/decisions/2026-08-24-kotlin-sidecar-and-test-first-design.md` (A+B, 네 승인) · 계약: `contracts/2026-08-24-trigger-executable-spec.md` + `-pr527-fix1.md` + `-fix2.md`
+- 설계: `../../../swatch-ops/docs/decisions/2026-08-24-kotlin-sidecar-and-test-first-design.md` (A+B, 네 승인) · 계약: `contracts/2026-08-24-trigger-executable-spec.md` + `-pr527-fix1.md` + `-fix2.md`
 - 리뷰 3부: `-pr527-cross-review-verdict.md` → `-delta-verdict.md` → `-delta2-verdict.md` (원문 .out 3본 보존)
 - 이날의 사고 1건: 발주 base를 main으로 잘못 그음(대상은 dev) — 워커 선측정이 검출, 네 절충 결정으로 조항 16+카운터(sw-857) 제도화.
 

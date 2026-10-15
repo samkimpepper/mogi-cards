@@ -10,8 +10,8 @@ merge_ready: true
 ## 원문 포인터
 
 1. PR: https://github.com/baksohyeon/swatch-v2/pull/514
-2. [B레인 계약](../../swatch-ops/contracts/2026-08-14-owner-rights-ui.md) — 모기 UI 지시 원문(토글 즉시·오터치는 배치로·빨간 삭제+alert 1회) 수록
-3. [교차 리뷰 판정](../../swatch-ops/contracts/2026-08-14-pr514-codex-review.md) + [fix1 계약](../../swatch-ops/contracts/2026-08-14-pr514-fix1.md)
+2. [B레인 계약](../../../swatch-ops/contracts/2026-08-14-owner-rights-ui.md) — 모기 UI 지시 원문(토글 즉시·오터치는 배치로·빨간 삭제+alert 1회) 수록
+3. [교차 리뷰 판정](../../../swatch-ops/contracts/2026-08-14-pr514-codex-review.md) + [fix1 계약](../../../swatch-ops/contracts/2026-08-14-pr514-fix1.md)
 4. DB 전편: [#513 카드](2026-08-14-pr513-owner-direct-rights.md)
 
 ## 이 PR이 하는 것 (골격)

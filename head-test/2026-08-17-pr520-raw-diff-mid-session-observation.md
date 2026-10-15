@@ -11,7 +11,7 @@
 - fix1: `d256cdd..9527c28`(5커밋, 19파일).
 - 첫 핵심길: `d256cdd..5cb3ad6` — 공용 대표사진의 자체 사본 어댑터 경유.
 - 모기가 고른 샛길: `5cb3ad6..43f983b`, `20260817030000_mark_stored_hidden_recheck.sql`.
-- 계속 열어둔 외부화: [`code-diff-notes/2026-08-17-pr520-fix1-raw-diff-map.md`](../code-diff-notes/2026-08-17-pr520-fix1-raw-diff-map.md).
+- 계속 열어둔 외부화: [`code-diff-notes/swatch-v2/2026-08-17-pr520-fix1-raw-diff-map.md`](../code-diff-notes/swatch-v2/2026-08-17-pr520-fix1-raw-diff-map.md).
 - 카드에는 fix1 진행 중으로 적혀 있었지만 판독 시 GitHub HEAD에는 fix1 8건 수리와 검증 설명이 반영돼 있었다. 머지 판단은 하지 않았다.
 
 ## 1. 원문 수집
@@ -67,7 +67,7 @@
 
 ## 5. 압축 뒤 이어갈 정확한 지점
 
-1. [`raw diff 노트: 샛길 1`](../code-diff-notes/2026-08-17-pr520-fix1-raw-diff-map.md#샛길-1--복사-완료-시점-숨김-재검사)을 연다.
+1. [`raw diff 노트: 샛길 1`](../code-diff-notes/swatch-v2/2026-08-17-pr520-fix1-raw-diff-map.md#샛길-1--복사-완료-시점-숨김-재검사)을 연다.
 2. 문제 설명은 노트 249줄 부근, 함수 시작 282줄, `swatch_media` UPDATE 301줄, 숨김 재검사 319줄, revoke 큐 기록 324줄이다.
 3. 아직 답하지 않은 질문: **“이 파일에서 `swatch_media`의 어느 행이 언제 바뀌고, 그 사이 사용자가 무엇을 하면 공개 사본이 남는 것 같아?”**
 4. 모기의 첫 관찰을 받은 뒤에만 행의 주인·이벤트 전후·같은 트랜잭션의 큐 기록을 설명한다.

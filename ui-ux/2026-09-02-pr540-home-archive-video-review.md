@@ -24,7 +24,7 @@ PR #540 구현 뒤 모기가 홈의 `내 발색샷`을 훑고, 연결 제품을 
 - 프레임 수: 1,426
 - SHA-256: `e8a35e15200956caca5fb528559c998a202c6af3abea298d296dc0369fd3283b`
 - 대화 원문: [`raw/2026-09-02-01-sw-ypn-pretty-notebook-tdd.md`](../raw/2026-09-02-01-sw-ypn-pretty-notebook-tdd.md)
-- 출발 카드: [`plan-cards/2026-09-02-sw-ypn-shortcut-notebook-lead.md`](../plan-cards/2026-09-02-sw-ypn-shortcut-notebook-lead.md)
+- 출발 카드: [`plan-cards/swatch-v2/2026-09-02-sw-ypn-shortcut-notebook-lead.md`](../plan-cards/swatch-v2/2026-09-02-sw-ypn-shortcut-notebook-lead.md)
 
 원본 GIF 25MB는 현재 공책 전체 크기보다 커서 Git에 복사하지 않았다. 아래 핵심 프레임 5장만 이 문서와 함께 보존한다.
 
