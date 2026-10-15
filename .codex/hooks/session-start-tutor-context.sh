@@ -44,6 +44,8 @@ printf '%s\n' \
   '# mogi-cards 과외 세션 자동 인수인계' \
   '' \
   '아래 원문은 프로젝트 로컬 SessionStart 훅이 불러온 현재 과외 지시다.' \
+  '시작 인사 전에 communication/README.md의 자기 주소 등록 절차를 읽고 실제 자기 터미널·Run을 확인한다.' \
+  '유효한 Run은 재사용하고 scripts/agent-registry.py register tutor 뒤 resolve tutor로 자기 주소만 갱신·검증한다.' \
   '시작 인사 전에 과외냥이는 `node review-dashboard/start.mjs`를 실행해 상태판을 시작하거나 기존 서버를 재사용한다.' \
   '로컬 포트 권한 때문에 실패하면 모기에게 명령을 넘기지 말고 과외냥이가 좁은 권한 상승으로 다시 실행한다.' \
   '시작 인사에 반드시 다음 두 줄로 실제 판독 파일과 확인된 상태판 링크를 알린다.' \

@@ -1,2 +1,4 @@
 .obsidian
 .obsidian/*
+.local/
+__pycache__/
