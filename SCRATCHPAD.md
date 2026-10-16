@@ -24,6 +24,4 @@ reviewed: false
 
 <!-- mogi-personal-notes:start -->
 
-- PR501 두 관문, 증상표 형식으로 다시 정리하고 싶다옹. (나중에!!)
-
 <!-- mogi-personal-notes:end -->
