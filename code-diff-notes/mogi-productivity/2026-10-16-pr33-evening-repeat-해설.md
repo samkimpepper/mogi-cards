@@ -95,3 +95,9 @@ reviewed: false
 - `integrations/things/test/evening.test.js`
 
 </details>
+
+## 종료 후 반영 확인 — 2026-10-16
+
+투두냥의 처리 완료 회신 뒤 최종 HEAD `493589bcbfd36ca3737efec80c762f4713fcad44`의 package.json과 README를 직접 확인했다. 명령은 `pnpm routine`·`pnpm routine:schedule`로 바뀌었고 기존 JS 실행 파일 경로를 유지해 예약 재설치가 필요하지 않다고 안내한다. [최종 README](https://github.com/samkimpepper/mogi-productivity/blob/493589bcbfd36ca3737efec80c762f4713fcad44/integrations/routine/README.md)의 「반복 설정은 Things가 정합니다」·「나중에 조건부 저녁 루틴을 만들 때 주의」 절에 설정 의도와 후속 구현 시 주의가 반영됐다.
+
+PR #33은 머지 커밋 `6496490695c314ec5b37d592dfc36b61570b4925`로 MERGED임을 확인했다. 위 본문의 옛 명령 이름과 미확인 상태는 과외 당시의 기록이며, 최종 변경의 실제 앱 동작까지 재시험한 것은 아니다. 전달 메모는 처리 표식으로 정리했고 원문은 Git 이력에 보존했다.
