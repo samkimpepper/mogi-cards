@@ -4666,3 +4666,172 @@ Codex turn key: `28ffebcf7e21ef7f`
 ~~~text
 You have 1 orchestration message. Run `orca orchestration check --run run_144d3d141909`.
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_3fb95bbe07054594a4394296260690e3`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"orca orchestration check --run run_144d3d141909 --json","max_output_tokens":4500}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_3fb95bbe07054594a4394296260690e3`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"14cf16\",\"wall_time_seconds\":0.000006,\"exit_code\":0,\"original_token_count\":452,\"output\":\"{\\n  \\\"id\\\": \\\"ed211bac-3759-4263-a5d4-92fe83eb0fed\\\",\\n  \\\"ok\\\": true,\\n  \\\"result\\\": {\\n    \\\"runId\\\": \\\"run_144d3d141909\\\",\\n    \\\"deliveryId\\\": \\\"delivery_8fa9beef4cf7\\\",\\n    \\\"messages\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_791e71f3a7fd\\\",\\n        \\\"run_id\\\": \\\"run_144d3d141909\\\",\\n        \\\"from_handle\\\": \\\"term_2d91446c-8785-4264-8313-47f3f15dc3e2\\\",\\n        \\\"to_handle\\\": \\\"run:run_144d3d141909\\\",\\n        \\\"subject\\\": \\\"PR #33 처리 완료 — 메모 수신함 비움 요청\\\",\\n        \\\"body\\\": \\\"투두냥이야. mogi-productivity PR #33이 머지됐어(머지 커밋 6496490, 마지막 head 493589b). master-delivery-memos.md의 PR #33 메모 4건 처리 결과: (1) 단계 간 실패 분리 시험 — 모기 판단으로 유지/종결, (2) 명령 이름 — routine / routine:schedule로 변경(재설치 불필요), (3) 반복 설정 기대값 — integrations/routine/README.md '반복 설정은 Things가 정합니다' 절, (4) 조건부 확장 주의 — 같은 README '나중에 조건부 저녁 루틴을 만들 때 주의' 절. PR #33 각 리뷰 대화에도 모기 원문과 대응을 남겼어. 모기 지시로, 수신함 비우기는 과외냥이 쪽에서 해줘. 나는 그 파일을 건드리지 않아. 알림만 보내는 거야.\\\",\\n        \\\"type\\\": \\\"status\\\",\\n        \\\"priority\\\": \\\"normal\\\",\\n        \\\"thread_id\\\": null,\\n        \\\"payload\\\": null,\\n        \\\"created_at\\\": \\\"2026-10-16T02:05:39Z\\\",\\n        \\\"delivered_at\\\": \\\"2026-10-16T02:05:39Z\\\",\\n        \\\"delivery_contract\\\": \\\"current_delivery\\\"\\n      }\\n    ],\\n    \\\"count\\\": 1,\\n    \\\"replayed\\\": false,\\n    \\\"acknowledged\\\": null,\\n    \\\"timedOut\\\": false,\\n    \\\"cancelled\\\": false,\\n    \\\"connectionLost\\\": false,\\n    \\\"mutation\\\": {\\n      \\\"requestId\\\": \\\"e2605cf0-c850-4654-a458-e8131f2a0bda\\\",\\n      \\\"replayed\\\": false\\n    }\\n  },\\n  \\\"_meta\\\": {\\n    \\\"runtimeId\\\": \\\"a74112d6-9a9e-4145-a79f-3de09e637b40\\\"\\n  }\\n}\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_49cab79d953445b295c0b0f1d0ffe44f`
+
+입력:
+
+~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"git pull --ff-only","max_output_tokens":700}),
+tools.exec_command({cmd:"cat master-delivery-memos.md","max_output_tokens":5200}),
+tools.exec_command({cmd:"gh pr view 33 --repo samkimpepper/mogi-productivity --json state,headRefOid,mergeCommit,mergedAt","max_output_tokens":1000}),
+tools.exec_command({cmd:"gh api 'repos/samkimpepper/mogi-productivity/contents/package.json?ref=493589bcbfd36ca3737efec80c762f4713fcad44' --jq .content | python3 -c 'import sys,base64,json; d=json.loads(base64.b64decode(sys.stdin.read())); print(json.dumps({k:v for k,v in d[\"scripts\"].items() if k.startswith(\"routine\")},ensure_ascii=False,indent=2))'","max_output_tokens":1000}),
+tools.exec_command({cmd:"gh api 'repos/samkimpepper/mogi-productivity/contents/integrations/routine/README.md?ref=493589bcbfd36ca3737efec80c762f4713fcad44' --jq .content | python3 -c 'import sys,base64; print(base64.b64decode(sys.stdin.read()).decode())'","max_output_tokens":6000}),
+tools.exec_command({cmd:"git status --short","max_output_tokens":1000})
+]);for(let i=0;i<r.length;i++)text({i,result:r[i]});
+~~~
+
+#### 출력 02
+
+Call ID: `call_49cab79d953445b295c0b0f1d0ffe44f`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"5cfbde\",\"wall_time_seconds\":0.388495833,\"exit_code\":0,\"original_token_count\":5,\"output\":\"Already up to date.\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"32ac8d\",\"wall_time_seconds\":0.000008417,\"exit_code\":0,\"original_token_count\":2698,\"output\":\"# 마스터 전달용 메모 (단일 수신함)\\n\\n과외 세션 발견물을 한곳에 누적하는 마스터 전달용 단일 수신함이다. 메모는 리드 카드나 다른 파일로 옮기지 않고 이 파일에만 append한 뒤 커밋한다.\\n\\n대상 구분 (2026-10-15): 새 메모 제목에 `[mogi-productivity]` 또는 `[swatch-v2]`를 붙여 제품·PR을 식별한다. 제품별 담당자의 수신 확인 전에는 전달 완료로 기록하지 않는다.\\n\\n운영 규칙 (모기 확정 2026-08-14): 마스터가 메모를 확인·처리할 때마다 이 파일을 비운다. 처리 내역은 비움 표식 한 단락으로 남기고, 원문은 git 이력이 보존한다.\\n\\n(비어 있음 — 2026-09-09 마스터 23차 비움(집냥이 Gen 21). 처리분 1건: **PR #546 과외 카드 HEAD 불일치(d28e3c5 → a66e87d, 로그인 메일 링크 제거 미반영)** → 카드를 최신 HEAD 기준으로 갱신하고 링크 경로를 \\\"역사적 범위(기발송 메일·계정 저장 확인 메일)\\\"로 정정. 재발 방지: swatch-ops bd 메모리 `pr-ready-checklist`에 \\\"카드는 PR HEAD SHA를 적고, READY 뒤 HEAD가 움직이면 카드를 다시 만든다(HEAD 불일치 카드는 무효)\\\" 추가. 원인은 마스터가 최종 커밋 뒤 카드 재생성을 지시하지 않은 것. 원문 = git 이력.)\\n\\n## [mogi-productivity] PR #33 — 휴일·저녁 단계 사이 실패 분리의 직접 시험 확인 필요\\n\\n- 기록: 2026-10-16, 과외 판독. 담당자 수신·처리 미확인.\\n- 모기 질문: “한쪽 실패(holiday, evening) 해도 나머지 하나는 정상적으로 리턴된다는거 테스트코드는 만들었겠지..?!?! ㅋ”\\n- 판독 HEAD SHA: `4357947234ae557737f43e1ed46a059d38c13820`.\\n- 근거: `integrations/routine/bin/holiday-routine.js:159-166,185-188`는 각 단계의 예외를 결과로 바꾸고 두 단계를 순서대로 호출한다. `integrations/routine/test/evening.test.js:72-78`의 “one failing repeat does not stop the next one”은 저녁 단계 안의 반복 A·B만 검증한다. 같은 SHA의 추적 시험 파일 전체에서 `holiday-routine`·`runHolidayRoutine`·`runEveningRoutine`·`settle(` 및 휴일/저녁 조합을 검색했으며, CLI 실행 파일 경로·로그 경로를 확인하는 launchd 시험 외에 두 단계 사이 실패 분리를 직접 확인하는 시험을 찾지 못했다.\\n- 왜 확인할 점인가: 휴일 단계 실패 후 저녁 단계 실행과, 저녁 단계 실패 후 휴일 결과 보존·최종 오류 종료는 계약의 별도 요구인데 현재 찾은 시험은 그 조합을 확인하지 않는다. 구현이 잘못 동작한다고 판정한 것은 아니며, 두 실패 방향에서 각 단계 결과와 최종 종료 코드를 확인하는 시험의 존재·보강 여부를 제품 담당자가 검토할 필요가 있다.\\n- 중복 확인: append 직전 이 수신함, 현재 PR #33의 리뷰·일반 댓글(각 0건), 제품의 열린 evening 관련 GitHub 이슈(0건), `todo-ops/contracts/2026-10-15-evening-routine.md`의 failure isolation 요구를 대조했다. 같은 확인 요청을 찾지 못했다. 원본 코드·테스트·PR은 변경하지 않았다.\\n\\n## [mogi-productivity] PR #33 — 매일 저녁 이동도 수행하는 routine:holiday 이름 검토\\n\\n- 기록: 2026-10-16, 모기의 읽기 피드백. 담당자 수신·처리 미확인.\\n- 모기 질문: “그러면 pnpm routine이라고 이름 바꿔야하지않나? 헷갈리잖아 ㅋ”\\n- 판독 HEAD SHA: `4357947234ae557737f43e1ed46a059d38c13820`.\\n- 근거: `package.json:16-17`의 명령은 `routine:holiday`·`routine:holiday:schedule`이고, `integrations/routine/bin/holiday-routine.js:185-186`은 휴일 단계 다음에 평일에도 저녁 단계를 호출한다. 계약 `todo-ops/contracts/2026-10-15-evening-routine.md`는 새 명령·LaunchAgent·재설치를 추가하지 않고 기존 실행을 쓰도록 정했다.\\n- 왜 검토할 점인가: 명령 이름은 휴일 전용으로 읽히지만 이제 실제 실행 범위에는 매일 저녁 이동도 포함돼 모기가 혼동을 보고했다. 기존 예약 실행을 유지한다는 조건과 함께 이름·별칭·안내 중 무엇으로 이 차이를 드러낼지 제품 담당자가 검토할 읽기 피드백이며, 과외 세션에서 이름 변경이나 추가 명령을 결정하지 않았다.\\n- 중복 확인: 위와 같은 현재 수신함·PR #33 리뷰/일반 댓글·열린 evening 관련 이슈·계약을 확인했고 같은 이름 피드백은 찾지 못했다. 원본 코드·명령·예약 설정·PR은 변경하지 않았다.\\n\\n## [mogi-productivity] PR #33 — 시험 범위에 대한 모기 판단 반영\\n\\n- 기록: 2026-10-16. 위 「휴일·저녁 단계 사이 실패 분리의 직접 시험 확인 필요」에 대한 후속 판단이다.\\n- 모기 원문: “아 테스트코드는 그정도면 충분한것같다옹!다음 가자옹”\\n- 판독 HEAD SHA: `4357947234ae557737f43e1ed46a059d38c13820`.\\n- 현재 판단: 모기는 설명한 기존 시험 범위를 수용했다. 앞선 직접 시험 부재 관찰은 보존하되, 이 과외 메모에서 시험 보강·추가 확인 요청은 닫는다. 별도 명령 이름 피드백은 철회된 것으로 보지 않는다.\\n- 제품 코드·시험·PR은 변경하지 않았고 담당자에게 별도 전송하지 않았다.\\n\\n## [mogi-productivity] PR #33 — 저녁 반복의 기대 설정을 등록 안내에 남길 위치 검토\\n\\n- 기록: 2026-10-16, 모기의 유지보수 질문. 담당자 수신·처리 미확인.\\n- 모기 질문: “매일, 일정기준에 대한걸 어디에 저장해..두는게 좋으려나? 싶기는 해 나중에 놓치기쉽지않을까.... 스노우볼될까봐”\\n- 판독 HEAD SHA: `4357947234ae557737f43e1ed46a059d38c13820`.\\n- 근거: `integrations/routine/README.md:28-40`은 저녁 반복의 등록·실행 안내이고, `integrations/routine/src/config.js:89-107`은 기기별 설정으로 템플릿 ID 목록만 받는다. `integrations/things/src/evening.js:47-61,93-109`는 저장된 반복 규칙의 전후 동일성과 오늘 인스턴스를 확인하며, 규칙의 의미를 매일·일정 기준으로 해석하거나 강제하지 않는다.\\n- 왜 검토할 점인가: Things에 저장되는 실제 반복 설정과 모기가 원하는 반복 방식이 구별되어 안내되지 않으면, 나중에 대상을 추가하거나 반복 방식을 바꿀 때 현재의 설정 의도를 놓칠 수 있다. 과외 설명에서 제안하는 최소 기록 위치는 기존 README의 대상 등록 절차 가까이이며, 실제 반복 설정은 Things가 보유하고 기기별 파일은 대상 ID를 고른다는 역할을 함께 적는 방식이다.\\n- 제안 범위: 등록 안내에 기대 설정(매일·일정 기준), 등록할 때 확인할 항목, 현재 프로그램은 그 의미를 자동 검사하지 않는다는 경계를 적는 방안을 제품 담당자에게 검토용으로 남긴다. 문서 기록은 향후 변경의 자동 감지를 보장하지 않으며, 새 설정 키·규칙 해석 코드·추가 자동 시험을 요구하거나 제품 쪽 변경을 확정한 것은 아니다.\\n- 중복 확인: 현재 이 수신함, PR #33 리뷰·일반 댓글(각 0건), 열린 evening 관련 GitHub 이슈(0건), 현재 저녁 루틴 계약을 확인했고 같은 설정 의도 기록 질문은 찾지 못했다. 제품·운영 파일은 변경하지 않았고 별도 전송하지 않았다.\\n- 후속 명시 요청(2026-10-16): 모기 원문 “만약 내가 특정 조건에만 밤 루틴을 하려고 한다면.. 그때는 규칙값의 의미 해석이 필요해서 조건별 분기를 해야한다는걸 나중에 구현할 에이전트가 알게하고싶다옹ㅋ”. 현재의 기대 설정 기록과 같은 주제이므로 별도 개선 건을 만들지 않고 여기 확장 시 주의사항을 덧붙인다. 판독 SHA는 위와 같다.\\n- 후속 구현 에이전트에게 남길 것: 현재 구현의 「규칙이 이동 전후 그대로임」 검사는 「오늘 원하는 실행 조건을 만족함」을 증명하지 않는다. 모기가 조건부 저녁 루틴을 요청하면 조건의 뜻·판단에 필요한 정보·판단 주체를 먼저 명시하고, 조건 충족/불충족에 따른 이동 여부를 설계해야 한다. 조건 판단에 Things의 반복 규칙을 직접 사용해야 한다면 저장값의 의미를 확인·해석하는 처리와 그 의미에 맞는 분기·검증이 필요하며, 기존 요약값 비교를 그 대용으로 사용하지 않는다.\\n- 구현 선택의 경계: 특정 요일처럼 Things가 이미 반복 생성 조건을 담당하고 오늘 인스턴스의 존재로 충분한 경우도 있으므로, 조건부라는 이유만으로 내부 규칙 해석을 무조건 추가하지 않는다. 외부 일정 등 다른 정보를 쓰는 조건은 해당 정보에서 판단하도록 검토한다. 이는 미래 조건부 확장 때 재검토할 지점이며, 지금 PR #33에 조건 분기·규칙 해석을 추가하라는 요청은 아니다.\\n\\n## [mogi-productivity] PR #33 — 위 메모의 실제 전달·회신과 종료 시점 기록\\n\\n- 기록: 2026-10-16. 위 항목들의 수신·처리 경과 갱신이며 새 개선 건이 아니다.\\n- 모기 요청으로 등록 주소를 대조한 뒤 투두냥 Run에 파일 경로와 후속 판단까지 포함해 검토를 요청했다. 요청 `msg_f9814e3460d8`, 실제 검토 회신 `msg_7c2c808bc7ab`를 받았고 수신 확인했다. 투두냥은 시험 보강 요청이 닫혔음을 확인하고, 명령 안내·기대 반복 설정·조건부 확장 주의를 제품 README 등에 반영하는 안에 동의했다.\\n- 명령 이름 관련 정정: 투두냥의 최초 회신은 pnpm 이름 변경 시 예약 재설치가 필요하다고 했으나, 판독 HEAD `4357947234ae557737f43e1ed46a059d38c13820`의 `integrations/routine/src/launchd.js:42-48,65-71`은 JS 실행 파일을 직접 호출한다. 과외냥이가 이 근거를 보냈고 투두냥은 정정 회신 `msg_092dd6eca5fa`에서 실행 파일 경로를 유지한 pnpm 이름·별칭 변경만으로는 재설치가 필요하지 않음을 확인했다.\\n- 종료 시 모기 보고: “ㅇㅇ 투두냥이랑 수정워커보내고 다끝났다옹! 세션종료 절차 하자옹”. GitHub 조회로 후속 HEAD `493589bcbfd36ca3737efec80c762f4713fcad44`와 OPEN 상태를 확인했다. 수정 완료는 모기 보고로 남기며, 과외냥이가 새 HEAD 전체·실제 앱 동작을 재검증하거나 머지 완료를 확인한 것은 아니다.\\n- 이 공책에서는 기존 메모·담당자 처리 이력을 보존하며 수신함을 대신 비우지 않는다. 종료 정리를 위해 추가 작업 메시지를 보내지 않았다.\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"5b65ea\",\"wall_time_seconds\":0.520014,\"exit_code\":0,\"original_token_count\":44,\"output\":\"{\\\"headRefOid\\\":\\\"493589bcbfd36ca3737efec80c762f4713fcad44\\\",\\\"mergeCommit\\\":{\\\"oid\\\":\\\"6496490695c314ec5b37d592dfc36b61570b4925\\\"},\\\"mergedAt\\\":\\\"2026-10-16T01:59:42Z\\\",\\\"state\\\":\\\"MERGED\\\"}\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":3,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"39718c\",\"wall_time_seconds\":0.360076958,\"exit_code\":0,\"original_token_count\":37,\"output\":\"{\\n  \\\"routine\\\": \\\"node ./integrations/routine/bin/holiday-routine.js\\\",\\n  \\\"routine:schedule\\\": \\\"node ./integrations/routine/bin/holiday-schedule.js\\\"\\n}\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":4,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"10171e\",\"wall_time_seconds\":0.362211792,\"exit_code\":0,\"original_token_count\":2039,\"output\":\"# Holiday lunch routine\\n\\n주말 또는 대한민국 공휴일의 점심 시간대가 비어 있을 때만 Things에 몸관리 루틴을 Surface하는 macOS 로컬 브리지입니다.\\n\\n`pnpm routine` 한 번의 실행이 두 가지를 합니다. 휴일 점심 루틴 확인(휴일일 때만 Things에 반영)과, 휴일 여부와 상관없이 매일 하는 [저녁 반복 할 일 옮기기](#저녁-반복-할-일-옮기기)입니다.\\n\\n```bash\\n# 휴일 여부·Calendar 충돌과 오늘 저녁으로 옮길 반복 할 일을 Things 변경 없이 미리보기\\npnpm routine\\n\\n# 지정 날짜를 읽기 전용으로 점검\\npnpm routine --date 2026-09-26\\n\\n# 실제 반영: 휴일 조건이 맞으면 Today에 휴일 루틴, 그리고 고른 반복 할 일을 저녁으로\\npnpm routine --apply\\n```\\n\\n## 조건과 경계\\n\\n- 기준 시간대는 `Asia/Seoul`입니다.\\n- Calendar 브리지가 Mac 로컬 시간을 사용하므로, Mac의 현재 시간대가 기준 시간대와 다르면 잘못된 충돌 판정을 피하기 위해 즉시 중단합니다.\\n- 토·일요일 또는 `date-holidays`가 반환하는 대한민국 `public` 공휴일만 대상입니다.\\n- `11:30` 이상 `15:00` 미만의 루틴 창과 겹치는 `Personal`·`Promise` 이벤트가 하나라도 있으면 아무것도 만들지 않습니다.\\n- 저녁처럼 루틴 창 밖의 일정은 실행을 막지 않습니다.\\n- 조건이 맞으면 `🔥건강`에 `휴일 점심 루틴`을 Today로 생성하고 `점심 먹기 → 빡재활하기 → 샤워하기 → 빨래 돌리기`를 native checklist로 넣습니다.\\n- 같은 제목의 열린 task가 있으면 기존 task를 Today로 옮기며 checklist는 덮어쓰지 않습니다.\\n- 기본은 preview이며 `--apply`에서만 Things를 변경합니다. `--date`로 다른 날짜를 점검할 수 있지만 실제 쓰기는 서울 기준 오늘에만 허용됩니다.\\n- Calendar의 기존 allowlist를 넓히지 않고, 휴일 루틴은 Things의 `config.json` `todoAreaName` Area에만 씁니다. 다른 Calendar, 완료·삭제, 반복 task 설정은 접근하지 않습니다. 아래 저녁 이동은 고른 반복 할 일의 오늘 인스턴스 일정만 바꿉니다.\\n\\n## 저녁 반복 할 일 옮기기\\n\\nThings는 할 일을 미리 This Evening(Today 안의 저녁 칸)으로 예약할 수 없고, 매일 반복 할 일에도 저녁 선택지가 없습니다. 그래서 같은 `pnpm routine` 실행이 휴일 여부와 상관없이 매일, 기기별로 고른 반복 할 일의 오늘 인스턴스를 저녁 칸으로 옮깁니다.\\n\\n```bash\\n# 이 Mac에서 옮길 반복 할 일을 고르는 기기별 설정(저장소에 올라가지 않음)\\ncp integrations/routine/config.machine.example.json integrations/routine/config.machine.json\\n```\\n\\n- `config.machine.json`의 `eveningRepeatTemplateIds`에는 반복 할 일의 원본(반복 템플릿) ID를 적습니다. 제목이 아니라 이 ID로 오늘 인스턴스를 찾습니다. 파일이 없거나 목록이 비면 `evening.status: not-configured`로 아무것도 하지 않습니다. 이 파일에는 이 키만 둘 수 있어 공용 `config.json` 값을 덮어쓰지 못합니다.\\n- 각 템플릿마다 Things DB를 읽기 전용으로 열어 오늘 날짜·열린·휴지통 아닌 인스턴스를 찾습니다. 하나이고 아직 저녁이 아니면 preview는 `would-move`, `--apply`는 Keychain token `update`로 저녁에 넣고 DB를 다시 읽어 저녁·오늘·같은 템플릿·템플릿 반복 규칙 불변이 확인되면 `moved`를 적습니다. 읽기 확인이 안 되면 `unverified`입니다.\\n- 인스턴스가 없으면 `none`, 이미 저녁이면 `already-evening`, 완료·취소됐으면 `completed`/`canceled`로 남기고 아무것도 하지 않습니다. 같은 날 인스턴스가 둘 이상이면 `ambiguous`, 템플릿이 없거나 반복이 아니면 `template-missing`으로 멈춥니다. 할 일을 만들거나 완료·삭제하지 않습니다.\\n- 출력은 `{ \\\"holiday\\\": …, \\\"evening\\\": … }`로 두 단계를 따로 적습니다. 한쪽이 실패해도 다른 쪽은 그대로 실행·보고되고, 휴일 루틴 실패나 `evening.ok: false`이면 종료 코드가 1입니다. Things DB 경로·열 이름의 한계는 [Things README](../things/README.md#저녁this-evening)에 있습니다.\\n\\n### 반복 설정은 Things가 정합니다\\n\\n- 실제로 언제 옮겨질지는 Things에 저장된 그 반복 할 일의 반복 설정(매일, 특정 요일 등)이 정합니다. Things가 오늘 인스턴스를 만든 날에만 옮길 것이 생깁니다.\\n- `config.machine.json`은 어떤 반복 템플릿 ID를 옮길지만 고릅니다. 날짜·요일·조건 같은 일정 정보는 담지 않습니다.\\n- 프로그램은 반복 설정이 무슨 뜻인지(매일인지, 어떤 요일인지) 검사하지 않습니다. 옮긴 뒤 반복 규칙이 옮기기 전과 같은지만 확인합니다. 그래서 원하는 반복 방식은 사람이 Things에서 맞춰 둬야 합니다.\\n\\n새 템플릿을 등록할 때 확인할 것:\\n\\n1. Things에서 그 할 일의 반복이 원하는 방식(매일 / 특정 요일 등)으로 되어 있는지 봅니다.\\n2. 적는 ID가 오늘 인스턴스가 아니라 반복 원본(템플릿) ID인지 확인합니다.\\n3. `pnpm routine`(preview)으로 그날 `would-move`나 `none`이 Things 화면과 맞는지 봅니다.\\n\\n### 나중에 조건부 저녁 루틴을 만들 때 주의\\n\\n- 지금의 \\\"반복 규칙이 옮기기 전후 그대로임\\\" 확인은 \\\"오늘이 원하는 실행 조건을 만족함\\\"을 증명하지 않습니다. 이 확인을 조건 판단 대신 쓰지 않습니다.\\n- 특정 조건에서만 저녁으로 옮기고 싶어지면, 먼저 조건의 뜻, 판단에 필요한 정보, 누가 판단하는지를 정하고 나서 조건이 맞을 때와 안 맞을 때의 동작을 설계합니다. Things의 반복 규칙으로 판단해야 한다면 저장값의 의미를 확인·해석하는 처리와 그에 맞는 분기·검증이 필요합니다.\\n- 다만 특정 요일처럼 Things의 반복이 이미 그날만 인스턴스를 만든다면, 오늘 인스턴스가 있는 것으로 충분합니다. 조건부라는 이유만으로 규칙 해석을 넣지 않습니다. 외부 일정처럼 다른 정보가 필요한 조건은 그 정보에서 판단하도록 검토합니다.\\n- 현재 코드에는 조건 분기가 없습니다.\\n\\n## 예약 실행\\n\\nmacOS LaunchAgent가 기존 main checkout에서 매일 `09:00`에 루틴 명령을 직접 실행합니다. Codex나 Orca 세션을 만들지 않습니다.\\n\\n```bash\\n# 설치될 경로와 실행 명령 미리보기\\npnpm routine:schedule install\\n\\n# ~/Library/LaunchAgents에 설치하고 현재 로그인 세션에 로드\\npnpm routine:schedule install --apply\\n\\n# plist 존재 여부와 현재 로드 상태 확인\\npnpm routine:schedule status\\n\\n# 제거 미리보기와 실제 제거\\npnpm routine:schedule uninstall\\npnpm routine:schedule uninstall --apply\\n```\\n\\n- label은 `com.samkimpepper.mogi-productivity.holiday-routine`입니다.\\n- plist는 pnpm 명령이 아니라 Node로 `integrations/routine/bin/holiday-routine.js`를 직접 실행합니다. 그래서 명령 이름이 `routine:holiday`에서 `routine`으로 바뀌어도 이미 설치한 LaunchAgent를 다시 설치할 필요가 없습니다.\\n- 출력은 `~/Library/Logs/mogi-productivity/holiday-routine.log`, 오류는 `holiday-routine.error.log`에 남습니다.\\n- 설치 시점의 repository·Node 절대 경로를 plist에 기록하므로 제거할 feature worktree가 아니라 안정적인 main checkout에서 설치합니다. 설치 CLI는 선택된 repository가 Git checkout root의 `main` branch인지 확인하며, 다른 checkout에서 main을 대상으로 설치할 때는 `--repository /absolute/main/path`를 명시합니다.\\n- LaunchAgent는 Mac에 로그인해 있는 동안 동작하며 Orca가 실행 중일 필요는 없습니다. 실행 전에 Mac 시스템 시간대가 `Asia/Seoul`인지 기존 명령이 다시 검증합니다.\\n- 설치 뒤 첫 실제 주말·공휴일에는 Calendar·Things 자동화 권한과 Today 반영 결과를 한 번 확인합니다.\\n\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":5,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"b4f075\",\"wall_time_seconds\":0.000006,\"exit_code\":0,\"original_token_count\":11,\"output\":\" M raw/2026-10-15-01-product-repo-split.md\\n\"}}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_a8a49df178034b449c7a459e458758ef`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\nimport subprocess\np=Path('master-delivery-memos.md')\noriginal=p.read_text()\narchived=subprocess.check_output(['git','show','d49026f:master-delivery-memos.md'],text=True)\nassert original==archived, '기록 이후 다른 변경이 있어 자동 비움을 중단함'\nassert all(s.startswith('## [mogi-productivity] PR #33') for s in original.splitlines() if s.startswith('## '))\nheader=original.split('(비어 있음',1)[0]\nmarker='(비어 있음 — 2026-10-16 mogi-productivity PR #33 처리 완료 확인. 투두냥 회신 `msg_791e71f3a7fd`: 시험 보강은 모기 판단으로 종결, 명령은 `routine`·`routine:schedule`로 변경, 반복 설정의 주체와 미래 조건부 확장 주의는 `integrations/routine/README.md`에 반영. 과외냥이가 최종 HEAD `493589bcbfd36ca3737efec80c762f4713fcad44`의 package.json·README와 GitHub MERGED 상태, 머지 커밋 `6496490695c314ec5b37d592dfc36b61570b4925`를 확인한 뒤 PR #33 항목을 비움. 실제 앱 동작을 재검증한 것은 아님. 처리 전 메모 원문 = Git 커밋 `d49026f`의 이 파일 및 후속 git 이력.)\\n'\np.write_text(header+marker)\nprint('다른 미처리 항목 없음 확인. PR #33 원문은 d49026f에 보존하고 처리 표식으로 교체함.')\nPY","max_output_tokens":1200}));
+text(await tools.apply_patch("*** Begin Patch\n*** Update File: /Users/leechaerim/orca/mogi-cards/code-diff-notes/mogi-productivity/2026-10-16-pr33-evening-repeat-해설.md\n@@\n </details>\n+\n+## 종료 후 반영 확인 — 2026-10-16\n+\n+투두냥의 처리 완료 회신 뒤 최종 HEAD `493589bcbfd36ca3737efec80c762f4713fcad44`의 package.json과 README를 직접 확인했다. 명령은 `pnpm routine`·`pnpm routine:schedule`로 바뀌었고 기존 JS 실행 파일 경로를 유지해 예약 재설치가 필요하지 않다고 안내한다. [최종 README](https://github.com/samkimpepper/mogi-productivity/blob/493589bcbfd36ca3737efec80c762f4713fcad44/integrations/routine/README.md)의 「반복 설정은 Things가 정합니다」·「나중에 조건부 저녁 루틴을 만들 때 주의」 절에 설정 의도와 후속 구현 시 주의가 반영됐다.\n+\n+PR #33은 머지 커밋 `6496490695c314ec5b37d592dfc36b61570b4925`로 MERGED임을 확인했다. 위 본문의 옛 명령 이름과 미확인 상태는 과외 당시의 기록이며, 최종 변경의 실제 앱 동작까지 재시험한 것은 아니다. 전달 메모는 처리 표식으로 정리했고 원문은 Git 이력에 보존했다.\n*** End Patch"));
+text(await tools.exec_command({cmd:"git diff --check","max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git add master-delivery-memos.md code-diff-notes/mogi-productivity/2026-10-16-pr33-evening-repeat-해설.md","max_output_tokens":600}));
+text(await tools.exec_command({cmd:"git commit -m 'docs: close delivered PR33 feedback after merge'","max_output_tokens":1200}));
+text(await tools.exec_command({cmd:"orca orchestration check --run run_144d3d141909 --ack delivery_8fa9beef4cf7 --json","max_output_tokens":1400}));
+text(await tools.exec_command({cmd:"git add raw/2026-10-15-01-product-repo-split.md","max_output_tokens":600}));
+text(await tools.exec_command({cmd:"git commit -m 'archive: preserve tutoring session closure'","max_output_tokens":1200}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_a8a49df178034b449c7a459e458758ef`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"3a0fd9\",\"wall_time_seconds\":0.0000085,\"exit_code\":0,\"original_token_count\":28,\"output\":\"다른 미처리 항목 없음 확인. PR #33 원문은 d49026f에 보존하고 처리 표식으로 교체함.\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a582d2\",\"wall_time_seconds\":0.000005084,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"aecd00\",\"wall_time_seconds\":0.000004708,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"2aa5c9\",\"wall_time_seconds\":0.000005583,\"exit_code\":0,\"original_token_count\":29,\"output\":\"[main 2b292c7] docs: close delivered PR33 feedback after merge\\n 2 files changed, 7 insertions(+), 48 deletions(-)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"90c0cb\",\"wall_time_seconds\":0.000006,\"exit_code\":0,\"original_token_count\":120,\"output\":\"{\\n  \\\"id\\\": \\\"3c4b22f7-ed8a-4413-912c-3c091c079fbe\\\",\\n  \\\"ok\\\": true,\\n  \\\"result\\\": {\\n    \\\"runId\\\": \\\"run_144d3d141909\\\",\\n    \\\"deliveryId\\\": null,\\n    \\\"messages\\\": [],\\n    \\\"count\\\": 0,\\n    \\\"acknowledged\\\": \\\"delivery_8fa9beef4cf7\\\",\\n    \\\"timedOut\\\": false,\\n    \\\"cancelled\\\": false,\\n    \\\"connectionLost\\\": false,\\n    \\\"mutation\\\": {\\n      \\\"requestId\\\": \\\"8e514873-581b-4857-ba9f-6835880148c0\\\",\\n      \\\"replayed\\\": false\\n    }\\n  },\\n  \\\"_meta\\\": {\\n    \\\"runtimeId\\\": \\\"a74112d6-9a9e-4145-a79f-3de09e637b40\\\"\\n  }\\n}\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"222e1a\",\"wall_time_seconds\":0.000004917,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"0d7b90\",\"wall_time_seconds\":0.000006833,\"exit_code\":0,\"original_token_count\":24,\"output\":\"[main 7916160] archive: preserve tutoring session closure\\n 1 file changed, 381 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+투두냥의 처리 완료 메시지 확인했어옹. PR #33 머지와 명령 이름·README 반영도 직접 확인했어.
+
+전달 메모는 처리 이력을 남기고 비웠고, 원문은 Git 이력에 보존했어. 로컬 커밋까지 완료했어옹ㅋ
+~~~
+
+## Turn 32
+
+Codex turn key: `2461b471982f9d14`
+
+### 모기
+
+~~~text
+푸시도 해줘 ㅋ
+~~~
