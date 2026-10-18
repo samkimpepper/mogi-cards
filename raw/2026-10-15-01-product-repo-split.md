@@ -4835,3 +4835,164 @@ Codex turn key: `2461b471982f9d14`
 ~~~text
 푸시도 해줘 ㅋ
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_18bc41589ec84efa82fd48c926e639cd`
+
+입력:
+
+~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"git status --short --branch","max_output_tokens":1500}),
+tools.exec_command({cmd:"git remote -v","max_output_tokens":1000}),
+tools.exec_command({cmd:"git log --oneline @{upstream}..HEAD","max_output_tokens":1800}),
+tools.exec_command({cmd:"git diff --stat","max_output_tokens":1000})
+]);for(let i=0;i<r.length;i++)text({i,result:r[i]});
+~~~
+
+#### 출력 01
+
+Call ID: `call_18bc41589ec84efa82fd48c926e639cd`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.1 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"2cbc48\",\"wall_time_seconds\":0.000003625,\"exit_code\":0,\"original_token_count\":19,\"output\":\"## main...origin/main [ahead 10]\\n M raw/2026-10-15-01-product-repo-split.md\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"b427c6\",\"wall_time_seconds\":0.000006334,\"exit_code\":0,\"original_token_count\":31,\"output\":\"origin\\thttps://github.com/samkimpepper/mogi-cards.git (fetch)\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (push)\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"9615d8\",\"wall_time_seconds\":0.000007458,\"exit_code\":0,\"original_token_count\":142,\"output\":\"7916160 archive: preserve tutoring session closure\\n2b292c7 docs: close delivered PR33 feedback after merge\\n5e2b4c2 archive: preserve October tutoring conversation\\nd49026f docs: close PR32 and PR33 tutoring session\\ncfcc87b docs: preserve conditional evening routine design reminder\\n143cfd6 docs: note intended evening recurrence settings\\n347567b docs: record accepted PR33 test scope\\nf9e478f Record PR 33 failure-isolation test question and naming feedback\\n0acd92a Register tutor Run address at session startup\\n0ca1027 Organize learning materials by product repository\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":3,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"8aefd9\",\"wall_time_seconds\":0.000009916,\"exit_code\":0,\"original_token_count\":29,\"output\":\" raw/2026-10-15-01-product-repo-split.md | 169 ++++++++++++++++++++++++++++++++\\n 1 file changed, 169 insertions(+)\\n\"}}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_c706e3f0f0e24975b2aa91868263fcab`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git pull --ff-only","max_output_tokens":1500}));
+text(await tools.exec_command({cmd:"git add raw/2026-10-15-01-product-repo-split.md","max_output_tokens":600}));
+text(await tools.exec_command({cmd:"git commit -m 'archive: preserve final PR33 handoff messages'","max_output_tokens":1200}));
+text(await tools.exec_command({cmd:"git push origin main","yield_time_ms":1000,"max_output_tokens":2200}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_c706e3f0f0e24975b2aa91868263fcab`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.9 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"b9b556\",\"wall_time_seconds\":0.374706041,\"exit_code\":0,\"original_token_count\":5,\"output\":\"Already up to date.\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"9f8d8d\",\"wall_time_seconds\":0.000004833,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"277010\",\"wall_time_seconds\":0.000006625,\"exit_code\":0,\"original_token_count\":24,\"output\":\"[main 2acc252] archive: preserve final PR33 handoff messages\\n 1 file changed, 169 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"49c477\",\"wall_time_seconds\":1.000547542,\"session_id\":20038,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_fee9b191360642c1a05472d925e2c0ea`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:20038,chars:"","yield_time_ms":1000,"max_output_tokens":2200}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_fee9b191360642c1a05472d925e2c0ea`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.0 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"dbca73\",\"wall_time_seconds\":0.000012083,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   b8dfeea..2acc252  main -> main\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_d8f75da340574df3adb06596a003c73c`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git ls-remote --heads origin main","max_output_tokens":600}));
+text(await tools.exec_command({cmd:"git rev-parse HEAD","max_output_tokens":600}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_d8f75da340574df3adb06596a003c73c`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"16603c\",\"wall_time_seconds\":0.304591791,\"exit_code\":0,\"original_token_count\":15,\"output\":\"2acc2524bae8da4dd953ef29b5b00b743504e231\\trefs/heads/main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"9664d9\",\"wall_time_seconds\":0.000006166,\"exit_code\":0,\"original_token_count\":11,\"output\":\"2acc2524bae8da4dd953ef29b5b00b743504e231\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+push 완료했어옹ㅋ `mogi-cards`의 `origin/main`에 `2acc252`까지 올라갔고, 원격 커밋도 확인했어.
+~~~
