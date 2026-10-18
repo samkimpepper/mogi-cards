@@ -32,7 +32,7 @@ reviewed: false
 4. [todo-ops PR #1 가드와 테스트](./2026-10-16-todo-ops-pr1-guard-review-session-end-analysis.md)
 
 보충 근거는 이번 누적 검토 대화에서 모기가 직접 보탠 사후 평가다.
-원문은 [이번 세션 기록](../raw/2026-10-16-02-session.md)에 보존한다.
+원문은 [이번 세션 기록](../raw/2026-10-16-02-upstream-extension-vendor-branch.md)에 보존한다.
 
 > 아 그리고 나 오늘 그 todo-ops 1번 pr 설명은 좀 불만족스러웠음 셸스크립트에 익숙하지않아서이거나 아니면 pr방향자체가 별로였을수도 있겠지만 암튼..ㅠㅠ 잘 궁합 안맞는다고느낌 그외는 괜찮았다옹
 
