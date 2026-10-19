@@ -3650,3 +3650,178 @@ Codex turn key: `a5b0a02bea1fce43`
 ~~~text
 그럼 마스터메모도 비우고 커밋하고 푸시하자옹
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_a91bd4fb38714c09a8e1a31871b950a8`
+
+입력:
+
+~~~text
+const rs=await Promise.allSettled([
+tools.exec_command({cmd:"git status --short; git branch --show-current; git remote -v","max_output_tokens":2000}),
+tools.exec_command({cmd:"git pull --ff-only","yield_time_ms":1000,"max_output_tokens":1500}),
+tools.exec_command({cmd:"git log -1 --format='%H %s' -- master-delivery-memos.md; sed -n '1,12p' master-delivery-memos.md","max_output_tokens":1800})
+]);for(let i=0;i<rs.length;i++)text({i,...rs[i]});
+~~~
+
+#### 출력 01
+
+Call ID: `call_a91bd4fb38714c09a8e1a31871b950a8`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"63b405\",\"wall_time_seconds\":0.000009917,\"exit_code\":0,\"original_token_count\":47,\"output\":\" M raw/2026-10-16-02-upstream-extension-vendor-branch.md\\nmain\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (fetch)\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (push)\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"f434f8\",\"wall_time_seconds\":0.392658,\"exit_code\":0,\"original_token_count\":5,\"output\":\"Already up to date.\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"3b06cf\",\"wall_time_seconds\":0.000006333,\"exit_code\":0,\"original_token_count\":392,\"output\":\"f31535e6a7e6e31029e9e4c1e4c6e4bd5cd078de docs: record template merge trial results and remaining limits\\n# 마스터 전달용 메모 (단일 수신함)\\n\\n과외 세션 발견물을 한곳에 누적하는 마스터 전달용 단일 수신함이다. 메모는 리드 카드나 다른 파일로 옮기지 않고 이 파일에만 append한 뒤 커밋한다.\\n\\n대상 구분 (2026-10-15): 새 메모 제목에 `[mogi-productivity]` 또는 `[swatch-v2]`를 붙여 제품·PR을 식별한다. 제품별 담당자의 수신 확인 전에는 전달 완료로 기록하지 않는다.\\n\\n운영 규칙 (모기 확정 2026-08-14): 마스터가 메모를 확인·처리할 때마다 이 파일을 비운다. 처리 내역은 비움 표식 한 단락으로 남기고, 원문은 git 이력이 보존한다.\\n\\n(비어 있음 — 2026-10-16 mogi-productivity PR #33 처리 완료 확인. 투두냥 회신 `msg_791e71f3a7fd`: 시험 보강은 모기 판단으로 종결, 명령은 `routine`·`routine:schedule`로 변경, 반복 설정의 주체와 미래 조건부 확장 주의는 `integrations/routine/README.md`에 반영. 과외냥이가 최종 HEAD `493589bcbfd36ca3737efec80c762f4713fcad44`의 package.json·README와 GitHub MERGED 상태, 머지 커밋 `6496490695c314ec5b37d592dfc36b61570b4925`를 확인한 뒤 PR #33 항목을 비움. 실제 앱 동작을 재검증한 것은 아님. 처리 전 메모 원문 = Git 커밋 `d49026f`의 이 파일 및 후속 git 이력.)\\n\\n## 2026-10-16 [todo-ops] PR #1 — worktree 생성 허용 뒤에도 rm을 차단하는 이유 확인 요청\\n\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_643f34e7ef2b4aedb2f21679651d9448`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\np=Path('master-delivery-memos.md')\ns=p.read_text(encoding='utf-8')\nheader=s.split('(비어 있음',1)[0].rstrip()\nnotice='(비어 있음 — 2026-10-18 모기의 명시적 요청으로 전달·인수된 메모를 정리함. PR #1의 rm 정책 질문은 답변 수신, PR #1은 MERGED 확인. 커스텀 보존·업데이트와 복원 절차, PR #3의 runtime 정책 예비본 영향, 신규 비서 업무 확장 기준은 투두냥이 기존 작업 td-2ga에 인수했고 회신 msg_5d76382ffed0·msg_efd84740b1e4 및 작업 노트로 확인함. 원본 전용 브랜치의 후보·연습 시험 결과도 수신해 보존했으며, 최신 작업 기록에는 업데이트 도구 정식화 착수가 기록돼 있음. 이 비움은 전달용 수신함 정리이며 운영 작업·구현·검증 전체 완료를 뜻하지 않음. 처리 전 메모 원문은 Git 커밋 f31535e6a7e6e31029e9e4c1e4c6e4bd5cd078de의 master-delivery-memos.md와 이전 이력에 보존.)'\np.write_text(header+'\\n\\n'+notice+'\\n',encoding='utf-8')\nprint('memo cleared; standing instructions retained')\nPY","max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git diff --check; git diff --stat -- master-delivery-memos.md","max_output_tokens":1500}));
+text(await tools.exec_command({cmd:"git add -- master-delivery-memos.md","max_output_tokens":800}));
+text(await tools.exec_command({cmd:'git commit -m "docs: clear acknowledged master delivery inbox" -- master-delivery-memos.md',"yield_time_ms":1000,"max_output_tokens":1500}));
+text(await tools.exec_command({cmd:"git add -- raw/2026-10-16-02-upstream-extension-vendor-branch.md","max_output_tokens":800}));
+text(await tools.exec_command({cmd:'git commit -m "docs(raw): preserve session close and inbox cleanup request" -- raw/2026-10-16-02-upstream-extension-vendor-branch.md',"yield_time_ms":1000,"max_output_tokens":1500}));
+text(await tools.exec_command({cmd:"git push origin main","yield_time_ms":1000,"max_output_tokens":2500}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_643f34e7ef2b4aedb2f21679651d9448`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"d2d1e3\",\"wall_time_seconds\":0.000012958,\"exit_code\":0,\"original_token_count\":12,\"output\":\"memo cleared; standing instructions retained\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"40983b\",\"wall_time_seconds\":0.000005916,\"exit_code\":0,\"original_token_count\":33,\"output\":\" master-delivery-memos.md | 145 +----------------------------------------------\\n 1 file changed, 1 insertion(+), 144 deletions(-)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"2231be\",\"wall_time_seconds\":0.000005708,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a8d23d\",\"wall_time_seconds\":0.000005542,\"exit_code\":0,\"original_token_count\":28,\"output\":\"[main 5ea5af7] docs: clear acknowledged master delivery inbox\\n 1 file changed, 1 insertion(+), 144 deletions(-)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"8bbecd\",\"wall_time_seconds\":0.00000775,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"fce54c\",\"wall_time_seconds\":0.000005042,\"exit_code\":0,\"original_token_count\":28,\"output\":\"[main 5342444] docs(raw): preserve session close and inbox cleanup request\\n 1 file changed, 389 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"f32c7f\",\"wall_time_seconds\":1.002548959,\"session_id\":88498,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_a05277546b044b8994564fad0f9aa196`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:88498,chars:"","yield_time_ms":1000,"max_output_tokens":2200}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_a05277546b044b8994564fad0f9aa196`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.0 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"7a3794\",\"wall_time_seconds\":0.000011792,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   2acc252..5342444  main -> main\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_bd5249c588c94626b2ef11d2d87bf926`
+
+입력:
+
+~~~text
+const rs=await Promise.allSettled([
+tools.exec_command({cmd:"git rev-parse HEAD; git ls-remote origin refs/heads/main; git status --short","max_output_tokens":1500}),
+tools.exec_command({cmd:"cat master-delivery-memos.md","max_output_tokens":1600})
+]);for(let i=0;i<rs.length;i++)text({i,...rs[i]});
+~~~
+
+#### 출력 04
+
+Call ID: `call_bd5249c588c94626b2ef11d2d87bf926`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"0c6ba7\",\"wall_time_seconds\":0.349115667,\"exit_code\":0,\"original_token_count\":25,\"output\":\"5342444848f7681f09d66697b6de1d6127a38861\\n5342444848f7681f09d66697b6de1d6127a38861\\trefs/heads/main\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"98cb63\",\"wall_time_seconds\":0.000007125,\"exit_code\":0,\"original_token_count\":382,\"output\":\"# 마스터 전달용 메모 (단일 수신함)\\n\\n과외 세션 발견물을 한곳에 누적하는 마스터 전달용 단일 수신함이다. 메모는 리드 카드나 다른 파일로 옮기지 않고 이 파일에만 append한 뒤 커밋한다.\\n\\n대상 구분 (2026-10-15): 새 메모 제목에 `[mogi-productivity]` 또는 `[swatch-v2]`를 붙여 제품·PR을 식별한다. 제품별 담당자의 수신 확인 전에는 전달 완료로 기록하지 않는다.\\n\\n운영 규칙 (모기 확정 2026-08-14): 마스터가 메모를 확인·처리할 때마다 이 파일을 비운다. 처리 내역은 비움 표식 한 단락으로 남기고, 원문은 git 이력이 보존한다.\\n\\n(비어 있음 — 2026-10-18 모기의 명시적 요청으로 전달·인수된 메모를 정리함. PR #1의 rm 정책 질문은 답변 수신, PR #1은 MERGED 확인. 커스텀 보존·업데이트와 복원 절차, PR #3의 runtime 정책 예비본 영향, 신규 비서 업무 확장 기준은 투두냥이 기존 작업 td-2ga에 인수했고 회신 msg_5d76382ffed0·msg_efd84740b1e4 및 작업 노트로 확인함. 원본 전용 브랜치의 후보·연습 시험 결과도 수신해 보존했으며, 최신 작업 기록에는 업데이트 도구 정식화 착수가 기록돼 있음. 이 비움은 전달용 수신함 정리이며 운영 작업·구현·검증 전체 완료를 뜻하지 않음. 처리 전 메모 원문은 Git 커밋 f31535e6a7e6e31029e9e4c1e4c6e4bd5cd078de의 master-delivery-memos.md와 이전 이력에 보존.)\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+마스터 메모 비우고 커밋·푸시 완료했다옹.
+
+처리 이력과 이전 원문을 찾을 커밋은 남겨뒀어. 대화 원문도 별도 커밋했고, 원격 `main`이 `5342444`까지 반영된 걸 확인했어.
+~~~
