@@ -2,8 +2,8 @@
 reviewed: false
 status: pilot
 planned_sessions: 2
-completed_sessions: 0
-remaining_sessions: 2
+completed_sessions: 1
+remaining_sessions: 1
 ---
 
 # Codex native compaction 자연 상태 관찰
@@ -42,4 +42,9 @@ native compaction만으로 과외 연속성이 유지되는지 다음 Codex 과�
 
 ## 실행 기록
 
-아직 실행 없음.
+<!-- pilot-run:bdac35f8847ce25948b01a649d6871b96433c87d0cf0429b6fd0ad9813ffa6d7:completed -->
+### 2026-10-20T08:55:59+00:00 · codex:c59140ad0be7cdb3
+
+- 결과: completed
+- 근거: head-test/2026-10-20-pr39-tdd-and-pilot-routing-session-end-analysis.md
+- 기록: 모기가 실제 세션 종료를 요청해 종료 관찰을 작성했다. native compaction 후 이어진 작업이 있으며 연속성 이상은 사용자 보고 없음. 같은 Codex 세션의 앞선 PR7 종료를 별도 회차로 소급하지 않음. 메시지별 후보 훅의 종료 알림 실제 수신도 확인.
