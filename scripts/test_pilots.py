@@ -2,7 +2,9 @@
 
 from concurrent.futures import ThreadPoolExecutor
 import importlib.util
+import json
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -115,6 +117,113 @@ class PilotTests(unittest.TestCase):
                            "planned_cases": "3", "completed_cases": "3"})
         self.assertEqual(pilots.due(self.root, "review")["due"], [])
         self.assertTrue(pilots.due(self.root, "review")["attention"])
+
+    def test_prompt_reminder_has_count_signal_and_preserves_all_files(self):
+        path = self.pilot()
+        before = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        response = pilots.prompt_hook(self.root, {"hook_event_name": "UserPromptSubmit",
+                                                 "prompt": "PR40 리뷰 P2 설명해줘"})
+        context = response["hookSpecificOutput"]["additionalContext"]
+        self.assertTrue(response["continue"])
+        self.assertIn(path.name, context)
+        self.assertIn("0/3 cases", context)
+        self.assertIn('"리뷰"', context)
+        self.assertEqual(context.count(path.name), 1)
+        self.assertNotIn("decision", response)
+        after = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        self.assertEqual(before, after)
+        self.assertFalse((self.root / ".local").exists())
+
+    def test_test_keyword_is_a_candidate_never_a_request_or_completion(self):
+        path = self.pilot("invalid-input-and-broken-tool-tests", {
+            "reviewed": "false", "status": "pilot", "planned_runs": "3", "completed_runs": "0"})
+        before = path.read_bytes()
+        for prompt in ("테스트가 뭐야?", "틀린 입력 테스트 짜보자", "테스트 하지 마", "TDD 해볼까?"):
+            with self.subTest(prompt=prompt):
+                context = pilots.prompt_context(self.root, prompt)
+                self.assertIn(path.name, context)
+                self.assertIn("요청 승인이 아니며", context)
+                self.assertIn("--requested를 자동으로 붙이지 않는다", context)
+        self.assertEqual(pilots.due(self.root, "test-request")["due"], [])
+        self.assertEqual(before, path.read_bytes())
+
+    def test_prompt_omits_finished_paused_and_exhausted_candidates(self):
+        for state in ("completed", "awaiting-review", "paused", "retired"):
+            self.pilot(state, {"reviewed": "false", "status": state, "event": "review",
+                              "planned_cases": "3", "completed_cases": "1"})
+        exhausted = self.pilot("exhausted", {"reviewed": "false", "status": "pilot", "event": "review",
+                                            "planned_cases": "3", "completed_cases": "3"})
+        context = pilots.prompt_context(self.root, "PR 40 리뷰")
+        self.assertIn(exhausted.name, context)
+        self.assertIn("확인 필요·적용 보류", context)
+        for state in pilots.TERMINAL:
+            self.assertNotIn(f"2026-10-20-{state}.md", context)
+
+    def test_diff_signal_routes_explanation_and_missing_counter_warning(self):
+        self.pilot()
+        self.pilot("raw-diff-contact", {"reviewed": "false", "status": "pilot"})
+        context = pilots.prompt_context(self.root, "실제 DIFF 보여줘")
+        self.assertIn("sample.md", context)
+        self.assertIn("raw-diff-contact.md", context)
+        self.assertIn("확인 필요·적용 보류", context)
+        self.assertIn("명시적 카운터 없음", context)
+
+    def test_session_end_hint_does_not_claim_session_has_ended(self):
+        self.pilot("native-compaction-baseline", {"status": "pilot", "reviewed": "false",
+                   "planned_sessions": "2", "completed_sessions": "0"})
+        for prompt in ("PR 다 봤다옹", "오늘은 여기까지", "과외 세션 종료하자"):
+            context = pilots.prompt_context(self.root, prompt)
+            self.assertIn("native-compaction-baseline.md", context)
+            self.assertIn("PR 마무리와 세션 종료를 구분", context)
+            self.assertIn("0/2 sessions", context)
+
+    def test_unrelated_followup_or_non_prompt_event_adds_no_context(self):
+        self.pilot()
+        self.pilot("test", {"status": "pilot", "event": "test-request",
+                            "planned_runs": "3", "completed_runs": "0"})
+        for prompt in ("다음 가자옹", "안녕", "surprise contest"):
+            self.assertEqual(pilots.prompt_context(self.root, prompt), "")
+        self.assertEqual(pilots.prompt_hook(self.root, {"hook_event_name": "Stop", "prompt": "PR40"}),
+                         {"continue": True})
+
+    def test_new_pilot_uses_existing_event_without_another_keyword_registry(self):
+        self.pilot("new-code-note", {"status": "pilot", "event": "code-note",
+                                    "planned_sessions": "2", "completed_sessions": "0"})
+        self.assertIn("new-code-note.md", pilots.prompt_context(self.root, "코드 학습 노트 써줘"))
+
+    def test_invalid_payload_and_unreadable_catalog_do_not_block(self):
+        for payload in ([], {"hook_event_name": "UserPromptSubmit", "prompt": 12}):
+            response = pilots.prompt_hook(self.root, payload)
+            self.assertTrue(response["continue"])
+            self.assertIn("systemMessage", response)
+            self.assertNotIn("hookSpecificOutput", response)
+        self.pilot().write_bytes(b"\xff")
+        response = pilots.prompt_hook(self.root, {"hook_event_name": "UserPromptSubmit", "prompt": "PR40"})
+        self.assertTrue(response["continue"])
+        self.assertIn("조회 실패", response["systemMessage"])
+
+    def test_configured_prompt_handler_runs_from_subdirectory_and_bad_json_continues(self):
+        repo = Path(__file__).resolve().parents[1]
+        config = json.loads((repo / ".codex/hooks.json").read_text())
+        handlers = config["hooks"]["UserPromptSubmit"][0]["hooks"]
+        self.assertEqual(len([h for h in handlers if "raw_conversation_archive.py" in h["command"]]), 1)
+        handler, = [h for h in handlers if "prompt-hook" in h["command"]]
+        self.assertFalse(handler.get("async", False))
+        self.assertEqual(len(config["hooks"]["Stop"][0]["hooks"]), 1)
+        (self.root / "scripts").mkdir()
+        shutil.copy2(repo / "scripts/pilots.py", self.root / "scripts/pilots.py")
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)
+        self.pilot()
+        for data in (json.dumps({"hook_event_name": "UserPromptSubmit", "prompt": "PR40"}), "bad json"):
+            result = subprocess.run(["/bin/sh", "-c", handler["command"]], cwd=self.directory,
+                                    input=data, text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            response = json.loads(result.stdout)
+            self.assertTrue(response["continue"])
+            if data == "bad json":
+                self.assertIn("입력 오류", response["systemMessage"])
+            else:
+                self.assertIn("sample.md", response["hookSpecificOutput"]["additionalContext"])
 
     def test_broken_catalog_does_not_remove_existing_startup_guides(self):
         subprocess.run(["git", "init", "-q", str(self.root)], check=True, capture_output=True)

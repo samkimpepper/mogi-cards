@@ -21,6 +21,7 @@ from pathlib import Path
 import re
 import sys
 import tempfile
+import unicodedata
 from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +37,17 @@ LEGACY_EVENTS = {
 }
 EVENTS = ("review", "diff", "code-note", "session-end", "test-request", "memo")
 TERMINAL = {"completed", "awaiting-review", "paused", "retired"}
+# These are retrieval hints, not an intent classifier. In particular, a mention
+# of tests is never equivalent to the explicit request required by that pilot.
+PROMPT_SIGNALS = {
+    "review": r"(?<![a-z0-9_])pr(?=$|[^a-z])|리뷰|jargon|자곤",
+    "diff": r"(?<![a-z])diff(?![a-z])|디프|코드\s*(?:차이|변경|전후)|변경\s*전후",
+    "code-note": r"(?:코드|diff|디프)\s*(?:학습\s*)?(?:노트|해설)|해설\s*(?:노트|파일)",
+    "session-end": r"(?:세션|과외).{0,12}(?:종료|끝|마무리)|오늘.{0,12}(?:여기까지|그만)"
+                   r"|다\s*(?:봤|끝)|끝났|마무리|끝내자|마치자|종료하자",
+    "test-request": r"(?<![a-z])(?:tdd|tests?|testing)(?![a-z])|테스트|시험|(?:틀린|잘못된)\s*입력",
+    "memo": r"마스터\s*메모|전달용\s*메모|마스터.{0,12}전달",
+}
 
 
 def metadata(text):
@@ -117,6 +129,68 @@ def due(root, event, requested=False):
                 and (requested or not item["requires_request"])],
         "attention": [item for item in items if item["issues"] and item["status"] not in TERMINAL],
     }
+
+
+def prompt_context(root, prompt):
+    """Return a read-only reminder for this message; no persisted conversation state."""
+    normalized = unicodedata.normalize("NFKC", prompt).casefold()
+    signals = {}
+    for event, pattern in PROMPT_SIGNALS.items():
+        matches = list(dict.fromkeys(re.findall(pattern, normalized)))
+        if matches:
+            signals[event] = [match[:40] for match in matches[:3]]
+    if not signals:
+        return ""
+    # A diff lesson is also a review explanation; report its original signal.
+    if "diff" in signals and "review" not in signals:
+        signals["review"] = signals["diff"]
+    lines = []
+    for item in inventory(root):
+        if item["event"] not in signals or item["status"] in TERMINAL:
+            continue
+        if not item["available"] and not item["issues"]:
+            continue
+        count = (f'{item["completed"]}/{item["planned"]} {item["unit"]}'
+                 if item["planned"] is not None else "횟수 미정")
+        matched = json.dumps(signals[item["event"]], ensure_ascii=False)
+        state = "후보" if item["available"] else "확인 필요·적용 보류"
+        lines.append(f'- {state}: {item["path"]} · {count} · 걸린 표현={matched}')
+        if item["requires_request"]:
+            lines.append("  사용자 실제 요청 확인 필요. 키워드 언급은 요청 승인이 아니며 --requested를 자동으로 붙이지 않는다.")
+        if item["issues"]:
+            lines.append("  이유: " + "; ".join(item["issues"]))
+    if not lines:
+        return ""
+    return "\n".join([
+        "## 이번 메시지의 파일럿 후보 — 키워드 검색 알림",
+        *lines,
+        "키워드는 적용·종료 의도의 판정이 아니다. 대화 문맥으로 관련성을 판단하고, 관련 후보의 원문 추가 조건을 확인한다.",
+        "일반 용어 질문·인용·부정·운영 대화에는 파일럿을 자동 적용하지 않는다. PR 마무리와 세션 종료를 구분한다.",
+        "이 알림은 조회만 수행했다. 실행·기록·횟수 증가는 하지 않았다. 실제 수행과 근거를 확인한 뒤에만 record한다.",
+        "같은 사건의 후속 질문은 같은 건이며, 세션 단위는 같은 세션 키를 쓴다. 키워드 없는 후속 말은 앞 대화와 연결한다.",
+        "알림이나 깊이 선택 질문을 매번 모기에게 보여줄 필요는 없다. 모기의 현재 질문부터 답한다.",
+    ])
+
+
+def prompt_hook(root, payload):
+    """Codex UserPromptSubmit JSON output; failures must never block tutoring."""
+    response = {"continue": True}
+    try:
+        if not isinstance(payload, dict):
+            raise ValueError("hook payload가 객체가 아님")
+        if payload.get("hook_event_name") != "UserPromptSubmit":
+            return response
+        prompt = payload.get("prompt")
+        if not isinstance(prompt, str):
+            raise ValueError("UserPromptSubmit prompt가 문자열이 아님")
+        context = prompt_context(root, prompt)
+        if context:
+            response["hookSpecificOutput"] = {
+                "hookEventName": "UserPromptSubmit", "additionalContext": context,
+            }
+    except (ValueError, OSError, UnicodeError) as error:
+        response["systemMessage"] = "파일럿 후보 조회 실패(대화 계속): " + str(error)
+    return response
 
 
 def replace_meta(text, key, value):
@@ -214,6 +288,7 @@ def main():
     subs = parser.add_subparsers(dest="command", required=True)
     status = subs.add_parser("status", help="모든 파일럿과 누락·종료 상태 조회")
     status.add_argument("--for-hook", action="store_true")
+    subs.add_parser("prompt-hook", help="UserPromptSubmit stdin을 읽어 파일럿 후보만 알림")
     select = subs.add_parser("due", help="사건과 요청 여부에 맞는 파일럿만 조회")
     select.add_argument("--event", choices=EVENTS, required=True)
     select.add_argument("--requested", action="store_true")
@@ -224,7 +299,12 @@ def main():
     write.add_argument("--result", choices=("completed", "skipped", "blocked"), required=True)
     write.add_argument("--requested", action="store_true")
     args = parser.parse_args()
-    if args.command == "status":
+    if args.command == "prompt-hook":
+        try:
+            output = prompt_hook(ROOT, json.load(sys.stdin))
+        except (ValueError, OSError, UnicodeError) as error:
+            output = {"continue": True, "systemMessage": "파일럿 후보 입력 오류(대화 계속): " + str(error)}
+    elif args.command == "status":
         output = hook_text(ROOT) if args.for_hook else inventory(ROOT)
     elif args.command == "due":
         output = due(ROOT, args.event, args.requested)

@@ -22,6 +22,13 @@
             "type": "command",
             "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/raw_conversation_archive.py\"",
             "timeout": 3
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/scripts/pilots.py\" prompt-hook",
+            "timeout": 3,
+            "statusMessage": "관련 파일럿 후보 확인 중",
+            "additionalContextLimit": 1500
           }
         ]
       }
