@@ -25,6 +25,17 @@ mogi_latest_review=$(
 mogi_total_bytes=$(wc -c < "$mogi_preamble")
 mogi_total_bytes=$((mogi_total_bytes + $(wc -c < "$mogi_head_guide")))
 
+# Discover all current pilots, including completed and unclassified definitions.
+# A registry error must remain visible without discarding the tutor guides.
+if mogi_pilot_context=$(python3 "$mogi_repo_root/scripts/pilots.py" status --for-hook 2>&1); then
+  :
+else
+  mogi_pilot_context="파일럿 현황 조회 실패: $mogi_pilot_context
+과외냥이는 scripts/pilots.py 오류를 확인한다. 목록이 정상인 것처럼 적용·집계하지 않는다."
+fi
+mogi_pilot_bytes=$(printf '%s' "$mogi_pilot_context" | wc -c)
+mogi_total_bytes=$((mogi_total_bytes + mogi_pilot_bytes))
+
 if [ -n "$mogi_latest_review" ]; then
   mogi_review_label=${mogi_latest_review##*/}
   mogi_review_route="head-test/$mogi_review_label"
@@ -66,3 +77,5 @@ if [ -n "$mogi_latest_review" ]; then
 else
   printf '\n%s\n' '## 최신 학습 관찰 누적 검토: 없음'
 fi
+
+printf '\n%s\n' "$mogi_pilot_context"
