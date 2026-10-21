@@ -142,8 +142,12 @@ def arrow(im, a, b, fill, dashed=False):
 
 def reference_graph(s, name):
     # Fixed positions keep equal nodes at equal places across all four scenes.
-    def label(t):
-        return json.dumps(t, ensure_ascii=False)
+    def object_label(name, meaning, *fields):
+        from html import escape
+        rows = [f'<TR><TD>{escape(name)}</TD></TR>',
+                f'<TR><TD><FONT COLOR="#687d92" POINT-SIZE="18">({escape(meaning)})</FONT></TD></TR>']
+        rows += [f'<TR><TD>{escape(field)}</TD></TR>' for field in fields]
+        return '<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="2">'+''.join(rows)+'</TABLE>>'
     last = s["document_line"] == 27
     r1 = s["recipes"][1]
     kw = "실비청구" if len(r1["kw"]) == 1 else "실비청구, 실비, 청구"
@@ -154,13 +158,13 @@ def reference_graph(s, name):
              'anchor2 [pos="760,320!", label="", shape=point, width=0, style=invis];',
              f'cur [pos="105,255!", label="cur", width=2.3, fillcolor="#eaf1ff", color="{BLUE}", fontcolor="{BLUE}"];',
              f'list1 [pos="105,175!", label="recipes[1]", width=2.3, fillcolor="#eafff6", color="{TEAL}", fontcolor="{TEAL}"];',
-             f'r1 [pos="515,205!", label={label("R1 · 실비청구"+chr(10)+"line = 21"+chr(10)+"kw = {"+kw+"}")}, width=4.5, fillcolor="#ecfcf5", color="{TEAL}", fontcolor="{TEAL}"];',
+             f'r1 [pos="515,205!", label={object_label("R1", "실비청구 레시피 객체", "line = 21", "kw = {"+kw+"}")}, width=4.5, fillcolor="#ecfcf5", color="{TEAL}", fontcolor="{TEAL}"];',
              f'flag [pos="105,25!", label="in_goal = {s["in_goal"]}", width=2.3, fillcolor="#f1f4f9", color="#bac9dc", fontsize=21];',
              f'list1:e -> r1:w [color="{TEAL}"];']
     if last:
         lines += [
             f'list2 [pos="105,95!", label="recipes[2]", width=2.3, fillcolor="#eafff6", color="{TEAL}", fontcolor="{TEAL}"];',
-            f'r2 [pos="515,65!", label={label("R2 · 회사에서 도수치료 방문"+chr(10)+"line = 27 · kw = {도수치료}")}, width=4.5, fillcolor="#edf3ff", color="{BLUE}", fontcolor="{BLUE}"];',
+            f'r2 [pos="515,65!", label={object_label("R2", "회사에서 도수치료 방문 레시피 객체", "line = 27 · kw = {도수치료}")}, width=4.5, fillcolor="#edf3ff", color="{BLUE}", fontcolor="{BLUE}"];',
             f'cur:e -> r2:w [color="{BLUE}"];', f'list2:e -> r2:w [color="{TEAL}"];']
     else:
         lines += [f'cur:e -> r1:w [color="{BLUE}"];']
