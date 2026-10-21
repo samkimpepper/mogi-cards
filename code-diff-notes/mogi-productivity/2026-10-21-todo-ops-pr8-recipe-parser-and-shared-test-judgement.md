@@ -4,6 +4,13 @@ reviewed: false
 
 # todo-ops PR #8 — 문서를 따라 레시피 모으기와 같은 기준으로 고장 잡기
 
+> [!note] 다음 세션에서 이어 읽기 — 2026-10-21
+> 이 노트는 미완독이며 다음 세션에서 이어 읽기로 했다. 정확히 어느 코드 줄까지 독해했는지는 확인하지 않았으므로 완료 지점을 추정하지 않는다.
+>
+> 모기는 내용은 괜찮지만 문장·표현에는 아쉬움을 밝혔고, 순서도·단계별 화면에 이어 Python Tutor 적용본도 원하던 형태가 아니라고 평가했다. 복잡한 코드에서 코드와 설명·그림을 나란히 보고 싶다는 요청은 있었으나, 만족할 시각화의 구체 형식은 아직 정해지지 않았다. Python Tutor를 기본 해법으로 재적용하거나 새 화면부터 만들지 않는다.
+>
+> [미채택 Python Tutor 실험](./archive/2026-10-21-pr8-python-tutor/reading-view.html)은 이력으로만 보관했다. [종료 기록](../../head-test/2026-10-21-todo-ops-pr8-hooks-and-code-visualization-session-end-analysis.md)에 질문·검증 범위·사용자 피드백을 남겼다. 원본 코드 판독 기준은 아래의 `73f2b00`이다.
+
 ## 0. 판독 범위와 파일 지도
 
 - 원본: [todo-ops PR #8](https://github.com/samkimpepper/todo-ops/pull/8). **mogi-productivity PR #8이 아니다.** 투두냥 운영 코드 학습을 기존 `mogi-productivity` 공책 분류에 보관한다.
@@ -50,13 +57,7 @@ PR에서 두 파일은 새 파일이다. 문서 순회 코드는 PR 전체 추�
 
 ## 3. 문서를 한 줄씩 읽으며 ‘지금 어느 레시피인가’를 기억하기
 
-**[Python Tutor로 코드와 객체를 나란히 보기](./2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement-python-tutor.html)**
-
-HTML 파일을 Orca에서 열고 **Open Preview to the Side**를 누르면 돼. 네 시점 버튼으로 `cur`와 `recipes[0]`의 참조, 검색 단어 추가, 빈 줄 뒤 유지되는 객체, 다음 제목에서 바뀌는 참조를 볼 수 있어. 화면 안의 **Next > / < Prev**로도 이동할 수 있어.
-
-실행 화면은 아래 원본에서 객체 참조·변경에 필요한 문장만 남긴 **9행짜리 설명용 재현**이야. 반복문·조건 분기는 펼쳐 쓰고 `words()`의 결과는 값으로 넣었어. 전체 훅 실행과 구분하며, 원본 발췌·생략한 부분은 HTML에도 함께 두었어. [실행할 재현 코드](./assets/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement-python-tutor/reference-demo.py)를 별도로 받을 수도 있어. Python Tutor 실행 화면은 인터넷 연결이 필요해.
-
-적용 확인(2026-10-21): Chrome에서 Python Tutor 내장 실행과 네 시점 이동·앞뒤 이동을 직접 확인했어. 원본 `words()`가 만드는 단어와 재현에 넣은 값을 대조했고, 재현의 같은 객체 참조·집합 변경·`in_goal` 전환·새 객체 대입도 로컬 실행으로 확인했어. Orca 내장 HTML 미리보기 자체는 이번 확인에 포함하지 않았어.
+아래 원본 코드와 문서 예시를 기준으로 이어 읽는다. 단순 순서도와 Python Tutor 실험은 모기가 원하던 표현으로 채택되지 않아 본문에서 분리했다. 관련 기록은 노트 첫머리의 이어 읽기 메모에 있다.
 
 ### 먼저, 문서에 실제로 적혀 있는 것
 
