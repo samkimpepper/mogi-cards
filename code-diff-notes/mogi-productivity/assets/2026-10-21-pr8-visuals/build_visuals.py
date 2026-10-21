@@ -185,8 +185,8 @@ def pastefit(im, obj, rect):
 
 
 im = Image.new("RGB", (1800, 1140), "#fbfcfe")
-put(im, (35, 24), "같은 객체를 가리키다가, cur만 다음 객체로 이동", 40)
-put(im, (35, 79), "실제 가짜 문서의 21 → 23 → 25 → 27행을 읽은 직후 · 원본 파서 구간 실행 관찰", 27, MUTED)
+put(im, (35, 24), "메시지를 받은 훅이, 검색 전에 레시피를 모으는 네 시점", 40)
+put(im, (35, 79), "같은 훅 실행 중 시험용 문서의 21 → 23 → 25 → 27행을 읽은 직후 · 원본 파서 구간 실행 관찰", 27, MUTED)
 titles = ["01 · 실비청구 제목", "02 · 목표 표현 시작", "03 · 검색 단어 추가", "04 · 다음 제목"]
 changes = ["같은 R1을 cur와 recipes[1]에 연결", "in_goal만 False → True", "R1.kw 변경 · 두 참조는 그대로", "cur → R2 · recipes[1] → R1 유지"]
 for i, (s, graph) in enumerate(zip(snapshots, graphs)):
@@ -233,7 +233,7 @@ def code_panel(im, rect, lines, numbers, highlight=(), size=22):
 # A readable original-code / corresponding-state pair, in addition to the
 # simultaneous overview. This is the same note's inline reading material.
 im = Image.new("RGB", (1800, 1100), "#fbfcfe")
-put(im, (30, 22), "코드 왼쪽 · 27행까지 읽은 상태 오른쪽", 40)
+put(im, (30, 22), "같은 훅 실행 중: 문서 27행까지 읽은 직후", 40)
 put(im, (30, 78), "scripts/hooks/playbook-hint.sh · 73f2b00 · 97–113행 원본 발췌 (긴 줄은 시각적으로만 접음)", 27, MUTED)
 code_panel(im, (28, 132, 1000, 1005), hook_lines, range(97, 114), (101, 102, 103, 113), 23)
 box(im, (1020, 132, 1772, 1005))
@@ -248,7 +248,7 @@ im.save(HERE / "parser-code-and-state.png", optimize=True)
 
 
 im = Image.new("RGB", (1800, 1140), "#fbfcfe")
-put(im, (30, 22), "같은 judges_hit() · 실행 대상과 반환 결과를 비교", 40)
+put(im, (30, 22), "개발자가 시험 실행: 정상 훅·사본의 호출과 반환 비교", 40)
 put(im, (30, 79), "scripts/test-playbook-hint.sh · 73f2b00 · 원본 함수 발췌 + 두 호출을 직접 실행한 결과", 27, MUTED)
 code_panel(im, (28, 135, 780, 675), test_lines, range(37, 42), (39, 40), 23)
 put(im, (45, 698), "호출 입력은 두 번 모두 같아", 29)
