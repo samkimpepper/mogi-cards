@@ -125,4 +125,5 @@
 - 직접 확인: 해당 SHA의 `bash scripts/test-playbook-hint.sh`를 공책 cwd에서 실행해 ok 66개·FAIL 0·exit 0을 확인했다. 정상·사본의 같은 검사 비교 실험, 전체 테스트, 실제 Claude Code 세션 연결은 실행하지 않았다.
 - 중복 확인: 현재 전달 메모와 PR #8 최신 본문, `todo-ops/contracts/2026-10-21-playbook-hint-hook.md`를 확인했으며 동일 항목은 찾지 못했다. todo-ops `.beads/issues.jsonl`은 없고 mogi-productivity cwd의 `bd --readonly list --title-contains playbook`은 DB 없음으로 실패해, 이슈 트래커 중복 여부는 미확인이다.
 - 범위: 시험 증거 보강 제안이다. 제품·운영 코드 수정, 머지 판단, 메시지 전송은 하지 않았다.
+- 전달 보류 (2026-10-21): 모기가 “ㅇㅋ 마스터메모 보내자옹”이라고 이 PR #8 메모 전송을 요청했다. 전송 직전 `resolve tutor`는 통과했으나 `resolve todo`가 `Orca runtime changed; the role owner must register again`으로 실패했다. `communication/README.md`에 따라 투두냥 담당자의 자기 주소 갱신을 기다리며, 상대 주소 수정·추측 전송·메시지 발송은 하지 않았다. 주소가 유효해지면 이 메모만 한 번 전송할 권한은 이번 요청으로 확보됐다.
 
