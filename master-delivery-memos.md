@@ -126,4 +126,5 @@
 - 중복 확인: 현재 전달 메모와 PR #8 최신 본문, `todo-ops/contracts/2026-10-21-playbook-hint-hook.md`를 확인했으며 동일 항목은 찾지 못했다. todo-ops `.beads/issues.jsonl`은 없고 mogi-productivity cwd의 `bd --readonly list --title-contains playbook`은 DB 없음으로 실패해, 이슈 트래커 중복 여부는 미확인이다.
 - 범위: 시험 증거 보강 제안이다. 제품·운영 코드 수정, 머지 판단, 메시지 전송은 하지 않았다.
 - 전달 보류 (2026-10-21): 모기가 “ㅇㅋ 마스터메모 보내자옹”이라고 이 PR #8 메모 전송을 요청했다. 전송 직전 `resolve tutor`는 통과했으나 `resolve todo`가 `Orca runtime changed; the role owner must register again`으로 실패했다. `communication/README.md`에 따라 투두냥 담당자의 자기 주소 갱신을 기다리며, 상대 주소 수정·추측 전송·메시지 발송은 하지 않았다. 주소가 유효해지면 이 메모만 한 번 전송할 권한은 이번 요청으로 확보됐다.
+- 전달 기록 (2026-10-21): 모기의 “보내줘 ㅋ” 요청 뒤 자기·투두냥 주소 resolve가 모두 통과했다. 검증된 투두냥 Run `run_1d9ac7036e29`(consumerGeneration 2)으로 이 PR #8 시험 증거 보강 메모만 메시지 `msg_fbe22e2b2c2c`로 한 번 전송했다. 전송 접수는 확인했고, 담당자의 읽음·인수·후속 처리 결과는 아직 확인하지 않았다.
 
