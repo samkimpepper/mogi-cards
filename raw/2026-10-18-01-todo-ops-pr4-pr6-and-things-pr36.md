@@ -3979,3 +3979,152 @@ Codex turn key: `7d7dfd33647be5ce`
 ~~~text
 푸시도 해줘 ㅋ
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_1432b6db958f469194a81bfba8f3f83d`
+
+입력:
+
+~~~text
+const rs=await Promise.allSettled([
+tools.exec_command({cmd:"git status --short","max_output_tokens":2000}),
+tools.exec_command({cmd:"git branch --show-current","max_output_tokens":1000}),
+tools.exec_command({cmd:"git remote -v","max_output_tokens":1000})
+]);rs.forEach((r,i)=>text({i,...r}));
+text(await tools.exec_command({cmd:"git push origin main","max_output_tokens":2500,"yield_time_ms":1000}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_1432b6db958f469194a81bfba8f3f83d`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.3 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"108a72\",\"wall_time_seconds\":0.000003875,\"exit_code\":0,\"original_token_count\":39,\"output\":\" M \\\"code-diff-notes/mogi-productivity/2026-10-16-pr33-evening-repeat-\\\\355\\\\225\\\\264\\\\354\\\\204\\\\244.md\\\"\\n M raw/2026-10-18-01-todo-ops-pr4-pr6-and-things-pr36.md\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"cab470\",\"wall_time_seconds\":0.000006834,\"exit_code\":0,\"original_token_count\":2,\"output\":\"main\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"d122a9\",\"wall_time_seconds\":0.000006,\"exit_code\":0,\"original_token_count\":31,\"output\":\"origin\\thttps://github.com/samkimpepper/mogi-cards.git (fetch)\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (push)\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"705dac\",\"wall_time_seconds\":1.00202575,\"session_id\":98387,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_87c20f7057e440dbad6da7d226f101ba`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:98387,chars:"","max_output_tokens":2000,"yield_time_ms":1000}));
+text(await tools.exec_command({cmd:"git diff --stat -- raw/2026-10-18-01-todo-ops-pr4-pr6-and-things-pr36.md","max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git add -- raw/2026-10-18-01-todo-ops-pr4-pr6-and-things-pr36.md","max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git commit --only raw/2026-10-18-01-todo-ops-pr4-pr6-and-things-pr36.md -m 'docs(raw): preserve session closing procedure and final reply'","max_output_tokens":2000,"yield_time_ms":1000}));
+text(await tools.exec_command({cmd:"git push origin main","max_output_tokens":2000,"yield_time_ms":1000}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_87c20f7057e440dbad6da7d226f101ba`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.5 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"4b6611\",\"wall_time_seconds\":0.000013083,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   5342444..d57c043  main -> main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"3dc2d8\",\"wall_time_seconds\":0.000006041,\"exit_code\":0,\"original_token_count\":29,\"output\":\" ...26-10-18-01-todo-ops-pr4-pr6-and-things-pr36.md | 253 +++++++++++++++++++++\\n 1 file changed, 253 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"02b24d\",\"wall_time_seconds\":0.0000045,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"eb0853\",\"wall_time_seconds\":0.000005917,\"exit_code\":0,\"original_token_count\":28,\"output\":\"[main 4490de2] docs(raw): preserve session closing procedure and final reply\\n 1 file changed, 253 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"aa7685\",\"wall_time_seconds\":1.001886959,\"session_id\":74742,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_45c1a3f3e5e24238992b197dcdebcade`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:74742,chars:"","max_output_tokens":2000,"yield_time_ms":1000}));
+const rs=await Promise.allSettled([
+tools.exec_command({cmd:"git rev-parse HEAD","max_output_tokens":1000}),
+tools.exec_command({cmd:"git ls-remote origin refs/heads/main","max_output_tokens":1000}),
+tools.exec_command({cmd:"git status --short","max_output_tokens":1000})
+]);rs.forEach((r,i)=>text({i,...r}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_45c1a3f3e5e24238992b197dcdebcade`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"bd46bb\",\"wall_time_seconds\":0.000014875,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   d57c043..4490de2  main -> main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"2bb298\",\"wall_time_seconds\":0.000006125,\"exit_code\":0,\"original_token_count\":11,\"output\":\"4490de285a31ddda5566e5ff035ef062feb42289\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"4ef4a0\",\"wall_time_seconds\":0.297610458,\"exit_code\":0,\"original_token_count\":15,\"output\":\"4490de285a31ddda5566e5ff035ef062feb42289\\trefs/heads/main\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"a3f945\",\"wall_time_seconds\":0.000002959,\"exit_code\":0,\"original_token_count\":25,\"output\":\" M \\\"code-diff-notes/mogi-productivity/2026-10-16-pr33-evening-repeat-\\\\355\\\\225\\\\264\\\\354\\\\204\\\\244.md\\\"\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+푸시 완료했어옹 ㅋ 종료 기록과 대화 원문까지 원격 `main`의 `4490de2`에 반영된 걸 확인했어.
+~~~
