@@ -1,5 +1,5 @@
 ---
-reviewed: false
+reviewed: true
 ---
 
 # PR #33 해설 — 오늘 생긴 반복 할 일을 저녁으로 옮기기
