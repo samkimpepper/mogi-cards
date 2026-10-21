@@ -1,9 +1,9 @@
 ---
 reviewed: false
-status: pilot
+status: awaiting-review
 planned_sessions: 3
-completed_sessions: 2
-remaining_sessions: 1
+completed_sessions: 3
+remaining_sessions: 0
 ---
 
 # 코드 학습 노트 참조 완결성 감사 파일럿
@@ -217,3 +217,16 @@ raw diff 자체, 전체 파일명 목록, frontmatter, 날짜 같은 메타데�
   구역에만 최소 반영함.
 - 다음 회차에서 한 가지만 바꿀 것: 감사 finding을 반영하기 전에 사용자 사건층과 구현
   근거층을 먼저 표시하고, 고유명사 보강은 구현 근거층 안에서만 수행한다.
+
+<!-- pilot-run:82812bacaf299d539ebf8371209c077dde27c9738268a9e84e9eaf8189b8718b:completed -->
+### 2026-10-21T05:43:18+00:00 · f9c086780fe86d28
+
+- 결과: completed
+- 근거: code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md
+- 기록: 세션 3 — 2026-10-21 · todo-ops PR #8 문서 순회·공통 판정 코드 학습 노트.
+  감사 초안: code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md.
+  판독: base 29142a97ebc573623858252e2458bebbe38bdb86 / HEAD 73f2b002aa5e47e746a3c9354c0037719d3d8d93, scripts/hooks/playbook-hint.sh 및 scripts/test-playbook-hint.sh. 별도 새 문맥 읽기 전용 감사자 /root/note_reference_audit가 해당 SHA의 git show로 판독한 완료 보고를 받음.
+  보고: 확인됨 1건. §5 요약의 원문 ‘문서 순회: 제목을 만나면 현재 레시피를 바꾸고, 목표 표현 구간에서만 그 레시피의 검색 단어를 늘린다.’가 호출 예 표식을 생략했다. 과외냥이가 hook:107–113 및 test:75–79와 재대조해 유효함을 확인하고 요약을 목표 표현·호출 예로 보강함.
+  과잉 지적·오판: 없음. 최종 사용자 사건과 두 흐름은 유지했고 감사자의 문체 전면 재작성은 하지 않음.
+  모기가 표현한 도움·마찰: 새 노트와 이번 감사의 사용감은 아직 미관찰.
+  다음 회차에서 바꿀 것: 3회가 끝났으므로 다음 세션부터 자동 감사를 멈추고, 유지·수정·폐기는 모기와 검토할 때 정한다.
