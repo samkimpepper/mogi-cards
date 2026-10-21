@@ -1,0 +1,18 @@
+ 31  run_hook() {
+ 32    local book="$1" prompt="$2"
+ 33    python3 -c 'import json,sys; print(json.dumps({"hook_event_name":"UserPromptSubmit","prompt":sys.argv[1]}))' "$prompt" 2>/dev/null \
+ 34      | env -u ORCA_TASK_ID -u ORCA_DISPATCH_ID MOGUI_PLAYBOOKS_PATH="$book" MOGUI_HOOK_FIRE_LOG="$LOG" bash "${HOOK_UNDER_TEST:-$HOOK}" 2>&1
+ 35  }
+ 36  # The hit judgement: sets OUT to the hook's output and succeeds when it names the heading.
+ 37  judges_hit() {
+ 38    local book="$1" prompt="$2" heading="$3"
+ 39    OUT=$(run_hook "$book" "$prompt")
+ 40    printf '%s\n' "$OUT" | grep -Fq "[playbook] 관련 레시피: $heading (mogi-productivity/todo/PLAYBOOKS.md:"
+ 41  }
+ 42  expect_hit() {
+ 43    local book="$1" prompt="$2" heading="$3"
+ 44    if judges_hit "$book" "$prompt" "$heading"; then
+ 45      ok "'$prompt' -> $heading"
+ 46    else
+ 47      fail "'$prompt' expected $heading, got: ${OUT:-<nothing>}"
+ 48    fi

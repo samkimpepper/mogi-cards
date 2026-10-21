@@ -1,0 +1,13 @@
+266  # Failability: the hit judgement expect_hit uses passes on the real hook and fails on a mutant that never prints.
+267  sed 's/^  \*) VERDICT="warn"; printf/  *) VERDICT="warn"; : printf/' "$HOOK" > "$T/mut.sh"
+268  if cmp -s "$HOOK" "$T/mut.sh"; then
+269    fail "failability: mutant not generated"
+270  elif ! judges_hit "$FX" "도수치료 12시로 옮겨줘" "회사에서 도수치료 방문"; then
+271    fail "failability: real hook does not pass the hit judgement, got: ${OUT:-<nothing>}"
+272  elif HOOK_UNDER_TEST="$T/mut.sh" judges_hit "$FX" "도수치료 12시로 옮겨줘" "회사에서 도수치료 방문"; then
+273    fail "failability: silenced mutant still passes the hit judgement: $OUT"
+274  else
+275    ok "failability: hit judgement passes on the hook, fails on the silenced mutant"
+276  fi
+277  
+278  [ "$F" -eq 0 ] && echo "test-playbook-hint: OK" || { echo "test-playbook-hint: FAILED"; exit 1; }

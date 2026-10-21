@@ -1,0 +1,116 @@
+{
+  "sha": "73f2b002aa5e47e746a3c9354c0037719d3d8d93",
+  "parser": [
+    {
+      "document_line": 21,
+      "in_goal": false,
+      "cur_index": 1,
+      "recipes": [
+        {
+          "head": "NEXT-only 위젯",
+          "line": 15,
+          "kw": [
+            "NEXT",
+            "위젯"
+          ]
+        },
+        {
+          "head": "실비청구",
+          "line": 21,
+          "kw": [
+            "실비청구"
+          ]
+        }
+      ],
+      "cur_is_list_entry": true
+    },
+    {
+      "document_line": 23,
+      "in_goal": true,
+      "cur_index": 1,
+      "recipes": [
+        {
+          "head": "NEXT-only 위젯",
+          "line": 15,
+          "kw": [
+            "NEXT",
+            "위젯"
+          ]
+        },
+        {
+          "head": "실비청구",
+          "line": 21,
+          "kw": [
+            "실비청구"
+          ]
+        }
+      ],
+      "cur_is_list_entry": true
+    },
+    {
+      "document_line": 25,
+      "in_goal": true,
+      "cur_index": 1,
+      "recipes": [
+        {
+          "head": "NEXT-only 위젯",
+          "line": 15,
+          "kw": [
+            "NEXT",
+            "위젯"
+          ]
+        },
+        {
+          "head": "실비청구",
+          "line": 21,
+          "kw": [
+            "실비",
+            "실비청구",
+            "청구"
+          ]
+        }
+      ],
+      "cur_is_list_entry": true
+    },
+    {
+      "document_line": 27,
+      "in_goal": false,
+      "cur_index": 2,
+      "recipes": [
+        {
+          "head": "NEXT-only 위젯",
+          "line": 15,
+          "kw": [
+            "NEXT",
+            "위젯"
+          ]
+        },
+        {
+          "head": "실비청구",
+          "line": 21,
+          "kw": [
+            "실비",
+            "실비청구",
+            "청구"
+          ]
+        },
+        {
+          "head": "회사에서 도수치료 방문",
+          "line": 27,
+          "kw": [
+            "도수치료"
+          ]
+        }
+      ],
+      "cur_is_list_entry": true
+    }
+  ],
+  "judgement": {
+    "normal_grep_exit": 0,
+    "mutant_grep_exit": 1,
+    "normal_OUT": "[playbook] 관련 레시피: 회사에서 도수치료 방문 (mogi-productivity/todo/PLAYBOOKS.md:27) — 행동 전에 이 절을 읽는다\n[playbook] 관련 레시피: 도수치료 서류 요청 (mogi-productivity/todo/PLAYBOOKS.md:47) — 행동 전에 이 절을 읽는다",
+    "mutant_OUT": "",
+    "comparison_passes": true
+  },
+  "scope": "Selected original parser statements/functions executed locally; not the whole app or full test suite."
+}

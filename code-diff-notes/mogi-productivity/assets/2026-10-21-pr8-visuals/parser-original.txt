@@ -1,0 +1,17 @@
+ 97  recipes, cur, in_goal = [], None, False
+ 98  for n, line in enumerate(lines, 1):
+ 99      if line.startswith("## "):
+100          head = line[3:].strip()
+101          cur = None if head in GENERAL else {"head": head, "line": n, "kw": set(words(head)) - GENERIC}
+102          if cur: recipes.append(cur)
+103          in_goal = False
+104          continue
+105      if cur is None:
+106          continue
+107      if line.startswith(("목표 표현", "호출 예")):
+108          in_goal = True
+109      elif in_goal and not line.strip():
+110          in_goal = False
+111      if in_goal:
+112          for phrase in re.findall(r"`([^`]+)`", line):
+113              cur["kw"].update(set(words(phrase)) - GENERIC)

@@ -1,0 +1,13 @@
+digraph refs {
+graph [layout=neato, bgcolor="transparent", pad="0.05", dpi=144, splines=line];
+node [shape=box, style="rounded,filled", fontname="Apple SD Gothic Neo", fontsize=23, penwidth=1.7, margin="0.15,0.12"];
+edge [penwidth=2.5, arrowsize=0.9];
+anchor1 [pos="0,0!", label="", shape=point, width=0, style=invis];
+anchor2 [pos="760,320!", label="", shape=point, width=0, style=invis];
+cur [pos="105,255!", label="cur", width=2.3, fillcolor="#eaf1ff", color="#2864ed", fontcolor="#2864ed"];
+list1 [pos="105,175!", label="recipes[1]", width=2.3, fillcolor="#eafff6", color="#008f97", fontcolor="#008f97"];
+r1 [pos="515,205!", label="R1 · 실비청구\nline = 21\nkw = {실비청구}", width=4.5, fillcolor="#ecfcf5", color="#008f97", fontcolor="#008f97"];
+flag [pos="105,25!", label="in_goal = True", width=2.3, fillcolor="#f1f4f9", color="#bac9dc", fontsize=21];
+list1:e -> r1:w [color="#008f97"];
+cur:e -> r1:w [color="#2864ed"];
+}
