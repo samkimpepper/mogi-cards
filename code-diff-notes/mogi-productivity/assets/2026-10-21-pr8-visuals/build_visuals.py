@@ -158,13 +158,13 @@ def reference_graph(s, name):
              'anchor2 [pos="760,320!", label="", shape=point, width=0, style=invis];',
              f'cur [pos="105,255!", label="cur", width=2.3, fillcolor="#eaf1ff", color="{BLUE}", fontcolor="{BLUE}"];',
              f'list1 [pos="105,175!", label="recipes[1]", width=2.3, fillcolor="#eafff6", color="{TEAL}", fontcolor="{TEAL}"];',
-             f'r1 [pos="515,205!", label={object_label("R1", "실비청구 레시피 객체", "line = 21", "kw = {"+kw+"}")}, width=4.5, fillcolor="#ecfcf5", color="{TEAL}", fontcolor="{TEAL}"];',
+             f'r1 [pos="515,205!", label={object_label("R1", "문서의 실비청구 절을 담은 객체", "line = 21 (문서 제목 위치)", "kw = {"+kw+"}")}, width=4.5, fillcolor="#ecfcf5", color="{TEAL}", fontcolor="{TEAL}"];',
              f'flag [pos="105,25!", label="in_goal = {s["in_goal"]}", width=2.3, fillcolor="#f1f4f9", color="#bac9dc", fontsize=21];',
              f'list1:e -> r1:w [color="{TEAL}"];']
     if last:
         lines += [
             f'list2 [pos="105,95!", label="recipes[2]", width=2.3, fillcolor="#eafff6", color="{TEAL}", fontcolor="{TEAL}"];',
-            f'r2 [pos="515,65!", label={object_label("R2", "회사에서 도수치료 방문 레시피 객체", "line = 27 · kw = {도수치료}")}, width=4.5, fillcolor="#edf3ff", color="{BLUE}", fontcolor="{BLUE}"];',
+            f'r2 [pos="515,65!", label={object_label("R2", "문서의 도수치료 방문 절을 담은 객체", "line = 27 · kw = {도수치료}")}, width=4.5, fillcolor="#edf3ff", color="{BLUE}", fontcolor="{BLUE}"];',
             f'cur:e -> r2:w [color="{BLUE}"];', f'list2:e -> r2:w [color="{TEAL}"];']
     else:
         lines += [f'cur:e -> r1:w [color="{BLUE}"];']
@@ -184,19 +184,22 @@ def pastefit(im, obj, rect):
     im.paste(obj, (rect[0]+(rect[2]-rect[0]-obj.width)//2, rect[1]+(rect[3]-rect[1]-obj.height)//2), obj if obj.mode == "RGBA" else None)
 
 
-im = Image.new("RGB", (1800, 1140), "#fbfcfe")
+im = Image.new("RGB", (1800, 1260), "#fbfcfe")
 put(im, (35, 24), "메시지를 받은 훅이, 검색 전에 레시피를 모으는 네 시점", 40)
-put(im, (35, 79), "같은 훅 실행 중 시험용 문서의 21 → 23 → 25 → 27행을 읽은 직후 · 원본 파서 구간 실행 관찰", 27, MUTED)
-titles = ["01 · 실비청구 제목", "02 · 목표 표현 시작", "03 · 검색 단어 추가", "04 · 다음 제목"]
+put(im, (35, 79), "원본 파서 구간 실행 관찰 · 시험용 PLAYBOOKS.md를 읽는 중", 27, MUTED)
+box(im, (30, 123, 1770, 236), "#f1f5fb")
+put(im, (52, 137), "받아둔 입력 prompt = 도수치료 12시로 옮겨줘  (네 컷 동안 같은 값)", 29)
+put(im, (52, 184), "아래 실비청구·도수치료 방문은 문서 제목 · kw는 문서에서 모은 검색 단어 · 아직 prompt와 대조 전", 25, MUTED)
+titles = ["01 · 문서의 실비청구 제목을 읽음", "02 · 문서의 목표 표현 구간에 들어감", "03 · 문서 예문에서 검색 단어를 더함", "04 · 문서의 다음 레시피 제목을 읽음"]
 changes = ["같은 R1을 cur와 recipes[1]에 연결", "in_goal만 False → True", "R1.kw 변경 · 두 참조는 그대로", "cur → R2 · recipes[1] → R1 유지"]
 for i, (s, graph) in enumerate(zip(snapshots, graphs)):
-    x, y = 30+(i%2)*890, 137+(i//2)*460
+    x, y = 30+(i%2)*890, 257+(i//2)*460
     box(im, (x, y, x+860, y+442))
     put(im, (x+22, y+16), titles[i], 32)
     put(im, (x+22, y+59), f'문서 {s["document_line"]}행 직후 · {changes[i]}', 23, MUTED)
     pastefit(im, graph, (x+12, y+106, x+847, y+418))
-put(im, (35, 1070), "파랑: cur의 참조  /  청록: 목록 항목의 참조  /  R1·R2: 설명용 객체 이름", 25, MUTED)
-put(im, (35, 1103), "앞에서 모은 recipes[0](NEXT)은 모든 컷에서 유지되어 생략 · kw 집합의 표시 순서는 설명용", 24, MUTED)
+put(im, (35, 1190), "cur: 훅이 지금 읽는 문서 절의 객체  /  in_goal: 문서의 목표 표현 구간인가  /  recipes: 문서에서 모은 목록", 25, MUTED)
+put(im, (35, 1223), "파랑: cur의 참조 · 청록: 목록 항목의 참조 · recipes[0](NEXT)은 유지되어 생략 · kw 표시 순서는 설명용", 24, MUTED)
 im.save(HERE / "parser-four-states.png", optimize=True)
 
 
@@ -238,11 +241,13 @@ put(im, (30, 78), "scripts/hooks/playbook-hint.sh · 73f2b00 · 97–113행 원�
 code_panel(im, (28, 132, 1000, 1005), hook_lines, range(97, 114), (101, 102, 103, 113), 23)
 box(im, (1020, 132, 1772, 1005))
 put(im, (1045, 159), "④ 문서 27행의 새 제목을 읽은 직후", 30)
+put(im, (1045, 213), "prompt는 받아둠 · 아직 문서의 단어와 대조 전", 24, MUTED)
 pastefit(im, graphs[3], (1034, 246, 1760, 660))
 put(im, (1045, 722), "101행: 새 딕셔너리를 만들어 cur에 연결", 27)
 put(im, (1045, 775), "102행: 같은 새 객체를 recipes에 추가", 27)
 put(im, (1045, 828), "103행: in_goal을 False로 되돌림", 27)
 put(im, (1045, 900), "이전 R1의 kw는 지우지 않아.", 28, TEAL)
+put(im, (1045, 947), "R1·R2는 문서 절에서 만든 객체 이름이야.", 25, MUTED)
 put(im, (30, 1032), "R1.kw의 실비·청구는 앞선 25행에서 113행 코드로 추가한 값 · 실제 문서 27행에서는 101–104행 실행", 25, MUTED)
 im.save(HERE / "parser-code-and-state.png", optimize=True)
 
@@ -251,10 +256,11 @@ im = Image.new("RGB", (1800, 1140), "#fbfcfe")
 put(im, (30, 22), "개발자가 시험 실행: 정상 훅·사본의 호출과 반환 비교", 40)
 put(im, (30, 79), "scripts/test-playbook-hint.sh · 73f2b00 · 원본 함수 발췌 + 두 호출을 직접 실행한 결과", 27, MUTED)
 code_panel(im, (28, 135, 780, 675), test_lines, range(37, 42), (39, 40), 23)
-put(im, (45, 698), "호출 입력은 두 번 모두 같아", 29)
-put(im, (45, 750), "문서: $FX (시험용 PLAYBOOKS.md)", 27)
-put(im, (45, 795), "문장: 도수치료 12시로 옮겨줘", 27)
-put(im, (45, 840), "기대 제목: 회사에서 도수치료 방문", 27)
+put(im, (45, 698), "세 값 모두 시험 코드가 전달 · 두 호출에 동일", 27)
+put(im, (45, 750), "book: 시험용 문서 파일의 경로 $FX", 27)
+put(im, (45, 795), "prompt: 도수치료 12시로 옮겨줘", 27)
+put(im, (45, 840), "heading: 기대 문서 제목 (위 입력에서 추출 아님)", 25)
+put(im, (45, 878), "회사에서 도수치료 방문", 27)
 put(im, (45, 920), "정상: 271행 · 기본 $HOOK 사용", 25, TEAL)
 put(im, (45, 963), "사본: 273행 · HOOK_UNDER_TEST 교체", 25, BLUE)
 xs = [865, 1190, 1515]
@@ -277,7 +283,7 @@ for y, color, bg, label_, out, rc in (
     put(im, (b+10, y+174), "OUT ← "+out, 21, color)
     arrow(im, (b, y+280), (a, y+280), color, dashed=True)
     put(im, (a+10, y+241), f"grep 종료 코드 {rc}", 23, color)
-put(im, (821, 979), "실선: 호출 →  /  점선: 출력·종료 코드가 돌아옴", 23, MUTED)
+put(im, (821, 979), "OUT은 훅의 출력 글 · 0/1은 grep 판정 · 훅 자체는 둘 다 0 종료", 22, MUTED)
 box(im, (30, 1035, 1770, 1112), "#fff8e8", "#e8b84c")
 put(im, (58, 1056), "비교 시험 통과 = 사본 생성 확인 + 정상 판정 0 + 사본 판정 1   (268–276행)", 31, "#78561a")
 im.save(HERE / "test-code-and-comparison.png", optimize=True)
