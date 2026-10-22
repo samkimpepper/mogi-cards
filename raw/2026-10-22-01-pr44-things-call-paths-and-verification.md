@@ -1739,3 +1739,610 @@ Codex turn key: `daced626fec4b367`
 ~~~text
 그리고 마지막으로 세번째설명만 보고 마무리하자옹
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_68036f3a314544d4bfce224a8f43deec`
+
+입력:
+
+~~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"git -C ../workspaces/mogi-productivity/things-someday rev-parse HEAD; rg -n 'someday|Someday|mutat|broken|false|mismatch|unavailable|THINGS_TEST' ../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js ../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js; nl -ba ../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js | sed -n '1,230p'; git -C ../workspaces/mogi-productivity/things-someday diff dd27ece3dc22aef3dd2b52c0d92e1258701778cf 5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7 -- integrations/things/test/notes.test.js","max_output_tokens":7000}),
+tools.exec_command({cmd:"python3 scripts/pilots.py due --event session-end; cat harness/pilots/2026-10-20-explanation-depth-and-jargon.md; cat SCRATCHPAD.md; rg -n '^##|^### 모기|^~~~text' raw/2026-10-22-01-session.md | tail -45; git status --short","max_output_tokens":6500})
+]);r.forEach((x,i)=>text({i,...x}));
+~~~~
+
+#### 출력 01
+
+Call ID: `call_68036f3a314544d4bfce224a8f43deec`
+
+출력:
+
+~~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"dc86ba\",\"wall_time_seconds\":0.000004875,\"exit_code\":0,\"original_token_count\":5712,\"output\":\"5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:14:  const somedayRead = 'id of to dos of list id \\\"TMSomedayListSource\\\"';\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:15:  assert.ok(source.includes(somedayRead));\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:20:  // [parent, Area, Someday list IDs or undefined when membership is not requested]\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:21:  const cases = [[false, true], [true, true], [false, false],\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:22:    [false, true, '{\\\"other-id\\\", \\\"todo-id\\\"}'], [true, false, '{\\\"other-id\\\", \\\"TODO-ID\\\"}'], [false, true, \\\"{}\\\"]];\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:23:  const build = (hasParent, hasArea, somedayIds) => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:26:      .replace(somedayRead, somedayIds ?? \\\"missing value\\\") + source.slice(end + '\\\\tend tell\\\\n'.length);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:29:  for (const [hasParent, hasArea, somedayIds] of cases) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:30:    const stdout = await run(build(hasParent, hasArea, somedayIds), [\\\"todo-id\\\", \\\"notes\\\", ...(somedayIds ? [\\\"someday\\\"] : [])]);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:32:      ...(somedayIds ? { someday: somedayIds.includes('\\\"todo-id\\\"') } : {}) });\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:34:  for (const argv of [[\\\"todo-id\\\", \\\"notes\\\", \\\"anytime\\\"], [\\\"todo-id\\\", \\\"notes\\\", \\\"someday\\\", \\\"extra\\\"]]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/readback-native.test.js:35:    await assert.rejects(run(build(false, true, \\\"{}\\\"), argv), /Invalid readback request/);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:12:const values = (notes, scheduled = \\\"2026-10-16\\\", projectId = \\\"project-id\\\", someday) => JSON.stringify({ id: \\\"todo-id\\\", areaId: \\\"life-id\\\", projectId, status: \\\"open\\\", scheduled,\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:13:  ...(notes === undefined ? {} : { notes }), ...(someday === undefined ? {} : { someday }) });\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:18:  for (const [argv, hasNotes, value] of [[[], false], [[\\\"--notes\\\", \\\" new \\\"], true, \\\"new\\\"], [[\\\"--notes\\\", \\\"\\\"], true, \\\"\\\"]]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:29:for (const timed of [false, true]) for (const reuse of [false, true]) for (const [notes, effect] of variants) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:59:    assert.equal(JSON.stringify(calls).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:60:    assert.equal(JSON.stringify(result).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:77:    assert.equal(JSON.stringify(result).includes(\\\"auth-token\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:82:  for (const when of [\\\"today\\\", \\\"anytime\\\", \\\"someday\\\", \\\"2026-10-16\\\", base.when]) for (const [notes, effect] of variants) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:84:    const result = await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when, ...notes }, platform: \\\"darwin\\\", apply: false,\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:96:test(\\\"Today, Anytime and Someday use preserving AppleScript schedule/move modes, never a reuse URL\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:97:  for (const when of [\\\"today\\\", \\\"anytime\\\", \\\"someday\\\"]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:105:          return { stdout: values(privateNotes, when === \\\"today\\\" ? today : null, \\\"project-id\\\", when === \\\"someday\\\" ? true : undefined) };\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:118:test(\\\"Someday creates a new undated to-do through the Someday move and verifies no saved date\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:122:    const result = await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems }, platform: \\\"darwin\\\",\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:130:    assert.equal(write[4], \\\"someday\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:132:    assert.equal(write[8] === \\\"\\\" ? null : new URL(write[8]).searchParams.get(\\\"when\\\"), checklistItems.length ? \\\"someday\\\" : null);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:136:  const mismatch = await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems: [] }, platform: \\\"darwin\\\",\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:142:  assert.equal(mismatch.dateVerification, \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:145:// The Someday move can fail and leave the to-do in Anytime, which also has no saved date.\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:146:for (const reuse of [false, true]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:147:  const someday = (membership, readArgs = []) => upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems: [] }, platform: \\\"darwin\\\",\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:152:        if (membership === \\\"throw\\\" && args.includes(\\\"someday\\\")) throw new Error(\\\"SECRET Someday list read failed\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:153:        return { stdout: values(reuse ? privateNotes : \\\"\\\", null, reuse ? \\\"project-id\\\" : null, args.includes(\\\"someday\\\") ? membership : undefined) };\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:158:  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"} reads list membership and verifies only a to-do in Someday`, async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:160:    const result = await someday(true, readArgs);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:164:    assert.deepEqual(readArgs.map((args) => args.slice(1)), [...(reuse ? [[\\\"todo-id\\\", \\\"notes\\\"]] : []), [\\\"todo-id\\\", \\\"notes\\\", \\\"someday\\\"]]);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:167:  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"}: a move left outside Someday reports mismatch, not verified`, async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:168:    const result = await someday(false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:169:    assert.equal(result.savedValues, \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:170:    assert.equal(result.dateVerification, \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:174:  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"}: unreadable membership reports unavailable, never verified`, async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:176:      const result = await someday(membership);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:177:      assert.equal(result.savedValues, \\\"unavailable\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:178:      assert.equal(result.dateVerification, \\\"unavailable\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:184:test(\\\"Other schedules never ask the readback for Someday membership\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:213:  assert.equal(Object.hasOwn(payload, \\\"notes\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:217:test(\\\"bounded readback handles delayed success, mismatch, timeout and private diagnostics with no mutation/retry\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:218:  for (const scenario of [\\\"success\\\", \\\"delayed\\\", \\\"mismatch\\\", \\\"timeout\\\", \\\"invalid\\\", \\\"parent-changed\\\"]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:225:      return { stdout: values(scenario === \\\"mismatch\\\" || (scenario === \\\"delayed\\\" && reads < 3) ? \\\"SECRET private saved Notes\\\" : \\\"requested\\\", \\\"2026-10-16\\\", scenario === \\\"parent-changed\\\" ? \\\"other-project\\\" : \\\"project-id\\\") };\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:227:    assert.equal(result.savedValues, [\\\"success\\\", \\\"delayed\\\"].includes(scenario) ? \\\"verified\\\" : scenario === \\\"mismatch\\\" ? \\\"mismatch\\\" : \\\"unavailable\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:229:    assert.equal(JSON.stringify(result).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:233:test(\\\"timed add dispatch success with readback mismatch remains requested/unverified and is never sent twice\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:240:  assert.equal(result.savedValues, \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:243:  assert.equal(JSON.stringify(result).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:270:  assert.equal(result.notesVerification, \\\"unavailable\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:275:for (const timed of [false, true]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:303:  test(`${timed ? \\\"timed\\\" : \\\"date-only\\\"} omitted Notes post-write mismatch/unavailability never rewrites Notes or retries`, async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:319:          assert.equal(args.join(\\\" \\\").includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:323:          assert.equal(Object.hasOwn(payload, \\\"notes\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:324:          assert.equal(JSON.stringify(payload).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:330:      assert.equal(result.notesVerification, scenario === \\\"timeout\\\" ? \\\"unavailable\\\" : \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:331:      assert.equal(result.savedValues, scenario === \\\"timeout\\\" ? \\\"unavailable\\\" : \\\"mismatch\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:333:      assert.equal(JSON.stringify(result).includes(\\\"SECRET\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:338:test(\\\"new omitted Notes checks ordinary empty content and distinguishes mismatch/unavailable from verified\\\", async () => {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:339:  for (const timed of [false, true]) for (const scenario of [\\\"empty\\\", \\\"nonempty\\\", \\\"unavailable\\\"]) {\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:348:          if (scenario === \\\"unavailable\\\") throw new Error(\\\"SECRET diagnostics\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:356:        assert.equal(Object.hasOwn(payload, \\\"notes\\\"), false);\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:361:    assert.equal(result.notesVerification, scenario === \\\"empty\\\" ? \\\"verified\\\" : scenario === \\\"nonempty\\\" ? \\\"mismatch\\\" : \\\"unavailable\\\");\\n../workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:363:    assert.equal(JSON.stringify(result).includes(\\\"SECRET\\\"), false);\\n     1\\timport assert from \\\"node:assert/strict\\\";\\n     2\\timport test from \\\"node:test\\\";\\n     3\\timport { readFile } from \\\"node:fs/promises\\\";\\n     4\\timport { execFile } from \\\"node:child_process\\\";\\n     5\\t\\n     6\\ttest(\\\"native readback serializes Foundation nulls and saved values without opening Things\\\", { skip: process.platform !== \\\"darwin\\\" }, async () => {\\n     7\\t  const source = await readFile(new URL(\\\"../scripts/read-todo-values.applescript\\\", import.meta.url), \\\"utf8\\\");\\n     8\\t  // Keep production Foundation setup and serialization; replace only app reads\\n     9\\t  // with fixtures. This exercises AppleScript runtime terms, not a JS mock.\\n    10\\t  const start = source.indexOf('\\\\ttell application \\\"Things3\\\"\\\\n\\\\t\\\\tset candidate');\\n    11\\t  const setters = source.indexOf('\\\\t\\\\tresponseBody\\\\'s setObject:requestedId', start);\\n    12\\t  const end = source.indexOf('\\\\tend tell\\\\n\\\\tset jsonData', setters);\\n    13\\t  assert.ok(start >= 0 && setters > start && end > setters);\\n    14\\t  const somedayRead = 'id of to dos of list id \\\"TMSomedayListSource\\\"';\\n    15\\t  assert.ok(source.includes(somedayRead));\\n    16\\t  const run = (script, argv) => new Promise((resolve, reject) => {\\n    17\\t    const child = execFile(\\\"osascript\\\", [\\\"-\\\", ...argv], { timeout: 5000 }, (error, stdout) => error ? reject(error) : resolve(stdout));\\n    18\\t    child.stdin.end(script);\\n    19\\t  });\\n    20\\t  // [parent, Area, Someday list IDs or undefined when membership is not requested]\\n    21\\t  const cases = [[false, true], [true, true], [false, false],\\n    22\\t    [false, true, '{\\\"other-id\\\", \\\"todo-id\\\"}'], [true, false, '{\\\"other-id\\\", \\\"TODO-ID\\\"}'], [false, true, \\\"{}\\\"]];\\n    23\\t  const build = (hasParent, hasArea, somedayIds) => {\\n    24\\t    const fixture = `\\\\tset areaId to ${hasArea ? '\\\"life-id\\\"' : \\\"nullValue\\\"}\\\\n\\\\tset parentId to ${hasParent ? '\\\"project-id\\\"' : \\\"nullValue\\\"}\\\\n\\\\tset savedDate to ${hasParent ? '\\\"2026-10-16\\\"' : \\\"nullValue\\\"}\\\\n`;\\n    25\\t    const script = source.slice(0, start) + fixture + source.slice(setters, end).replace(\\\"(notes of candidate as text)\\\", '\\\"  fixture Notes  \\\"')\\n    26\\t      .replace(somedayRead, somedayIds ?? \\\"missing value\\\") + source.slice(end + '\\\\tend tell\\\\n'.length);\\n    27\\t    return script;\\n    28\\t  };\\n    29\\t  for (const [hasParent, hasArea, somedayIds] of cases) {\\n    30\\t    const stdout = await run(build(hasParent, hasArea, somedayIds), [\\\"todo-id\\\", \\\"notes\\\", ...(somedayIds ? [\\\"someday\\\"] : [])]);\\n    31\\t    assert.deepEqual(JSON.parse(stdout), { id: \\\"todo-id\\\", areaId: hasArea ? \\\"life-id\\\" : null, projectId: hasParent ? \\\"project-id\\\" : null, scheduled: hasParent ? \\\"2026-10-16\\\" : null, status: \\\"open\\\", notes: \\\"  fixture Notes  \\\",\\n    32\\t      ...(somedayIds ? { someday: somedayIds.includes('\\\"todo-id\\\"') } : {}) });\\n    33\\t  }\\n    34\\t  for (const argv of [[\\\"todo-id\\\", \\\"notes\\\", \\\"anytime\\\"], [\\\"todo-id\\\", \\\"notes\\\", \\\"someday\\\", \\\"extra\\\"]]) {\\n    35\\t    await assert.rejects(run(build(false, true, \\\"{}\\\"), argv), /Invalid readback request/);\\n    36\\t  }\\n    37\\t});\\ndiff --git a/integrations/things/test/notes.test.js b/integrations/things/test/notes.test.js\\nindex fec1078..5b045f2 100644\\n--- a/integrations/things/test/notes.test.js\\n+++ b/integrations/things/test/notes.test.js\\n@@ -9,7 +9,8 @@ process.env.TZ = \\\"Asia/Seoul\\\";\\n const row = \\\"todo-id\\\\tlife-id\\\\tproject-id\\\\t123\\\\topen\\\\n\\\";\\n const when = \\\"2026-10-16@11:30\\\";\\n const base = { areaId: \\\"life-id\\\", title: \\\"fixture\\\", when, checklistItems: [\\\"new step\\\"] };\\n-const values = (notes, scheduled = \\\"2026-10-16\\\", projectId = \\\"project-id\\\") => JSON.stringify({ id: \\\"todo-id\\\", areaId: \\\"life-id\\\", projectId, status: \\\"open\\\", scheduled, ...(notes === undefined ? {} : { notes }) });\\n+const values = (notes, scheduled = \\\"2026-10-16\\\", projectId = \\\"project-id\\\", someday) => JSON.stringify({ id: \\\"todo-id\\\", areaId: \\\"life-id\\\", projectId, status: \\\"open\\\", scheduled,\\n+  ...(notes === undefined ? {} : { notes }), ...(someday === undefined ? {} : { someday }) });\\n const privateNotes = \\\"  SECRET original Notes\\\\n\\\\twith whitespace 😀  \\\";\\n const variants = [ [{}, \\\"preserve\\\"], [{ notes: \\\" replacement \\\" }, \\\"replace\\\"], [{ notes: \\\"\\\" }, \\\"clear\\\"] ];\\n \\n@@ -101,7 +102,7 @@ test(\\\"Today, Anytime and Someday use preserving AppleScript schedule/move modes,\\n         if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) {\\n           const date = new Date();\\n           const today = [date.getFullYear(), String(date.getMonth() + 1).padStart(2, \\\"0\\\"), String(date.getDate()).padStart(2, \\\"0\\\")].join(\\\"-\\\");\\n-          return { stdout: values(privateNotes, when === \\\"today\\\" ? today : null) };\\n+          return { stdout: values(privateNotes, when === \\\"today\\\" ? today : null, \\\"project-id\\\", when === \\\"someday\\\" ? true : undefined) };\\n         }\\n         write = args;\\n         return { stdout: \\\"updated\\\\ttodo-id\\\\n\\\" };\\n@@ -121,7 +122,7 @@ test(\\\"Someday creates a new undated to-do through the Someday move and verifies\\n     const result = await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems }, platform: \\\"darwin\\\",\\n       execImpl: async (_, args) => {\\n         if (args[0].endsWith(\\\"read-reminder-target.applescript\\\")) return { stdout: reads++ ? row.replace(\\\"project-id\\\", \\\"\\\") : \\\"none\\\\n\\\" };\\n-        if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) return { stdout: values(\\\"\\\", null, null) };\\n+        if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) return { stdout: values(\\\"\\\", null, null, true) };\\n         write = args;\\n         return { stdout: \\\"created\\\\ttodo-id\\\\n\\\" };\\n       }, nativeImpl: () => assert.fail(\\\"reminder\\\") });\\n@@ -135,12 +136,64 @@ test(\\\"Someday creates a new undated to-do through the Someday move and verifies\\n   const mismatch = await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems: [] }, platform: \\\"darwin\\\",\\n     execImpl: async (_, args) => {\\n       if (args[0].endsWith(\\\"read-reminder-target.applescript\\\")) return { stdout: row };\\n-      if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) return { stdout: values(privateNotes, \\\"2026-10-22\\\") };\\n+      if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) return { stdout: values(privateNotes, \\\"2026-10-22\\\", \\\"project-id\\\", true) };\\n       return { stdout: \\\"updated\\\\ttodo-id\\\\n\\\" };\\n     }, waitImpl: async () => {} });\\n   assert.equal(mismatch.dateVerification, \\\"mismatch\\\");\\n });\\n \\n+// The Someday move can fail and leave the to-do in Anytime, which also has no saved date.\\n+for (const reuse of [false, true]) {\\n+  const someday = (membership, readArgs = []) => upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when: \\\"someday\\\", checklistItems: [] }, platform: \\\"darwin\\\",\\n+    execImpl: async (_, args) => {\\n+      if (args[0].endsWith(\\\"read-reminder-target.applescript\\\")) return { stdout: reuse ? row : readArgs.length ? row.replace(\\\"project-id\\\", \\\"\\\") : \\\"none\\\\n\\\" };\\n+      if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) {\\n+        readArgs.push(args);\\n+        if (membership === \\\"throw\\\" && args.includes(\\\"someday\\\")) throw new Error(\\\"SECRET Someday list read failed\\\");\\n+        return { stdout: values(reuse ? privateNotes : \\\"\\\", null, reuse ? \\\"project-id\\\" : null, args.includes(\\\"someday\\\") ? membership : undefined) };\\n+      }\\n+      return { stdout: `${reuse ? \\\"updated\\\" : \\\"created\\\"}\\\\ttodo-id\\\\n` };\\n+    }, waitImpl: async () => {} });\\n+\\n+  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"} reads list membership and verifies only a to-do in Someday`, async () => {\\n+    const readArgs = [];\\n+    const result = await someday(true, readArgs);\\n+    assert.equal(result.savedValues, \\\"verified\\\");\\n+    assert.equal(result.dateVerification, \\\"verified\\\");\\n+    // Only the post-write readback asks for membership; the Notes baseline read does not.\\n+    assert.deepEqual(readArgs.map((args) => args.slice(1)), [...(reuse ? [[\\\"todo-id\\\", \\\"notes\\\"]] : []), [\\\"todo-id\\\", \\\"notes\\\", \\\"someday\\\"]]);\\n+  });\\n+\\n+  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"}: a move left outside Someday reports mismatch, not verified`, async () => {\\n+    const result = await someday(false);\\n+    assert.equal(result.savedValues, \\\"mismatch\\\");\\n+    assert.equal(result.dateVerification, \\\"mismatch\\\");\\n+    assert.equal(result.notesVerification, \\\"verified\\\");\\n+  });\\n+\\n+  test(`Someday ${reuse ? \\\"reuse\\\" : \\\"create\\\"}: unreadable membership reports unavailable, never verified`, async () => {\\n+    for (const membership of [\\\"throw\\\", undefined, null, \\\"true\\\"]) {\\n+      const result = await someday(membership);\\n+      assert.equal(result.savedValues, \\\"unavailable\\\");\\n+      assert.equal(result.dateVerification, \\\"unavailable\\\");\\n+      assert.doesNotMatch(JSON.stringify(result), /SECRET/);\\n+    }\\n+  });\\n+}\\n+\\n+test(\\\"Other schedules never ask the readback for Someday membership\\\", async () => {\\n+  for (const when of [\\\"today\\\", \\\"anytime\\\", \\\"2026-10-16\\\"]) {\\n+    const readArgs = [];\\n+    await upsertTodo({ scriptPath: \\\"/scripts/upsert-todo.applescript\\\", todo: { ...base, when, checklistItems: [] }, platform: \\\"darwin\\\",\\n+      execImpl: async (_, args) => {\\n+        if (args[0].endsWith(\\\"read-reminder-target.applescript\\\")) return { stdout: row };\\n+        if (args[0].endsWith(\\\"read-todo-values.applescript\\\")) { readArgs.push(args.slice(1)); return { stdout: values(privateNotes, null) }; }\\n+        return { stdout: \\\"updated\\\\ttodo-id\\\\n\\\" };\\n+      }, waitImpl: async () => {} });\\n+    assert.ok(readArgs.length > 0 && readArgs.every((args) => args.length === 2), when);\\n+  }\\n+});\\n+\\n test(\\\"date add fails closed before write for platform, disallowed/closed/ambiguous targets\\\", async () => {\\n   for (const output of [row + row, row.replace(\\\"open\\\", \\\"completed\\\"), row.replace(\\\"life-id\\\", \\\"work-id\\\")]) {\\n     let calls = 0;\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"64e416\",\"wall_time_seconds\":0.000004875,\"exit_code\":0,\"original_token_count\":3096,\"output\":\"{\\n  \\\"due\\\": [],\\n  \\\"attention\\\": [\\n    {\\n      \\\"id\\\": \\\"raw-diff-contact\\\",\\n      \\\"path\\\": \\\"harness/pilots/2026-08-16-raw-diff-contact.md\\\",\\n      \\\"issues\\\": [\\n        \\\"명시적 카운터 없음: 과거 기록을 추측해 집계하지 않음\\\"\\n      ],\\n      \\\"status\\\": \\\"pilot\\\",\\n      \\\"event\\\": \\\"diff\\\",\\n      \\\"requires_request\\\": false,\\n      \\\"unit\\\": null,\\n      \\\"completed\\\": null,\\n      \\\"planned\\\": null,\\n      \\\"count_key\\\": null,\\n      \\\"available\\\": false\\n    }\\n  ]\\n}\\n---\\nreviewed: false\\nstatus: pilot\\nplanned_cases: 3\\ncompleted_cases: 1\\n---\\n\\n# 필요한 설명 깊이 선택 — jargon·diff·배경 공부를 자동으로 늘리지 않기\\n\\n모기가 PR을 읽으며 ‘이 용어를 공부해야 하나, diff를 봐야 하나, 설명을 쉽게 고쳐야 하나’를 매번 판단해야 했다고 알렸다. 과외냥이가 필요한 첫 설명의 깊이를 먼저 골라 그 부담을 줄여보는 **다음 자연 발생 PR·리뷰 설명 3건의 한시 파일럿**이다. 모기가 더 깊게 공부하려는 선택은 그대로 따른다.\\n\\n## 적용할 때\\n\\n- 적용 전 이 문서의 `status`와 횟수를 확인한다. `status: pilot`이고 `completed_cases < planned_cases`인 동안만 적용한다.\\n- PR·코드리뷰에 관한 하나의 독립된 사용자 사건·수정 이유를 한 건으로 센다. 같은 대목의 재설명·후속 질문은 같은 건이며, 횟수를 채우려고 장면을 만들거나 쪼개지 않는다.\\n- 오늘 PR #39 설명은 계기이며 소급 적용으로 세지 않는다. 일반 질문·필기노트 작성·운영 작업에는 자동 확대하지 않는다.\\n\\n## 첫 설명 전에 과외냥이가 고를 것\\n\\n관련 원문·diff·계약은 먼저 확인한다. 그 뒤 **이번 변경을 이해하거나 선택을 판단하는 데 필요한 설명**을 고른다. 자료를 읽은 범위와 모기에게 먼저 보여줄 분량을 구분한다.\\n\\n| 필요한 것 | 첫 설명 방식 | PR #39에서의 예 |\\n|---|---|---|\\n| 용어가 가리키는 동작·대상 | 사용자 말로 풀고, 원래 이름은 검색·로그 연결에 필요할 때 가까이 한 번 붙인다 | `stale` → 지난 몫 취소, template → 반복 원본, instance → 그날 몫 |\\n| 국소적인 코드 원인 | 사용자에게 생기는 결과와 원인부터 짧게 설명한다. 초기화 위치·조건식처럼 코드가 더 직접적이면 실제 전후 몇 줄을 곁들인다 | P2: 멈춤 변수가 원본마다 초기화됨 → 바깥 반복문 앞으로 이동 |\\n| 실행 순서·여러 대상의 관계가 선택 이유를 좌우함 | 구체 값 하나로 주체·시점·대상을 표에 펼친 뒤 필요한 연결 코드만 붙인다 | P1: 앱 비교 기준을 잡는 시점과 DB 날짜 확인 순서 |\\n\\n- **실패 영향의 중요도와 원인을 설명하는 데 필요한 길이는 따로 판단한다.** 중요한 문제여도 원인이 단순하면 짧게 설명하고, 사용자에게 생기는 영향·남은 미확인은 분명히 남긴다.\\n- jargon을 만났다는 이유만으로 주변 기술·역사를 모두 공부하게 하지 않는다. 배경이 현재 사건을 설명하는 데 필요하면 먼저 그 연결을 밝히고 필요한 부분만 설명한다. 모기가 기술의 의도·역사를 직접 물으면 그 질문을 따른다.\\n- 함수명·시험 이름·재현 전문·작업 이력은 필요한 첫 설명과 구분한다. 경로·SHA·검증 근거는 짧게 연결하고 원문 링크를 남긴다. 이해에 필요한 전제나 실제 앱 미확인을 분량 때문에 감추지 않는다.\\n- ‘공부/코드/쉽게’ 중 고르라는 메뉴를 매 질문마다 모기에게 되묻지 않는다. 첫 설명을 제공한 뒤 모기의 질문·직접 요청에 맞춰 넓힌다. 깊이를 잘못 골랐으면 설명의 선택을 수정하고 모기의 능력으로 귀속하지 않는다.\\n- 설명 길이에 고정 상한을 두지는 않는다. 단순한 수정은 사용자 결과·원인·수정과 검증을 몇 문장으로 먼저 전달하는 것을 목표로 한다. 큰 흐름은 기존 스크래치패드 규칙처럼 나누며 확인 퀴즈를 필수로 붙이지 않는다.\\n\\n## 실제 diff·검증과의 관계\\n\\n- 모기가 코드·diff를 요청하면 바로 실제 원문을 보여준다. 과외냥이가 이해에 필요하다고 골랐을 때도 먼저 보여줄 수 있다. 원문을 보여줄 때 파일·판독 SHA와 실제 인용/설명용 예시를 구분한다.\\n- 이 파일럿은 실제 diff 판독을 생략하거나 모든 PR을 비유로만 설명하는 규칙이 아니다. 기존 raw diff 접촉 파일럿의 전체 파일 지도·원문 관찰 질문·샛길 선택을 이번 파일럿 때문에 매 답변에 추가하지 않는다. 과거 파일럿 원문은 보존한다.\\n- 검증 설명은 기존 가이드의 입력·시험 결과·실앱 미확인 구분을 유지한다. 과외냥이 재실행과 작성자·리뷰어 보고를 구분하고, 상세 이름·로그는 필요에 맞춰 연결한다.\\n\\n## 건별 기록과 종료\\n\\n한 건의 자연스러운 문답이 끝나면 아래를 `실행 기록`에 짧게 남기고 `completed_cases`를 1 올린다. 기록 때문에 대화를 끊거나 추가 질문·시험을 만들지 않는다.\\n\\n- 대상 PR·판독 SHA·모기의 원래 질문, 선택한 첫 설명 방식과 근거.\\n- 실제 처음 보여준 것: 쉬운 동작 설명 / 코드 몇 줄 / 순서·상태표 등.\\n- 모기가 직접 표현한 도움·부담·더 보고 싶은 범위. 표현이 없으면 `미관찰`.\\n- 추가 설명이 필요했다면 빠진 전제·대상·용어와 보충 내용. 질문 횟수·정답률·시간을 능력 점수로 만들지 않는다.\\n\\n3건을 채우면 `status: awaiting-review`로 바꾸고 다음 건부터 자동 적용을 멈춘다. 기록을 모기와 보고 유지·수정·폐기를 정한다. 횟수 충족이나 짧은 설명에 대한 한 번의 긍정 반응만으로 영구 승격하지 않는다. 모기가 원하면 3건 전에도 즉시 중단·범위 축소한다.\\n\\n## 계기 — 적용 결과가 아님\\n\\n- 원문: [2026-10-19 시작 세션](../../raw/2026-10-19-01-routine-launcher-and-todo-ops-pr7.md)의 2026-10-20 PR #39 마무리 문답.\\n- 모기: “내가 jargon을 보면 이걸 공부하려고 이해해야하는건지 diff까지봐야할지. 아니면 쉽게 고쳐야할지. 계속 고민이되더라고”\\n- 모기: “그냥 변수 초기화위치를 for문안에다 두는건 ㅡㅡ 이런건 저렇게 리뷰코멘트가 길 필요가 있었을까 싶어”\\n- 과외냥이가 채팅에서 다음 설명 방식을 약속하자 모기는 “나는 이런거 안믿는다옹 ㅡㅡ 파일럿이나 뭐 문서에다가 남기기라도 해야지”라고 기록을 요구했다.\\n- PR #39 P2는 초기화 위치가 원인이지만 실패 영향은 남은 취소의 재개였다. 짧은 원인 설명과 영향·검증을 함께 전달할 수 있는 계기로 기록한다. P1·P2의 설명 길이를 통제 비교한 결과나 모기의 일반적 기술 능력을 입증한 것으로 기록하지 않는다.\\n\\n## 실행 기록\\n\\n<!-- pilot-run:7e1d5d12247f8339a406250f0f1d713cde5709f368a2b06b2f8b17afd72e8b84:completed -->\\n### 2026-10-21T05:43:19+00:00 · todo-ops-pr8-hook-guidance-f9c086780fe86d28\\n\\n- 결과: completed\\n- 근거: raw/2026-10-21-01-session.md\\n- 기록: 대상 todo-ops PR #8, 최초 판독 HEAD 643bf98ef1ee6e35c28ac57296183c9468d8d85a. 같은 훅 동작에 관한 후속 질문을 한 건으로 묶음.\\n  원래 질문: ‘근데 과외냥이 너한테 있는 훅이랑 이거랑 차이점은 뭘까’, ‘UserPromptSubmit이뭔지 대충은 아는데 이게 정확히 뭐냐옹’. 첫 설명은 구현 이름 나열 대신 도수치료 메시지 → 런타임의 훅 실행 → 관련 절 안내 → 투두냥의 문서 읽기 순서표와, 과외 인수인계·파일럿 안내·레시피 안내 비교표를 골랐다. 실행 주체·시점·출력이 핵심이기 때문이다.\\n  실제 처음 보여준 것: 실행 순서표와 훅 비교표, 한 줄 안내 예시. 후속 Codex/Claude 구조 질문에는 공통 구조 표와 설명용 JSON을 보였다.\\n  사용자 반응: ‘ㅇㅋ 다음 가자옹’. 이후 테스트 출력 제거 사본 설명의 마지막 문단에 ‘마지막 문단 무슨소리여?’라고 물어, 그 부분은 정상 훅 성공 / 사본의 고장 심기 확인 / 사본에도 같은 검사 적용 여부를 나눈 표로 보충했다. 이후 ‘아 ㅇㅋㅇㅋ 이해했음!’이라고 말하고 리뷰의 재밌는 부분 설명을 요청했다. 이 반응은 해당 설명에 대한 반응으로 보존하며 전체 코드 독해 완료로 확대하지 않는다.\\n  추가 설명의 빠진 대상: 사본에서 출력이 사라졌다는 사실과 같은 검사가 실패한다는 사실의 차이. 새 노트 제작은 별도 파일럿 건으로 세지 않았다.\\n---\\nreviewed: false\\n---\\n# PR 첫 완독 러프 메모: [mogi-productivity/44]\\n\\n2026-08-31까지 형식 없이 편하게 쓴다.\\n\\n- `?` 모르겠음\\n- `!` 이상하거나 위험해 보임\\n- `↔` 앞뒤가 안 맞거나 다른 지식과 충돌함\\n- \\\" 큰따옴표로 감싼 문장이 PR 원문이라옹ㅋ\\n\\n아래 표식 사이에 그 세션의 메모를 쓴다. 세션 종료 관찰일지를 저장한 뒤 과외냥이가 표식 안만 비운다.\\n\\n<!-- mogi-session-notes:start -->\\n\\n- pr 본문 동작 표 너무 좋다!! 테스트케이스 한눈에 파악되고!!\\n- 근데 흠. 너무 추상적으로만 이 pr을 이해하고있는것같아. 약간 CALL STACK TREE?같은거.. 어떤파일어떤코드통해서 호출되는지 그런 흐름같은거(그림아니고 글이어도 충분할것같애) 궁금.. 설정은어디서담당하는지. 머. 그런거 ㅋ pr diff만 봐선 모르겠네\\n- `?` Notes같은거 그럼 추가하려면 또 따로 수정해야되? 브릿지 대거 수정 해야되는건아니겠지? 예전에 막 그 checklist, notes 아니면 리마인더 머 넣냐에따라 호출되는 그 과정이 되게 달랐던걸로 기억.. 함.. Things url통해서한다거나. 내부 db 접근 필요하다거나. (내머릿속 뒤죽박죽이네 ㅋ)\\n- 한계 이 부분은 UAT를 따로해야겠네 ㅋ 투두냥이랑 해야겠다\\n- 리뷰 코멘트 뭔소리임? ㅠ아 코멘트 보고 이해했다옹 Someday로 옮겨지징낳았는데도 인자가 verified가되는문제라는것이군. 이거는 그 내가 요즘 예의주시하는, 고장난 테스트로 잡아낼수 없는 건가..?\\n\\n\\n\\n- 아 그럼 Somday로옮기면서 Notes에 append하는 명령은 구현되어있냐옹?\\n- prepareNotesVerification() 이거는뭔역할이지?왜필요한거야 왜바로 업데이트하면안되는거냐옹ㅋ?\\n- 왜 체크리스트를 넣어서 새로만드는거는 buildThingsAddUrl()이냐옹? 그냥 preparㄷ어쩌구는 업데이트할때 필요한거고 buildThings어쩌구는 create할때필요한그런거차이인가 \\n- 근데그럼 새할일말고, 기존할일에 체크리스트넣는건 또 다른 분기타? 진짜 와우..\\n- \\n\\n\\n\\n<!-- mogi-session-notes:end -->\\n\\n## 모기 보존 메모\\n\\n세션이 끝나도 비우지 않는 모기 전용 메모다. 나중에 다시 보고 싶은 내용이나 까먹기\\n싫은 것을 형식 없이 적는다. 과외냥이는 세션 종료 정리 때 아래 표식 사이를 건드리지\\n않는다.\\n\\n<!-- mogi-personal-notes:start -->\\n\\n<!-- mogi-personal-notes:end -->\\n1413:~~~text\\n1421:#### 출력 01\\n1427:~~~text\\n1440:#### 호출 02 — `exec`\\n1446:~~~text\\n1454:#### 출력 02\\n1481:#### 호출 03 — `exec`\\n1487:~~~text\\n1494:#### 출력 03\\n1500:~~~text\\n1517:#### 호출 04 — `exec`\\n1523:~~~text\\n1528:#### 출력 04\\n1534:~~~text\\n1551:#### 호출 05 — `exec`\\n1557:~~~text\\n1561:#### 출력 05\\n1567:~~~text\\n1580:#### 호출 06 — `exec`\\n1586:~~~text\\n1590:#### 출력 06\\n1596:~~~text\\n1609:### 과외냥이\\n1611:~~~text\\n1617:## Turn 10\\n1621:### 모기\\n1623:~~~text\\n1627:### 도구 호출·출력\\n1629:#### 호출 01 — `exec`\\n1635:~~~text\\n1639:#### 출력 01\\n1645:~~~text\\n1658:#### 호출 02 — `exec`\\n1664:~~~text\\n1668:#### 출력 02\\n1674:~~~text\\n1687:#### 호출 03 — `exec`\\n1693:~~~text\\n1698:#### 출력 03\\n1704:~~~text\\n1721:### 과외냥이\\n1723:~~~text\\n1733:## Turn 11\\n1737:### 모기\\n1739:~~~text\\n M SCRATCHPAD.md\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n?? raw/2026-10-22-01-session.md\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_ffd18f828fe94f15bd9d3cee850a7271`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nimport io,tarfile,tempfile,subprocess\nfrom pathlib import Path\nrepo='/Users/leechaerim/orca/workspaces/mogi-productivity/things-someday'\nsha='5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7'\nwith tempfile.TemporaryDirectory(prefix='mogi-pr44-verification-') as tmp:\n    archive=subprocess.run(['git','-C',repo,'archive',sha,'integrations/things','package.json'],check=True,capture_output=True).stdout\n    with tarfile.open(fileobj=io.BytesIO(archive)) as tf:\n        tf.extractall(tmp, filter='data')\n    command=['node','--test','--test-name-pattern=Someday (create|reuse)','integrations/things/test/notes.test.js']\n    def run(label):\n        r=subprocess.run(command,cwd=tmp,capture_output=True,text=True,timeout=45)\n        print(label, 'exit=',r.returncode)\n        for line in r.stdout.splitlines():\n            if line.startswith(('✔','✖','not ok','ok ','# tests','# pass','# fail','# skipped','ℹ tests','ℹ pass','ℹ fail','ℹ skipped')) or 'verified' in line or 'mismatch' in line:\n                print(line)\n        if r.returncode:\n            print(r.stdout[-2500:])\n        return r\n    healthy=run('正常 코드 / 기존 시험 그대로')\n    assert healthy.returncode==0, healthy.stderr\n    p=Path(tmp)/'integrations/things/src/write-verification.js'\n    s=p.read_text()\n    condition='value.scheduled === wantedDate && (!someday || value.someday)'\n    assert s.count(condition)==1\n    p.write_text(s.replace(condition,'value.scheduled === wantedDate'))\n    broken=run('사본에서 Someday 소속 조건만 제거 / 같은 시험 그대로')\n    assert broken.returncode!=0\n    assert 'a move left outside Someday reports mismatch, not verified' in broken.stdout\n    print('제품 checkout 변경 없음 / Things 앱 호출 없음 / 임시 사본 자동 삭제')\nPY","max_output_tokens":2500,"yield_time_ms":1000}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_ffd18f828fe94f15bd9d3cee850a7271`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"d419bd\",\"wall_time_seconds\":0.000006417,\"exit_code\":1,\"original_token_count\":36,\"output\":\"Traceback (most recent call last):\\n  File \\\"<stdin>\\\", line 8, in <module>\\nTypeError: extractall() got an unexpected keyword argument 'filter'\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_8b69b4242b1541229e55037a176b0b7d`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nimport io,tarfile,tempfile,subprocess\nfrom pathlib import Path\nrepo='/Users/leechaerim/orca/workspaces/mogi-productivity/things-someday'\nsha='5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7'\nwith tempfile.TemporaryDirectory(prefix='mogi-pr44-verification-') as tmp:\n    root=Path(tmp).resolve()\n    archive=subprocess.run(['git','-C',repo,'archive',sha,'integrations/things','package.json'],check=True,capture_output=True).stdout\n    with tarfile.open(fileobj=io.BytesIO(archive)) as tf:\n        for member in tf.getmembers():\n            target=(root/member.name).resolve()\n            target.relative_to(root)\n            if member.isdir(): target.mkdir(parents=True,exist_ok=True)\n            elif member.isfile():\n                target.parent.mkdir(parents=True,exist_ok=True)\n                target.write_bytes(tf.extractfile(member).read())\n            else: raise RuntimeError('Unexpected archive entry: '+member.name)\n    command=['node','--test','--test-name-pattern=Someday (create|reuse)','integrations/things/test/notes.test.js']\n    def run(label):\n        r=subprocess.run(command,cwd=tmp,capture_output=True,text=True,timeout=45)\n        print(label, 'exit=',r.returncode)\n        for line in r.stdout.splitlines():\n            if line.startswith(('✔','✖','not ok','ok ','# tests','# pass','# fail','# skipped','ℹ tests','ℹ pass','ℹ fail','ℹ skipped')):\n                print(line)\n        if r.returncode: print(r.stdout[-1800:])\n        return r\n    healthy=run('정상 코드 / 기존 시험 그대로')\n    assert healthy.returncode==0, healthy.stderr\n    p=root/'integrations/things/src/write-verification.js'\n    s=p.read_text()\n    condition='value.scheduled === wantedDate && (!someday || value.someday)'\n    assert s.count(condition)==1\n    p.write_text(s.replace(condition,'value.scheduled === wantedDate'))\n    broken=run('사본에서 Someday 소속 조건만 제거 / 같은 시험 그대로')\n    assert broken.returncode!=0\n    assert 'a move left outside Someday reports mismatch, not verified' in broken.stdout\n    print('제품 checkout 변경 없음 / Things 앱 호출 없음 / 임시 사본 자동 삭제')\nPY","max_output_tokens":2500,"yield_time_ms":1000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_8b69b4242b1541229e55037a176b0b7d`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"61d1be\",\"wall_time_seconds\":1.000672334,\"session_id\":69155,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_a3795672886c45d2ae41c0dbf8eaa0b9`
+
+입력:
+
+~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"rg --files head-test -g '*session-end-analysis.md' -g '*learning-observation-cumulative-review.md' | sort | tail -14; python3 scripts/pilots.py record --help; sed -n '1,16p' raw/2026-10-22-01-session.md; git pull","max_output_tokens":1800}),
+tools.write_stdin({session_id:69155,chars:"","max_output_tokens":2500,"yield_time_ms":1000})
+]);r.forEach((x,i)=>text({i,...x}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_a3795672886c45d2ae41c0dbf8eaa0b9`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"2fa5ac\",\"wall_time_seconds\":0.474868958,\"exit_code\":0,\"original_token_count\":435,\"output\":\"head-test/2026-08-26-pr534-bulk-slug-and-shade-identity-session-end-analysis.md\\nhead-test/2026-08-26-pr535-roi-retirement-and-representative-state-session-end-analysis.md\\nhead-test/2026-08-27-harness-hypothesis-retirement-and-pr536-search-session-end-analysis.md\\nhead-test/2026-08-27-pr539-pretty-notebook-tdd-first-review-session-end-analysis.md\\nhead-test/2026-09-09-pr546-email-otp-callback-session-end-analysis.md\\nhead-test/2026-10-16-learning-observation-cumulative-review.md\\nhead-test/2026-10-16-pr32-pr33-session-end-analysis.md\\nhead-test/2026-10-16-todo-ops-pr1-guard-review-session-end-analysis.md\\nhead-test/2026-10-18-todo-ops-upstream-extension-vendor-branch-session-end-analysis.md\\nhead-test/2026-10-19-todo-ops-pr4-pr6-and-things-pr36-session-end-analysis.md\\nhead-test/2026-10-20-pr39-tdd-and-pilot-routing-session-end-analysis.md\\nhead-test/2026-10-20-routine-launcher-and-todo-ops-pr7-session-end-analysis.md\\nhead-test/2026-10-21-todo-ops-pr8-hooks-and-code-visualization-session-end-analysis.md\\nhead-test/2026-10-22-pr8-focused-parser-tutoring-session-end-analysis.md\\nusage: pilots.py record [-h] --key KEY --evidence EVIDENCE --note NOTE\\n                        --result {completed,skipped,blocked} [--requested]\\n                        pilot\\n\\npositional arguments:\\n  pilot\\n\\noptional arguments:\\n  -h, --help            show this help message and exit\\n  --key KEY\\n  --evidence EVIDENCE\\n  --note NOTE\\n  --result {completed,skipped,blocked}\\n  --requested\\n---\\ndate: 2026-10-22\\nsession_number: 1\\nslug: session\\nscope: user-messages-tool-calls-and-final-answers\\ncodex_session_key: a28be4cbfbf40c91\\n---\\n\\n# 2026-10-22 세션 01 — 자동 원문 기록\\n\\n## Turn 01\\n\\nCodex turn key: `68bda145670a9a60`\\n\\n### 모기\\n\\nAlready up to date.\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"030ad9\",\"wall_time_seconds\":0.000009208,\"exit_code\":0,\"original_token_count\":913,\"output\":\"정상 코드 / 기존 시험 그대로 exit= 0\\n✔ Someday creates a new undated to-do through the Someday move and verifies no saved date (206.914291ms)\\n✔ Someday create reads list membership and verifies only a to-do in Someday (1.164541ms)\\n✔ Someday create: a move left outside Someday reports mismatch, not verified (202.8105ms)\\n✔ Someday create: unreadable membership reports unavailable, never verified (816.426583ms)\\n✔ Someday reuse reads list membership and verifies only a to-do in Someday (1.064292ms)\\n✔ Someday reuse: a move left outside Someday reports mismatch, not verified (205.138375ms)\\n✔ Someday reuse: unreadable membership reports unavailable, never verified (817.663791ms)\\nℹ tests 7\\nℹ pass 7\\nℹ fail 0\\nℹ skipped 0\\n사본에서 Someday 소속 조건만 제거 / 같은 시험 그대로 exit= 1\\n✔ Someday creates a new undated to-do through the Someday move and verifies no saved date (205.965875ms)\\n✔ Someday create reads list membership and verifies only a to-do in Someday (1.053042ms)\\n✖ Someday create: a move left outside Someday reports mismatch, not verified (4.460625ms)\\n✔ Someday create: unreadable membership reports unavailable, never verified (817.89425ms)\\n✔ Someday reuse reads list membership and verifies only a to-do in Someday (1.143209ms)\\n✖ Someday reuse: a move left outside Someday reports mismatch, not verified (0.762625ms)\\n✔ Someday reuse: unreadable membership reports unavailable, never verified (817.700625ms)\\nℹ tests 7\\nℹ pass 5\\nℹ fail 2\\nℹ skipped 0\\n✖ failing tests:\\n✖ Someday create: a move left outside Someday reports mismatch, not verified (4.460625ms)\\n✖ Someday reuse: a move left outside Someday reports mismatch, not verified (0.762625ms)\\ny reuse: a move left outside Someday reports mismatch, not verified (0.762625ms)\\n✔ Someday reuse: unreadable membership reports unavailable, never verified (817.700625ms)\\nℹ tests 7\\nℹ suites 0\\nℹ pass 5\\nℹ fail 2\\nℹ cancelled 0\\nℹ skipped 0\\nℹ todo 0\\nℹ duration_ms 1912.632792\\n\\n✖ failing tests:\\n\\ntest at integrations/things/test/notes.test.js:167:3\\n✖ Someday create: a move left outside Someday reports mismatch, not verified (4.460625ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n  + actual - expected\\n  \\n  + 'verified'\\n  - 'mismatch'\\n  \\n      at TestContext.<anonymous> (file:///private/var/folders/p6/y64bglj97j33bfmv8v9d3vd80000gn/T/mogi-pr44-verification-g0w3bpa8/integrations/things/test/notes.test.js:169:12)\\n      at async Test.run (node:internal/test_runner/test:1409:7)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 'verified',\\n    expected: 'mismatch',\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\ntest at integrations/things/test/notes.test.js:167:3\\n✖ Someday reuse: a move left outside Someday reports mismatch, not verified (0.762625ms)\\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n  + actual - expected\\n  \\n  + 'verified'\\n  - 'mismatch'\\n  \\n      at TestContext.<anonymous> (file:///private/var/folders/p6/y64bglj97j33bfmv8v9d3vd80000gn/T/mogi-pr44-verification-g0w3bpa8/integrations/things/test/notes.test.js:169:12)\\n      at async Test.run (node:internal/test_runner/test:1409:7)\\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\\n    generatedMessage: true,\\n    code: 'ERR_ASSERTION',\\n    actual: 'verified',\\n    expected: 'mismatch',\\n    operator: 'strictEqual',\\n    diff: 'simple'\\n  }\\n\\n제품 checkout 변경 없음 / Things 앱 호출 없음 / 임시 사본 자동 삭제\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 05 — `exec`
+
+Call ID: `call_572f8d10d67c436bb948a3ccf2b55f44`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\np=Path('raw/2026-10-22-01-session.md')\nq=Path('raw/2026-10-22-01-pr44-things-call-paths-and-verification.md')\nassert not q.exists()\np.rename(q)\nprint(q)\nPY\npython3 scripts/pilots.py record explanation-depth-and-jargon --key mogi-productivity-pr44-call-paths-a28be4cbfbf40c91 --result completed --evidence raw/2026-10-22-01-pr44-things-call-paths-and-verification.md --note '대상 mogi-productivity PR #44, 판독 HEAD 5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7. 원래 질문은 SCRATCHPAD의 어떤 파일·코드로 호출되는지와 설정 위치, Notes·checklist·reminder 경로 차이였다. 사용자 사건과 구체 값으로 실행 순서·주체·대상을 펼치는 첫 설명을 선택했고, 기존 할 일의 Someday 이동 호출 트리·설정 담당 표·실제 코드 몇 줄을 보였다. 같은 요청 흐름과 기능 경계의 후속 문답은 한 건으로 묶었다. 모기는 첫 설명에 느낌좋고 맘에든다며 원문 노트 보존을 요청했고, call stack tree·구체 예시·설정 표가 좋다고 명시했다. 이후 prepareNotesVerification과 buildThingsAddUrl을 update/create의 짝으로 해석해 질문했고, 비교 기준 준비와 생성 요청 준비라는 서로 다른 역할이며 create에서도 둘 다 호출됨을 보충했다. URL 수정 인증·기존 체크리스트 미지원·읽기와 쓰기 경계도 보충했다. 모기는 브릿지가 복잡하다고 평가하고 후속 PR 검토 전달을 요청했다. 첫 설명의 긍정 평가를 전체 구현 독해 완료로 확대하지 않는다. 마지막 시험 설명에 대한 사용자 반응과 별도 새 사례 적용은 미관찰.'","max_output_tokens":1500}));
+~~~
+
+#### 출력 05
+
+Call ID: `call_572f8d10d67c436bb948a3ccf2b55f44`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e7f863\",\"wall_time_seconds\":0.000005833,\"exit_code\":0,\"original_token_count\":108,\"output\":\"raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\\n{\\n  \\\"recorded\\\": true,\\n  \\\"pilot\\\": {\\n    \\\"id\\\": \\\"explanation-depth-and-jargon\\\",\\n    \\\"path\\\": \\\"harness/pilots/2026-10-20-explanation-depth-and-jargon.md\\\",\\n    \\\"issues\\\": [],\\n    \\\"status\\\": \\\"pilot\\\",\\n    \\\"event\\\": \\\"review\\\",\\n    \\\"requires_request\\\": false,\\n    \\\"unit\\\": \\\"cases\\\",\\n    \\\"completed\\\": 2,\\n    \\\"planned\\\": 3,\\n    \\\"count_key\\\": \\\"completed_cases\\\",\\n    \\\"available\\\": true\\n  }\\n}\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 06 — `exec`
+
+Call ID: `call_ed7bcdd27a104ffc8bd802d307269707`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\nlog=Path('head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md')\ntext='''---\nreviewed: false\n---\n\n# 세션 종료 관찰 — PR #44 Things 호출 경로와 저장 결과 확인\n\n- 대상: mogi-productivity PR #44, 판독 SHA `5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7`.\n- 도메인 친숙도: 모기는 Things의 checklist·Notes·reminder 연결 경로가 서로 달랐다는 과거 기억을 직접 밝혔다. 현재 구현의 구체 경로·함수 역할은 이번 질문 대상이며 숙련 수준을 추정하지 않는다.\n- 세션 길이: 시간 미측정.\n- 모기가 명시한 컨디션: 피로·건강 상태의 명시 없음. “지금 배우는 내용 되게 좋고 재밌고 중요한것같다옹”이라는 학습 경험 평가와 브릿지가 복잡하다는 평가가 있었다.\n- 종료 의사: “그리고 마지막으로 세번째설명만 보고 마무리하자옹”. 마지막 시험 설명 뒤 종료하며 그 설명에 대한 후속 반응은 미관찰이다.\n- 원문: [세션 기록](../raw/2026-10-22-01-pr44-things-call-paths-and-verification.md). 원문 파일은 이름만 주제에 맞춰 한 번 변경했고 `codex_session_key`와 사용자·답변 원문은 보존했다.\n\n## 처음 막힌 지점\n\nSCRATCHPAD에서 PR 본문의 동작 표는 좋다고 평가하면서도, 어떤 파일·함수가 호출되는지와 설정 담당 위치가 보이지 않아 추상적으로 이해하는 것 같다고 밝혔다. Notes·checklist·reminder가 AppleScript·Things URL·내부 DB와 어떻게 연결되는지도 질문했다.\n\n후속 문답에서는 `prepareNotesVerification()`이 왜 필요한지, `buildThingsAddUrl()`과 update/create를 나눠 맡는 관계인지 질문했다. 이는 함수 역할과 요청·확인 경계를 설명해야 하는 지점이며 개인 수준의 원인으로 해석하지 않는다.\n\n## 설명 추가 없이 바로 연결한 지점\n\n- 모기는 고정된 파일 이름이 그 자체로 나쁜 것은 아니며 지금 단계에서 경로 결정을 옮기는 리팩토링은 과할 수 있다고 의견을 냈다.\n- 모기는 인자 개수 자체와 실행 보안 문제를 구분해 재진술하고 환경변수·심볼릭 링크로 실행 대상을 바꿀 수 있는지 질문했다. 과외냥이는 누가 환경·파일을 통제할 수 있는지의 조건과 셸 없이도 생기는 경로 검색 문제를 보충했다. 조건까지 처음부터 독립적으로 완성했다고 기록하지 않는다.\n- SCRATCHPAD에는 리뷰 코멘트를 읽고 “Someday로 옮겨지징낳았는데도 인자가 verified가되는문제”라고 스스로 연결한 원문이 있었다. 실제 알림·프로젝트 보존 등 미확인 범위 전체를 이해한 것으로 넓히지 않는다.\n\n## 설명·외부화 뒤 달라진 점\n\n기존 할 일의 Someday 이동을 구체 제목·ID의 주인·호출 주체로 따라가는 텍스트 호출 트리와 설정 담당 표, 연결 코드 몇 줄을 보였다. 모기는 “방금 설명 뭔가 느낌좋고 맘에들어”라고 평가하고 답변 원문을 노트로 보존해 달라고 요청했다. 이후 “call stack tree 만들어준거 너무좋다”, 구체 예시와 설정 담당 표가 좋다는 반응도 명시했다. [보존 노트](../code-diff-notes/mogi-productivity/2026-10-22-pr44-someday-call-flow-and-settings.md)에 답변 본문을 그대로 저장했다.\n\nNotes·checklist·시간 지정 경로를 펼친 뒤에는 함수 두 개의 역할, 미지원 기능, URL 수정 토큰, evening의 DB 확인에 질문이 이어졌다. 과외냥이는 Notes 비교 기준 준비와 생성 URL 구성을 대조하고, 새 생성에서도 둘 다 실행됨을 작은 흐름으로 보충했다. AppleScript·URL의 지원 차이, 브릿지 미구현 범위, 쓰기와 쓰기 후 확인을 구분했다. 이 보충 뒤 전체 코드 독해가 완료됐다는 독립 재진술은 관찰하지 않았다.\n\n모기는 복잡함과 리팩토링 필요 여부를 질문했고, 과외냥이는 외부 API 제약·구현 선택·미구현 기능·설명 방식의 영향을 나눴다. 모기 요청으로 그 답변 원문을 `master-delivery-memos.md`에 보존·전달했다. 투두냥은 PR #44 머지 뒤 별도 PR에서 동작 계약부터 검토하고 리팩토링 범위를 정하는 후속 작업 `td-0fd`에 인수했다고 회신했다. 구현·검증 완료 보고는 아니다.\n\n## 아직 미관찰이거나 다음에 확인할 점\n\n- 별도의 새 사례 적용: 시행하지 않아 미관찰. 다음 세션의 의무 과제로 승계하지 않는다.\n- 마지막 Someday 시험 설명에 대한 사용자 반응·독립 재진술: 미관찰.\n- 첫 호출 트리 설명의 긍정 반응과 뒤의 브릿지 복잡함 평가는 각각 보존한다. 전체 설명 성공이나 이해·기억 능력 평가로 합치지 않는다.\n- 후속 설계 검토는 투두냥 작업 `td-0fd`에 인수됐다. 과외냥이가 제품 리팩토링 범위·머지 여부를 결정하지 않았다.\n\n## 마지막 설명의 직접 확인 근거\n\n제품 checkout은 읽기 전용으로 유지했다. 판독 SHA의 `integrations/things/`와 `package.json`을 저장소 밖 임시 폴더에 복사하고 아래 기존 시험을 실행했다. `notes.test.js`는 `execImpl` 모의 응답으로 Things 읽기·쓰기를 대신하므로 실제 앱을 호출하지 않는다.\n\n```sh\nnode --test --test-name-pattern='Someday (create|reuse)' integrations/things/test/notes.test.js\n```\n\n- 정상 사본: 관련 시험 7개 통과, 실패 0, 건너뜀 0, 종료 코드 0.\n- 고장 사본: `src/write-verification.js:76`의 `value.scheduled === wantedDate && (!someday || value.someday)`를 `value.scheduled === wantedDate`로 바꿔 소속 조건만 제거했다. 시험 파일은 바꾸지 않았다.\n- 같은 시험 재실행: 5개 통과·2개 실패, 건너뜀 0, 종료 코드 1. create/reuse 각각의 `a move left outside Someday reports mismatch, not verified`가 actual `verified`, expected `mismatch`로 실패했다.\n- 이 실험은 현재 시험이 해당 확인 조건 제거를 잡는다는 근거다. 원래 구현 당시 고장 심은 시험을 했다거나 모든 버그를 검출한다는 근거가 아니다.\n- 실제 Someday 목록 이동, 알림 해제·실제 알림 발생·프로젝트 소속 유지는 이 모의 시험에서 확인하지 않았다. 임시 폴더는 종료 때 삭제했다.\n\n## 학습 마찰·재확인·새 발견\n\n- “그냥 preparㄷ어쩌구는 업데이트할때 필요한거고 buildThings어쩌구는 create할때필요한그런거차이인가” — 두 함수는 비교 기준과 생성 요청을 각각 만드는 함수이며 서로 배타적인 분기가 아니라는 설명이 필요했다.\n- “왤케복잡해.. 이거 코드 리팩토링해야되나??” — 사용자 평가를 보존하며 과거의 점진적 확장 때문이라는 원인은 코드 이력 미확인으로 남겼다.\n- Notes append·기존 체크리스트 추가는 Things 공식 URL의 지원 여부와 현재 브릿지의 구현 여부를 구분했다. 현재 브릿지 미지원 사실을 새로 구현된 별도 경로처럼 설명하지 않았다.\n\n## 정리 범위\n\n종료 기록을 먼저 저장하고 나서 SCRATCHPAD의 세션 메모 구간만 비우며 제목 대상을 `[다음 PR]`로 되돌린다. 개인 보존 메모·frontmatter·사용 안내·표식은 보존한다. 설명 깊이 파일럿에는 PR #44 호출 흐름과 연결된 후속 문답을 한 건으로 기록했고 현재 2/3건이다.\n'''\nwith log.open('x') as f: f.write(text)\nassert log.exists() and log.stat().st_size>0\nscratch=Path('SCRATCHPAD.md')\ns=scratch.read_text()\na='<!-- mogi-session-notes:start -->'\nb='<!-- mogi-session-notes:end -->'\nassert s.count(a)==1 and s.count(b)==1\nstart=s.index(a)+len(a)\nend=s.index(b)\nassert start<end\nold_personal=s.split('<!-- mogi-personal-notes:start -->',1)[1]\ns=s[:start]+'\\n\\n'+s[end:]\ns=s.replace('# PR 첫 완독 러프 메모: [mogi-productivity/44]','# PR 첫 완독 러프 메모: [다음 PR]',1)\nassert s.split('<!-- mogi-personal-notes:start -->',1)[1]==old_personal\nscratch.write_text(s)\nprint(log)\nprint('종료 기록 저장 후 SCRATCHPAD 세션 구간만 정리; 개인 보존 메모 유지')\nPY\ngit diff --check -- SCRATCHPAD.md harness/pilots/2026-10-20-explanation-depth-and-jargon.md\ngit add -- head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md SCRATCHPAD.md harness/pilots/2026-10-20-explanation-depth-and-jargon.md\ngit commit -m \"docs: PR44 과외 종료 관찰과 설명 파일럿 기록\" -- head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md SCRATCHPAD.md harness/pilots/2026-10-20-explanation-depth-and-jargon.md","max_output_tokens":1800}));
+text(await tools.exec_command({cmd:'git add -- raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\ngit commit -m "docs: PR44 과외 대화 원문 체크포인트 보존" -- raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\ngit status --short',"max_output_tokens":1500}));
+~~~
+
+#### 출력 06
+
+Call ID: `call_ed7bcdd27a104ffc8bd802d307269707`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.3 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a19c25\",\"wall_time_seconds\":0.000005,\"exit_code\":0,\"original_token_count\":101,\"output\":\"head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md\\n종료 기록 저장 후 SCRATCHPAD 세션 구간만 정리; 개인 보존 메모 유지\\n[main cba8502] docs: PR44 과외 종료 관찰과 설명 파일럿 기록\\n 2 files changed, 71 insertions(+), 1 deletion(-)\\n create mode 100644 head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a3b675\",\"wall_time_seconds\":0.000005125,\"exit_code\":0,\"original_token_count\":60,\"output\":\"[main d00e338] docs: PR44 과외 대화 원문 체크포인트 보존\\n 1 file changed, 1741 insertions(+)\\n create mode 100644 raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+**응, 이 문제는 “소속 확인 코드를 일부러 빼도 같은 시험이 잡아내는가?”로 확인할 수 있어. 방금 직접 해봤고, 현재 시험은 그 고장을 잡았어.**
+
+모기가 “우유 사기를 Someday로 옮겨줘”라고 했는데, 항목이 Anytime에 그대로 남았다고 하자. **두 목록 모두 날짜가 비어 있을 수 있어서, 날짜만 확인하면 이동 실패를 놓칠 수 있어.**
+
+먼저 직접 실행한 결과부터 볼게. 실제 Things 대신 가짜 읽기 응답을 넣은 시험이야.
+
+| 입력·검사 대상 | 자동 시험 결과 — 직접 확인 | 실제 앱에서 확인할 범위 |
+|---|---|---|
+| 현재 코드에 “날짜 없음·Someday 소속 맞음” 응답 | 성공 판정 확인 시험 통과 | 실제 목록 이동은 이 시험에서 실행하지 않음 |
+| 현재 코드에 “날짜 없음·Someday 소속 아님” 응답 | `mismatch` 판정 확인 시험 통과 | 같은 상태를 실제 앱에서 재현한 것은 아님 |
+| **소속 검사만 뺀 사본**에 똑같은 실패 응답 | **기대 `mismatch` / 실제 `verified`라 시험 실패** | 앱 조작 없이 판정 코드의 고장을 검출 |
+
+현재 코드에서는 관련 시험 **7개가 통과**했어. 임시 사본에서 소속 검사만 빼고 **시험 파일은 그대로** 실행하자, 새 생성·기존 재사용의 이동 실패 시험 **2개가 실패**했어.
+
+어떻게 잡는지 구체 값으로 따라가 보자.
+
+```text
+모기의 요청
+  "우유 사기"를 Someday로 옮기기
+
+시험이 돌려주는 가짜 저장 상태
+  ID: todo-id
+  날짜: 없음
+  Someday 소속: false
+  Notes: 기대한 내용과 같음
+```
+
+이 입력은 **“다른 값은 맞지만 Someday 이동만 반영되지 않은 상황”**을 만들어. 현재 확인 코드는 날짜와 소속을 함께 봐.
+
+[`src/write-verification.js:76`](/Users/leechaerim/orca/workspaces/mogi-productivity/things-someday/integrations/things/src/write-verification.js:76), 판독 SHA `5e0abf9`의 원문이야.
+
+```js
+const dateVerification =
+  value.scheduled === wantedDate && (!someday || value.someday)
+    ? "verified"
+    : "mismatch";
+```
+
+이번 요청은 Someday니까 `someday`가 `true`야. 위 입력을 대입하면 이래.
+
+```text
+날짜 없음 === 기대한 날짜 없음       → true
+Someday 소속                        → false
+
+true && false                       → false
+결과                                → mismatch
+```
+
+그다음 시험이 **“반드시 mismatch여야 한다”**고 확인해. [`test/notes.test.js:167`](/Users/leechaerim/orca/workspaces/mogi-productivity/things-someday/integrations/things/test/notes.test.js:167)의 실제 코드야.
+
+```js
+const result = await someday(false);
+assert.equal(result.savedValues, "mismatch");
+assert.equal(result.dateVerification, "mismatch");
+assert.equal(result.notesVerification, "verified");
+```
+
+여기서 `someday(false)`는 **Someday 소속이 아니라는 가짜 응답을 넣고 실제 `upsertTodo()`를 실행하는 시험용 함수**야. 마지막 줄은 Notes 보존 확인은 통과했음을 따로 확인해. 모든 게 실패한 상황으로 뭉개지 않는 거지.
+
+이제 내가 임시 사본에서 확인 조건을 이렇게 고장 냈어.
+
+```js
+// 고장을 심은 사본: Someday 소속 조건 제거
+value.scheduled === wantedDate
+```
+
+그러면 날짜가 비어 있다는 이유만으로 `verified`가 나와. **그런데 시험은 여전히 `mismatch`를 요구하니까 실패하는 거야.** 실제 실패 출력도 이랬어.
+
+```text
+actual:   'verified'
+expected: 'mismatch'
+```
+
+그래서 여기서는 세 가지를 구분하면 돼.
+
+- **가짜 앱 응답**으로 이동 실패 상황을 만든다.
+- **제품 코드 사본에 고장**을 심어 그 상황을 잘못 판정하게 만든다.
+- **같은 시험**이 그 잘못된 판정을 잡는지 본다.
+
+이 결과는 **현재 시험이 ‘Someday 소속 조건 제거’를 잡는다는 근거**야. 처음 구현할 때도 이 실험을 했다는 뜻이나, 실제 앱 이동·모든 고장을 검증했다는 뜻까지는 아니야.
+
+오늘 [종료 기록](/Users/leechaerim/orca/mogi-cards/head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md)도 남겼고, 스크래치패드는 질문을 기록에 보존한 뒤 비워뒀어. 오늘은 여기까지 하자옹 ㅋ
+~~~
+
+## Turn 12
+
+Codex turn key: `c939b0eda5a07225`
+
+### 모기
+
+~~~text
+You have 1 orchestration message. Run `orca orchestration check --run run_e620ff658ae6`.
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_23e7f6dae67949bfa4ef5e085e75f569`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"orca orchestration check --run run_e620ff658ae6 --json","max_output_tokens":3500}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_23e7f6dae67949bfa4ef5e085e75f569`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"0895d5\",\"wall_time_seconds\":0.000005167,\"exit_code\":0,\"original_token_count\":1179,\"output\":\"{\\n  \\\"id\\\": \\\"dae12434-0fdb-4514-a851-6e8b177098a7\\\",\\n  \\\"ok\\\": true,\\n  \\\"result\\\": {\\n    \\\"runId\\\": \\\"run_e620ff658ae6\\\",\\n    \\\"deliveryId\\\": \\\"delivery_2aedfeecbe3c\\\",\\n    \\\"messages\\\": [\\n      {\\n        \\\"id\\\": \\\"msg_d8209f61146a\\\",\\n        \\\"run_id\\\": \\\"run_e620ff658ae6\\\",\\n        \\\"from_handle\\\": \\\"term_e4ae1b56-f0ed-4596-8076-7761d1dea7c0\\\",\\n        \\\"to_handle\\\": \\\"run:run_e620ff658ae6\\\",\\n        \\\"subject\\\": \\\"모기 요청 전달: Things 브릿지 리팩토링 구조 초안 (td-0fd)\\\",\\n        \\\"body\\\": \\\"모기가 이 구조를 과외냥이와 더 이해하고 오겠다며 투두냥 답변 원문 전달을 요청했다. 아직 승인 전 설계 초안이다. 앞선 결정: B′(기존 필드 유지 + 모든 명령 리턴 객체에 summary 추가) 채택, 모기는 리팩토링을 더 넓게 설계해 달라고 했다. 판독 기준 mogi-productivity main e5be55f.\\\\n\\\\n---\\\\n\\\\n좋아, 범위를 넓혀서 다시 봤어. 코드를 더 읽어보니 리팩토링할 근거가 실제로 나왔어.\\\\n\\\\n## 지금 구조의 문제 (코드에서 확인한 것)\\\\n\\\\n1. 같은 흐름이 세 함수에 복사돼 있어. 날짜만 넣는 upsertTodo(write.js), 시각까지 넣는 requestReminder(reminder.js), 저녁에 넣는 requestEveningTodo(evening.js)가 똑같은 7단계를 각자 다시 짰어:\\\\n   1) 같은 제목 할 일 찾기(planReminder)\\\\n   2) 다시 쓸지 새로 만들지 정하기(plan)\\\\n   3) 미리보기 객체 만들기\\\\n   4) apply가 아니면 미리보기만 반환\\\\n   5) 기존 Notes 읽어두기\\\\n   6) Things에 보내기\\\\n   7) 쓴 뒤 다시 읽어 확인하고 리턴 객체 합치기\\\\n   셋이 달라지는 건 6번 \\\\\\\"어떻게 보내나\\\\\\\"랑 7번의 추가 확인(저녁인지는 DB, Someday인지는 목록)뿐이야. 그런데 리턴 객체 필드를 각자 손으로 조립해서 함수마다 필드 구성이 조금씩 달라.\\\\n2. import가 서로를 물고 있어. write.js가 reminder.js를 import하고, reminder.js도 validateTodo를 가져오려고 write.js를 import해.\\\\n3. 이름이 실제 역할과 안 맞아.\\\\n   - planReminder랑 read-reminder-target.applescript는 사실 모든 명령이 쓰는 \\\\\\\"대상 할 일 고르기\\\\\\\"야. 이름만 reminder야.\\\\n   - evening.js(223줄)에는 things:add 저녁 경로, Things DB 읽기, 휴일 루틴의 취소 처리가 한 파일에 섞여 있어.\\\\n4. 휴일 루틴이 이 파일들을 직접 import해. 매일 09:00 LaunchAgent가 돌리는 integrations/routine이 evening.js와 write.js를 직접 가져다 써. 파일을 옮기면 루틴도 같이 고쳐야 해.\\\\n\\\\n## 제안 구조\\\\n\\\\nintegrations/things/src/\\\\n  add/\\\\n    add-todo.js       ← 7단계를 한 번만 짠 파이프라인 (things:add의 유일한 진입점)\\\\n    transports.js     ← 6번만 다름: appleScriptDate / urlReminder / urlEvening\\\\n    verifiers.js      ← 7번 추가 확인: 기본 저장값 + someday 목록 + evening DB\\\\n  select-todo.js      ← planReminder → selectTodo 로 이름 변경 (스크립트 이름도)\\\\n  things-db.js        ← evening.js의 DB 읽기 함수만 떼어냄 (휴일 루틴도 이걸 씀)\\\\n  result.js           ← 모든 명령이 쓰는 리턴 DTO + summary 만드는 함수\\\\n  validate-todo.js    ← validateTodo를 떼어내서 import 순환 끊기\\\\n\\\\n- 리턴 DTO: 모든 Things 명령이 result.js의 같은 함수로 리턴 객체를 만들어. 맨 위에 summary: { sent, confirmed[], unconfirmed[], mismatched[] }가 붙어.\\\\n- 기존 필드는 이번 PR에서 그대로 둬. 그래야 지금 있는 시험 358개를 거의 안 고친 채로 \\\\\\\"구조만 바꿨고 동작은 그대로\\\\\\\"라는 걸 증명할 수 있어. 기존 필드를 지우는 건 summary가 자리 잡은 뒤에 따로 해.\\\\n- 약속표: CALL_PATHS_TEMP.md를 정식 CONTRACT.md로 바꿔. 요청마다 \\\\\\\"지원하나 / Notes를 지키나 / 실패하면 어디서 멈추나 / summary에 뭐가 confirmed로 나오나\\\\\\\"를 적어.\\\\n\\\\n여기까지가 구조야. 다음엔 리턴 DTO 모양을 자세히 보여줄 건데, 그 전에 큰 방향 먼저 물어볼게. 파이프라인 하나에 전송 방식(transport)만 갈아끼우는 이 구조로 가도 될까?\\\",\\n        \\\"type\\\": \\\"status\\\",\\n        \\\"priority\\\": \\\"normal\\\",\\n        \\\"thread_id\\\": null,\\n        \\\"payload\\\": null,\\n        \\\"created_at\\\": \\\"2026-10-22T06:19:57Z\\\",\\n        \\\"delivered_at\\\": \\\"2026-10-22T06:19:58Z\\\",\\n        \\\"delivery_contract\\\": \\\"current_delivery\\\"\\n      }\\n    ],\\n    \\\"count\\\": 1,\\n    \\\"replayed\\\": false,\\n    \\\"acknowledged\\\": null,\\n    \\\"timedOut\\\": false,\\n    \\\"cancelled\\\": false,\\n    \\\"connectionLost\\\": false,\\n    \\\"mutation\\\": {\\n      \\\"requestId\\\": \\\"c39345e4-bb7f-4051-8ea4-a2f7f71dce9a\\\",\\n      \\\"replayed\\\": false\\n    }\\n  },\\n  \\\"_meta\\\": {\\n    \\\"runtimeId\\\": \\\"c56e00a8-7276-461e-9cb2-241ddac0252c\\\"\\n  }\\n}\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_e9fb50a8a9374abd9ef59f88814f04e5`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git pull; tail -8 master-delivery-memos.md; git status --short","max_output_tokens":1500}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_e9fb50a8a9374abd9ef59f88814f04e5`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"b24d74\",\"wall_time_seconds\":0.399402584,\"exit_code\":0,\"original_token_count\":467,\"output\":\"Already up to date.\\n\\n그래서 내 현재 의견은 **전면 재작성보다, 지원 동작과 확인 범위를 한곳에 놓고 실제 코드가 그 약속을 얼마나 쉽게 따라가는지 먼저 검토하자**는 쪽이야. 이미 코드가 그 역할을 잘 나눠 갖고 있다면 설명만 정리하면 되고, 같은 판단이 여러 파일에 중복되거나 기능 하나를 넣을 때 서로 무관한 곳까지 계속 고쳐야 한다면 그때 리팩토링 근거가 생겨.\\n\\n“조금씩 붙여서 이렇게 됐다”는 원인은 아직 이력을 확인하지 않았어. 지금 모기가 느낀 복잡함은 검토할 단서로 삼되, 과거 설계 전체에 대한 실패 판정까지 할 필요는 없어. 실제 수정 범위는 이 근거를 가지고 투두냥 쪽에서 판단할 일이야.\\n\\n- 전달 기록 (2026-10-22): 모기의 명시적 요청으로 전송 직전 자기·투두냥 주소 resolve를 다시 통과한 뒤, 이 메모와 답변 원문 전체를 투두냥 Run `run_885652410aef`에 한 번 보냈다. 메시지 `msg_a611995323e9`의 전송 접수를 확인했다. 현재 PR #44에는 추가하지 않고 다음 별도 PR에서 검토한다는 요청을 명시했으며, 수신·인수·후속 작업 등록은 아직 회신 대기다.\\n\\n- 수신·인수 회신 (2026-10-22, `msg_8bb069c081e4`): 투두냥은 전달 메시지 `msg_a611995323e9`의 수신·인수를 확인했고, 후속 작업을 todo-ops bd `td-0fd`(P3)에 연결했다고 보고했다. PR #44 범위에는 넣지 않고 머지 뒤 별도 PR에서 동작 계약을 먼저 정리하며 리팩토링 범위는 그 결과로 판단한다고 답했다. 담당자의 인수·후속 작업 연결 보고이며 구현·검증 완료는 아니다.\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n M raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_4fccf6aadfbe48da8003669c180e8a55`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\np=Path('master-delivery-memos.md')\ns=p.read_text()\nassert 'msg_d8209f61146a' not in s\ns+='''\n- 구조 초안 수신 (2026-10-22, `msg_d8209f61146a`): 투두냥이 `td-0fd`의 승인 전 설계 초안과 답변 원문을 보냈다. 담당자의 판독 기준은 mogi-productivity main `e5be55f`이며, 날짜·시각·저녁 경로의 공통 처리 중복, write/reminder 간 상호 import, 함수·파일 이름과 역할 불일치, 휴일 루틴의 직접 import를 확인했다고 보고했다. 제안은 공통 add 절차를 한곳으로 모으고 전송·추가 확인을 분리하며, 대상 선택·DB 읽기·입력 검사·결과 객체 생성을 역할별 파일로 나누는 것이다. 기존 필드를 유지하면서 모든 명령에 `summary: { sent, confirmed[], unconfirmed[], mismatched[] }`를 더하고 동작 약속표를 정식화하는 안이다.\n- 승인·검증 경계: 투두냥은 B′(기존 필드 유지 + summary 추가)를 모기가 앞서 선택했고 더 넓은 설계를 요청했다고 전달했다. 과외냥이는 이 메시지를 수신했으며 위 구현 사실을 해당 main에서 새로 검증하거나 구조 초안을 승인하지 않았다. 원문은 이번 세션 raw의 메시지 도구 출력에 보존된다. 구조 승인·구현·시험 완료로 기록하지 않는다.\n'''\np.write_text(s)\nPY\ngit diff --check -- master-delivery-memos.md\ngit add -- master-delivery-memos.md\ngit commit -m \"docs: Things 브릿지 승인 전 구조 초안 수신 기록\" -- master-delivery-memos.md","max_output_tokens":1200}));
+text(await tools.exec_command({cmd:"orca orchestration check --run run_e620ff658ae6 --ack delivery_2aedfeecbe3c --json","max_output_tokens":2000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_4fccf6aadfbe48da8003669c180e8a55`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.4 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a82b39\",\"wall_time_seconds\":0.000005291,\"exit_code\":0,\"original_token_count\":28,\"output\":\"[main 0a08f8f] docs: Things 브릿지 승인 전 구조 초안 수신 기록\\n 1 file changed, 3 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"b98821\",\"wall_time_seconds\":0.000005875,\"exit_code\":0,\"original_token_count\":120,\"output\":\"{\\n  \\\"id\\\": \\\"66784478-799b-4d77-aa11-7a2609f087ba\\\",\\n  \\\"ok\\\": true,\\n  \\\"result\\\": {\\n    \\\"runId\\\": \\\"run_e620ff658ae6\\\",\\n    \\\"deliveryId\\\": null,\\n    \\\"messages\\\": [],\\n    \\\"count\\\": 0,\\n    \\\"acknowledged\\\": \\\"delivery_2aedfeecbe3c\\\",\\n    \\\"timedOut\\\": false,\\n    \\\"cancelled\\\": false,\\n    \\\"connectionLost\\\": false,\\n    \\\"mutation\\\": {\\n      \\\"requestId\\\": \\\"3ceed199-8a6e-445e-a4ad-d59bc48242fb\\\",\\n      \\\"replayed\\\": false\\n    }\\n  },\\n  \\\"_meta\\\": {\\n    \\\"runtimeId\\\": \\\"c56e00a8-7276-461e-9cb2-241ddac0252c\\\"\\n  }\\n}\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+투두냥이 **`td-0fd`의 리팩토링 구조 초안**을 보냈어.
+
+핵심 제안은 이래.
+
+- 날짜·시각·저녁 경로에서 반복하는 절차를 한곳으로 모으기
+- Things에 보내는 방법과 결과 확인 부분을 분리하기
+- 기존 결과 필드를 유지하면서, 확인·미확인·불일치를 보여주는 `summary` 추가하기
+
+**아직 승인 전 초안**이야. 투두냥의 코드 조사 보고는 받았고, 나는 아직 새 기준 코드에서 재검증하지 않았어. 수신 내용을 메모에 기록·커밋하고 수신 확인도 마쳤다옹.
+~~~
+
+## Turn 13
+
+Codex turn key: `a5052269052d2dff`
+
+### 모기
+
+~~~text
+아니 그게 내가 자세히더이해하려고.. ㅂ너한테보내라고한거라옹 ㅡㅡ
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_cf910ef2898e41de85a7484b0e176168`
+
+입력:
+
+~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"git -C ../mogi-productivity rev-parse HEAD; git -C ../mogi-productivity cat-file -t e5be55f; git -C ../mogi-productivity show e5be55f:integrations/things/src/write.js | nl -ba | sed -n '85,151p'; git -C ../mogi-productivity show e5be55f:integrations/things/src/reminder.js | nl -ba | sed -n '79,118p'; git -C ../mogi-productivity show e5be55f:integrations/things/src/evening.js | nl -ba | sed -n '187,225p'","max_output_tokens":4300}),
+tools.exec_command({cmd:"git -C ../mogi-productivity show e5be55f:integrations/things/src/write.js | head -10; git -C ../mogi-productivity show e5be55f:integrations/things/src/reminder.js | head -10; rg -n 'integrations/things/src|things/src|from.*evening|from.*write' ../mogi-productivity/integrations/routine; rg --files ../todo-ops/contracts -g '*things*' -g '*refactor*'; rg -n '^##|^###|B′|td-0fd|summary' master-delivery-memos.md | tail -12","max_output_tokens":1700})
+]);r.forEach((x,i)=>text({i,...x}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_cf910ef2898e41de85a7484b0e176168`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"962a24\",\"wall_time_seconds\":0.000003791,\"exit_code\":0,\"original_token_count\":2417,\"output\":\"e5be55fc6169f2288174a50691a1fc96fc1d1aba\\ncommit\\n    85\\t  }\\n    86\\t  validateId(id);\\n    87\\t  return { status, id };\\n    88\\t}\\n    89\\t\\n    90\\texport async function upsertTodo({ scriptPath, todo, execImpl = execFileAsync, nativeImpl, platform = process.platform, apply = true, eveningOptions = {} }) {\\n    91\\t  const validated = validateTodo(todo);\\n    92\\t  // AppleScript cannot schedule This Evening, so evening goes through the Things URL helper.\\n    93\\t  if (validated.when === \\\"evening\\\") {\\n    94\\t    return requestEveningTodo({ scriptPath, todo: validated, apply, execImpl, nativeImpl, platform, ...eveningOptions });\\n    95\\t  }\\n    96\\t  if (validated.when.includes(\\\"@\\\")) {\\n    97\\t    return requestReminder({\\n    98\\t      readScript: path.join(path.dirname(scriptPath), \\\"read-reminder-target.applescript\\\"),\\n    99\\t      nativeScript: path.join(path.dirname(scriptPath), \\\"reminder.swift\\\"),\\n   100\\t      request: { when: validated.when }, todo: validated, apply, execImpl, nativeImpl, platform,\\n   101\\t    });\\n   102\\t  }\\n   103\\t  const readScript = path.join(path.dirname(scriptPath), \\\"read-reminder-target.applescript\\\");\\n   104\\t  const selection = await planReminder({ readScript, selector: { mode: \\\"title\\\", value: validated.areaId, title: validated.title }, execImpl, platform });\\n   105\\t  const plan = selection.target ? \\\"reuse\\\" : \\\"create\\\";\\n   106\\t  const preview = { status: \\\"preview\\\", plan, ...(selection.target ?? { areaId: validated.areaId }), todo: validated,\\n   107\\t    notesWrite: notesEffect(validated, plan), existingReminder: \\\"unavailable\\\", reminderWrite: \\\"not-requested\\\",\\n   108\\t    checklistWrite: plan === \\\"reuse\\\" ? \\\"preserved-existing\\\" : validated.checklistItems.length ? \\\"planned-create\\\" : \\\"none\\\" };\\n   109\\t  if (!apply) return preview;\\n   110\\t  const valuesScript = path.join(path.dirname(scriptPath), \\\"read-todo-values.applescript\\\");\\n   111\\t  const expectedNotes = await prepareNotesVerification({ scriptPath: valuesScript, selection, todo: validated, execImpl });\\n   112\\t  const listMode = [\\\"today\\\", \\\"anytime\\\", \\\"someday\\\"].includes(validated.when);\\n   113\\t  const dateParts = listMode\\n   114\\t    ? [\\\"\\\", \\\"\\\", \\\"\\\"]\\n   115\\t    : validated.when.split(\\\"-\\\");\\n   116\\t\\n   117\\t  let stdout;\\n   118\\t  try {\\n   119\\t    ({ stdout } = await execImpl(\\n   120\\t      \\\"osascript\\\",\\n   121\\t      [\\n   122\\t        scriptPath,\\n   123\\t        validated.areaId ?? \\\"\\\",\\n   124\\t        validated.title,\\n   125\\t        validated.notes ?? \\\"\\\",\\n   126\\t        listMode ? validated.when : \\\"date\\\",\\n   127\\t        ...dateParts,\\n   128\\t        validated.checklistItems.length > 0 ? buildThingsAddUrl(validated) : \\\"\\\",\\n   129\\t        Object.hasOwn(validated, \\\"notes\\\") ? \\\"replace\\\" : \\\"preserve\\\",\\n   130\\t        readScript,\\n   131\\t        selection.snapshot,\\n   132\\t      ],\\n   133\\t      { encoding: \\\"utf8\\\", timeout: 10_000, maxBuffer: 1024 * 1024 },\\n   134\\t    ));\\n   135\\t  } catch {\\n   136\\t    throw new Error(\\\"Could not write the personal Things to-do; verify Things before retrying.\\\");\\n   137\\t  }\\n   138\\t\\n   139\\t  let result;\\n   140\\t  try { result = parseWriteResult(stdout); }\\n   141\\t  catch { throw new Error(\\\"Invalid Things write response; mutation may have happened. Check Things before retrying.\\\"); }\\n   142\\t  if (result.status !== (plan === \\\"reuse\\\" ? \\\"updated\\\" : \\\"created\\\") || (selection.target && result.id !== selection.target.id)) {\\n   143\\t    throw new Error(\\\"Unexpected Things write target; mutation may have happened. Check Things before retrying.\\\");\\n   144\\t  }\\n   145\\t  const verification = await verifyTodoValues({ scriptPath: valuesScript,\\n   146\\t    readScript, selection, todo: validated, id: result.id, execImpl, expectedNotes });\\n   147\\t  const checklistWrite = result.status === \\\"updated\\\" ? \\\"preserved-existing\\\" : validated.checklistItems.length ? \\\"created\\\" : \\\"none\\\";\\n   148\\t  return { ...preview, ...result, checklistWrite, ...verification, appResponse: \\\"returned\\\", requestAcceptance: \\\"unverified\\\", reminderWrite: \\\"unverified\\\" };\\n   149\\t}\\n    79\\texport async function requestReminder({\\n    80\\t  readScript, nativeScript, request, todo = null, apply = false,\\n    81\\t  execImpl = execFileAsync, nativeImpl = nativeReminderRequest, platform = process.platform, timeZone,\\n    82\\t}) {\\n    83\\t  const when = validateReminderWhen(request.when, timeZone);\\n    84\\t  if (todo) {\\n    85\\t    todo = validateTodo(todo);\\n    86\\t    if (todo.when !== when) throw new Error(\\\"Conflicting Things add schedule.\\\");\\n    87\\t  }\\n    88\\t  const selector = todo ? { mode: \\\"title\\\", value: todo.areaId, title: todo.title }\\n    89\\t    : { mode: \\\"id\\\", value: validateId(request.id) };\\n    90\\t  const selection = await planReminder({ readScript, selector, execImpl, platform });\\n    91\\t  const plan = selection.target ? \\\"reuse\\\" : \\\"create\\\";\\n    92\\t  const preview = {\\n    93\\t    status: \\\"preview\\\", plan, when, timeZone: \\\"Asia/Seoul\\\",\\n    94\\t    ...(selection.target ?? { areaId: todo.areaId }),\\n    95\\t    reminderWrite: \\\"not-requested\\\", requestAcceptance: \\\"unverified\\\",\\n    96\\t    existingReminder: \\\"unavailable\\\", repetitionEligibility: plan === \\\"reuse\\\" ? \\\"unverified\\\" : \\\"new-task\\\",\\n    97\\t    ...(todo ? { checklistWrite: plan === \\\"reuse\\\" ? \\\"preserved-existing\\\" : todo.checklistItems.length ? \\\"planned-create\\\" : \\\"none\\\",\\n    98\\t      notesWrite: notesEffect(todo, plan) } : {}),\\n    99\\t  };\\n   100\\t  if (!apply) return preview;\\n   101\\t  const valuesScript = path.join(path.dirname(readScript), \\\"read-todo-values.applescript\\\");\\n   102\\t  const expectedNotes = todo ? await prepareNotesVerification({ scriptPath: valuesScript, selection, todo, execImpl }) : undefined;\\n   103\\t  const payload = {\\n   104\\t    operation: \\\"submit\\\", plan, when, readScript,\\n   105\\t    selectorArgs: selection.selectorArgs, expected: selection.snapshot,\\n   106\\t    // Creation properties are never included for an existing task.\\n   107\\t    ...(plan === \\\"create\\\" ? { title: todo.title, checklistItems: todo.checklistItems } : {}),\\n   108\\t    ...(todo && Object.hasOwn(todo, \\\"notes\\\") ? { notes: todo.notes } : {}),\\n   109\\t  };\\n   110\\t  const result = await nativeImpl(nativeScript, payload);\\n   111\\t  if (result?.status !== \\\"requested\\\") throw new Error(\\\"Invalid Things reminder dispatch result; check Things before retrying.\\\");\\n   112\\t  const verification = todo ? await verifyTodoValues({ scriptPath: valuesScript,\\n   113\\t    readScript, selection, todo, id: selection.target?.id, execImpl, expectedNotes }) : {};\\n   114\\t  return { ...preview, status: \\\"requested\\\", dispatch: \\\"returned\\\", reminderWrite: \\\"unverified\\\", requestAcceptance: \\\"unverified\\\", ...verification,\\n   115\\t    ...(todo && plan === \\\"create\\\" ? { checklistWrite: todo.checklistItems.length ? \\\"unverified\\\" : \\\"none\\\" } : {}) };\\n   116\\t}\\n   187\\t// `things:add --when evening`: reuses an exact-title open to-do (Keychain-token update) or adds a new one,\\n   188\\t// then reads back both the saved date (AppleScript) and the evening state (database). Evening that cannot\\n   189\\t// be read back is reported as \\\"unverified\\\", never as success.\\n   190\\texport async function requestEveningTodo({ scriptPath, todo, apply, execImpl, nativeImpl = nativeReminderRequest, platform,\\n   191\\t  databasePathImpl = thingsDatabasePath, openImpl = openThingsDatabase, nowImpl = () => new Date(), verifyImpl = verifyEvening }) {\\n   192\\t  const directory = path.dirname(scriptPath);\\n   193\\t  const readScript = path.join(directory, \\\"read-reminder-target.applescript\\\");\\n   194\\t  const valuesScript = path.join(directory, \\\"read-todo-values.applescript\\\");\\n   195\\t  const selection = await planReminder({ readScript, selector: { mode: \\\"title\\\", value: todo.areaId, title: todo.title }, execImpl, platform });\\n   196\\t  const plan = selection.target ? \\\"reuse\\\" : \\\"create\\\";\\n   197\\t  const preview = { status: \\\"preview\\\", plan, ...(selection.target ?? { areaId: todo.areaId }), todo,\\n   198\\t    notesWrite: notesEffect(todo, plan), reminderWrite: \\\"not-requested\\\", eveningWrite: \\\"planned\\\",\\n   199\\t    checklistWrite: plan === \\\"reuse\\\" ? \\\"preserved-existing\\\" : todo.checklistItems.length ? \\\"planned-create\\\" : \\\"none\\\" };\\n   200\\t  if (!apply) return preview;\\n   201\\t\\n   202\\t  const expectedNotes = await prepareNotesVerification({ scriptPath: valuesScript, selection, todo, execImpl });\\n   203\\t  const result = await nativeImpl(path.join(directory, \\\"reminder.swift\\\"), {\\n   204\\t    operation: \\\"submit\\\", plan, when: \\\"evening\\\", readScript,\\n   205\\t    selectorArgs: selection.selectorArgs, expected: selection.snapshot,\\n   206\\t    ...(plan === \\\"create\\\" ? { title: todo.title, checklistItems: todo.checklistItems } : {}),\\n   207\\t    ...(Object.hasOwn(todo, \\\"notes\\\") ? { notes: todo.notes } : {}),\\n   208\\t  });\\n   209\\t  if (result?.status !== \\\"requested\\\") throw new Error(\\\"Invalid Things evening dispatch result; check Things before retrying.\\\");\\n   210\\t\\n   211\\t  const verification = await verifyTodoValues({ scriptPath: valuesScript, readScript, selection, todo,\\n   212\\t    id: selection.target?.id, execImpl, expectedNotes, nowImpl });\\n   213\\t  const id = selection.target?.id ?? verification.observedId;\\n   214\\t  let eveningVerification = \\\"unverified\\\";\\n   215\\t  if (id) {\\n   216\\t    try {\\n   217\\t      const evening = await verifyImpl({ databasePath: databasePathImpl(), id, today: seoulToday(nowImpl()), openImpl });\\n   218\\t      eveningVerification = evening === \\\"verified\\\" || evening === \\\"mismatch\\\" ? evening : \\\"unverified\\\";\\n   219\\t    } catch { /* unreadable database stays unverified */ }\\n   220\\t  }\\n   221\\t  return { ...preview, status: \\\"requested\\\", dispatch: \\\"returned\\\", ...verification, eveningWrite: \\\"requested\\\", eveningVerification,\\n   222\\t    requestAcceptance: \\\"unverified\\\", ...(plan === \\\"create\\\" ? { checklistWrite: todo.checklistItems.length ? \\\"unverified\\\" : \\\"none\\\" } : {}) };\\n   223\\t}\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"131aa0\",\"wall_time_seconds\":0.000005667,\"exit_code\":0,\"original_token_count\":1311,\"output\":\"import { execFile } from \\\"node:child_process\\\";\\nimport { promisify } from \\\"node:util\\\";\\nimport path from \\\"node:path\\\";\\nimport { validateId, validateReminderWhen } from \\\"./reminder-validation.js\\\";\\nimport { requestEveningTodo } from \\\"./evening.js\\\";\\nimport { planReminder, requestReminder } from \\\"./reminder.js\\\";\\nimport { notesEffect, prepareNotesVerification, verifyTodoValues } from \\\"./write-verification.js\\\";\\n\\nconst execFileAsync = promisify(execFile);\\n\\nimport { execFile } from \\\"node:child_process\\\";\\nimport { promisify } from \\\"node:util\\\";\\nimport { validateId, validateReminderWhen } from \\\"./reminder-validation.js\\\";\\nimport { nativeReminderRequest } from \\\"./reminder-native.js\\\";\\nimport { notesEffect, prepareNotesVerification, verifyTodoValues } from \\\"./write-verification.js\\\";\\nimport path from \\\"node:path\\\";\\nimport { validateTodo } from \\\"./write.js\\\";\\n\\nconst execFileAsync = promisify(execFile);\\n\\n../mogi-productivity/integrations/routine/test/evening.test.js:4:import { runEveningStep } from \\\"../src/evening.js\\\";\\n../mogi-productivity/integrations/routine/src/stale.js:9:} from \\\"../../things/src/evening.js\\\";\\n../mogi-productivity/integrations/routine/src/stale.js:10:import { missingTemplateError } from \\\"./evening.js\\\";\\n../mogi-productivity/integrations/routine/test/stale.test.js:8:import { dispatchCancel, packThingsDate, verifyCancel } from \\\"../../things/src/evening.js\\\";\\n../mogi-productivity/integrations/routine/bin/holiday-routine.js:13:import { findAreaByName, loadConfig as loadThingsConfig } from \\\"../../things/src/config.js\\\";\\n../mogi-productivity/integrations/routine/bin/holiday-routine.js:14:import { dispatchCancel, dispatchEvening } from \\\"../../things/src/evening.js\\\";\\n../mogi-productivity/integrations/routine/bin/holiday-routine.js:15:import { upsertTodo, validateTodo } from \\\"../../things/src/write.js\\\";\\n../mogi-productivity/integrations/routine/bin/holiday-routine.js:17:import { runEveningStep } from \\\"../src/evening.js\\\";\\n../mogi-productivity/integrations/routine/test/launcher.test.js:161:      `import { writeFileSync } from \\\"node:fs\\\"; writeFileSync(${JSON.stringify(marker)}, \\\"x\\\"); process.exit(43);`,\\n../mogi-productivity/integrations/routine/test/two-steps.test.js:8:import { packThingsDate, verifyCancel, verifyEvening } from \\\"../../things/src/evening.js\\\";\\n../mogi-productivity/integrations/routine/test/two-steps.test.js:9:import { runEveningStep } from \\\"../src/evening.js\\\";\\n../mogi-productivity/integrations/routine/src/evening.js:8:} from \\\"../../things/src/evening.js\\\";\\n../todo-ops/contracts/2026-10-14-things-readback.md\\n../todo-ops/contracts/2026-10-14-things-any-area.md\\n../todo-ops/contracts/2026-10-14-things-url-update-research.md\\n../todo-ops/contracts/2026-10-22-things-someday.md\\n74:### 예쁜필기노트TDD — 모기 원문과 상태\\n86:### 틀린입력TDD — 별도로 명명한 입력 오류 장면\\n93:### 오류를 발견할 방법 — 두 노트의 동작 결정을 보조하는 운영 요구\\n99:### 비교에서 보존할 작성 경로·미확인 범위\\n111:## 2026-10-20 [mogi-productivity] PR #39 — 반복 설명·리뷰 이력을 줄여 현재 동작을 읽을 수 있게 본문 축약\\n120:## 2026-10-21 [todo-ops] PR #8 — 출력 제거 복사본과 기존 검사의 실패 확인 구분\\n134:## 2026-10-22 [todo-ops] PR #8 파서 — 목표 표현 뒤 빈 줄 누락 시 설명의 단어가 검색어에 섞임\\n151:## 2026-10-22 [mogi-productivity] Things 브릿지 — PR #44 이후 별도 PR에서 동작 계약·리팩토링 필요 범위 검토\\n161:### 과외냥이 답변 원문\\n189:- 수신·인수 회신 (2026-10-22, `msg_8bb069c081e4`): 투두냥은 전달 메시지 `msg_a611995323e9`의 수신·인수를 확인했고, 후속 작업을 todo-ops bd `td-0fd`(P3)에 연결했다고 보고했다. PR #44 범위에는 넣지 않고 머지 뒤 별도 PR에서 동작 계약을 먼저 정리하며 리팩토링 범위는 그 결과로 판단한다고 답했다. 담당자의 인수·후속 작업 연결 보고이며 구현·검증 완료는 아니다.\\n191:- 구조 초안 수신 (2026-10-22, `msg_d8209f61146a`): 투두냥이 `td-0fd`의 승인 전 설계 초안과 답변 원문을 보냈다. 담당자의 판독 기준은 mogi-productivity main `e5be55f`이며, 날짜·시각·저녁 경로의 공통 처리 중복, write/reminder 간 상호 import, 함수·파일 이름과 역할 불일치, 휴일 루틴의 직접 import를 확인했다고 보고했다. 제안은 공통 add 절차를 한곳으로 모으고 전송·추가 확인을 분리하며, 대상 선택·DB 읽기·입력 검사·결과 객체 생성을 역할별 파일로 나누는 것이다. 기존 필드를 유지하면서 모든 명령에 `summary: { sent, confirmed[], unconfirmed[], mismatched[] }`를 더하고 동작 약속표를 정식화하는 안이다.\\n192:- 승인·검증 경계: 투두냥은 B′(기존 필드 유지 + summary 추가)를 모기가 앞서 선택했고 더 넓은 설계를 요청했다고 전달했다. 과외냥이는 이 메시지를 수신했으며 위 구현 사실을 해당 main에서 새로 검증하거나 구조 초안을 승인하지 않았다. 원문은 이번 세션 raw의 메시지 도구 출력에 보존된다. 구조 승인·구현·시험 완료로 기록하지 않는다.\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+**이 초안은 “날짜·시각·저녁마다 따로 짠 전체 작업 흐름을 하나로 모으고, 실제로 Things에 보내는 부분과 추가 확인만 갈아 끼우자”는 설계야.** 파일을 잘게 쪼개는 것보다, **공통 순서를 한곳에서 책임지게 만드는 것**이 핵심이야.
+
+**① 공통 흐름을 모으는 이유 → ② 파일별 역할 → ③ `summary` 결과 모양** 순서로 풀게. 먼저 ①을 기존 코드와 같은 예시로 보자.
+
+모기가 **“우유 사기를 Someday로 옮겨줘”**라고 하든 **“우유 사기 알림을 특정 시각으로 바꿔줘”**라고 하든, 먼저 어떤 할 일인지 찾아야 해. Notes를 생략했다면 보존할 기준을 준비하고, 변경 요청을 보낸 뒤 결과를 읽는 일도 필요해.
+
+그런데 현재는 그 전체 순서를 일정 종류별 함수가 각각 맡고 있어.
+
+| 요청 | 전체 작업 순서를 담당하는 현재 함수 |
+|---|---|
+| Someday·Anytime·오늘·날짜만 | `write.js`의 `upsertTodo()` |
+| 날짜와 시각 | `reminder.js`의 `requestReminder()` |
+| 저녁 칸 | `evening.js`의 `requestEveningTodo()` |
+
+투두냥이 판독한 **main `e5be55f`**를 나도 확인했어. `things:add`가 사용하는 범위에서 아래 순서가 세 함수에 반복돼.
+
+```text
+upsertTodo() — 날짜·Someday 등
+  대상 찾기 → 생성/재사용 결정 → 미리보기
+  → Notes 비교 기준 준비 → 보내기 → 다시 읽기 → 결과 조립
+
+requestReminder() — 시각 지정
+  대상 찾기 → 생성/재사용 결정 → 미리보기
+  → Notes 비교 기준 준비 → 보내기 → 다시 읽기 → 결과 조립
+
+requestEveningTodo() — 저녁
+  대상 찾기 → 생성/재사용 결정 → 미리보기
+  → Notes 비교 기준 준비 → 보내기 → 다시 읽기 → 결과 조립
+```
+
+**세 함수의 코드가 글자 그대로 모두 같다는 뜻은 아니야.** 비슷한 작업 순서를 세 군데에서 각각 유지한다는 뜻이야. 시각 함수는 별도의 `things:reminder` 명령도 맡고 있어서, 그 차이도 리팩토링 때 보존해야 해.
+
+실제로 세 함수 모두 이런 생성·재사용 결정을 갖고 있어.
+
+```js
+const plan = selection.target ? "reuse" : "create";
+```
+
+대상 찾기·결정·Notes 준비·결과 조립은 각각 [`write.js:104`](/Users/leechaerim/orca/mogi-productivity/integrations/things/src/write.js:104), [`reminder.js:90`](/Users/leechaerim/orca/mogi-productivity/integrations/things/src/reminder.js:90), [`evening.js:195`](/Users/leechaerim/orca/mogi-productivity/integrations/things/src/evening.js:195)에 있어.
+
+이 구조에서는 예를 들어 **“쓰기 전에 공통으로 확인할 조건 하나”**를 추가할 때, 세 경로 중 어디에 반영해야 하는지 챙겨야 해. 실제 누락이 있었다고 확인한 건 아니지만, 같은 규칙을 여러 곳에서 유지하는 부담은 있는 거지.
+
+---
+
+새 초안은 그 순서를 이렇게 바꾸려는 거야. **아래는 제안 구조를 풀어쓴 흐름이고, 아직 구현된 호출 트리는 아니야.**
+
+```text
+things:add 명령
+└─ add/add-todo.js — 공통 작업 순서 담당
+   │
+   ├─ 입력 검사
+   ├─ select-todo.js로 대상 찾기
+   ├─ 생성할지 재사용할지 결정
+   ├─ 미리보기 만들기
+   │  └─ apply가 아니면 여기서 반환
+   │
+   ├─ Notes 비교 기준 준비
+   │
+   ├─ add/transports.js에 변경 요청 맡기기
+   │  └─ 이번 일정에 맞는 방식으로 Things에 전달
+   │
+   ├─ add/verifiers.js에 결과 확인 맡기기
+   │  └─ 기본 확인 + 이번 일정에 필요한 추가 확인
+   │
+   └─ result.js로 최종 결과 조립
+```
+
+여기서 **파이프라인**은 위처럼 **작업 단계를 순서대로 이어놓은 흐름**을 뜻해. 새로운 실행 프로그램 이름은 아니야.
+
+같은 `"우유 사기"`가 이미 하나 있는 상태에서, 요청만 바꿔보면 차이가 보여.
+
+| 공통 단계 | Someday 요청 | 특정 날짜·시각 요청 |
+|---|---|---|
+| 대상 선택 | 같은 제목의 열린 항목 ID 찾기 | 같은 제목의 열린 항목 ID 찾기 |
+| 생성·재사용 결정 | 그 ID 재사용 | 그 ID 재사용 |
+| Notes 생략 시 | 기존 Notes를 비교 기준으로 읽기 | 기존 Notes를 비교 기준으로 읽기 |
+| **Things에 전달** | AppleScript로 Someday 이동 | Swift가 수정 URL 전달, 토큰 사용 |
+| **추가 확인** | 그 ID가 Someday에 있는지 | 현재 제공하는 날짜·Notes 확인 범위 적용 |
+| 결과 조립 | 공통 결과 생성 함수 사용 | 공통 결과 생성 함수 사용 |
+
+**굵게 표시한 부분처럼 실제로 다른 행동은 남겨두고, 앞뒤의 공통 절차를 한곳에 모으자는 거야.**
+
+`transport`는 여기서 **변경 요청을 Things까지 전달하는 부분**의 이름이야. `verifier`는 **그 뒤 상태를 읽어 기대와 비교하는 부분**이고.
+
+예를 들어 Someday 요청에서는 이렇게 역할이 나뉘어.
+
+```text
+공통 흐름
+  “todo-id를 재사용하고, Notes는 보존한다”고 정함
+        │
+        ▼
+전달 담당
+  todo-id를 Someday로 옮겨달라고 Things에 요청
+        │
+        ▼
+확인 담당
+  todo-id의 날짜·Notes·Someday 소속 등을 읽어 비교
+        │
+        ▼
+결과 담당
+  확인한 것과 미확인인 것을 결과 객체에 담음
+```
+
+**공통 흐름이 “무엇을 어떤 순서로 할지”를 맡고, 전달·확인 코드는 “그 일을 실제로 어떻게 할지”를 맡는 구분**이야.
+
+이렇게 모아도 Things의 제약이 사라지지는 않아. 기존 항목의 URL 수정에는 여전히 토큰이 필요하고, 저녁 칸 확인에 현재 DB 읽기를 쓰는 차이도 남아. 대신 그 차이가 **전체 작업 순서 세 벌** 속에 흩어져 있기보다, **차이가 필요한 부분에 모이게 하는 것**이지.
+
+한 가지는 초안을 구체화할 때 챙겨야 해. **날짜만 요청해도 체크리스트를 넣어 새로 만들면 URL을 쓰잖아.** 따라서 `appleScriptDate` 같은 전달 담당이 그 분기를 품을지, 더 세분화할지는 아직 받은 초안만으로 확정되지 않았어. 지금 트리는 책임을 설명하는 지도이고, 모든 함수의 인자와 세부 분기까지 결정된 설계는 아니야.
+
+이 첫 부분에서 투두냥이 제시한 리팩토링 근거는 **공통 작업 순서가 세 곳에 반복된다는 점**이야. 앞서 우리가 “실제로 중복이 확인되면 근거가 생긴다”고 했던 데에 해당하는 구체 코드가 나온 거지.
+~~~
+
+## Turn 14
+
+Codex turn key: `89b932eaf1a4d232`
+
+### 모기
+
+~~~text
+아 한마디로말하면 쪼개는거네!ㅋ
+~~~
+
+### 과외냥이
+
+~~~text
+응 ㅋ **역할별로 쪼개고, 중복된 흐름은 하나로 합치는 거야.**
+
+세 함수가 각자 하던 **찾기 → 준비 → 보내기 → 확인**은 한곳에 모으고, 그 안에서 **보내는 방법·확인하는 방법**을 나눠 맡기는 거지.
+~~~
+
+## Turn 15
+
+Codex turn key: `c0ecec92dc624a20`
+
+### 모기
+
+~~~text
+아 더 안봐도되겠닼ㅋㅋ 내가 투두냥한테 진행하라고말할게
+~~~
+
+### 과외냥이
+
+~~~text
+ㅇㅋㅋㅋ 여기까지 보자옹. 투두냥한테는 모기가 직접 진행하라고 말하면 돼.
+~~~
+
+## Turn 16
+
+Codex turn key: `0425f7e8201844d8`
+
+### 모기
+
+~~~text
+지금 커밋하고 푸시해줘 ㅋ
+~~~

@@ -4895,3 +4895,149 @@ Codex turn key: `9a12faa5b704ec45`
 ~~~text
 ㅇㅇ 커밋 푸시도 해주셈
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_287c985e348c48829010f75b8935a786`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git status --short; git diff --stat; git log -3 --oneline; git remote -v","max_output_tokens":2000}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_287c985e348c48829010f75b8935a786`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"796ff4\",\"wall_time_seconds\":0.000005792,\"exit_code\":0,\"original_token_count\":119,\"output\":\" M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n raw/2026-10-21-02-pr8-inline-reference-visuals.md | 1800 +++++++++++++++++++++\\n 1 file changed, 1800 insertions(+)\\nac42471 docs: preserve session observation closing transcript\\n592e071 docs: preserve PR 8 focused tutoring transcript\\nfb0c542 docs: record focused PR 8 tutoring session observations\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (fetch)\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (push)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_92f4ba48be124ba3bfbe4fcdfd587fee`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git pull --ff-only","max_output_tokens":1500}));
+text(await tools.exec_command({cmd:"git diff --numstat; git diff --check; python3 - <<'PY'\nimport subprocess,re\ns=subprocess.check_output(['git','diff','--','raw/2026-10-21-02-pr8-inline-reference-visuals.md'],text=True)\nadded='\\n'.join(x[1:] for x in s.splitlines() if x.startswith('+') and not x.startswith('+++'))\nprint('Added turn headings:',len(re.findall(r'^## Turn ',added,re.M)))\npatterns={'OpenAI key':r'\\bsk-(?:proj-)?[A-Za-z0-9_-]{30,}','GitHub token':r'\\b(?:ghp_|github_pat_)[A-Za-z0-9_]{25,}','private key':r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'}\nhits=[name for name,pattern in patterns.items() if re.search(pattern,added)]\nprint('Credential pattern matches:',', '.join(hits) if hits else 'none')\nif hits:raise SystemExit(1)\nPY","max_output_tokens":1500}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_92f4ba48be124ba3bfbe4fcdfd587fee`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"d30e78\",\"wall_time_seconds\":0.342402417,\"exit_code\":0,\"original_token_count\":5,\"output\":\"Already up to date.\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"5851f6\",\"wall_time_seconds\":0.000004875,\"exit_code\":0,\"original_token_count\":29,\"output\":\"1800\\t0\\traw/2026-10-21-02-pr8-inline-reference-visuals.md\\nAdded turn headings: 3\\nCredential pattern matches: none\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_65edb2cb0da544d9ba4fae024f2baed0`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git add -- raw/2026-10-21-02-pr8-inline-reference-visuals.md","max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git commit -m \"docs: preserve hook investigation and whiteboard cleanup transcript\"","max_output_tokens":2000}));
+text(await tools.exec_command({cmd:"git push origin main","yield_time_ms":1000,"max_output_tokens":2000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_65edb2cb0da544d9ba4fae024f2baed0`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.4 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"71212b\",\"wall_time_seconds\":0.000004959,\"exit_code\":0,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"46ad40\",\"wall_time_seconds\":0.00000575,\"exit_code\":0,\"original_token_count\":30,\"output\":\"[main e5b4cef] docs: preserve hook investigation and whiteboard cleanup transcript\\n 1 file changed, 1800 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"a3c66d\",\"wall_time_seconds\":1.002224791,\"session_id\":34964,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_72673916ac4f4fcc94e2b299ebd2a4a2`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:34964,chars:"",yield_time_ms:1000,max_output_tokens:1000}));
+text(await tools.exec_command({cmd:"git status --short; git rev-parse --short HEAD; git rev-parse --short origin/main","max_output_tokens":1000}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_72673916ac4f4fcc94e2b299ebd2a4a2`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e2bfb4\",\"wall_time_seconds\":0.000015167,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   ac42471..e5b4cef  main -> main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"4fbbea\",\"wall_time_seconds\":0.00000475,\"exit_code\":0,\"original_token_count\":4,\"output\":\"e5b4cef\\ne5b4cef\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+커밋·푸시 완료했어옹. `main` → `e5b4cef`
+
+훅 조사·whiteboard 정리 대화 기록을 저장했고, 저장소 변경사항은 없어. 전역 설정 정리는 이 컴퓨터에 적용돼 있어.
+~~~
