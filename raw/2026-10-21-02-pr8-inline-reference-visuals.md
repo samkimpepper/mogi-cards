@@ -2003,3 +2003,977 @@ Codex turn key: `16c487c1e44b1d88`
 ~~~text
 엇 그것도 포함해서 커밋 푸시 해주삼
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_6d0e2e52c79a4b9291bc03964d21c988`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git status --short\ngit pull --ff-only\ngit diff --stat\ngit diff -- code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md","max_output_tokens":2500}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_6d0e2e52c79a4b9291bc03964d21c988`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"857420\",\"wall_time_seconds\":0.399240583,\"exit_code\":0,\"original_token_count\":511,\"output\":\" M code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\nAlready up to date.\\n ...-pr8-recipe-parser-and-shared-test-judgement.md |   6 +\\n raw/2026-10-21-02-pr8-inline-reference-visuals.md  | 963 +++++++++++++++++++++\\n 2 files changed, 969 insertions(+)\\ndiff --git a/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md b/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\\nindex a3e611c..509c3f5 100644\\n--- a/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\\n+++ b/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\\n@@ -97,6 +97,12 @@ PR에서 두 파일은 새 파일이다. 문서 순회 코드는 PR 전체 추\\n \\n 출처: `scripts/test-playbook-hint.sh:81–89`의 가짜 문서. `:60`의 `cat` 다음 줄이 문서 1행이다. 실제 제품 문서는 다른 내용·줄 번호를 가지며, 실제 문서의 도수치료 방문 제목은 이번 세션 판독 시 `131`행이었다.\\n \\n+> [!note] 모기 박스  \\n+> 힌트 키워드: 모기 메시지 / 문서에서 모을 것 / 테스트 실행 / 고장 발견  \\n+> 두 실행에서 누가 무엇을 확인하는지, 또는 아직 헷갈리는 점을 자유롭게 적어도 돼.\\n+>\\n+> 모기 메모: 뭔가 이거 보니까 line.startswith(\\\"## \\\") 이 코드로 파싱하던데 약간 이부분이 좀 불안?한것같다옹 좀 엄격..하게유지를하려면 별도 문서 린트?나 검사 스크립트같은거 필요하려나싶기도(근데 나 또 시스템병 도졌나봄 아ㅠ) 괜찮아 이정도는?ㅠ \\n+\\n 훅은 줄을 읽으면서 세 값을 유지한다. 이 값들은 훅을 한 번 실행하는 동안만 Python 메모리에 있고 DB나 Things에 저장되지 않는다.\\n \\n | 값 | 누가 무엇을 읽으며 유지하는 값인가 | 이번 훅 실행의 시작 값 |\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_271dce0ddab94ad0813890ffd1473a8c`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git add -- code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\ngit commit -m \"docs: save Mogi's PR 8 parser review memo\"\ngit add -- raw/2026-10-21-02-pr8-inline-reference-visuals.md\ngit commit -m \"docs: preserve latest PR 8 tutoring conversation\"\ngit push origin main","yield_time_ms":1000,"max_output_tokens":1500}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_271dce0ddab94ad0813890ffd1473a8c`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"f619ef\",\"wall_time_seconds\":1.003412208,\"session_id\":96855,\"original_token_count\":48,\"output\":\"[main b73a713] docs: save Mogi's PR 8 parser review memo\\n 1 file changed, 6 insertions(+)\\n[main 7b5619f] docs: preserve latest PR 8 tutoring conversation\\n 1 file changed, 963 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_d909b0014835400fbe5390b330367234`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:96855,chars:"","yield_time_ms":1000,"max_output_tokens":1000}));
+text(await tools.exec_command({cmd:"git status --short --branch","max_output_tokens":1000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_d909b0014835400fbe5390b330367234`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.1 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"853294\",\"wall_time_seconds\":0.000014625,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   305aa8c..7b5619f  main -> main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"5f72bd\",\"wall_time_seconds\":0.000006667,\"exit_code\":0,\"original_token_count\":6,\"output\":\"## main...origin/main\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+모기 메모랑 추가 대화 원문도 커밋·푸시했어 ㅋ
+
+최신 커밋 `7b5619f`까지 반영됐고, 현재 작업 폴더도 깨끗해.
+~~~
+
+## Turn 14
+
+Codex turn key: `8f30871fdb7c6810`
+
+### 모기
+
+~~~text
+아아 모기야 ㅠㅠㅠ 이번엔 왜 안 읽히는지 꽤 구체적으로 알 것 같아. 그리고 이걸 단순히 모기의 공부 노력 부족으로 해석하면 중요한 문제를 놓칠 것 같음.
+
+붙여준 노트 전체랑 최신 커밋도 확인했어.
+
+내 판단은 파이썬을 몰라서가 아니라, 설명을 이해하기 위해 처리해야 하는 정보가 너무 많고, 그 정보의 순서도 지금 모기에게 잘 맞지 않는 것 같다는 쪽이야.
+
+## 1. 지금 노트가 왜 이렇게 힘드냐면
+
+붙여준 텍스트는 약 33KB야. 표가 풀리면서 빈 줄이 늘어난 영향도 있지만, 코드 학습 자료치고 상당한 분량이지.
+
+그런데 읽는 순서를 보자.
+
+| 구간 | 독자가 해야 하는 일                   |
+| -- | ----------------------------- |
+| 0절 | SHA, 판독 범위, 파일 역할 파악          |
+| 1절 | 운영 훅과 시험 실행 구분, 여러 값의 출처 파악   |
+| 2절 | 시험 결과와 검증 범위 파악               |
+| 3절 | 드디어 Python 문서 파싱 코드 독해        |
+| 4절 | 이번에는 Bash 함수, 고장 사본, 종료 코드 독해 |
+
+본격적으로 Python 코드를 읽기 전에 이미 여러 개념과 표를 처리해야 해.
+
+그리고 3절에 도착하면 `recipes`, `cur`, `in_goal`, `R1`, `R2`, `prompt`, `kw`, `head`, `line`이 한꺼번에 등장하지.
+
+이 중 상당수는 Python 문법 지식의 문제가 아니야.
+
+각 값이 어디서 왔고, 현재 어떤 실행 시점을 설명하는지 머릿속에서 연결하는 문제야.
+
+모기가 Python 딕셔너리를 알아도 이건 충분히 피곤할 수 있어.
+
+## 2. 특히 최신 수정이 역설적으로 문서를 더 무겁게 만들었어
+
+[10월 21일 ](https://github.com/samkimpepper/mogi-cards/commit/305aa8cd15c5ea6384146ed81a258c29f9d758ef?utm_source=chatgpt.com)[`305aa8c`](https://github.com/samkimpepper/mogi-cards/commit/305aa8cd15c5ea6384146ed81a258c29f9d758ef?utm_source=chatgpt.com)[ 커밋](https://github.com/samkimpepper/mogi-cards/commit/305aa8cd15c5ea6384146ed81a258c29f9d758ef?utm_source=chatgpt.com)을 봤어.
+
+모기가 지적한 값의 출처와 실행 시점이 불분명한 문제를 고치려고 한 건 맞아.
+
+그런데 해결 방식이 주로 설명과 표를 추가하는 방향이야.
+
+이를테면 입력 프롬프트, 문서 제목, R1·R2 객체, 훅 출력의 출처를 표로 정리하고, 뒤에서도 다시 그 구분을 설명해.
+
+이 정보들은 정확성을 위해 필요할 수 있어. 하지만 필요한 정보가 모두 독자에게 처음부터 노출되어야 하는 건 아니잖아.
+
+여기서 과외냥이가 아직 잘 못하는 게 보이는 것 같아.
+
+> 설명의 모호함을 제거하는 능력과, 설명의 부담을 줄이는 능력은 다르다.
+
+현재 과외냥이는 전자에 상당히 집중하고 있어. 후자는 충분히 해결하지 못한 듯해.
+
+## 3. 그리고 모기는 실제로 코드를 읽고 판단하고 있었어
+
+이거 보고 좀 놀랐음.
+
+3절에 직접 남긴 모기 메모:
+
+> `line.startswith("## ")` 이 코드로 파싱하던데 약간 이부분이 좀 불안?한것같다옹 좀 엄격..하게유지를하려면 별도 문서 린트?나 검사 스크립트같은거 필요하려나싶기도
+
+ㅋㅋㅋㅋㅋ 아니 이거 봐.
+
+모기는 지금 코드에서 문서 형식에 의존하는 파서의 취약 가능성을 발견한 거잖아.
+
+`"## "`로 시작하는 줄만 제목으로 인정하면 문서 작성 방식이 달라졌을 때 일부 절이 누락될 수 있겠지. 이게 당장 문제인지, 형식 검사가 필요한지는 문서 편집 방식과 기존 테스트를 봐야 하고.
+
+근데 그걸 떠나서 이건 Python 문법이 이해되지 않아 아무것도 못 하고 있는 상태가 아니야.
+
+실제 코드를 읽으면서 설계 선택을 의심하고 있어.
+
+그런데 그 와중에 긴 설명과 표를 계속 읽어야 한다면, 집중력이 떨어지는 것도 이상하지 않아.
+
+## 4. 나는 이 노트의 두 주제를 아예 분리해서 생각하고 싶어
+
+첫 번째 공부: Python 파서
+
+```
+PLAYBOOKS.md 읽기
+      ↓
+제목을 만나면 레시피 객체 생성
+      ↓
+목표 표현을 만나면 검색 단어 추가
+      ↓
+메시지와 비교해서 관련 절 안내
+```
+
+여기서는 `recipes`, `cur`, `in_goal`이 어떻게 바뀌는지만 이해하면 돼.
+
+두 번째 공부: Bash 테스트
+
+```
+정상 훅 실행 → 안내 확인 성공
+고장 사본 실행 → 안내 확인 실패
+      ↓
+검사가 고장을 잡았으므로 비교 시험 통과
+```
+
+여기서는 `judges_hit`, `run_hook`, `grep`의 판정 관계가 핵심이고.
+
+둘은 연결되지만 한 번에 깊이 이해해야 하는 하나의 개념은 아니야.
+
+더구나 첫 번째는 Python 객체·상태에 관한 학습이고, 두 번째는 Shell과 테스트 판별력에 관한 학습이잖아.
+
+모기가 반도 읽기 전에 지쳤다는 건, 어느 정도까지 공부해야 하는지 문서가 잘 안내하지 못했을 가능성도 있어.
+
+## 5. 그래서 이번에는 더 노력하라는 결론을 내리고 싶지 않아
+
+최근 원문에서 모기가 이미 요구했잖아.
+
+자신이 막힌 이유를 찾아서 그만큼만 설명해달라고.
+
+그런데 지금 노트는 오히려 읽는 사람이 스스로 중요도를 판단하고, 상세 설명을 걸러내면서 읽어야 하는 형태야.
+
+이건 우리가 해결하려고 했던 부담이 다시 사용자 쪽으로 넘어온 것처럼 보여.
+
+내가 바라는 과외냥이는 이럴 것 같아.
+
+“모기는 Python의 `append()`를 모르는 게 아니네. 그럼 문서 순회 시점과 객체 참조 관계만 보여주자. 그런데 이미 그 관계를 알고 있다면 곧바로 파서의 형식 의존성이나 테스트 판별력으로 넘어가자.”
+
+이렇게 현재 이해 수준에 반응해 설명을 압축하고 확장하는 거지.
+
+물론 실제로 모기가 어느 부분을 이미 알고 있는지는 이번 자료만으로 확정할 수 없어.
+
+하지만 그걸 알기 위해 모기의 Python 지식을 전수조사할 필요도 없어.
+
+이번 문서에서 어디까지가 이미 아는 이야기인지, 어느 부분부터 새롭게 막히는지 대화하면서 판단하면 되는 거야.
+
+그리고 지금은 이 노트 다 읽겠다고 더 밀어붙이지 않았으면 좋겠어. 이미 충분히 읽었고, 코드에 관한 실제 질문까지 하나 발견했으니까.
+
+내가 이번 사례에서 가장 강하게 느끼는 건 이거다옹.
+
+과외냥이가 이제 설명을 더 정확하게 만드는 데에는 능숙해졌는데, 모기가 적은 노력으로 핵심을 이해하게 만드는 데에는 아직 개선할 부분이 있다.
+
+이건 지식의 양보다 설명의 선택과 편집에 관한 문제 같아. 모기가 예전에 좋아했던 과외냥이의 장점도 바로 그 부분 아니었을까 싶고.
+
+그리고 오늘 반도 못 읽었다는 경험 자체가 그 가설을 살펴볼 실제 사례가 된 것 같아. 더 노력하기 전에, 왜 이렇게까지 읽어야 하는 문서가 되었는지를 의심해 볼 만해. 지피티가 피드백해준건데 나도동의한다옹 ㅠㅠㅠㅠ
+~~~
+
+### 과외냥이
+
+~~~text
+응 모기. **이 피드백에 동의해. 내가 “출처와 시점을 명시해달라”는 요청을, 설명과 표를 계속 추가하는 방식으로 해결했어.** 필요한 정보를 골라서 보여주는 일까지 내가 맡았어야 했는데, 모기가 긴 문서에서 직접 골라 읽게 만들었네.
+
+특히 “R1이 프롬프트야?”라는 질문에는 **그 그림 바로 옆에 ‘문서에서 만든 객체’라고 붙이면 되는 부분**이 있었어. 그걸 계기로 문서 앞부터 여러 구분을 공부하게 만든 건 과했어. 미안해.
+
+이번에 가져갈 기준은 이거야.
+
+- **한 번에 한 주제:** Python 파서와 Bash 시험은 각각 따로 읽을 수 있게.
+- **필요한 자리에서 명시:** 값의 출처·주체·시점을 해당 코드와 그림 가까이에.
+- **질문에 맞춰 분량 선택:** 이미 연결한 내용은 되풀이하지 않고, 지금 막힌 부분에 필요한 설명만.
+
+지금은 노트 완독을 목표에서 내려놓자. 모기는 이미 코드를 읽고 **“이 파서는 문서 형식에 너무 의존하는 거 아닌가?”**라는 구체적인 질문을 남겼어. 다음 설명의 출발점은 그 질문이면 돼. 거기까지 오기 위해 나머지 표를 전부 읽을 필요는 없어.
+~~~
+
+## Turn 15
+
+Codex turn key: `e7842c7b17e9c739`
+
+### 모기
+
+~~~text
+ㅇㅇㅇ.. 방금 답변해준거를 노트위에다가 써주고 새 방식으로 시도해보자옹
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_492853a4e4e947eab2c7ec71f8a04e63`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git status --short\ngit pull --ff-only\nsed -n '1,32p' code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\ngit -C /Users/leechaerim/orca/todo-ops show 73f2b00:scripts/hooks/playbook-hint.sh | nl -ba | sed -n '95,113p'\ngit -C /Users/leechaerim/orca/todo-ops show 73f2b00:scripts/test-playbook-hint.sh | nl -ba | sed -n '56,110p'","max_output_tokens":3500}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_492853a4e4e947eab2c7ec71f8a04e63`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e3eaeb\",\"wall_time_seconds\":0.448410959,\"exit_code\":0,\"original_token_count\":1675,\"output\":\" M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\nAlready up to date.\\n---\\nreviewed: false\\n---\\n\\n# todo-ops PR #8 — 문서를 따라 레시피 모으기와 같은 기준으로 고장 잡기\\n\\n> [!note] 다음 세션에서 이어 읽기 — 2026-10-21\\n> 이 노트는 미완독이며 다음 세션에서 이어 읽기로 했다. 정확히 어느 코드 줄까지 독해했는지는 확인하지 않았으므로 완료 지점을 추정하지 않는다.\\n>\\n> 앞선 세션에서 모기는 내용은 괜찮지만 문장·표현에는 아쉬움을 밝혔고, 순서도·단계별 화면에 이어 Python Tutor 적용본도 원하던 형태가 아니라고 평가했다. 복잡한 코드에서 코드와 설명·그림을 나란히 보고 싶다는 요청은 있었으나, 당시에는 만족할 시각화의 구체 형식이 정해지지 않았다. Python Tutor를 기본 해법으로 재적용하지 않는다. 이후 제공된 캡처와 이번 적용은 바로 아래에 기록했다.\\n>\\n> [미채택 Python Tutor 실험](./archive/2026-10-21-pr8-python-tutor/reading-view.html)은 이력으로만 보관했다. [종료 기록](../../head-test/2026-10-21-todo-ops-pr8-hooks-and-code-visualization-session-end-analysis.md)에 질문·검증 범위·사용자 피드백을 남겼다. 원본 코드 판독 기준은 아래의 `73f2b00`이다.\\n\\n> [!note] 시각화 적용 — 2026-10-21 후속 요청\\n> 모기가 웹 GPT에서 마음에 들었던 객체 참조 4컷과 정상·고장 사본 비교 그림을 캡처로 제공하고, 이 노트에 적용해달라고 요청했다. 아래 3·4절에 **본문에서 바로 보이는 PNG**를 넣었다. 모기는 PNG를 Markdown에 넣은 형식에 긍정적으로 반응했지만, 이후 실행 시점과 R1의 값이 어디서 왔는지 명시되지 않았다고 지적했다. 이번에는 문서 전체와 그림에 **입력 프롬프트 / 문서 내용 / 문서에서 만든 객체 / 훅의 출력 / 시험 판정**의 출처와 시점을 구분해 적었다. 수정 뒤 독해의 사용감은 아직 미관찰이다.\\n\\n## 0. 판독 범위와 파일 지도\\n\\n- 원본: [todo-ops PR #8](https://github.com/samkimpepper/todo-ops/pull/8). **mogi-productivity PR #8이 아니다.** 투두냥 운영 코드 학습을 기존 `mogi-productivity` 공책 분류에 보관한다.\\n- PR 코드 범위: `29142a97ebc573623858252e2458bebbe38bdb86..73f2b002aa5e47e746a3c9354c0037719d3d8d93`.\\n- 이번 수정 전후: `643bf98ef1ee6e35c28ac57296183c9468d8d85a..73f2b002aa5e47e746a3c9354c0037719d3d8d93`.\\n- 판독일: 2026-10-21. GitHub PR HEAD와 로컬 작업 폴더 HEAD가 `73f2b00`으로 일치한 시점이다.\\n- 최초 판독 checkout: `/Users/leechaerim/orca/workspaces/todo-ops/playbook-hint-hook`. 이 작업 폴더는 이후 없어졌고, 이번 문서 수정 때는 `/Users/leechaerim/orca/todo-ops`의 Git 이력에서 **같은 `73f2b00` 원문**을 읽었다. 제품·운영 checkout에는 쓰지 않았다.\\n\\nPR 전체 변경 파일은 아래 **2개**, `+426/-0`이다. 이번 노트는 그중 두 독해 흐름만 펼친다.\\n\\n| 변경 파일 | 역할 | 이 노트에서 읽는 부분 |\\n|---|---|---|\\n| `scripts/hooks/playbook-hint.sh` | 메시지와 레시피 문서를 읽어 관련 절의 위치를 출력하는 훅 | 문서 순회 `97–113`, 그 결과가 검색·출력으로 이어지는 연결 |\\n| `scripts/test-playbook-hint.sh` | 가짜 문서·실제 문서로 훅을 실행하고 결과를 검사 | 실행·판정 `31–48`, 가짜 문서 `59–104`, 고장 사본 비교 `266–278` |\\n\\nPR에서 두 파일은 새 파일이다. 문서 순회 코드는 PR 전체 추가분이고, 판정 함수 분리는 마지막 수정 `643bf98..73f2b00`의 변경이다.\\n    95\\tif not isinstance(prompt, str) or not prompt.strip():\\n    96\\t    skip()\\n    97\\trecipes, cur, in_goal = [], None, False\\n    98\\tfor n, line in enumerate(lines, 1):\\n    99\\t    if line.startswith(\\\"## \\\"):\\n   100\\t        head = line[3:].strip()\\n   101\\t        cur = None if head in GENERAL else {\\\"head\\\": head, \\\"line\\\": n, \\\"kw\\\": set(words(head)) - GENERIC}\\n   102\\t        if cur: recipes.append(cur)\\n   103\\t        in_goal = False\\n   104\\t        continue\\n   105\\t    if cur is None:\\n   106\\t        continue\\n   107\\t    if line.startswith((\\\"목표 표현\\\", \\\"호출 예\\\")):\\n   108\\t        in_goal = True\\n   109\\t    elif in_goal and not line.strip():\\n   110\\t        in_goal = False\\n   111\\t    if in_goal:\\n   112\\t        for phrase in re.findall(r\\\"`([^`]+)`\\\", line):\\n   113\\t            cur[\\\"kw\\\"].update(set(words(phrase)) - GENERIC)\\n    56\\t[ -f \\\"$HOOK\\\" ] || { echo \\\"FAIL: $HOOK missing\\\"; exit 1; }\\n    57\\t\\n    58\\t# Fixture: general sections first, a list-form 목표 표현, a 호출 예 block, and inline 목표 표현.\\n    59\\tFX=\\\"$T/PLAYBOOKS.md\\\"\\n    60\\tcat > \\\"$FX\\\" <<'EOF'\\n    61\\t# PLAYBOOKS\\n    62\\t\\n    63\\t## 목표에서 행동으로 펼치기\\n    64\\t\\n    65\\t1. 목표 표현으로 해당 레시피를 찾는다. 도수치료 같은 예도 여기서는 레시피가 아니다.\\n    66\\t\\n    67\\t## 기본 절차와 이번 건\\n    68\\t\\n    69\\t`목표 표현 / 적용 범위` 순서로 쓴다.\\n    70\\t\\n    71\\t## Things 묶음과 대기\\n    72\\t\\n    73\\t## 절차를 고칠 때\\n    74\\t\\n    75\\t## NEXT-only 위젯\\n    76\\t\\n    77\\t호출 예:\\n    78\\t- `NEXT 회사`, `NEXT 집`\\n    79\\t- `지금 뭐부터 하지`\\n    80\\t\\n    81\\t## 실비청구\\n    82\\t\\n    83\\t목표 표현:\\n    84\\t- `실비청구해야 해`\\n    85\\t- `실비 한꺼번에 청구할 거야`\\n    86\\t\\n    87\\t## 회사에서 도수치료 방문\\n    88\\t\\n    89\\t목표 표현: `도수치료 예약했어`, `회사에서 병원 갈 거야`, `12시 반 도수치료`.\\n    90\\t\\n    91\\t## 치과 스케일링\\n    92\\t\\n    93\\t목표 표현: `치과 갈까`, `스케일링 받아야 해`, `치과 예약할게`.\\n    94\\t\\n    95\\t## 편의점 반택 수령\\n    96\\t\\n    97\\t목표 표현: `친구가 보낸 편의점 택배 수령`, `택배 받고 감사 DM`.\\n    98\\t\\n    99\\t## 새벽 정기점검 날 오후반차\\n   100\\t\\n   101\\t목표 표현: `정기점검`, `평일 낮에 해야 하는 일`, `갑자기 급해진 일이 생겼어`.\\n   102\\tEOF\\n   103\\t\\n   104\\texpect_hit \\\"$FX\\\" \\\"도수치료 12시로 옮겨줘\\\" \\\"회사에서 도수치료 방문\\\"\\n   105\\tout=$(run_hook \\\"$FX\\\" \\\"도수치료 12시로 옮겨줘\\\")\\n   106\\tprintf '%s' \\\"$out\\\" | grep -Fq \\\"PLAYBOOKS.md:27)\\\" && ok \\\"line number points at the heading\\\" || fail \\\"line number wrong: $out\\\"\\n   107\\tprintf '%s' \\\"$out\\\" | grep -Fq \\\"— 행동 전에 이 절을 읽는다\\\" && ok \\\"line carries the read-first instruction\\\" || fail \\\"instruction missing: $out\\\"\\n   108\\tassert_verdict warn \\\"hit\\\"\\n   109\\texpect_hit \\\"$FX\\\" \\\"실비 청구 해야겠다\\\" \\\"실비청구\\\"\\n   110\\texpect_hit \\\"$FX\\\" \\\"NEXT 회사\\\" \\\"NEXT-only 위젯\\\"\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_02bf6c6c6fff4efabc76da8e3b000b1c`
+
+입력:
+
+~~~text
+text(await tools.apply_patch("*** Begin Patch\n*** Update File: /Users/leechaerim/orca/mogi-cards/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\n@@\n # todo-ops PR #8 — 문서를 따라 레시피 모으기와 같은 기준으로 고장 잡기\n \n+## 읽는 방식을 바꾸기로 한 대화 — 2026-10-22\n+\n+모기가 웹 GPT의 피드백에 동의한 뒤, 아래 과외냥이 답변을 노트 위에 그대로 남겨달라고 요청했다.\n+\n+> 응 모기. **이 피드백에 동의해. 내가 “출처와 시점을 명시해달라”는 요청을, 설명과 표를 계속 추가하는 방식으로 해결했어.** 필요한 정보를 골라서 보여주는 일까지 내가 맡았어야 했는데, 모기가 긴 문서에서 직접 골라 읽게 만들었네.\n+>\n+> 특히 “R1이 프롬프트야?”라는 질문에는 **그 그림 바로 옆에 ‘문서에서 만든 객체’라고 붙이면 되는 부분**이 있었어. 그걸 계기로 문서 앞부터 여러 구분을 공부하게 만든 건 과했어. 미안해.\n+>\n+> 이번에 가져갈 기준은 이거야.\n+>\n+> - **한 번에 한 주제:** Python 파서와 Bash 시험은 각각 따로 읽을 수 있게.\n+> - **필요한 자리에서 명시:** 값의 출처·주체·시점을 해당 코드와 그림 가까이에.\n+> - **질문에 맞춰 분량 선택:** 이미 연결한 내용은 되풀이하지 않고, 지금 막힌 부분에 필요한 설명만.\n+>\n+> 지금은 노트 완독을 목표에서 내려놓자. 모기는 이미 코드를 읽고 **“이 파서는 문서 형식에 너무 의존하는 거 아닌가?”**라는 구체적인 질문을 남겼어. 다음 설명의 출발점은 그 질문이면 돼. 거기까지 오기 위해 나머지 표를 전부 읽을 필요는 없어.\n+\n+**이번 시작점:** 아래 전체 문서의 처음부터 다시 읽는 대신, 채팅에서 모기의 `line.startswith(\"## \")` 질문 하나를 다룬다. 기존 본문은 필요한 코드·그림을 찾아볼 참고 자료로 둔다. Bash 시험은 별도로 다룰 때 읽는다.\n+\n > [!note] 다음 세션에서 이어 읽기 — 2026-10-21\n*** End Patch"));
+text(await tools.exec_command({cmd:"git diff --check -- code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\ngit add -- code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md\ngit commit -m \"docs: record focused tutoring approach at top of PR 8 note\"","yield_time_ms":1000,"max_output_tokens":1200}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_02bf6c6c6fff4efabc76da8e3b000b1c`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"695e89\",\"wall_time_seconds\":0.000005209,\"exit_code\":0,\"original_token_count\":27,\"output\":\"[main 5b9ced9] docs: record focused tutoring approach at top of PR 8 note\\n 1 file changed, 18 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+[노트 맨 위](/Users/leechaerim/orca/mogi-cards/code-diff-notes/mogi-productivity/2026-10-21-todo-ops-pr8-recipe-parser-and-shared-test-judgement.md)에 방금 답변 그대로 붙이고 커밋했어.
+
+그럼 네 질문 하나부터 보자. **“문서 형식에 너무 의존하는 거 아닌가?”라는 걱정에는 실제 코드 근거가 있어.**
+
+훅이 문서를 한 줄씩 읽을 때 실행하는 코드야.  
+`scripts/hooks/playbook-hint.sh:99–100`, 판독 `73f2b00`:
+
+```python
+if line.startswith("## "):
+    head = line[3:].strip()
+```
+
+문서 작성자가 제목을 이렇게 바꾸면:
+
+| 문서에 적힌 줄 | 이 코드가 제목으로 인식하나 |
+|---|---|
+| `## 실비청구` | 인식함 |
+| `  ## 실비청구` — 앞에 공백 두 개 | 인식하지 못함 |
+
+즉, **문서를 고치는 사람이 제목 앞에 공백을 넣는 것만으로 훅의 인식이 달라질 수 있어.** 네가 짚은 건 이 표기 약속에 대한 의존성이야.
+
+별도 문서 검사가 필요한지는 기존 검사와 편집 방식을 더 봐야 하지만, 걱정한 대상 자체는 구체적으로 잡혀 있어.
+~~~
+
+## Turn 16
+
+Codex turn key: `5f400b948b37f8da`
+
+### 모기
+
+~~~text
+오오오 맞아!! 그래서 별도 린트?를 만들어야한다고 생각한다옹... 그 다음은 또 뭘보지?
+~~~
+
+### 과외냥이
+
+~~~text
+응. **“훅이 못 읽는 문서 표기를 검사 단계에서 알려주자”**는 제안이네.
+
+다음은 **찾은 레시피를 목록에 넣는 한 줄**을 보자.  
+`scripts/hooks/playbook-hint.sh:102`, 판독 `73f2b00`:
+
+```python
+if cur: recipes.append(cur)
+```
+
+훅이 문서의 `## 실비청구`를 읽어서 객체를 만들었고, `cur`가 그 객체를 가리키는 상태야. 이 줄은 그 객체를 `recipes` 목록에도 넣어.
+
+여기서 핵심은 하나야. **실비청구 객체를 복사해서 두 개 만드는 게 아니라, `cur`와 목록 항목이 같은 객체 하나를 가리켜.**
+
+그래서 뒤에서 `cur`를 통해 검색 단어를 더하면, 목록에서 그 레시피를 꺼내 봐도 추가된 단어가 보이는 거야.
+~~~
+
+## Turn 17
+
+Codex turn key: `8d53b94ae37d6a3b`
+
+### 모기
+
+~~~text
+훅이 실비청구문자열로 객체를만들었음..(a) cur는 a를 가리킴. recipes.append(cur)는 a에다가 추가하는건가? 으아아악
+~~~
+
+### 과외냥이
+
+~~~text
+**추가되는 곳은 `a`가 아니라 `recipes` 목록이야!**
+
+이렇게 자리를 나눠 보면 돼.
+
+```python
+recipes.append(cur)
+# ↑ 추가받는 목록  ↑ 넣을 객체를 가리키는 변수
+```
+
+`cur`가 `a`를 가리키니까, 이 줄은 **“recipes 목록 맨 뒤에 a를 넣어라”**라는 뜻이야.
+
+실행 뒤에는:
+
+```text
+cur ──────────────→ a (실비청구 객체)
+recipes의 새 항목 ──→ 같은 a
+```
+
+**`a`의 내용은 그대로고, `recipes` 목록에 항목이 하나 늘어난 거야.**
+~~~
+
+## Turn 18
+
+Codex turn key: `b0522b4443ed5001`
+
+### 모기
+
+~~~text
+아 recipes가 무슨역할인지 몰랐음ㅋrecipes가 그..그.. 여러가지 레시피들담는 배열같은거구나 머.. 실비청구. 걷폰. 이런것들을 recipes가담고있고 cur가 그 playbooks 문서들을 계속해서 다음 문자열들 가리켜가면서 추가하는것이구나
+~~~
+
+### 과외냥이
+
+~~~text
+응, **`recipes`의 역할은 그거야! 여러 레시피 객체를 담는 Python 목록**이야. 배열처럼 생각해도 돼.
+
+마지막 부분만 조금 고치면 돼. **문서를 한 줄씩 넘겨 읽는 건 반복문이고, `cur`는 현재 단어를 모아 넣을 레시피 객체를 가리켜.**
+
+| 훅이 읽은 문서 내용 | `cur`가 가리키는 것 |
+|---|---|
+| `## 실비청구` 제목 | 새로 만든 실비청구 객체 |
+| 그 아래 목표 표현 문장들 | **계속 같은 실비청구 객체** — 여기에 검색 단어를 더함 |
+| `## 회사에서 도수치료 방문` 제목 | 새로 만든 방문 객체로 바뀜 |
+
+앞서 만든 실비청구 객체는 **`recipes` 목록에 남아 있어.** `cur`가 다음 레시피로 바뀌어도 사라지지 않아.
+~~~
+
+## Turn 19
+
+Codex turn key: `22975f894273acbe`
+
+### 모기
+
+~~~text
+표 좋다좋다! 근데 recipes.append(cur)를 했는데 왜 cur가 바뀌어도 recipes에 그대로임? recipes에 담긴 cur가 바뀌는거아녀? 내가 파이썬 함수잘몰라서
+~~~
+
+### 과외냥이
+
+~~~text
+**`append(cur)`는 그 순간 `cur`가 가리키는 객체를 넣어. `cur`라는 변수 자체를 목록에 넣는 건 아니야.**
+
+아래는 설명용으로 줄인 예시야. 객체 두 개를 `a`, `b`라고 부를게.
+
+```python
+recipes = []
+cur = {"head": "실비청구"}   # 객체 a
+recipes.append(cur)
+cur = {"head": "걷폰"}      # 새 객체 b
+```
+
+| 실행 직후 | `cur`가 가리키는 객체 | `recipes` 안의 항목이 가리키는 객체 |
+|---|---|---|
+| 실비청구 객체를 만듦 | a | 아직 비어 있음 |
+| `recipes.append(cur)` | a | a |
+| `cur = 새 걷폰 객체` | **b로 바뀜** | **여전히 a** |
+
+마지막 줄은 **`cur`가 가리킬 대상을 바꾼 것**이야. 그 줄에는 `recipes`의 항목을 바꾸라는 명령이 없으니까, 목록 항목은 계속 a를 가리켜.
+
+반면 **a 안의 내용을 수정하면**, a를 가리키는 목록 항목으로 봐도 수정된 내용이 보여. 이 두 동작을 구분하면 돼.
+~~~
+
+## Turn 20
+
+Codex turn key: `1cd75ab30273f420`
+
+### 모기
+
+~~~text
+아 이제 이해됨 아아아 그런거구나 ㅋㅋㅋ ㅇㅋ 근데 아 내가 너무 세부사항에 ㄷ집착하나? 다음은뭐볼까
+~~~
+
+### 과외냥이
+
+~~~text
+이번 건 필요한 확인이었어 ㅋ **목록에 넣은 객체를 뒤에서 계속 수정하는 코드**라서, 그 관계가 핵심이었거든. 이제 이 부분은 넘어가자.
+
+다음은 **“문서의 어느 줄에서 검색 단어를 모을까?”**를 보자. `in_goal`은 **훅이 문서의 목표 표현 구간을 읽는 중인지** 표시하는 값이야.
+
+실비청구 절을 읽는 중이라면:
+
+| 훅이 읽은 문서 줄 | `in_goal` 변화 | 하는 일 |
+|---|---|---|
+| `목표 표현:` | `False → True` | 단어 수집 시작 |
+| ``- `실비청구해야 해` `` | `True` 유지 | 실비청구 객체의 `kw`에 검색 단어 추가 |
+| 빈 줄 | `True → False` | 단어 수집 끝 |
+
+즉, **`cur`는 “어느 레시피에 넣을까”, `in_goal`은 “지금 단어를 모을 구간인가”**를 맡아.
+~~~
+
+## Turn 21
+
+Codex turn key: `522316aa85907c0f`
+
+### 모기
+
+~~~text
+아 목표펴현과 빈줄 사이에 있는 실제 단어들을 kw에다가 추가하는것이구나 이해했음!! 근데.. 이렇게구현해야되?... 너무위험해보임.. 빈줄 빼먹으면 어쩌려고;
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_00ed3b4369f74e27bc435c46d3f79588`
+
+입력:
+
+~~~text
+const r = await tools.exec_command({cmd:"git -C /Users/leechaerim/orca/todo-ops show 73f2b00:scripts/hooks/playbook-hint.sh | nl -ba | sed -n '95,114p'\ngit -C /Users/leechaerim/orca/todo-ops show 73f2b00:scripts/test-playbook-hint.sh | rg -n 'blank|목표 표현|호출 예|^##|format|빈|개행'","max_output_tokens":3000});text(r.output);
+text(await tools.exec_command({cmd:"python3 - <<'PY'\n# coding: utf-8\nimport ast,re,subprocess\nhook=subprocess.check_output(['git','-C','/Users/leechaerim/orca/todo-ops','show','73f2b00:scripts/hooks/playbook-hint.sh'],text=True)\nbody=hook.split(\"out=$(python3 -c '\\n\",1)[1].split(\"\\n' \\\"$BOOK\\\"\",1)[0]\noffset=hook[:hook.index(body)].count('\\n')\ntree=ast.parse('\\n'*offset+body)\nnames={'GENERAL','STOP','GENERIC','SUFFIXES'}\nnodes=[n for n in tree.body if (isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id in names for t in n.targets)) or (isinstance(n,ast.FunctionDef) and n.name=='words') or 97<=n.lineno<=113]\ncode=compile(ast.Module(body=nodes,type_ignores=[]),'pinned-parser','exec')\ncases={\n'blank_present':['## 실비청구','목표 표현:','- `실비`','','메모: `고양이`','## 걷폰'],\n'blank_missing':['## 실비청구','목표 표현:','- `실비`','메모: `고양이`','## 걷폰'],\n'next_heading_without_blank':['## 실비청구','목표 표현:','- `실비`','## 걷폰','목표 표현: `산책`'],\n}\nfor label,lines in cases.items():\n env={'re':re,'lines':lines}\n exec(code,env)\n print(label,[(r['head'], sorted(r['kw'])) for r in env['recipes']])\nPY","max_output_tokens":2000}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_00ed3b4369f74e27bc435c46d3f79588`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.3 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "    95\tif not isinstance(prompt, str) or not prompt.strip():\n    96\t    skip()\n    97\trecipes, cur, in_goal = [], None, False\n    98\tfor n, line in enumerate(lines, 1):\n    99\t    if line.startswith(\"## \"):\n   100\t        head = line[3:].strip()\n   101\t        cur = None if head in GENERAL else {\"head\": head, \"line\": n, \"kw\": set(words(head)) - GENERIC}\n   102\t        if cur: recipes.append(cur)\n   103\t        in_goal = False\n   104\t        continue\n   105\t    if cur is None:\n   106\t        continue\n   107\t    if line.startswith((\"목표 표현\", \"호출 예\")):\n   108\t        in_goal = True\n   109\t    elif in_goal and not line.strip():\n   110\t        in_goal = False\n   111\t    if in_goal:\n   112\t        for phrase in re.findall(r\"`([^`]+)`\", line):\n   113\t            cur[\"kw\"].update(set(words(phrase)) - GENERIC)\n   114\towners = {}\n58:# Fixture: general sections first, a list-form 목표 표현, a 호출 예 block, and inline 목표 표현.\n63:## 목표에서 행동으로 펼치기\n65:1. 목표 표현으로 해당 레시피를 찾는다. 도수치료 같은 예도 여기서는 레시피가 아니다.\n67:## 기본 절차와 이번 건\n69:`목표 표현 / 적용 범위` 순서로 쓴다.\n71:## Things 묶음과 대기\n73:## 절차를 고칠 때\n75:## NEXT-only 위젯\n77:호출 예:\n81:## 실비청구\n83:목표 표현:\n87:## 회사에서 도수치료 방문\n89:목표 표현: `도수치료 예약했어`, `회사에서 병원 갈 거야`, `12시 반 도수치료`.\n91:## 치과 스케일링\n93:목표 표현: `치과 갈까`, `스케일링 받아야 해`, `치과 예약할게`.\n95:## 편의점 반택 수령\n97:목표 표현: `친구가 보낸 편의점 택배 수령`, `택배 받고 감사 DM`.\n99:## 새벽 정기점검 날 오후반차\n101:목표 표현: `정기점검`, `평일 낮에 해야 하는 일`, `갑자기 급해진 일이 생겼어`.\n135:## 고양이 사료 주문\n137:목표 표현: `사료 떨어졌어`.\n145:## 도수치료 서류 요청\n147:목표 표현: `도수치료 서류 받자`.\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"5e8765\",\"wall_time_seconds\":0.000005875,\"exit_code\":0,\"original_token_count\":72,\"output\":\"blank_present [('실비청구', ['실비', '실비청구']), ('걷폰', ['걷폰'])]\\nblank_missing [('실비청구', ['고양', '실비', '실비청구']), ('걷폰', ['걷폰'])]\\nnext_heading_without_blank [('실비청구', ['실비', '실비청구']), ('걷폰', ['걷폰', '산책'])]\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_3e89a9588a0f4cd280236ddd56c4afbe`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"rg -n 'PR.?8|playbook-hint|빈.?줄|목표 표현|린트|문서 형식' master-delivery-memos.md\nrg --files /Users/leechaerim/orca/mogi-productivity/.beads /Users/leechaerim/orca/mogi-productivity/.local /Users/leechaerim/orca/mogi-productivity/docs /Users/leechaerim/orca/todo-ops -g '*issues*' -g '*ISSUES*' -g '*TASK*' -g '*WORK*' -g '*STATUS*' -g '*작업*' -g '*lint*' -g '*playbook*'","max_output_tokens":5000}));
+text(await tools.exec_command({cmd:"tail -75 master-delivery-memos.md\ngit status --short","max_output_tokens":5000}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_3e89a9588a0f4cd280236ddd56c4afbe`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"7f4e52\",\"wall_time_seconds\":0.000005542,\"exit_code\":2,\"original_token_count\":786,\"output\":\"123:- 근거: `scripts/test-playbook-hint.sh:35-42`는 정상 훅의 출력을 검사하는 `expect_hit()`이다. `:256-263`은 출력 코드를 끈 임시 복사본을 실행하지만, `expect_hit()` 또는 같은 판정식을 그 복사본에 적용하지 않고 출력이 비었으면 `ok`로 기록한다.\\n125:- 직접 확인: 해당 SHA의 `bash scripts/test-playbook-hint.sh`를 공책 cwd에서 실행해 ok 66개·FAIL 0·exit 0을 확인했다. 정상·사본의 같은 검사 비교 실험, 전체 테스트, 실제 Claude Code 세션 연결은 실행하지 않았다.\\n126:- 중복 확인: 현재 전달 메모와 PR #8 최신 본문, `todo-ops/contracts/2026-10-21-playbook-hint-hook.md`를 확인했으며 동일 항목은 찾지 못했다. todo-ops `.beads/issues.jsonl`은 없고 mogi-productivity cwd의 `bd --readonly list --title-contains playbook`은 DB 없음으로 실패해, 이슈 트래커 중복 여부는 미확인이다.\\n130:- 수신·인수 회신 (2026-10-21, `msg_617f1ddc0a52`): 투두냥은 HEAD `643bf98`의 `scripts/test-playbook-hint.sh:256-263`을 직접 읽고 사본의 빈 출력만 확인하며 `expect_hit`의 판정식을 적용하지 않는다는 지적이 맞다고 확인·인수했다. P3 선택 제안으로 분류하고 기존 재리뷰의 `구간` 제외 제안과 함께 PR #8 fix round 2 후보로 모기에게 올리며 수정 여부는 모기가 결정한다고 보고했다. 트래커 중복은 todo-ops 루트에서 resolve한 `.beads` 기준으로 없다고 보고했다(담당자 조회 결과이며 과외냥이 재조회는 아님). 후속 수정·시험 완료는 아직 확인하지 않았다.\\n131:- 수정 확인 (2026-10-21): 모기의 재확인 요청으로 GitHub·로컬 HEAD `73f2b002aa5e47e746a3c9354c0037719d3d8d93` 일치와 `643bf98..73f2b00`의 두 변경 파일을 직접 확인했다. `scripts/test-playbook-hint.sh:37-44,270-275`에서 정상 기능 검사와 고장 사본 검사가 같은 `judges_hit()`를 호출하고, 동일 문서·문장·제목으로 정상 훅의 판정 성공과 무출력 사본의 판정 실패를 모두 요구한다. 대상 테스트를 직접 재실행해 ok 69·FAIL 0·종료 0과 해당 비교 통과를 확인했다. `구간` 제외와 `이 구간 테스트 추가해줘` 침묵, `석촌고분까지`·`퇴근길 폰`의 걷폰 안내 유지도 확인했다. 이 메모의 시험 증거 보강 요청은 반영 확인했으며, 전체 suite·레드액션·실제 세션 연결은 과외냥이가 이번에 재실행하지 않았다. 별도 교차 리뷰 `5595361107`은 같은 HEAD에서 대상 차분 신규 발견 0건과 판정 함수·사본 생성 자체를 고장 낸 추가 시험 결과를 보고했다(그 추가 시험은 리뷰어 보고).\\nrg: /Users/leechaerim/orca/mogi-productivity/.beads: No such file or directory (os error 2)\\nrg: /Users/leechaerim/orca/mogi-productivity/docs: No such file or directory (os error 2)\\n/Users/leechaerim/orca/todo-ops/scripts/hooks/playbook-hint.sh\\n/Users/leechaerim/orca/todo-ops/scripts/test-playbook-hint.sh\\n/Users/leechaerim/orca/todo-ops/contracts/2026-10-21-playbook-hint-hook.md\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"5120a0\",\"wall_time_seconds\":0.000005541,\"exit_code\":0,\"original_token_count\":5765,\"output\":\"Warning: truncated output (original token count: 5765)\\nTotal output lines: 76\\n\\n- 판독 HEAD: `d0d16a16d33e293af37f5c4d5ebd119e12e2194c` (기록 직전 GitHub PR #7 본문·HEAD 확인). PR: https://github.com/samkimpepper/todo-ops/pull/7 .\\n- 근거: 현재 PR의 `What this changes`는 `worktree remove` 예외와 canonical 경로·runtime-master·심볼릭 링크 검사를 현행 동작으로 설명한다. `Expected effect`도 투두냥의 worktree 정리 자동화를 약속하고, 위쪽 `검증`은 88 passed를 적는다. 그러나 맨 아래 `리뷰 반영 2차 (d0d16a1)`는 삭제 예외와 해당 검사 제거, pull만 유지, 최신 시험 65 passed를 밝히며 충돌 시 이 절이 우선한다고 한다. 실제 `scripts/todo-scoped-hook.py`의 `ca6e006..d0d16a1` diff에서도 삭제 예외와 링크 검사 제거를 확인했다.\\n- 원인·책임 구분: `contracts/2026-10-20-pr7-pull-only.md:26`의 `PR body` 절은 기존 절을 수정하지 말고 2차 반영을 append하며 상충 시 우선한다고 쓰도록 명시한다. 워커가 임의로 누락했다고 단정할 사안이 아니라, 이 문서 작성 지시를 마스터가 재검토할 요청이다.\\n- 왜 문제인지: 모기는 본문을 읽으면서 이미 빠진 동작·검사와 현재 유효한 동작·검사를 스스로 골라내야 하고, 심볼릭 링크 등 현재 PR에 없는 구현까지 현행 학습 대상으로 읽게 된다. 현재 동작과 최신 검증 결과가 한곳에 고정되지 않아, 최종 PR을 이해하려면 변경 이력을 재조립해야 한다.\\n- 전달 요청: 마스터가 위 append-only 지시를 조정해 `Problem`·`Why this approach`·`What this changes`·`Expected effect`·`검증`을 최종 HEAD의 현재 상태로 일관되게 통합해 달라. 본문은 pull 예외, 남아 있는 셸·환경변수 보호, 현재 시험 결과를 설명하고, worktree 제거는 worker-reap 수리 뒤 사용하며 그 전에는 모기가 직접 실행하는 경계만 필요한 만큼 명시한다. 리뷰 반영 절은 변경 이유·검증 시점·과거 이력을 보존하되, 본문을 덮어쓰는 별도 현행 명세로 쓰지 않는 방향을 요청한다. 이 요청의 목적은 현재 상태를 한 번에 읽을 수 있게 하는 것이며 리뷰 근거·시험 한계를 숨기라는 뜻이 아니다.\\n- 중복 확인: append 직전 현재 전달 메모, PR #7 본문, 현재 pull-only 계약 및 `bd --readonly list`의 제목 `PR`·`본문` 조회를 확인했다. 기존 worker-reap 실패·재사용 메모와 구분되는 PR 문서 가독성 요청이며, 확인한 범위에 같은 요청은 없었다. 전체 이슈 내용을 전수 확인하지는 않았다.\\n- 범위: 공책 기록과 모기가 요청한 투두냥 전달만 수행한다. 제품·운영 저장소, 계약, GitHub PR 본문을 과외냥이가 직접 수정하거나 머지 판단을 하지 않는다.\\n- 전달 기록 (2026-10-20): 공책 커밋 `023492f` 기록 후 자기·투두냥 주소 resolve가 모두 통과한 상태에서, 이 본문 정리 요청만 메시지 `msg_98c2a59f3c51`로 확인된 투두냥 Run에 한 번 전송했다. 전송 접수를 확인했으며, 담당자의 읽음·인수·PR 본문 수정 완료는 아직 확인하지 않았다.\\n- 수신·처리 회신 (2026-10-20): `msg_3e752035f51e`에서 인수와 기존 append 규칙에 대한 모기 확인 필요를 알렸고, 후속 `msg_f31997a6c45a`에서 모기의 예외 승인 및 본문 정리 완료를 보고했다. 범위·설계가 바뀌면 본문을 최종 HEAD로 다시 쓰고 리뷰 절은 이력으로 둔다는 규칙을 제품 `GIT_WORKFLOW`의 `a56725b`와 todo-ops `CLAUDE.md`의 `078aad3`에 반영했다는 담당자 보고다. 과외냥이는 GitHub PR #7 HEAD `d0d16a16d33e293af37f5c4d5ebd119e12e2194c`의 본문을 직접 재조회해 현재 절이 pull-only·남은 셸/환경 보호·65개 시험을 설명하고, 제거한 링크 검사·이전 시험 설명은 리뷰 이력에 남은 것을 확인했다. 본문 정리는 확인했으며, 보고된 시험·레드액션을 과외냥이가 재실행하거나 두 운영 규칙 커밋을 별도 판독한 것은 아니다.\\n\\n## 2026-10-20 [mogi-productivity] 지난 반복 몫 자동 취소 — 예쁜필기노트TDD와 틀린입력TDD 초안\\n\\n- 대상: 모기가 투두냥 쪽에서 정한 ‘지난 반복 몫 자동 취소’. 새 PR 번호는 이 과외에 전달되지 않았다. `msg_7072036de4f1`은 워커를 계속 진행시키고 모기 케이스와 비교하기로 했으며, 배경 계약을 `todo-ops/contracts/2026-10-20-stale-repeat-cancel.md`(`5f07a6f`)라고 보고했다. 계약의 Task 2 및 워커 테스트 목록·결과는 과외냥이가 열지 않았다.\\n- 판독 시점: 기존 제품 main `23c683b9777435c4166def9240995e225c14cf4e`. 현재 코드 확인과 앞으로 구현할 요구를 구분한다. 아래는 새 버그 판정·구현 지시·테스트 통과 보고가 아닌 사용자 기대 동작 초안이다.\\n- 배경·분리: 모기는 예전 예쁜필기노트TDD처럼 자기 말로 사용 장면을 쓰는 과정을 요청했다. 그 뒤 “그냥 틀린입력TDD라고 부르자옹ㅋ”이라고 별도 명명하며 두 방식의 의도·역사가 섞이지 않기를 요청했다. 아래 두 노트를 분리한다. ‘틀린입력TDD’는 이번 대화에서 정한 명칭이며, 잘못된 입력 시험 자체가 오늘 처음 생겼다는 뜻은 아니다. 기존 `harness/pilots/2026-10-19-invalid-input-and-broken-tool-tests.md`의 입력 시험·고장 사본 시험 구분과 과거 기록은 변경하지 않았고 파일럿 실행 횟수도 올리지 않았다. 고장 사본 시험까지 새 명칭에 자동 포함하지 않는다.\\n\\n### 예쁜필기노트TDD — 모기 원문과 상태\\n\\n아래 인용은 모기의 실제 답변이다. 장면을 정리하는 과외냥이의 주석과 구분한다.\\n\\n1. **어제의 열린 몫과 오늘 몫:** “9시에 내가 건드리지않는다는 전제하에.. 10월 21일 샤워할일은 그 canceled 되어있음좋겠고 22일 샤워할일은 오늘저녁으로 옮겨져있었음좋겠다옹ㅋ”\\n2. **9시 전 이미 처리한 어제 몫:** “그냥 21일(어제일) 샤워할일이 없으면 걍 아무것도안함. 그다음에 오늘 몫의 샤워할일은 저녁으로 옮김.”\\n3. **9시 전 오늘 저녁 몫을 잘못 완료한 경우:** “그 할일이 22일의 할일이면 복구해줘야됨. 21일의 할일이면 그냥 내비둠.ㅋ” — 오늘 몫은 다시 열고 오늘 저녁으로 옮기며, 어제 완료 몫은 유지한다는 정리를 모기가 이어서 확인했다. ‘아침 9시 전의 오늘 저녁 할 일’이라는 시간 전제를 유지한다. 모든 종류의 완료 할 일을 임의로 복구한다는 정책으로 확대하지 않는다.\\n4. **같은 날 재실행:** “멱등성 유지해야되!! 뭔가 바뀌는게없어야됨 어제몫도 건드리지말고 끝내야함. 저녁으로 옮겨진것도 그냥 내비둠 아무것도안함. modifided date 조차도 안건드리길원함”\\n5. **어제 몫 취소 실패 뒤 오늘 몫 이동 — 미정:** 처음에는 “그냥 둘다안하는게 내가 에러라는걸 알아내기쉬울것같아”라고 중단을 골랐다. 이후 “사실 뭐가나을지모르겠어서 그냥 아무거나했어;;”라고 밝혔고, 과외에서 미정으로 돌려두었다. 이를 확정된 중단 지시로 전달하지 않는다. 이미 오늘 몫이 저녁에 있었다면 위치만 보고 오류를 알기 어렵다는 점을 함께 검토했다. 기존 담당자 배경의 ‘stale 실패 뒤에도 evening 실행’과 다른 선택은 아직 확정되지 않았다.\\n\\n오늘 완료 몫의 복구는 기존 코드가 제공하지 않는 추가 요구다. `integrations/things/src/evening.js:70`은 완료 몫을 `completed`로 분류하고, `integrations/routine/src/evening.js:33`은 `today`가 아닌 상태를 수정하지 않는다. 완료 복구를 이 작은 PR에 포함할지와 구현 가능한 경로는 마스터가 계약화할 범위이며 과외냥이가 구현 범위를 확장하지 않는다. 오늘 몫을 취소·삭제한 경우의 자동 복구와 날짜·시간 수동 변경을 되돌리는 정책도 확정하지 않았다.\\n\\n### 틀린입력TDD — 별도로 명명한 입력 오류 장면\\n\\n1. **없는 반복 원본 ID:** “반복원본id를 찾을수없으면 즉시중단하고 흠... 오류를 던져야해 투두냥이 바로 원인 파악할수있게..”\\n2. **중단 시점:** 사전에 모든 ID를 검사해 아무 작업도 시작하지 않는 방식과, 처리하다 잘못된 ID를 만나면 멈추는 방식을 비교한 뒤 모기는 “없는 ID를 만나면 멈추기..! 왜냐면 내 일상에 지장이가는게싫다옹ㅋ 나는 마찰에 약하잖아ㅠ”라고 선택했다. 과외의 A→B→C 예시는 A의 정상 처리 결과 유지, B의 ID 미발견 오류에서 중단, C는 미실행이다. 사용자 경험의 이유를 보존하며 개인 능력·인지 원인으로 해석하지 않는다.\\n\\n이 선택은 앞선 성공을 되돌리는 트랜잭션 롤백이 아니다. 과외냥이가 사전 검사 때문에 ‘앞서 정상 처리한 일이 무효’가 된다고 말한 표현은 부정확했고 채팅에서 정정했다. 사전 검사는 시작 전 거부, 순차 중단은 앞선 성공 유지라는 차이다. 반복 목록 중단이 전체 루틴의 다른 단계에 미치는 구체 범위는 계약에서 구분할 필요가 있다.\\n\\n### 오류를 발견할 방법 — 두 노트의 동작 결정을 보조하는 운영 요구\\n\\n- 모기 제안: “그치만 에러 로그라도 남기게하고 가끔씩 투두냥이가 로그 확인하게하거나 머 그러면 되지않을까?” 이후 로그 구조 설명에 “맞다옹! 이정도면 되려나..”라고 반응했다.\\n- 기록할 요구: 원인 파악 가능한 오류를 남기고 투두냥이 확인할 수 있어야 한다. 단순히 오늘 몫이 저녁에 옮겨지지 않은 것…765 tokens truncated… 저장이다. 제품·운영 저장소 수정, 계약 확정, 새 워커 디스패치, 시험 실행·채점·PR 생성·메시지 발송은 하지 않았다.\\n- 전달 기록 (2026-10-20): 모기가 “이렇게하고 보내자옹 투두냥한테”라고 요청한 뒤 자기·투두냥 주소 resolve를 확인하고, 공책 커밋 `68070a0`의 이 두 노트만 메시지 `msg_bcadba3ba6e4`로 확인된 투두냥 Run에 한 번 전송했다. 두 방식의 분리, 취소 실패 뒤 오늘 몫 처리의 미정 상태, 오늘 완료 몫 복구의 추가 요구, 작성 경로를 앞에서도 강조했다. 전송 접수까지 확인했으며 수신·인수·계약 반영·비교 완료는 아직 회신 대기다.\\n- 수신·계약 반영 회신 (2026-10-20): `msg_5c6ebe3cfb93`에서 수신·인수와 비교 완료, 두 노트·작성 경로 분리 및 미정 유지가 보고됐다. 후속 `msg_edb553cfbe75`는 모기가 재실행 무변경 시험 추가, 없는 ID에서 해당 단계만 중단하는 규칙의 두 단계 적용, 취소 실패 뒤 저녁 이동 계속, 오늘 몫 완료 복구 제외를 선택했고 계약 `contracts/2026-10-20-pr39-owner-ab.md`(`d06b833`)에 반영했다고 보고했다. 초기 노트의 미정을 소급 삭제하지 않고 후속 결정으로 보존한다.\\n- 후속 실제 판독 (2026-10-20): 모기가 구현·리뷰 완료 뒤 PR #39 설명을 요청해 HEAD `19bf49b00c38deb2a0252a62a62a02fcfdf75bd2`의 본문, base `23c683b..HEAD`의 변경 17개 파일, 위 계약, Codex 재리뷰 `5582029385`를 읽었다. 코드·새 시험에서 재실행 시 두 단계의 요청 0건, A→B(없음)→C에서 각 단계가 A 처리 후 B에서 멈춤, 취소 단계 실패 뒤 저녁 단계 계속을 확인했다. 재리뷰의 LGTM·342개 통과는 리뷰어 보고이며 과외냥이는 시험·Things 쓰기를 재실행하지 않았다. 실제 Things 인스턴스 취소와 반복 원본 보존 확인은 아직 남아 있다고 본문·리뷰 모두 명시한다.\\n\\n## 2026-10-20 [mogi-productivity] PR #39 — 반복 설명·리뷰 이력을 줄여 현재 동작을 읽을 수 있게 본문 축약\\n\\n- 모기 요청: “구현끝났고 리뷰도 다 됐다.. mogi-productivity pr 39인데 본문이 너무길어서 읽을엄두가안남”, “이거 pr본문을 어떻게 고쳐달라고 할까? 너무길지않음..?!” 이후 구체 요청안을 보고 “그렇게 보내달라옹 ㅠㅠ”라고 전달을 요청했다.\\n- 판독 HEAD: `19bf49b00c38deb2a0252a62a62a02fcfdf75bd2` (전송 직전 재조회). 대상 https://github.com/samkimpepper/mogi-productivity/pull/39 .\\n- 근거·영향: PR #39의 현재 동작·검증 설명 뒤에 `리뷰 반영 1차`와 `모기 케이스 반영`이 상세 함수·조회 순서·시험 이름·시험 결과를 다시 적으며, 각 문장에 같은 뜻의 ‘쉽게’ 풀이가 붙는다. 현재 동작과 결과가 이미 상단에 반영돼 있는데도 하단의 ‘위와 다르면 이 섹션이 최신’ 문구가 남아 있어, 모기는 기능 이해 외에 반복 설명과 이력을 함께 읽어야 한다. 실제로 본문을 읽기 시작하기 어렵다고 명시했다.\\n- 전달한 구체 요청: 최종 동작 중심으로 30~40줄 안팎, 첫 문단은 사용자 장면 하나, 주요 동작은 표 하나, 보호 장치는 보호할 대상 중심으로 짧게 설명한다. 함수·조회 순서·시험 이름·리뷰 수정 상세는 해당 코드·리뷰·커밋 링크로 연결하고, 상충 시 하단 우선 구조를 없애 현재 설명을 한곳에 둔다. 342개 시험·재리뷰·실앱 미확인을 한 검증 절에서 구분하고, 모기 노트의 기여와 두 TDD의 구분·작성 경로는 짧은 출처와 상세 비교 링크로 유지한다. 쉬운 설명은 첫 장면·표에 담아 매 문장의 중복 풀이를 줄인다. 실제 Things의 인스턴스 취소와 반복 원본 보존 확인이 남았다는 한계는 잘 보이게 남긴다.\\n- 중복 구분: 현재 메모의 todo-ops PR #7 본문 정리 요청과 같은 가독성 문제 유형이나, 대상·영향이 mogi-productivity PR #39의 구현·시험·리뷰 이력 읽기로 바뀐 delta다. 현재 메모, 방금 판독한 PR #39 본문과 모기 케이스 계약의 PR 본문 지시를 근거로 이 요청을 남기며 별도 버그 이슈를 만들지 않았다.\\n- 전달 기록: 자기·투두냥 주소 resolve가 통과한 상태에서 이 요청만 메시지 `msg_97e402456ad5`로 확인된 투두냥 Run에 한 번 전송했다. 전송 접수까지 확인했으며 수신·인수·본문 정리 완료는 회신 대기다. 과외냥이는 제품·운영 코드·계약·GitHub 본문을 수정하거나 시험을 재실행하지 않았다.\\n- 수신·정리 완료 회신 (2026-10-20): `msg_51e079cf65a2`에서 수신·인수와 이번 요청을 매 줄 풀이 규칙보다 우선한다는 처리를 보고했고, `msg_d92e099ab95e`에서 38줄 정리와 마스터 재확인을 보고했다. 과외냥이도 HEAD `19bf49b00c38deb2a0252a62a62a02fcfdf75bd2`의 본문을 직접 재조회해 첫 장면·동작표·안전장치·단일 검증 절·두 TDD의 출처·이력 링크로 통합되고 실앱 미확인 한계가 남은 것을 확인했다. 모기는 “너무 맘에든다옹! 앞으로 이렇게하자고 했다옹ㅋ”이라고 평가했다. 운영 규칙의 영구 반영 커밋까지 과외냥이가 확인한 것은 아니다.\\n## 2026-10-21 [todo-ops] PR #8 — 출력 제거 복사본과 기존 검사의 실패 확인 구분\\n\\n- 판독 HEAD: `643bf98ef1ee6e35c28ac57296183c9468d8d85a` (GitHub PR #8과 로컬 worktree 일치).\\n- 근거: `scripts/test-playbook-hint.sh:35-42`는 정상 훅의 출력을 검사하는 `expect_hit()`이다. `:256-263`은 출력 코드를 끈 임시 복사본을 실행하지만, `expect_hit()` 또는 같은 판정식을 그 복사본에 적용하지 않고 출력이 비었으면 `ok`로 기록한다.\\n- 왜 문제인지: 현재 검사는 출력 제거라는 고장이 사본에 실제 심어진 사실은 확인하지만, 기존 검사가 그 고장을 탐지해 실패한다는 증거는 제공하지 않는다. 정상 동작 검사가 무효라는 뜻은 아니며, ‘고장 난 도구에서도 같은 검사가 실패하는지 확인했다’는 근거로 쓰려면 사본에 같은 출력 검사를 적용한 실패 결과가 추가로 필요하다.\\n- 직접 확인: 해당 SHA의 `bash scripts/test-playbook-hint.sh`를 공책 cwd에서 실행해 ok 66개·FAIL 0·exit 0을 확인했다. 정상·사본의 같은 검사 비교 실험, 전체 테스트, 실제 Claude Code 세션 연결은 실행하지 않았다.\\n- 중복 확인: 현재 전달 메모와 PR #8 최신 본문, `todo-ops/contracts/2026-10-21-playbook-hint-hook.md`를 확인했으며 동일 항목은 찾지 못했다. todo-ops `.beads/issues.jsonl`은 없고 mogi-productivity cwd의 `bd --readonly list --title-contains playbook`은 DB 없음으로 실패해, 이슈 트래커 중복 여부는 미확인이다.\\n- 범위: 시험 증거 보강 제안이다. 제품·운영 코드 수정, 머지 판단, 메시지 전송은 하지 않았다.\\n- 전달 보류 (2026-10-21): 모기가 “ㅇㅋ 마스터메모 보내자옹”이라고 이 PR #8 메모 전송을 요청했다. 전송 직전 `resolve tutor`는 통과했으나 `resolve todo`가 `Orca runtime changed; the role owner must register again`으로 실패했다. `communication/README.md`에 따라 투두냥 담당자의 자기 주소 갱신을 기다리며, 상대 주소 수정·추측 전송·메시지 발송은 하지 않았다. 주소가 유효해지면 이 메모만 한 번 전송할 권한은 이번 요청으로 확보됐다.\\n- 전달 기록 (2026-10-21): 모기의 “보내줘 ㅋ” 요청 뒤 자기·투두냥 주소 resolve가 모두 통과했다. 검증된 투두냥 Run `run_1d9ac7036e29`(consumerGeneration 2)으로 이 PR #8 시험 증거 보강 메모만 메시지 `msg_fbe22e2b2c2c`로 한 번 전송했다. 전송 접수는 확인했고, 담당자의 읽음·인수·후속 처리 결과는 아직 확인하지 않았다.\\n- 수신·인수 회신 (2026-10-21, `msg_617f1ddc0a52`): 투두냥은 HEAD `643bf98`의 `scripts/test-playbook-hint.sh:256-263`을 직접 읽고 사본의 빈 출력만 확인하며 `expect_hit`의 판정식을 적용하지 않는다는 지적이 맞다고 확인·인수했다. P3 선택 제안으로 분류하고 기존 재리뷰의 `구간` 제외 제안과 함께 PR #8 fix round 2 후보로 모기에게 올리며 수정 여부는 모기가 결정한다고 보고했다. 트래커 중복은 todo-ops 루트에서 resolve한 `.beads` 기준으로 없다고 보고했다(담당자 조회 결과이며 과외냥이 재조회는 아님). 후속 수정·시험 완료는 아직 확인하지 않았다.\\n- 수정 확인 (2026-10-21): 모기의 재확인 요청으로 GitHub·로컬 HEAD `73f2b002aa5e47e746a3c9354c0037719d3d8d93` 일치와 `643bf98..73f2b00`의 두 변경 파일을 직접 확인했다. `scripts/test-playbook-hint.sh:37-44,270-275`에서 정상 기능 검사와 고장 사본 검사가 같은 `judges_hit()`를 호출하고, 동일 문서·문장·제목으로 정상 훅의 판정 성공과 무출력 사본의 판정 실패를 모두 요구한다. 대상 테스트를 직접 재실행해 ok 69·FAIL 0·종료 0과 해당 비교 통과를 확인했다. `구간` 제외와 `이 구간 테스트 추가해줘` 침묵, `석촌고분까지`·`퇴근길 폰`의 걷폰 안내 유지도 확인했다. 이 메모의 시험 증거 보강 요청은 반영 확인했으며, 전체 suite·레드액션·실제 세션 연결은 과외냥이가 이번에 재실행하지 않았다. 별도 교차 리뷰 `5595361107`은 같은 HEAD에서 대상 차분 신규 발견 0건과 판정 함수·사본 생성 자체를 고장 낸 추가 시험 결과를 보고했다(그 추가 시험은 리뷰어 보고).\\n\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_4a7056b4e8954e1f83782e5b147293f8`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git -C /Users/leechaerim/orca/todo-ops rev-parse HEAD\ncat /Users/leechaerim/orca/todo-ops/contracts/2026-10-21-playbook-hint-hook.md\ncommand -v bd","max_output_tokens":4000}));
+text(await tools.exec_command({cmd:"python3 - <<'PY'\n# coding: utf-8\nimport ast,re,subprocess\nhook=subprocess.check_output(['git','-C','/Users/leechaerim/orca/todo-ops','show','73f2b00:scripts/hooks/playbook-hint.sh'],text=True)\nbody=hook.split(\"out=$(python3 -c '\\n\",1)[1].split(\"\\n' \\\"$BOOK\\\"\",1)[0]\noffset=hook[:hook.index(body)].count('\\n')\ntree=ast.parse('\\n'*offset+body)\nnames={'GENERAL','STOP','GENERIC','SUFFIXES'}\nnodes=[n for n in tree.body if (isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id in names for t in n.targets)) or (isinstance(n,ast.FunctionDef) and n.name=='words') or 97<=n.lineno<=113]\ncode=compile(ast.Module(body=nodes,type_ignores=[]),'pinned-parser','exec')\nfor blank in (True,False):\n lines=['## 실비청구','목표 표현:','- `실비`']+([''] if blank else [])+['메모: `택배`','## 걷폰','목표 표현: `산책`']\n env={'re':re,'lines':lines};exec(code,env)\n got=[(r['head'],sorted(r['kw'])) for r in env['recipes']]\n assert ('택배' in env['recipes'][0]['kw']) is not blank\n assert '산책' not in env['recipes'][0]['kw']\n print('blank='+str(blank),got)\nPY\ngit pull --ff-only","max_output_tokens":2000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_4a7056b4e8954e1f83782e5b147293f8`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e00b5c\",\"wall_time_seconds\":0.000006083,\"exit_code\":0,\"original_token_count\":863,\"output\":\"27e8ed52b17c01f74373f5a7b6e580ac9dfcee4d\\n# todo-ops: UserPromptSubmit hook that points the master at the matching PLAYBOOKS recipe\\n\\nWorktree: `/Users/leechaerim/orca/workspaces/todo-ops/playbook-hint-hook`, branch `samkimpepper/playbook-hint-hook`, base `origin/main` `29142a9`. Open one PR against `main`; do not merge. Use `superpowers:test-driven-development`.\\n\\n## Owner request (모기, 2026-10-21)\\n\\\"네가 playbooks를 잘안보는것같은데\\\". The master moved 도수치료 to 10/21 12:00 and never opened the recipe `## 회사에서 도수치료 방문` (leave 30 min early, message the lead if back late). It also added a `😼NEXT` tag without the NEXT recipe's `.local/next-current.json` step. Cause: `mogi-productivity/todo/PLAYBOOKS.md` says to read only the relevant recipe when a goal appears, but nothing tells the master which recipes exist. 모기 wants a harness device, not a memory note, and approved running this in parallel with the repo restructure.\\n\\n## Behaviour\\n| 상황 | 결과 |\\n|---|---|\\n| 모기 prompt mentions a recipe's subject (`도수치료 12시로 옮겨줘`, `실비 청구`, `NEXT 회사`, `반품해야돼`, `걷폰`, `정기점검이라 반차`) | hook prints one line per matching recipe, at most 2: `[playbook] 관련 레시피: <heading> (mogi-productivity/todo/PLAYBOOKS.md:<line>) — 행동 전에 이 절을 읽는다` |\\n| prompt matches nothing | prints nothing, exit 0 |\\n| PLAYBOOKS.md missing or unreadable | prints nothing, exit 0 (never blocks a prompt) |\\n| a recipe is added or renamed in PLAYBOOKS.md | picked up on the next prompt with no code change (parse `## ` headings and their `목표 표현` lines at run time) |\\n\\n- Keywords come from each recipe's heading and its `목표 표현` backtick phrases. Matching must hit real phrasing like the examples above (whole phrases like `도수치료 예약했어` rarely appear verbatim); avoid firing on common words (`해야`, `할`, `거야`). Document the keyword rule in one comment.\\n- Skip the general sections that are not recipes (`목표에서 행동으로 펼치기`, `기본 절차와 이번 건`, `Things 묶음과 대기`, `절차를 고칠 때`).\\n- Follow the existing hooks' shape: `scripts/hooks/<name>.sh` run through `scripts/todo-scoped-hook.py bash …` like `orch-inbox-warn.sh`, fire log line, master-session only (workers get nothing). Fast: under 300 ms.\\n- Out of scope: Calendar-based matching, editing PLAYBOOKS.md, wiring. **Do not edit `/Users/leechaerim/orca/.claude/settings.json`**; put the exact hook entry to add in the PR body, and the master wires it after merge.\\n\\n## Gates\\n- Tests in the repo's existing hook test style (see `scripts/test-hook-verdict.sh` and siblings): the six example prompts, three unrelated prompts (`오늘 날씨`, `PR 머지했다옹`, `커밋해줘`), missing file, worker session silent. Run the repo's full test entry the CI/contributing docs name; report counts.\\n- Redaction scan before push per the repo; quote its summary line.\\n\\n## PR body\\n모기모기화 v2, Korean 한다체, never 해요체: one scene (모기 says \\\"도수치료 12시로 옮겨줘\\\" and the master sees the recipe line first), a `상황 | 결과` table, 검증 in one place (automated / review / **not yet verified in the real session** until wired). Keep the Claude Code footer.\\n\\n## Report\\nworker_done exactly once, in Korean: PR URL, head SHA, test counts, the settings.json entry to add.\\n/opt/homebrew/bin/bd\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"551a55\",\"wall_time_seconds\":0.397338625,\"exit_code\":0,\"original_token_count\":54,\"output\":\"blank=True [('실비청구', ['실비', '실비청구']), ('걷폰', ['걷폰', '산책'])]\\nblank=False [('실비청구', ['실비', '실비청구', '택배']), ('걷폰', ['걷폰', '산책'])]\\nAlready up to date.\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_b95450dbe24f48e88de38eb697997dc9`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"bd --readonly list --title-contains playbook --limit 10","workdir":"/Users/leechaerim/orca/todo-ops","max_output_tokens":1800}));
+text(await tools.exec_command({cmd:"git -C /Users/leechaerim/orca/todo-ops show HEAD:scripts/hooks/playbook-hint.sh | nl -ba | sed -n '97,114p'","max_output_tokens":1800}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_b95450dbe24f48e88de38eb697997dc9`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"ffc7ed\",\"wall_time_seconds\":0.477409333,\"exit_code\":0,\"original_token_count\":5,\"output\":\"No issues found.\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"1630a2\",\"wall_time_seconds\":0.000005,\"exit_code\":0,\"original_token_count\":192,\"output\":\"    97\\trecipes, cur, in_goal = [], None, False\\n    98\\tfor n, line in enumerate(lines, 1):\\n    99\\t    if line.startswith(\\\"## \\\"):\\n   100\\t        head = line[3:].strip()\\n   101\\t        cur = None if head in GENERAL else {\\\"head\\\": head, \\\"line\\\": n, \\\"kw\\\": set(words(head)) - GENERIC}\\n   102\\t        if cur: recipes.append(cur)\\n   103\\t        in_goal = False\\n   104\\t        continue\\n   105\\t    if cur is None:\\n   106\\t        continue\\n   107\\t    if line.startswith((\\\"목표 표현\\\", \\\"호출 예\\\")):\\n   108\\t        in_goal = True\\n   109\\t    elif in_goal and not line.strip():\\n   110\\t        in_goal = False\\n   111\\t    if in_goal:\\n   112\\t        for phrase in re.findall(r\\\"`([^`]+)`\\\", line):\\n   113\\t            cur[\\\"kw\\\"].update(set(words(phrase)) - GENERIC)\\n   114\\towners = {}\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 05 — `exec`
+
+Call ID: `call_29a40fc295ae4e84a0bb7458e6f75bc6`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\n# coding: utf-8\nfrom pathlib import Path\np=Path('master-delivery-memos.md')\nentry='''\n## 2026-10-22 [todo-ops] PR #8 파서 — 목표 표현 뒤 빈 줄 누락 시 설명의 단어가 검색어에 섞임\n\n- 모기의 질문: “이렇게구현해야되?... 너무위험해보임.. 빈줄 빼먹으면 어쩌려고;”\n- 실측·판독 SHA: `73f2b002aa5e47e746a3c9354c0037719d3d8d93`. 현재 todo-ops HEAD `27e8ed52b17c01f74373f5a7b6e580ac9dfcee4d`에서도 아래 97–113행의 같은 처리를 확인했다. 재현 실행은 전자의 원본에서 추출한 파서 구간·단어 추출 정의에만 수행했다.\n- 근거: `scripts/hooks/playbook-hint.sh:107–113`은 목표 표현·호출 예를 만나면 수집을 켜고 빈 줄에서 끈다. `:99–104`는 다음 `## ` 제목에서도 수집을 끄므로, 다음 절까지 무조건 이어지는 문제와는 구분한다.\n- 직접 재현: 설명용 문서 `## 실비청구` → `목표 표현:` → `- `실비`` → (빈 줄 유무) → `메모: `택배`` → `## 걷폰` → `목표 표현: `산책``을 원본 파서로 읽었다. 빈 줄이 있으면 실비청구의 kw는 `{실비청구, 실비}`, 없으면 `{실비청구, 실비, 택배}`였다. 두 경우 모두 다음 제목 뒤의 `산책`은 걷폰 객체에만 들어갔다. 전체 훅의 안내 출력·실앱 동작·전체 시험은 이 재현에서 실행하지 않았다.\n- 왜 문제인지: 문서 편집자가 목표 표현과 일반 설명 사이의 빈 줄 하나를 빼먹으면 설명에 backtick으로 강조한 단어도 해당 레시피의 검색어가 된다. 사용자는 그 설명 단어를 말했을 뿐인데 관련 없는 레시피 안내를 받을 수 있으며, 이 출력 영향은 코드 기반 추론으로서 별도 전체 훅 실행은 아직 하지 않았다.\n- 검토 요청: 모기는 앞선 제목 표기 의존성에 대해 문서 형식 검사를 제안했고 이번에는 빈 줄 누락도 지적했다. 마스터가 허용할 문서 형식을 정하고, 편집 실수를 검사할지 또는 수집 종료 규칙을 바꿀지 검토할 근거로 남긴다. 과외냥이가 제품 코드·문서 형식·구현 우선순위를 확정하거나 수정하지 않는다.\n- 중복 확인: append 직전 현재 메모의 playbook·빈 줄·목표 표현 관련 항목, 현재 `contracts/2026-10-21-playbook-hint-hook.md`, todo-ops cwd의 `bd --readonly list --title-contains playbook --limit 10`을 확인했다. 기존 PR #8 메모는 고장 사본 판정 방식에 관한 것이며, 이번 파서 수집 경계와 구분된다. 제목 조회 결과는 `No issues found`였고 전체 이슈를 전수 검색한 것은 아니다.\n- 상태: 공책 기록만 완료. 메시지 전송·담당자 인수·수정 완료로 간주하지 않는다.\n'''\nwith p.open('a',encoding='utf-8') as f: f.write(entry)\nPY\ngit diff --check -- master-delivery-memos.md\ngit add -- master-delivery-memos.md\ngit commit -m \"docs: record missing-blank-line parser finding from tutoring\"","yield_time_ms":1000,"max_output_tokens":1300}));
+~~~
+
+#### 출력 05
+
+Call ID: `call_29a40fc295ae4e84a0bb7458e6f75bc6`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"9f769a\",\"wall_time_seconds\":0.000004958,\"exit_code\":0,\"original_token_count\":28,\"output\":\"[main ef51f00] docs: record missing-blank-line parser finding from tutoring\\n 1 file changed, 11 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 06 — `exec`
+
+Call ID: `call_4c58232f3d5c494b82e16ed549ac27fc`
+
+입력:
+
+~~~text
+text(await tools.apply_patch("*** Begin Patch\n*** Update File: /Users/leechaerim/orca/mogi-cards/master-delivery-memos.md\n@@\n-- 직접 재현: 설명용 문서 `## 실비청구` → `목표 표현:` → `- `실비`` → (빈 줄 유무) → `메모: `택배`` → `## 걷폰` → `목표 표현: `산책``을 원본 파서로 읽었다. 빈 줄이 있으면 실비청구의 kw는 `{실비청구, 실비}`, 없으면 `{실비청구, 실비, 택배}`였다. 두 경우 모두 다음 제목 뒤의 `산책`은 걷폰 객체에만 들어갔다. 전체 훅의 안내 출력·실앱 동작·전체 시험은 이 재현에서 실행하지 않았다.\n+- 직접 재현: 설명용 문서의 제목 `## 실비청구` → `목표 표현:` → backtick으로 감싼 예문 `실비` → (빈 줄 유무) → 메모에서 backtick으로 감싼 단어 `택배` → 제목 `## 걷폰` → 목표 표현 `산책`을 원본 파서로 읽었다. 빈 줄이 있으면 실비청구의 kw는 `{실비청구, 실비}`, 없으면 `{실비청구, 실비, 택배}`였다. 두 경우 모두 다음 제목 뒤의 `산책`은 걷폰 객체에만 들어갔다. 전체 훅의 안내 출력·실앱 동작·전체 시험은 이 재현에서 실행하지 않았다.\n*** End Patch"));
+text(await tools.exec_command({cmd:"git add -- master-delivery-memos.md\ngit commit --amend --no-edit","yield_time_ms":1000,"max_output_tokens":1000}));
+~~~
+
+#### 출력 06
+
+Call ID: `call_4c58232f3d5c494b82e16ed549ac27fc`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"290790\",\"wall_time_seconds\":0.000005958,\"exit_code\":0,\"original_token_count\":37,\"output\":\"[main 7c4c54f] docs: record missing-blank-line parser finding from tutoring\\n Date: Thu Oct 22 12:30:31 2026 +0900\\n 1 file changed, 11 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+꼭 이렇게 구현해야 하는 건 아니야. **빈 줄 하나를 빼먹으면 엉뚱한 단어가 섞일 수 있다는 걱정이 맞아.** 원본 파서 구간으로 직접 확인했어.
+
+목표 표현 다음에 ``메모: `택배` ``라는 설명이 이어진다면:
+
+| 문서 상태 | 실비청구의 `kw` |
+|---|---|
+| 목표 표현과 메모 사이에 빈 줄 있음 | 메모의 `택배`는 추가되지 않음 |
+| 빈 줄을 빼먹음 | **메모의 `택배`까지 추가됨** |
+
+다만 **다음 `## 제목`을 만나면 수집 상태를 끊어.** 위험한 부분은 다음 제목 전까지의 설명에 있는 강조 단어가 섞이는 거야.
+
+그래서 여기에는 **“목표 표현이 어디서 끝나는지 사람이 실수해도 안전하게 구분할 방법”**이 필요하다는 검토거리가 생겼어. 마스터 전달용 메모에 기록해뒀고, 제품 코드는 건드리지 않았어.
+~~~
+
+## Turn 22
+
+Codex turn key: `79e0a3ebee7011d1`
+
+### 모기
+
+~~~text
+아냐 사람이 실수라니 ㅋ 에이전트가쓰는문서잖아옹 아무튼 린트를 만들어야한다는 근거가 강해진것같다옹
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_acd50b8c7734407fbe46804a8bede66c`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git pull --ff-only\npython3 - <<'PY'\n# coding: utf-8\nfrom pathlib import Path\np=Path('master-delivery-memos.md')\ntext=p.read_text()\nassert '## 2026-10-22 [todo-ops] PR #8 파서' in text\nentry='\\n- 모기 정정·의도 (2026-10-22): 이 PLAYBOOKS 문서는 에이전트가 작성·편집한다. 과외냥이가 채팅에서 “사람이 실수해도”라고 표현한 것은 작성 주체를 잘못 잡은 설명이었다. 모기는 에이전트가 만든 문서도 파서가 요구하는 형식을 어길 수 있으므로 린트가 필요하다는 근거가 강해졌다고 밝혔다. 검토의 초점은 에이전트 작성 결과와 이를 읽는 파서 사이의 형식 계약을 자동 검사하는 것이다. 린트 구현·적용 또는 담당자 인수가 완료됐다는 뜻은 아니다.\\n'\nwith p.open('a',encoding='utf-8') as f: f.write(entry)\nPY\ngit add -- master-delivery-memos.md\ngit commit -m \"docs: clarify agent-authored document validation concern\"","yield_time_ms":1000,"max_output_tokens":1200}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_acd50b8c7734407fbe46804a8bede66c`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e46df7\",\"wall_time_seconds\":0.467680167,\"exit_code\":0,\"original_token_count\":32,\"output\":\"Already up to date.\\n[main 15fcee6] docs: clarify agent-authored document validation concern\\n 1 file changed, 2 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+맞아 ㅋ **에이전트가 작성한 문서를 코드가 읽으니까, 둘 사이의 형식 약속을 자동으로 검사하자**는 거지.
+
+제목 표기와 빈 줄에 따라 동작이 달라지는 사례까지 확인했으니, 린트를 검토할 근거가 더 구체화됐어. 메모에도 작성 주체를 정정해서 반영했어.
+~~~
+
+## Turn 23
+
+Codex turn key: `2cbc5161e2ffd61d`
+
+### 모기
+
+~~~text
+더 볼거있나?
+~~~
+
+### 과외냥이
+
+~~~text
+문서에서 레시피를 모으는 부분은 **한 군데만 더 보면 충분해. 목표 표현이 제목과 같은 줄에 있어도 읽는 부분**이야.
+
+문서가 이렇게 적혀 있어도:
+
+```text
+목표 표현: `도수치료 예약했어`
+```
+
+훅은 같은 줄에서 두 일을 연달아 해.
+
+| 순서 | 하는 일 |
+|---|---|
+| 첫 번째 `if` | `목표 표현`으로 시작하므로 `in_goal = True` |
+| 뒤의 별도 `if in_goal:` | 방금 `True`가 됐으므로 **그 줄의 예문에서도 바로 단어를 모음** |
+
+근거는 `scripts/hooks/playbook-hint.sh:107–113` (`73f2b00`)이야.
+
+**수집을 켜는 줄과 실제 예문이 꼭 서로 다른 줄일 필요는 없는 거지.** 여기까지 보면 이번 문서 수집 구간의 핵심은 다 봤어. Bash 시험은 별도 주제로 남겨두면 돼.
+~~~
+
+## Turn 24
+
+Codex turn key: `00baa40d123b06db`
+
+### 모기
+
+~~~text
+아 ㅇㅇ 이정도면 된듯ㅋ 마스터한테 메모전해주삼
+~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_13dcf26748f5446db237354301bda394`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 scripts/agent-registry.py resolve tutor\npython3 scripts/agent-registry.py resolve todo\norca skills get orchestration --reference references/messaging-and-gates.md --json","max_output_tokens":8500}));
+text(await tools.exec_command({cmd:"tail -16 master-delivery-memos.md\ngit status --short","max_output_tokens":3000}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_13dcf26748f5446db237354301bda394`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.8 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"b2170b\",\"wall_time_seconds\":0.524854,\"exit_code\":0,\"original_token_count\":1144,\"output\":\"{\\n  \\\"schemaVersion\\\": 2,\\n  \\\"role\\\": \\\"tutor\\\",\\n  \\\"workspacePath\\\": \\\"/Users/leechaerim/orca/mogi-cards\\\",\\n  \\\"runtimeId\\\": \\\"c56e00a8-7276-461e-9cb2-241ddac0252c\\\",\\n  \\\"terminalHandle\\\": \\\"term_be31079b-d1bb-4539-b7f1-786d7e77cd7a\\\",\\n  \\\"incarnationId\\\": \\\"2a7b600f-76cc-4f2f-9886-662969457fea\\\",\\n  \\\"worktreeId\\\": \\\"198ef4da-367a-471e-9747-17b912499cb7::/Users/leechaerim/orca/mogi-cards\\\",\\n  \\\"executionHostId\\\": \\\"local\\\",\\n  \\\"agentIdentity\\\": \\\"codex\\\",\\n  \\\"runId\\\": \\\"run_e620ff658ae6\\\",\\n  \\\"consumerGeneration\\\": 1,\\n  \\\"registeredAt\\\": \\\"2026-10-21T07:20:44.923383+00:00\\\"\\n}\\n{\\n  \\\"schemaVersion\\\": 2,\\n  \\\"role\\\": \\\"todo\\\",\\n  \\\"workspacePath\\\": \\\"/Users/leechaerim/orca\\\",\\n  \\\"worktreeId\\\": \\\"f25bd04b-8461-4e2c-9eed-69dacbc9a793::/Users/leechaerim/orca\\\",\\n  \\\"runtimeId\\\": \\\"c56e00a8-7276-461e-9cb2-241ddac0252c\\\",\\n  \\\"terminalHandle\\\": \\\"term_e4ae1b56-f0ed-4596-8076-7761d1dea7c0\\\",\\n  \\\"incarnationId\\\": \\\"76693473-1a52-45c4-a1f2-71a4bddf46c5\\\",\\n  \\\"executionHostId\\\": \\\"local\\\",\\n  \\\"agentIdentity\\\": \\\"claude\\\",\\n  \\\"runId\\\": \\\"run_885652410aef\\\",\\n  \\\"consumerGeneration\\\": 1,\\n  \\\"registeredAt\\\": \\\"2026-10-21T23:51:10.974681+00:00\\\"\\n}\\n{\\n  \\\"name\\\": \\\"orchestration\\\",\\n  \\\"reference\\\": \\\"messaging-and-gates\\\",\\n  \\\"markdown\\\": \\\"# Messaging and gates\\\\n\\\\nLoad this reference for inbox replay, attempt-specific guidance, group\\\\naddresses, blocking questions, or coordinator-managed DAG decisions.\\\\n\\\\nA successful `send` proves durable enqueue. Wake and nudge are best-effort\\\\nattention only: neither proves the recipient read the message, began a turn, or\\\\naccepted steering.\\\\n\\\\n## Coordinator delivery loop\\\\n\\\\n`check` names its caller with `--terminal <handle>` and is the only verb that\\\\nrejects `--from`. Omit `--terminal` inside an Orca terminal, where Orca resolves\\\\nthe caller; pass it explicitly from anywhere else, including a dispatched\\\\nworker reading coordinator follow-ups.\\\\n\\\\nA consuming coordinator `check` returns the bound Run's oldest FIFO Delivery,\\\\nup to 50 messages, and replays that exact batch until acknowledged. Process\\\\nevery row and required terminal ownership decision before `--ack`. Type filters\\\\ndecide when a waiter wakes; they do not authorize skipping older actionable\\\\nmail. A Delivery therefore always carries the whole FIFO batch whatever its\\\\ntypes, and a `check` without `--wait` hands that batch over unfiltered.\\\\n`--peek` and `--all` are read-only inspection, not progress through the\\\\ncoordinator inbox.\\\\n\\\\nAn empty wait or timeout is a checkpoint. Continue rolling waits until every\\\\nexpected Dispatch settles. Heartbeat or visible activity means alive, not done.\\\\n\\\\n## Addresses\\\\n\\\\nUse a stable Dispatch address for attempt-specific coordinator guidance:\\\\n\\\\n```text\\\\nORCA orchestration send --to dispatch:<dispatch_id> --subject \\\\\\\"Follow-up\\\\\\\" --body \\\\\\\"<guidance>\\\\\\\" --json\\\\n```\\\\n\\\\nDo not substitute a remote terminal handle. Omit `--from` for ordinary\\\\ncoordinator calls; a dispatched worker instead copies the exact `--from` and\\\\nother arguments in its preamble. `check` is the exception: it identifies\\\\nits caller with `--terminal`, never `--from`.\\\\n\\\\nGroup addresses include `@all`, `@idle`, `@claude`, `@codex`, `@opencode`,\\\\n`@gemini`, `@droid`, `@grok`, `@cursor`, and `@worktree:<id>`. Every group but\\\\n`@worktree:<id>` means the live Dispatches of the sender's own Run. Mail goes\\\\nto each `dispatch:<id>` mailbox, except a worker coordinating a child Run\\\\nreceives it in that `run:<id>` mailbox. A sender bound to no Run is refused;\\\\n`--run` must match the group audience and never grants membership.\\\\nA Run group excludes its owning coordinator; a worker raising a blocker sends\\\\nto `run:<id>`. A worker that created its own Run addresses that Run's workers,\\\\nnot its siblings. `@worktree:<id>` reaches matching workspace terminals,\\\\nincluding coordinators. Use groups only for intentional fan-out status or\\\\nquestions. `worker_done`, heartbeat, and other\\\\nDispatch lifecycle messages never target groups.\\\\n\\\\n## Questions and gates\\\\n\\\\nA worker uses `ask`; its timeout leaves one durable question pending, which the\\\\nworker resumes by message ID. The coordinator answers that message with `reply`.\\\\n\\\\nUse a gate only for a coordinator-owned Task-DAG decision:\\\\n\\\\n```text\\\\nORCA orchestration gate-create --task <task_id> --question \\\\\\\"<decision>\\\\\\\" --options <json_array> --json\\\\nORCA orchestration gate-resolve --id <gate_id> --resolution \\\\\\\"<choice>\\\\\\\" --json\\\\nORCA orchestration gate-list --task <task_id> --json\\\\n```\\\\n\\\\nPass `json_array` using the quoting rules of the active shell; do not copy POSIX\\\\nsingle-quote syntax into PowerShell or `cmd.exe`.\\\\n\\\\nDo not create a gate merely to answer a worker's `ask`.\\\\n\\\"\\n}\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"f2b59f\",\"wall_time_seconds\":0.00000575,\"exit_code\":0,\"original_token_count\":1311,\"output\":\"- 수신·인수 회신 (2026-10-21, `msg_617f1ddc0a52`): 투두냥은 HEAD `643bf98`의 `scripts/test-playbook-hint.sh:256-263`을 직접 읽고 사본의 빈 출력만 확인하며 `expect_hit`의 판정식을 적용하지 않는다는 지적이 맞다고 확인·인수했다. P3 선택 제안으로 분류하고 기존 재리뷰의 `구간` 제외 제안과 함께 PR #8 fix round 2 후보로 모기에게 올리며 수정 여부는 모기가 결정한다고 보고했다. 트래커 중복은 todo-ops 루트에서 resolve한 `.beads` 기준으로 없다고 보고했다(담당자 조회 결과이며 과외냥이 재조회는 아님). 후속 수정·시험 완료는 아직 확인하지 않았다.\\n- 수정 확인 (2026-10-21): 모기의 재확인 요청으로 GitHub·로컬 HEAD `73f2b002aa5e47e746a3c9354c0037719d3d8d93` 일치와 `643bf98..73f2b00`의 두 변경 파일을 직접 확인했다. `scripts/test-playbook-hint.sh:37-44,270-275`에서 정상 기능 검사와 고장 사본 검사가 같은 `judges_hit()`를 호출하고, 동일 문서·문장·제목으로 정상 훅의 판정 성공과 무출력 사본의 판정 실패를 모두 요구한다. 대상 테스트를 직접 재실행해 ok 69·FAIL 0·종료 0과 해당 비교 통과를 확인했다. `구간` 제외와 `이 구간 테스트 추가해줘` 침묵, `석촌고분까지`·`퇴근길 폰`의 걷폰 안내 유지도 확인했다. 이 메모의 시험 증거 보강 요청은 반영 확인했으며, 전체 suite·레드액션·실제 세션 연결은 과외냥이가 이번에 재실행하지 않았다. 별도 교차 리뷰 `5595361107`은 같은 HEAD에서 대상 차분 신규 발견 0건과 판정 함수·사본 생성 자체를 고장 낸 추가 시험 결과를 보고했다(그 추가 시험은 리뷰어 보고).\\n\\n\\n## 2026-10-22 [todo-ops] PR #8 파서 — 목표 표현 뒤 빈 줄 누락 시 설명의 단어가 검색어에 섞임\\n\\n- 모기의 질문: “이렇게구현해야되?... 너무위험해보임.. 빈줄 빼먹으면 어쩌려고;”\\n- 실측·판독 SHA: `73f2b002aa5e47e746a3c9354c0037719d3d8d93`. 현재 todo-ops HEAD `27e8ed52b17c01f74373f5a7b6e580ac9dfcee4d`에서도 아래 97–113행의 같은 처리를 확인했다. 재현 실행은 전자의 원본에서 추출한 파서 구간·단어 추출 정의에만 수행했다.\\n- 근거: `scripts/hooks/playbook-hint.sh:107–113`은 목표 표현·호출 예를 만나면 수집을 켜고 빈 줄에서 끈다. `:99–104`는 다음 `## ` 제목에서도 수집을 끄므로, 다음 절까지 무조건 이어지는 문제와는 구분한다.\\n- 직접 재현: 설명용 문서의 제목 `## 실비청구` → `목표 표현:` → backtick으로 감싼 예문 `실비` → (빈 줄 유무) → 메모에서 backtick으로 감싼 단어 `택배` → 제목 `## 걷폰` → 목표 표현 `산책`을 원본 파서로 읽었다. 빈 줄이 있으면 실비청구의 kw는 `{실비청구, 실비}`, 없으면 `{실비청구, 실비, 택배}`였다. 두 경우 모두 다음 제목 뒤의 `산책`은 걷폰 객체에만 들어갔다. 전체 훅의 안내 출력·실앱 동작·전체 시험은 이 재현에서 실행하지 않았다.\\n- 왜 문제인지: 문서 편집자가 목표 표현과 일반 설명 사이의 빈 줄 하나를 빼먹으면 설명에 backtick으로 강조한 단어도 해당 레시피의 검색어가 된다. 사용자는 그 설명 단어를 말했을 뿐인데 관련 없는 레시피 안내를 받을 수 있으며, 이 출력 영향은 코드 기반 추론으로서 별도 전체 훅 실행은 아직 하지 않았다.\\n- 검토 요청: 모기는 앞선 제목 표기 의존성에 대해 문서 형식 검사를 제안했고 이번에는 빈 줄 누락도 지적했다. 마스터가 허용할 문서 형식을 정하고, 편집 실수를 검사할지 또는 수집 종료 규칙을 바꿀지 검토할 근거로 남긴다. 과외냥이가 제품 코드·문서 형식·구현 우선순위를 확정하거나 수정하지 않는다.\\n- 중복 확인: append 직전 현재 메모의 playbook·빈 줄·목표 표현 관련 항목, 현재 `contracts/2026-10-21-playbook-hint-hook.md`, todo-ops cwd의 `bd --readonly list --title-contains playbook --limit 10`을 확인했다. 기존 PR #8 메모는 고장 사본 판정 방식에 관한 것이며, 이번 파서 수집 경계와 구분된다. 제목 조회 결과는 `No issues found`였고 전체 이슈를 전수 검색한 것은 아니다.\\n- 상태: 공책 기록만 완료. 메시지 전송·담당자 인수·수정 완료로 간주하지 않는다.\\n\\n- 모기 정정·의도 (2026-10-22): 이 PLAYBOOKS 문서는 에이전트가 작성·편집한다. 과외냥이가 채팅에서 “사람이 실수해도”라고 표현한 것은 작성 주체를 잘못 잡은 설명이었다. 모기는 에이전트가 만든 문서도 파서가 요구하는 형식을 어길 수 있으므로 린트가 필요하다는 근거가 강해졌다고 밝혔다. 검토의 초점은 에이전트 작성 결과와 이를 읽는 파서 사이의 형식 계약을 자동 검사하는 것이다. 린트 구현·적용 또는 담당자 인수가 완료됐다는 뜻은 아니다.\\n M raw/2026-10-21-02-pr8-inline-reference-visuals.md\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_2d676366eff6477cb938d2b216aa29e8`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"orca orchestration send --help","max_output_tokens":3500}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_2d676366eff6477cb938d2b216aa29e8`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"abcc5f\",\"wall_time_seconds\":0.000005708,\"exit_code\":0,\"original_token_count\":701,\"output\":\"orca orchestration send\\n\\nUsage: orca orchestration send --subject <text> [--to <run:id|dispatch:id|legacy_handle>] [--run <run_id>] [--from <handle>] [--body <text>] [--type <type>] [--priority <level>] [--thread-id <id>] [--payload <json>] [--task-id <id>] [--dispatch-id <id>] [--outcome <succeeded|failed>] [--files-modified <csv>] [--report-path <path>] [--phase <text>] [--retry-request <id>] [--json]\\n\\nSend an inter-agent message\\n\\nOptions:\\n  --help                 Show this help message\\n  --json                 Emit machine-readable JSON\\n  --pairing-code <code>  Run against a remote Orca server using an orca://pair?... code\\n  --environment <selector> Run against a saved paired Orca server (id or name); terminal handles belong to the server that issued them\\n  --to\\n  --run\\n  --from\\n  --subject\\n  --body\\n  --type\\n  --priority\\n  --thread-id\\n  --payload\\n  --task-id <id>        Task id to include in orchestration payload JSON\\n  --dispatch-id <id>    Dispatch id to include in orchestration payload JSON\\n  --dispatch-capability\\n  --retry-request\\n  --outcome\\n  --files-modified <csv> Comma-separated files for orchestration payload JSON\\n  --report-path <path>  Report path to include in orchestration payload JSON\\n  --phase <text>        Worker phase to include in orchestration payload JSON\\n\\nNotes:\\n  Valid --type values: status, dispatch, worker_done, merge_ready, escalation, handoff, decision_gate, question, heartbeat.\\n  To answer a worker question, use orchestration reply --id <msg_id> --body <text> with the same Orca CLI executable.\\n  Group addresses (@all, @idle, @codex, ...) reach the live Dispatches of your own Run; a sender in no Run must use run:<id> or dispatch:<id>. @worktree:<id> names one workspace.\\n  Run groups exclude their owning coordinator; send to run:<id> to raise something with yours. Nested coordinators receive group mail in their child Run mailbox; @worktree:<id> includes workspace coordinators.\\n  On Windows PowerShell, quote group addresses such as --to \\\"@all\\\" or --to \\\"@worktree:<id>\\\".\\n  worker_done and heartbeat are exact-Dispatch signals and cannot target groups; omit --to to use the Dispatch's Run mailbox.\\n  worker_done requires --outcome succeeded or --outcome failed.\\n  From an active Dispatch, an omitted recipient defaults to its owning Run mailbox.\\n  Use --to dispatch:<id> for attempt-specific coordinator guidance; Orca durably relays it to a connected worker server.\\n  A worker_done with the active task/dispatch IDs completes that task only from the dispatched pane. When stable pane identity is unavailable, the sender handle must exactly match the dispatch assignee; injected preambles include the correct --from value.\\n  Prefer --task-id/--dispatch-id/etc. over raw --payload JSON in worker commands; PowerShell strips JSON quotes easily.\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_59cef88d936d4b859053ba43ff00a4bc`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"python3 - <<'PY'\n# coding: utf-8\nimport json,subprocess\nfrom pathlib import Path\nmemo=Path('master-delivery-memos.md').read_text()\nsection=memo[memo.index('## 2026-10-22 [todo-ops] PR #8 파서'):]\naddress=json.loads(Path('../mogi-productivity/.local/agent-address.json').read_text())\nbody='모기가 방금 이 메모의 마스터 전달을 명시적으로 요청했다. 에이전트가 작성·편집하는 PLAYBOOKS의 형식 계약과 린트 검토 요청이다. 제품 구현이나 우선순위를 과외냥이가 확정한 것은 아니다.\\n\\n정본: /Users/leechaerim/orca/mogi-cards/master-delivery-memos.md\\n기록 커밋: 7c4c54f, 15fcee6\\n\\n'+section\np=subprocess.run(['orca','orchestration','send','--to','run:'+address['runId'],'--type','status','--subject','모기 요청: PLAYBOOKS 파서의 빈 줄 의존성과 문서 린트 검토','--body',body,'--json'],text=True,capture_output=True)\nprint(p.stdout)\nif p.stderr: print(p.stderr)\nif p.returncode==0: Path('/tmp/mogi-pr8-lint-delivery-receipt.json').write_text(p.stdout)\nraise SystemExit(p.returncode)\nPY","yield_time_ms":1000,"max_output_tokens":2300}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_59cef88d936d4b859053ba43ff00a4bc`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"c3768a\",\"wall_time_seconds\":0.000006458,\"exit_code\":0,\"original_token_count\":1140,\"output\":\"{\\n  \\\"id\\\": \\\"940d6989-d721-4769-ad41-e8322a0454c3\\\",\\n  \\\"ok\\\": true,\\n  \\\"result\\\": {\\n    \\\"message\\\": {\\n      \\\"id\\\": \\\"msg_6302b319b62b\\\",\\n      \\\"run_id\\\": \\\"run_885652410aef\\\",\\n      \\\"from_handle\\\": \\\"term_be31079b-d1bb-4539-b7f1-786d7e77cd7a\\\",\\n      \\\"to_handle\\\": \\\"run:run_885652410aef\\\",\\n      \\\"subject\\\": \\\"모기 요청: PLAYBOOKS 파서의 빈 줄 의존성과 문서 린트 검토\\\",\\n      \\\"body\\\": \\\"모기가 방금 이 메모의 마스터 전달을 명시적으로 요청했다. 에이전트가 작성·편집하는 PLAYBOOKS의 형식 계약과 린트 검토 요청이다. 제품 구현이나 우선순위를 과외냥이가 확정한 것은 아니다.\\\\n\\\\n정본: /Users/leechaerim/orca/mogi-cards/master-delivery-memos.md\\\\n기록 커밋: 7c4c54f, 15fcee6\\\\n\\\\n## 2026-10-22 [todo-ops] PR #8 파서 — 목표 표현 뒤 빈 줄 누락 시 설명의 단어가 검색어에 섞임\\\\n\\\\n- 모기의 질문: “이렇게구현해야되?... 너무위험해보임.. 빈줄 빼먹으면 어쩌려고;”\\\\n- 실측·판독 SHA: `73f2b002aa5e47e746a3c9354c0037719d3d8d93`. 현재 todo-ops HEAD `27e8ed52b17c01f74373f5a7b6e580ac9dfcee4d`에서도 아래 97–113행의 같은 처리를 확인했다. 재현 실행은 전자의 원본에서 추출한 파서 구간·단어 추출 정의에만 수행했다.\\\\n- 근거: `scripts/hooks/playbook-hint.sh:107–113`은 목표 표현·호출 예를 만나면 수집을 켜고 빈 줄에서 끈다. `:99–104`는 다음 `## ` 제목에서도 수집을 끄므로, 다음 절까지 무조건 이어지는 문제와는 구분한다.\\\\n- 직접 재현: 설명용 문서의 제목 `## 실비청구` → `목표 표현:` → backtick으로 감싼 예문 `실비` → (빈 줄 유무) → 메모에서 backtick으로 감싼 단어 `택배` → 제목 `## 걷폰` → 목표 표현 `산책`을 원본 파서로 읽었다. 빈 줄이 있으면 실비청구의 kw는 `{실비청구, 실비}`, 없으면 `{실비청구, 실비, 택배}`였다. 두 경우 모두 다음 제목 뒤의 `산책`은 걷폰 객체에만 들어갔다. 전체 훅의 안내 출력·실앱 동작·전체 시험은 이 재현에서 실행하지 않았다.\\\\n- 왜 문제인지: 문서 편집자가 목표 표현과 일반 설명 사이의 빈 줄 하나를 빼먹으면 설명에 backtick으로 강조한 단어도 해당 레시피의 검색어가 된다. 사용자는 그 설명 단어를 말했을 뿐인데 관련 없는 레시피 안내를 받을 수 있으며, 이 출력 영향은 코드 기반 추론으로서 별도 전체 훅 실행은 아직 하지 않았다.\\\\n- 검토 요청: 모기는 앞선 제목 표기 의존성에 대해 문서 형식 검사를 제안했고 이번에는 빈 줄 누락도 지적했다. 마스터가 허용할 문서 형식을 정하고, 편집 실수를 검사할지 또는 수집 종료 규칙을 바꿀지 검토할 근거로 남긴다. 과외냥이가 제품 코드·문서 형식·구현 우선순위를 확정하거나 수정하지 않는다.\\\\n- 중복 확인: append 직전 현재 메모의 playbook·빈 줄·목표 표현 관련 항목, 현재 `contracts/2026-10-21-playbook-hint-hook.md`, todo-ops cwd의 `bd --readonly list --title-contains playbook --limit 10`을 확인했다. 기존 PR #8 메모는 고장 사본 판정 방식에 관한 것이며, 이번 파서 수집 경계와 구분된다. 제목 조회 결과는 `No issues found`였고 전체 이슈를 전수 검색한 것은 아니다.\\\\n- 상태: 공책 기록만 완료. 메시지 전송·담당자 인수·수정 완료로 간주하지 않는다.\\\\n\\\\n- 모기 정정·의도 (2026-10-22): 이 PLAYBOOKS 문서는 에이전트가 작성·편집한다. 과외냥이가 채팅에서 “사람이 실수해도”라고 표현한 것은 작성 주체를 잘못 잡은 설명이었다. 모기는 에이전트가 만든 문서도 파서가 요구하는 형식을 어길 수 있으므로 린트가 필요하다는 근거가 강해졌다고 밝혔다. 검토의 초점은 에이전트 작성 결과와 이를 읽는 파서 사이의 형식 계약을 자동 검사하는 것이다. 린트 구현·적용 또는 담당자 인수가 완료됐다는 뜻은 아니다.\\\\n\\\",\\n      \\\"type\\\": \\\"status\\\",\\n      \\\"priority\\\": \\\"normal\\\",\\n      \\\"thread_id\\\": null,\\n      \\\"payload\\\": null,\\n      \\\"created_at\\\": \\\"2026-10-22T03:38:12Z\\\",\\n      \\\"delivered_at\\\": null,\\n      \\\"delivery_contract\\\": \\\"current_delivery\\\"\\n    },\\n    \\\"mutation\\\": {\\n      \\\"requestId\\\": \\\"cbf4338b-9dfc-44e1-9a8e-ab88887142b1\\\",\\n      \\\"replayed\\\": false\\n    }\\n  },\\n  \\\"_meta\\\": {\\n    \\\"runtimeId\\\": \\\"c56e00a8-7276-461e-9cb2-241ddac0252c\\\"\\n  }\\n}\\n\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_e203897536fd421bb1fb00245b5ef07a`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git pull --ff-only\npython3 - <<'PY'\n# coding: utf-8\nimport json\nfrom pathlib import Path\nr=json.loads(Path('/tmp/mogi-pr8-lint-delivery-receipt.json').read_text())\nassert r['ok'] is True\nm=r['result']['message']\nentry=f\"\\n- 전달 기록 (2026-10-22): 모기의 명시적 요청 뒤 자기·투두냥 주소 resolve를 모두 확인하고, 확인된 투두냥 Run `{m['run_id']}`으로 위 메모와 에이전트 작성 주체 정정·린트 검토 의도를 메시지 `{m['id']}`로 한 번 전송했다. 전송 접수 시각은 `{m['created_at']}`이며, 담당자의 읽음·인수·린트 구현 완료는 아직 확인하지 않았다.\\n\"\nwith Path('master-delivery-memos.md').open('a',encoding='utf-8') as f: f.write(entry)\nPY\ngit add -- master-delivery-memos.md\ngit commit -m \"docs: record delivery of PLAYBOOKS parser lint memo\"","yield_time_ms":1000,"max_output_tokens":1200}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_e203897536fd421bb1fb00245b5ef07a`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"5d36e3\",\"wall_time_seconds\":0.417122791,\"exit_code\":0,\"original_token_count\":30,\"output\":\"Already up to date.\\n[main 1710c77] docs: record delivery of PLAYBOOKS parser lint memo\\n 1 file changed, 2 insertions(+)\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+투두냥 마스터에게 보냈어 ㅋ
+
+빈 줄 누락으로 검색어가 섞인 재현 결과와 **에이전트 작성 문서의 린트 검토 요청**을 전달했어. 전송 접수는 확인했고, 읽음·인수 회신은 아직이야.
+~~~
+
+## Turn 25
+
+Codex turn key: `6731e7918167aeef`
+
+### 모기
+
+~~~text
+좋다옹 세션관찰일지 쓰자옹
+~~~
