@@ -2,7 +2,7 @@
 reviewed: false
 status: pilot
 planned_cases: 3
-completed_cases: 1
+completed_cases: 2
 ---
 
 # 필요한 설명 깊이 선택 — jargon·diff·배경 공부를 자동으로 늘리지 않기
@@ -68,3 +68,10 @@ completed_cases: 1
   실제 처음 보여준 것: 실행 순서표와 훅 비교표, 한 줄 안내 예시. 후속 Codex/Claude 구조 질문에는 공통 구조 표와 설명용 JSON을 보였다.
   사용자 반응: ‘ㅇㅋ 다음 가자옹’. 이후 테스트 출력 제거 사본 설명의 마지막 문단에 ‘마지막 문단 무슨소리여?’라고 물어, 그 부분은 정상 훅 성공 / 사본의 고장 심기 확인 / 사본에도 같은 검사 적용 여부를 나눈 표로 보충했다. 이후 ‘아 ㅇㅋㅇㅋ 이해했음!’이라고 말하고 리뷰의 재밌는 부분 설명을 요청했다. 이 반응은 해당 설명에 대한 반응으로 보존하며 전체 코드 독해 완료로 확대하지 않는다.
   추가 설명의 빠진 대상: 사본에서 출력이 사라졌다는 사실과 같은 검사가 실패한다는 사실의 차이. 새 노트 제작은 별도 파일럿 건으로 세지 않았다.
+
+<!-- pilot-run:c929a1c660165b78443cec0469c698a4f770b04a614328a71816cb93e369ba33:completed -->
+### 2026-10-22T05:55:50+00:00 · mogi-productivity-pr44-call-paths-a28be4cbfbf40c91
+
+- 결과: completed
+- 근거: raw/2026-10-22-01-pr44-things-call-paths-and-verification.md
+- 기록: 대상 mogi-productivity PR #44, 판독 HEAD 5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7. 원래 질문은 SCRATCHPAD의 어떤 파일·코드로 호출되는지와 설정 위치, Notes·checklist·reminder 경로 차이였다. 사용자 사건과 구체 값으로 실행 순서·주체·대상을 펼치는 첫 설명을 선택했고, 기존 할 일의 Someday 이동 호출 트리·설정 담당 표·실제 코드 몇 줄을 보였다. 같은 요청 흐름과 기능 경계의 후속 문답은 한 건으로 묶었다. 모기는 첫 설명에 느낌좋고 맘에든다며 원문 노트 보존을 요청했고, call stack tree·구체 예시·설정 표가 좋다고 명시했다. 이후 prepareNotesVerification과 buildThingsAddUrl을 update/create의 짝으로 해석해 질문했고, 비교 기준 준비와 생성 요청 준비라는 서로 다른 역할이며 create에서도 둘 다 호출됨을 보충했다. URL 수정 인증·기존 체크리스트 미지원·읽기와 쓰기 경계도 보충했다. 모기는 브릿지가 복잡하다고 평가하고 후속 PR 검토 전달을 요청했다. 첫 설명의 긍정 평가를 전체 구현 독해 완료로 확대하지 않는다. 마지막 시험 설명에 대한 사용자 반응과 별도 새 사례 적용은 미관찰.
