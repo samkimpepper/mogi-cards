@@ -6,6 +6,8 @@
 
 세션 부트의 정본은 [AGENTS.md](./AGENTS.md)다. Codex의 `SessionStart` 훅은 기본 과외 세션마다 [guide-tutor-preamble.md](./guide-tutor-preamble.md)와 [guide-mogi-head-test.md](./guide-mogi-head-test.md) 원문 전체를 시작 컨텍스트에 제공한다. 훅이 알려준 최신 `head-test/*-learning-observation-cumulative-review.md` 한 개도 과외냥이가 시작 인사 전에 원문 전체를 직접 읽는다.
 
+시작 훅은 `scripts/learning_review_count.py`로 누적 검토 미반영 종료 기록 수도 전달한다. `head-test/` 바로 아래 종료 기록과 기존 누적 검토의 `분석 대상 세션 로그` 목록을 대조하며, 날짜나 `reviewed` 값으로 포함 여부를 추정하지 않는다. 집계 실패는 개수 대신 오류로 표시한다.
+
 시작·resume 때는 [자기 주소 등록 절차](./communication/README.md)에 따라 현재 Orca 터미널·Run을 대조하고 `.local/agent-registry/tutor.json`을 갱신한다. 유효한 Run은 재사용하며 주소 파일은 Git에서 제외한다. 상대 주소 확인은 읽기 전용이고 실제 메시지 전송은 모기가 요청한 범위에서 수행한다.
 
 기본 학습 대상은 **`mogi-productivity`**다. `swatch-v2`를 지정한 세션은 그 레포를 따른다. 질문·PR·코드를 받으면 채팅에서 바로 시작하며, 카드 작성·읽기를 선행 단계로 요구하지 않는다. 정리를 요청받거나 다시 볼 가치가 있는 설명이 생겼을 때 해당 제품 폴더에 남긴다.

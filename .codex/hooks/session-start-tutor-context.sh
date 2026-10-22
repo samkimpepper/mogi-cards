@@ -25,6 +25,14 @@ mogi_latest_review=$(
 mogi_total_bytes=$(wc -c < "$mogi_preamble")
 mogi_total_bytes=$((mogi_total_bytes + $(wc -c < "$mogi_head_guide")))
 
+# Report actual coverage without starting a review or changing document state.
+if mogi_review_count=$(python3 "$mogi_repo_root/scripts/learning_review_count.py" 2>&1); then
+  :
+else
+  mogi_review_count="누적 검토 개수 집계 불가: $mogi_review_count"
+fi
+mogi_total_bytes=$((mogi_total_bytes + $(printf '%s' "$mogi_review_count" | wc -c)))
+
 # Discover all current pilots, including completed and unclassified definitions.
 # A registry error must remain visible without discarding the tutor guides.
 if mogi_pilot_context=$(python3 "$mogi_repo_root/scripts/pilots.py" status --for-hook 2>&1); then
@@ -62,6 +70,8 @@ printf '%s\n' \
   '시작 인사에 반드시 다음 두 줄로 실제 판독 파일과 확인된 상태판 링크를 알린다.' \
   "학습 인수인계: $mogi_handoff_status" \
   "읽은 문서 상태판: $mogi_dashboard_url" \
+  '' \
+  "$mogi_review_count" \
   '' \
   "## $mogi_preamble" \
   ''
