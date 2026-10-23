@@ -190,3 +190,15 @@
 
 - 구조 초안 수신 (2026-10-22, `msg_d8209f61146a`): 투두냥이 `td-0fd`의 승인 전 설계 초안과 답변 원문을 보냈다. 담당자의 판독 기준은 mogi-productivity main `e5be55f`이며, 날짜·시각·저녁 경로의 공통 처리 중복, write/reminder 간 상호 import, 함수·파일 이름과 역할 불일치, 휴일 루틴의 직접 import를 확인했다고 보고했다. 제안은 공통 add 절차를 한곳으로 모으고 전송·추가 확인을 분리하며, 대상 선택·DB 읽기·입력 검사·결과 객체 생성을 역할별 파일로 나누는 것이다. 기존 필드를 유지하면서 모든 명령에 `summary: { sent, confirmed[], unconfirmed[], mismatched[] }`를 더하고 동작 약속표를 정식화하는 안이다.
 - 승인·검증 경계: 투두냥은 B′(기존 필드 유지 + summary 추가)를 모기가 앞서 선택했고 더 넓은 설계를 요청했다고 전달했다. 과외냥이는 이 메시지를 수신했으며 위 구현 사실을 해당 main에서 새로 검증하거나 구조 초안을 승인하지 않았다. 원문은 이번 세션 raw의 메시지 도구 출력에 보존된다. 구조 승인·구현·시험 완료로 기록하지 않는다.
+
+## 2026-10-23 [todo-ops] PR #11 — 변이 설명은 요청·기대 리턴값·고장 내용부터 보여주기
+
+- 모기 전달 요청 원문: “아니 걍 냅다 sent:true로바꿨다.라고하면 어케알아ㅡㅡ --preview로 요청보내면 그 리턴 객체에서 sent:false여야하는게 맞는데, sent:true라고(미리보기라 보낼수없는데도 보냈다고 한거니까 테스트 실패해야됨) 바꿨따! 이런식으로 설명해야하는데ㅠ 이건 투두냥한테도 전해야겠어”
+- 판독 SHA: todo-ops PR #11 HEAD `0ecc0bae920a748a09665cc0e82440b05b6443b9`(기록 직전 GitHub OPEN·동일 HEAD 확인). 측정 대상 제품은 mogi-productivity `44a45caec40bf005910dacd79a796a594cc2be88`다.
+- 근거: PR #11 본문의 상황 표 세 번째 행은 rename·tag·area·reminder 미리보기를 `sent: true`라고 말하게 바꾼다고 요약한다. `docs/measurements/2026-10-23-mutation-trial.md:80–83`은 `preview: false → true`의 원본·변이와 생존 결과를 적는다. 제품 `integrations/things/src/result.js:56,97`은 rename 결과의 status를 전송 여부로 바꾸고, `integrations/things/test/rename.test.js:92`는 미리보기의 status만 확인한다. 과외냥이 설명도 요청과 기대 리턴값보다 변경 값부터 제시해 같은 독해 마찰을 만들었다.
+- 왜 문제인지: `sent` 값 변경만 먼저 쓰면 독자는 어떤 요청을 넣었고 그 요청에서 어떤 결과가 맞는지 직접 재구성해야 한다. “미리보기라 실제 변경 요청을 보내지 않았는데 결과는 보냈다고 말한다”는 모순과 그 때문에 시험이 실패해야 하는 이유를 앞에서 연결해야 한다.
+- 전달할 설명 예: “제목 변경을 미리보기로 요청하면 리턴 객체의 `status`는 `preview`, `summary.sent`는 `false`여야 한다. 제품 코드 복사본을 고쳐 같은 미리보기에서 `summary.sent: true`가 나오게 했다. 보내지 않은 요청을 보냈다고 말하므로 테스트가 실패해야 하지만, 기존 테스트는 `status`만 확인해 통과했다.”
+- 표기 주의: 모기의 `--preview` 표현은 위 원문 그대로 보존한다. 실제 이 제품의 제목 변경 CLI는 `bin/things-rename.js:11–13,18–26`처럼 `--apply`를 생략하면 미리보기이고, 시험의 함수 입력은 `apply: false` 기본값이다. 위 설명 예는 실제 CLI에 없는 옵션을 명령으로 권하지 않도록 “미리보기로 요청”이라고 썼다. 이 차이는 모기의 설명 의도와 별개다.
+- 요청 범위: PR 본문·리포트와 과외 설명에서 입력 사건·정상 기대 결과를 먼저 놓고 변이·실제 시험 결과를 연결해 달라는 사용자 피드백이다. 이번 발견을 제품의 실제 오전송 사고로 설명하거나, 별도 하네스 개선·새 설명 도구·훅 추가 요구로 확대하지 않는다.
+- 중복 확인: append 직전 현재 수신함의 PR #11·preview·설명 순서 관련 내용을 검색했고 같은 메모는 없었다. todo-ops의 `bd --readonly list --title-contains mutation --limit 10` 및 `--title-contains 모기 --limit 10`은 둘 다 `No issues found`였으며, PR #11의 현재 본문·측정 계약도 확인했다. PR #8의 시험 판정·파서 메모와는 다른 설명 입력에 관한 피드백이다.
+- 전달 보류: 현재 `resolve tutor`와 `resolve todo`가 모두 `Orca runtime changed; the role owner must register again`으로 실패했다. 자기 주소의 `register tutor`도 `Tutor already registered elsewhere; explicit transfer needs --replace`로 거부돼 기존 주소를 보존했다. 각 담당자의 주소 확인·갱신 전에는 메시지를 보내지 않으며, 이번 사용자 요청은 이 메모를 한 번 전달할 권한으로 보존한다. 아직 전송 접수·수신·인수는 확인하지 않았다.
