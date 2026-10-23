@@ -3052,3 +3052,153 @@ Codex turn key: `2f33752ca4b12274`
 ~~~text
 좋다옹 세션종료절차 하고나서 푸시까지해줘 ㅋ
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_8e65324e254a479490404afcdec43907`
+
+입력:
+
+~~~text
+const results = await Promise.allSettled([
+  tools.exec_command({cmd:"git pull --ff-only; git status --short; cat SCRATCHPAD.md; python3 scripts/pilots.py due --event session-end; ls head-test/2026-10-22*; git log -5 --oneline","max_output_tokens":3000}),
+  tools.exec_command({cmd:"tail -105 raw/2026-10-22-01-pr44-things-call-paths-and-verification.md; cat harness/pilots/2026-10-22-commit-change-scenes.md; cat head-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md","max_output_tokens":6000})
+]); results.forEach((r,i)=>text({i,...r}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_8e65324e254a479490404afcdec43907`
+
+출력:
+
+~~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"1a4b17\",\"wall_time_seconds\":0.472960667,\"exit_code\":0,\"original_token_count\":470,\"output\":\"Already up to date.\\n M raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\\n---\\nreviewed: false\\n---\\n# PR 첫 완독 러프 메모: [다음 PR]\\n\\n2026-08-31까지 형식 없이 편하게 쓴다.\\n\\n- `?` 모르겠음\\n- `!` 이상하거나 위험해 보임\\n- `↔` 앞뒤가 안 맞거나 다른 지식과 충돌함\\n- \\\" 큰따옴표로 감싼 문장이 PR 원문이라옹ㅋ\\n\\n아래 표식 사이에 그 세션의 메모를 쓴다. 세션 종료 관찰일지를 저장한 뒤 과외냥이가 표식 안만 비운다.\\n\\n<!-- mogi-session-notes:start -->\\n\\n<!-- mogi-session-notes:end -->\\n\\n## 모기 보존 메모\\n\\n세션이 끝나도 비우지 않는 모기 전용 메모다. 나중에 다시 보고 싶은 내용이나 까먹기\\n싫은 것을 형식 없이 적는다. 과외냥이는 세션 종료 정리 때 아래 표식 사이를 건드리지\\n않는다.\\n\\n<!-- mogi-personal-notes:start -->\\n\\n<!-- mogi-personal-notes:end -->\\n{\\n  \\\"due\\\": [],\\n  \\\"attention\\\": [\\n    {\\n      \\\"id\\\": \\\"raw-diff-contact\\\",\\n      \\\"path\\\": \\\"harness/pilots/2026-08-16-raw-diff-contact.md\\\",\\n      \\\"issues\\\": [\\n        \\\"명시적 카운터 없음: 과거 기록을 추측해 집계하지 않음\\\"\\n      ],\\n      \\\"status\\\": \\\"pilot\\\",\\n      \\\"event\\\": \\\"diff\\\",\\n      \\\"requires_request\\\": false,\\n      \\\"unit\\\": null,\\n      \\\"completed\\\": null,\\n      \\\"planned\\\": null,\\n      \\\"count_key\\\": null,\\n      \\\"available\\\": false\\n    }\\n  ]\\n}\\nhead-test/2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md\\nhead-test/2026-10-22-pr8-focused-parser-tutoring-session-end-analysis.md\\n6287951 docs: 커밋 메시지와 변경 전후 글자 그림 파일럿 기록\\n85696e7 docs: 과외 대화 원문 후속 기록 보존\\n0a08f8f docs: Things 브릿지 승인 전 구조 초안 수신 기록\\nd00e338 docs: PR44 과외 대화 원문 체크포인트 보존\\ncba8502 docs: PR44 과외 종료 관찰과 설명 파일럿 기록\\n\"}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"81e2e3\",\"wall_time_seconds\":0.000005334,\"exit_code\":0,\"original_token_count\":9838,\"output\":\"Warning: truncated output (original token count: 9838)\\nTotal output lines: 241\\n\\n~~~\\n\\n#### 출력 02\\n\\nCall ID: `call_1d93dbe67bd14746b43678d99ffe2bf4`\\n\\n출력:\\n\\n~~~text\\n[\\n  {\\n    \\\"text\\\": \\\"Script completed\\\\nWall time 0.1 seconds\\\\nOutput:\\\\n\\\",\\n    \\\"type\\\": \\\"input_text\\\"\\n  },\\n  {\\n    \\\"text\\\": \\\"{\\\\\\\"chunk_id\\\\\\\":\\\\\\\"2b1171\\\\\\\",\\\\\\\"wall_time_seconds\\\\\\\":0.000007209,\\\\\\\"exit_code\\\\\\\":0,\\\\\\\"original_token_count\\\\\\\":3495,\\\\\\\"output\\\\\\\":\\\\\\\"#!/usr/bin/env python3\\\\\\\\n\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"Pilot discovery, event routing and evidence-backed, idempotent recording.\\\\\\\\n\\\\\\\\nExamples:\\\\\\\\n  python3 scripts/pilots.py status\\\\\\\\n  python3 scripts/pilots.py due --event review\\\\\\\\n  python3 scripts/pilots.py due --event test-request --requested\\\\\\\\n  python3 scripts/pilots.py record explanation-depth-and-jargon --key PR40-P1 \\\\\\\\\\\\\\\\\\\\\\\\n      --result completed --evidence raw/session.md --note '실제 설명과 사용자 반응'\\\\\\\\n\\\\\\\\nDefinitions and counters stay in the existing pilot files. This program does not\\\\\\\\ninfer that an explanation/audit/test actually happened from a matching event.\\\\\\\\n\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\n\\\\\\\\nimport argparse\\\\\\\\nimport fcntl\\\\\\\\nimport hashlib\\\\\\\\nimport json\\\\\\\\nimport os\\\\\\\\nfrom pathlib import Path\\\\\\\\nimport re\\\\\\\\nimport sys\\\\\\\\nimport tempfile\\\\\\\\nimport unicodedata\\\\\\\\nfrom datetime import datetime, timezone\\\\\\\\n\\\\\\\\nROOT = Path(__file__).resolve().parents[1]\\\\\\\\n# Existing definitions predate an event field. New files can specify `event`\\\\\\\\n# and `requires_request` in their own frontmatter; unknown files remain visible.\\\\\\\\nLEGACY_EVENTS = {\\\\\\\\n    \\\\\\\\\\\\\\\"raw-diff-contact\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"diff\\\\\\\\\\\\\\\", False),\\\\\\\\n    \\\\\\\\\\\\\\\"discovery-dedupe-gate\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"memo\\\\\\\\\\\\\\\", False),\\\\\\\\n    \\\\\\\\\\\\\\\"native-compaction-baseline\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"session-end\\\\\\\\\\\\\\\", False),\\\\\\\\n    \\\\\\\\\\\\\\\"reference-completeness-audit\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"code-note\\\\\\\\\\\\\\\", False),\\\\\\\\n    \\\\\\\\\\\\\\\"invalid-input-and-broken-tool-tests\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"test-request\\\\\\\\\\\\\\\", True),\\\\\\\\n    \\\\\\\\\\\\\\\"explanation-depth-and-jargon\\\\\\\\\\\\\\\": (\\\\\\\\\\\\\\\"review\\\\\\\\\\\\\\\", False),\\\\\\\\n}\\\\\\\\nEVENTS = (\\\\\\\\\\\\\\\"review\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"diff\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"code-note\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"session-end\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"test-request\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"memo\\\\\\\\\\\\\\\")\\\\\\\\nTERMINAL = {\\\\\\\\\\\\\\\"completed\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"awaiting-review\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"paused\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"retired\\\\\\\\\\\\\\\"}\\\\\\\\n# These are retrieval hints, not an intent classifier. In particular, a mention\\\\\\\\n# of tests is never equivalent to the explicit request required by that pilot.\\\\\\\\nPROMPT_SIGNALS = {\\\\\\\\n    \\\\\\\\\\\\\\\"review\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"(?<![a-z0-9_])pr(?=$|[^a-z])|리뷰|jargon|자곤\\\\\\\\\\\\\\\",\\\\\\\\n    \\\\\\\\\\\\\\\"diff\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"(?<![a-z])diff(?![a-z])|디프|코드\\\\\\\\\\\\\\\\s*(?:차이|변경|전후)|변경\\\\\\\\\\\\\\\\s*전후\\\\\\\\\\\\\\\",\\\\\\\\n    \\\\\\\\\\\\\\\"code-note\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"(?:코드|diff|디프)\\\\\\\\\\\\\\\\s*(?:학습\\\\\\\\\\\\\\\\s*)?(?:노트|해설)|해설\\\\\\\\\\\\\\\\s*(?:노트|파일)\\\\\\\\\\\\\\\",\\\\\\\\n    \\\\\\\\\\\\\\\"session-end\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"(?:세션|과외).{0,12}(?:종료|끝|마무리)|오늘.{0,12}(?:여기까지|그만)\\\\\\\\\\\\\\\"\\\\\\\\n                   r\\\\\\\\\\\\\\\"|다\\\\\\\\\\\\\\\\s*(?:봤|끝)|끝났|마무리|끝내자|마치자|종료하자\\\\\\\\\\\\\\\",\\\\\\\\n    \\\\\\\\\\\\\\\"test-request\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"(?<![a-z])(?:tdd|tests?|testing)(?![a-z])|테스트|시험|(?:틀린|잘못된)\\\\\\\\\\\\\\\\s*입력\\\\\\\\\\\\\\\",\\\\\\\\n    \\\\\\\\\\\\\\\"memo\\\\\\\\\\\\\\\": r\\\\\\\\\\\\\\\"마스터\\\\\\\\\\\\\\\\s*메모|전달용\\\\\\\\\\\\\\\\s*메모|마스터.{0,12}전달\\\\\\\\\\\\\\\",\\\\\\\\n}\\\\\\\\n\\\\\\\\n\\\\\\\\ndef metadata(text):\\\\\\\\n    match = re.match(r\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\A---\\\\\\\\\\\\\\\\n(.*?)\\\\\\\\\\\\\\\\n---(?:\\\\\\\\\\\\\\\\n|$)\\\\\\\\\\\\\\\", text, re.S)\\\\\\\\n    if not match:\\\\\\\\n        raise ValueError(\\\\\\\\\\\\\\\"frontmatter가 없음\\\\\\\\\\\\\\\")\\\\\\\\n    values = {}\\\\\\\\n    for line in match[1].splitlines():\\\\\\\\n        if not line.strip() or line.lstrip().startswith(\\\\\\\\\\\\\\\"#\\\\\\\\\\\\\\\"):\\\\\\\\n            continue\\\\\\\\n        key, sep, value = line.partition(\\\\\\\\\\\\\\\":\\\\\\\\\\\\\\\")\\\\\\\\n        if not sep or key in values:\\\\\\\\n            raise ValueError(\\\\\\\\\\\\\\\"잘못되거나 중복된 frontmatter\\\\\\\\\\\\\\\")\\\\\\\\n        values[key] = value.strip()\\\\\\\\n    return values\\\\\\\\n\\\\\\\\n\\\\\\\\ndef inspect(path, root):\\\\\\\\n    text = path.read_text(encoding=\\\\\\\\\\\\\\\"utf-8\\\\\\\\\\\\\\\")\\\\\\\\n    info = {\\\\\\\\\\\\\\\"id\\\\\\\\\\\\\\\": re.sub(r\\\\\\\\\\\\\\\"^\\\\\\\\\\\\\\\\d{4}-\\\\\\\\\\\\\\\\d{2}-\\\\\\\\\\\\\\\\d{2}-\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\", path.stem),\\\\\\\\n            \\\\\\\\\\\\\\\"path\\\\\\\\\\\\\\\": path.relative_to(root).as_posix(), \\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\": []}\\\\\\\\n    try:\\\\\\\\n        meta = metadata(text)\\\\\\\\n        info[\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\"] = meta.get(\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"unknown\\\\\\\\\\\\\\\")\\\\\\\\n        event, requested = LEGACY_EVENTS.get(info[\\\\\\\\\\\\\\\"id\\\\\\\\\\\\\\\"], (None, False))\\\\\\\\n        info[\\\\\\\\\\\\\\\"event\\\\\\\\\\\\\\\"] = meta.get(\\\\\\\\\\\\\\\"event\\\\\\\\\\\\\\\", event)\\\\\\\\n        info[\\\\\\\\\\\\\\\"requires_request\\\\\\\\\\\\\\\"] = meta.get(\\\\\\\\\\\\\\\"requires_request\\\\\\\\\\\\\\\", str(requested)).lower() == \\\\\\\\\\\\\\\"true\\\\\\\\\\\\\\\"\\\\\\\\n        if info[\\\\\\\\\\\\\\\"event\\\\\\\\\\\\\\\"] not in EVENTS:\\\\\\\\n            info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"].append(\\\\\\\\\\\\\\\"적용 사건 미등록: event를 정해야 함\\\\\\\\\\\\\\\")\\\\\\\\n        if info[\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\"] not in {\\\\\\\\\\\\\\\"pilot\\\\\\\\\\\\\\\"} | TERMINAL:\\\\\\\\n            info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"].append(\\\\\\\\\\\\\\\"알 수 없는 상태\\\\\\\\\\\\\\\")\\\\\\\\n        info.update(unit=None, completed=None, planned=None, count_key=None)\\\\\\\\n        for unit, planned_key, count_key in (\\\\\\\\n            (\\\\\\\\\\\\\\\"cases\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"planned_cases\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"completed_cases\\\\\\\\\\\\\\\"),\\\\\\\\n            (\\\\\\\\\\\\\\\"sessions\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"planned_sessions\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"completed_sessions\\\\\\\\\\\\\\\"),\\\\\\\\n            (\\\\\\\\\\\\\\\"runs\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"planned_runs\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"completed_runs\\\\\\\\\\\\\\\"),\\\\\\\\n            (\\\\\\\\\\\\\\\"runs\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"prospective_runs\\\\\\\\\\\\\\\", \\\\\\\\\\\\\\\"completed_runs\\\\\\\\\\\\\\\"),\\\\\\\\n        ):\\\\\\\\n            if planned_key not in meta and count_key not in meta:\\\\\\\\n                continue\\\\\\\\n            if planned_key not in meta or count_key not in meta:\\\\\\\\n                # prospective_runs is the older name of planned_runs.\\\\\\\\n                if planned_key == \\\\\\\\\\\\\\\"planned_runs\\\\\\\\\\\\\\\" and \\\\\\\\\\\\\\\"prospective_runs\\\\\\\\\\\\\\\" in meta:\\\\\\\\n                    continue\\\\\\\\n                raise ValueError(\\\\\\\\\\\\\\\"계획·완료 카운터가 한 쌍이 아님\\\\\\\\\\\\\\\")\\\\\\\\n            if not meta[planned_key].isdigit() or not meta[count_key].isdigit():\\\\\\\\n                raise ValueError(\\\\\\\\\\\\\\\"횟수는 0 이상의 정수여야 함\\\\\\\\\\\\\\\")\\\\\\\\n            planned, completed = int(meta[planned_key]), int(meta[count_key])\\\\\\\\n            if planned < 1 or completed > planned:\\\\\\\\n                raise ValueError(\\\\\\\\\\\\\\\"계획 횟수 또는 완료 횟수 범위 오류\\\\\\\\\\\\\\\")\\\\\\\\n            remaining_key = \\\\\\\\\\\\\\\"remaining_\\\\\\\\\\\\\\\" + unit\\\\\\\\n            if remaining_key in meta and meta[remaining_key] != str(planned - completed):\\\\\\\\n                raise ValueError(\\\\\\\\\\\\\\\"남은 횟수 불일치\\\\\\\\\\\\\\\")\\\\\\\\n            info.update(unit=unit, completed=completed, planned=planned, count_key=count_key)\\\\\\\\n            break\\\\\\\\n        if info[\\\\\\\\\\\\\\\"planned\\\\\\\\\\\\\\\"] is None:\\\\\\\\n            info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"].append(\\\\\\\\\\\\\\\"명시적 카운터 없음: 과거 기록을 추측해 집계하지 않음\\\\\\\\\\\\\\\")\\\\\\\\n        exhausted = info[\\\\\\\\\\\\\\\"planned\\\\\\\\\\\\\\\"] is not None and info[\\\\\\\\\\\\\\\"completed\\\\\\\\\\\\\\\"] >= info[\\\\\\\\\\\\\\\"planned\\\\\\\\\\\\\\\"]\\\\\\\\n        info[\\\\\\\\\\\\\\\"available\\\\\\\\\\\\\\\"] = info[\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\"] == \\\\\\\\\\\\\\\"pilot\\\\\\\\\\\\\\\" and not exhausted and not info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"]\\\\\\\\n        if info[\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\"] == \\\\\\\\\\\\\\\"pilot\\\\\\\\\\\\\\\" and exhausted:\\\\\\\\n            info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"].append(\\\\\\\\\\\\\\\"횟수 도달: 적용 중단·사후 검토 필요\\\\\\\\\\\\\\\")\\\\\\\\n    except (ValueError, UnicodeError) as exc:\\\\\\\\n        info.update(status=\\\\\\\\\\\\\\\"invalid\\\\\\\\\\\\\\\", available=False, event=None, requires_request=False,\\\\\\\\n                    completed=None, planned=None, unit=None, count_key=None)\\\\\\\\n        info[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"].append(str(exc))\\\\\\\\n    return info\\\\\\\\n\\\\\\\\n\\\\\\\\ndef inventory(root):\\\\\\\\n    return [inspect(path, root) for path in sorted((root / \\\\\\\\\\\\\\\"harness/pilots\\\\\\\\\\\\\\\").glob(\\\\\\\\\\\\\\\"*.md\\\\\\\\\\\\\\\"))]\\\\\\\\n\\\\\\\\n\\\\\\\\ndef due(root, event, requested=False):\\\\\\\\n    # A full diff lesson is also an explanation; the reverse is not automatic.\\\\\\\\n    matching_events = {event, \\\\\\\\\\\\\\\"review\\\\\\\\\\\\\\\"} if event == \\\\\\\\\\\\\\\"diff\\\\\\\\\\\\\\\" else {event}\\\\\\\\n    items = inventory(root)\\\\\\\\n    return {\\\\\\\\n        \\\\\\\\\\\\\\\"due\\\\\\\\\\\\\\\": [item for item in items if item[\\\\\\\\\\\\\\\"available\\\\\\\\\\\\\\\"] and item[\\\\\\\\\\\\\\\"event\\\\\\\\\\\\\\\"] in matching_events\\\\\\\\n                and (requested or not item[\\\\\\\\\\\\\\\"requires_request\\\\\\\\\\\\\\\"])],\\\\\\\\n        \\\\\\\\\\\\\\\"attention\\\\\\\\\\\\\\\": [item for item in items if item[\\\\\\\\\\\\\\\"issues\\\\\\\\\\\\\\\"] and item[\\\\\\\\\\\\\\\"status\\\\\\\\\\\\\\\"] not in TERMINAL],\\\\\\\\n    }\\\\\\\\n\\\\\\\\n\\\\\\\\ndef prompt_context(root, prompt):\\\\\\\\n    \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"Return a read-only reminder for this message; no persisted conversation state.\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\n    normalized = unicodedata.normalize(\\\\\\\\\\\\\\\"NFKC\\\\\\\\\\\\\\\", prompt).casefold()\\\\\\\\n    signals = {}\\\\\\\\n    for event, pattern in PROMPT_SIGNALS.items():\\\\\\\\n        matches = list(dict.fromkeys(re.findall(pattern, normalized)))\\\\\\\\n        if matches:\\\\\\\\n# mogi-cards 과외 하네스\\\\\\\\n\\\\\\\\n이 디렉터리는 `swatch-v2`에 들어갈 제품 설계가 아니라, 모기의 과외 세션을 어떻게 부트하고 운영하고 관찰할지에 관한 도구 중립 문서를 둔다.\\\\\\\\n\\\\\\\\n## 디렉터리 역할\\\\\\\\n\\\\\\\\n- `pilots/`: 아직 영구 규칙이 아닌 한시 실험. 각 문서가 실행 횟수·중단 조건·승격 금지를 직접 적는다.\\\\\\\\n- 이후 실제 필요가 생길 때만 `guides/` 같은 하위 디렉터리를 추가한다. 빈 분류를 미리 만들지 않는다.\\\\\\\\n\\\\\\\\n모기가 테스트 요청 프롬프트를 다시 쓰고 싶을 때는 [실패상황 테스트 요청 파일럿](./pilots/2026-10-19-invalid-input-and-broken-tool-tests.md)의 두 종류 표와 복사용 프롬프트를 참고한다. 세션 부트에 자동 적용하는 규칙은 아니다.\\\\\\\\n\\\\\\\\n[필요한 설명 깊이 선택 파일럿](./pilots/2026-10-20-explanation-depth-and-jargon.md)은 다음 자연 발생 PR·리뷰 설명 3건에 한시 적용한다. 사용자 말로 풀기·실제 코드 몇 줄·순서/상태 설명 중 필요한 첫 깊이를 과외냥이가 고르고 실제 사용감을 기록한다. SessionStart가 읽는 프리앰블에 상태·횟수 확인 경로를 두었으며, 3건 뒤 자동 적용을 멈추고 모기와 유지·수정·폐기를 정한다.\\\\\\\\n\\\\\\\\n## 현재 경계\\\\\\\\n\\\\\\\\n- 2026-10-18 모기의 명시적 요청으로 과외 하네스 개발·개선과 파일럿의 동결을 해제했다. [현재 운영 상태](../README.md#현재-운영-상태--2026-10-18-재개)에 따라 필요한 작업을 진행하며, 파일럿별 적용·중단 조건은 유지한다.\\\\\\\\n- 루트의 `AGENTS.md`는 세션 부트 정본으로 유지한다.\\\\\\\\n- 루트의 `guide-tutor-preamble.md`와 `guide-mogi-head-test.md`도 현재 SessionStart 훅이 직접 읽으므로 이번 파일럿 때문에 옮기지 않는다.\\\\\\\\n- `.codex/`는 Codex 전용 훅 구현, `harness/`는 도구 중립 운영 원문이라는 경계를 둔다.\\\\\\\\n- `pr-cards/`·`plan-cards/`·`code-diff-notes/`의 활성 재료 목록에 `harness/` 문서를 섞지 않는다.\\\\\\\\n\\\\\\\\n## 파일럿 승격\\\\\\\\n\\\\\\\\n파일럿은 정해진 실행 수에 도달해도 자동으로 영구 규칙이 되지 않는다. 실행 기록을 모기와 다시 보고 유지·수정·폐기 중 하나를 정한 뒤, 필요한 경우에만 루트 가이드와 부트 문서를 별도 변경한다.\\\\\\\\n---\\\\\\\\nreviewed: false\\\\\\\\nstatus: awaiting-review\\\\\\\\nplanned_sessions: 3\\\\\\\\ncompleted_sessions: 3\\\\\\\\nremaining_sessions: 0\\\\\\\\n---\\\\\\\\n\\\\\\\\n# 코드 학습 노트 참조 완결성 감사 파일럿\\\\\\\\n\\\\\\\\n## 상태와 한 줄 목적\\\\\\\\n\\\\\\\\n이 문서는 영구 운영 규칙이 아니라 **조건에 맞는 코드 학습 노트를 다루는 과외 세션\\\\\\\\n3회**에만 적용하는 임시 파일럿이다.\\\\\\\\n\\\\\\\\n과외냥이가 초안을 만든 뒤 별도의 읽기 전용 감사냥이가 정확한 SHA의 실제 소스를\\\\\\\\n독립적으로 읽고, 이미 내용을 아는 작성자만 복원할 수 있는 생략을 찾는다. 감사냥이는\\\\\\\\n문서를 고치지 않고 근거가 있는 누락 보고만 돌려준다. 이 보고는 **최종 학습 자료가\\\\\\\\n아니라 과외냥이가 다시 편집할 사실 근거**다.\\\\\\\\n\\\\\\\\n## 카운트 규칙\\\\\\\\n\\\\\\\\n- 한 과외 세션에서는 감사 대상 노트가 여러 개여도 최대 1회만 센다.\\\\\\\\n- 감사냥이의 완료 보고가 실제로 도착하고 과외냥이가 그 보고를 읽은 뒤에만\\\\\\\\n  `completed_sessions`를 1 올리고 `remaining_sessions`를 1 내린다.\\\\\\\\n- 적합한 노트가 없거나, 감사 작업이 시작되지 않았거나, 작업이 실패해 보고가 도착하지\\\\\\\\n  않으면 횟수를 차감하지 않는다.\\\\\\\\n- `completed_sessions: 3`이 되면 다음 세션부터 자동 실행하지 않는다. 세 기록을 모기와\\\\\\\\n  검토하기 전에는 영구 규칙이나 상시 커스텀 에이전트로 승격…3838 tokens truncated…되는 경우에는 억지로 장면을 만들지 않는다.\\n- 이미 승인된 이 한시 시험의 조건이 맞으면 과외냥이가 첫 설명을 준비한다.\\n  모기에게 매번 설명 형식을 다시 고르게 하거나 구현·머지 판단을 요구하지 않는다.\\n- 모기의 즉답 요청과 자유 문답이 우선이다. 원하지 않거나 번거로우면 바로 생략·중단한다.\\n\\n## 보여줄 것\\n\\n1. PR의 base·판독 HEAD와 선택한 커밋 SHA·부모 SHA를 확인한다. 커밋 메시지와\\n   해당 diff·필요한 주변 코드를 읽어 그림의 근거를 잡는다.\\n2. 처음에 사용자에게 생기는 변화나 이번 구조 정리의 목적을 짧게 설명한다.\\n3. 핵심 커밋 몇 개를 고르고, 각 장면에 **커밋 링크·메시지 → 변경 전/후 그림 →\\n   필요할 때 원본 코드 몇 줄**을 붙인다. 모든 커밋에 그림을 만들지는 않는다.\\n4. 그림은 터미널에서도 읽히는 글자 그림을 기본으로 한다. Mermaid 렌더링을 요구하지 않는다.\\n   파일 이동은 상자의 이동, 의존성 변경은 연결 전후, 중복 제거는 흐름의 통합,\\n   결과 형식 변경은 구체적인 입력·출력 값처럼 해당 변경에 맞는 표현을 고른다.\\n5. 화살표가 import인지 호출인지 값 전달인지 가까이에 밝힌다. 단순화한 그림과\\n   실제 원문을 구분하고, 한 장면의 대상·시점이 대응하도록 한다.\\n\\n커밋에 남은 변경 순서는 실제 파일 열람·검색·편집 순서와 같다고 가정하지 않는다.\\n실제 작업 기록을 읽지 않았다면 읽기·편집·실패 장면이나 당시 의도를 재구성하지 않는다.\\n실패·방향 전환이 없어도 파일 관계나 구축 순서가 드러나는 변경을 다룰 수 있다.\\n\\n## 남길 관찰과 끝내는 조건\\n\\n- 한 PR의 그림 여러 장과 후속 질문을 **한 건**으로 센다.\\n- 실제 설명 뒤 PR·판독 SHA·선택한 커밋·보여준 그림의 종류와 근거를 남긴다.\\n  모기가 표현한 도움·부담·더 보고 싶은 범위를 보존하고, 반응이 없으면 `미관찰`로 쓴다.\\n- 커밋 메시지 읽기, 그림의 사용감, 실제 코드 독해, 새 사례 적용은 구분한다.\\n  그림이 좋다는 반응만으로 코드 이해·기억·전이가 확인됐다고 기록하지 않는다.\\n- PR 한 건의 설명을 실제로 수행한 뒤 기존 `scripts/pilots.py record`로 기록한다.\\n  1/1이 되면 `awaiting-review`로 두고 자동 적용을 멈춘다. 모기와 유지·수정·폐기를 정한다.\\n  조건에 맞지 않거나 못 했으면 횟수를 올리지 않는다.\\n- 별도 노트를 만드는 것은 필수가 아니다. 다시 볼 자료를 요청받으면 기존 공책 규칙을 따른다.\\n\\n## 계기와 근거 — 적용 실적으로 세지 않음\\n\\n- 모기는 mogi-productivity PR #45의 본문과 링크된 커밋 메시지를 순서대로 읽고\\n  “이해 꽤됨. (diff는자세히안봄ㅋㅋ)”이라고 말했다. 이는 모기의 읽기 경험 보고이며\\n  그림을 붙인 방식의 효과를 검증한 결과는 아니다.\\n- 과외냥이가 검사 함수 분리의 변경 전후를 Mermaid로 제시하자 모기는\\n  “그정도만 되어도 좋을듯... 근데 여기 터미널이라 머메이드 안보임 ㅠ”이라고 했다.\\n  글자 그림으로 다시 보인 뒤 아래 기록·시험 요청이 이어졌다.\\n- 모기 요청 원문: “ㅇㅇㅇ!! 이거 흠.. 어디 기록해두자옹.모든 pr은 아니더라도 커밋몇개에 걸쳐서 수정하는거라면 이 아이디어?를 시험해보고싶어 ㅋ”\\n- 현재 대화: [PR #45 커밋 읽기와 그림 구상 원문](../../raw/2026-10-22-01-pr44-things-call-paths-and-verification.md).\\n  이번의 짧은 그림 예시는 계기이고, 새 파일럿 수행으로 소급 집계하지 않는다.\\n- 이전 구상: [2026-09-10 과외냥이 관측형 에이전트 원문](../../../mogi-harness-study/chats/gpt/2026-09-10_과외냥이-관측형-에이전트/conversation.md),\\n  [2026-09-10 등장인물 한 줄 추가 원문](../../../mogi-harness-study/chats/gpt/2026-09-10_등장인물-한-줄-추가/conversation.md).\\n  이번 시험은 커밋에 남은 변경을 그림으로 따라보는 범위다. 전체 실행 궤적 수집·재생 도구나\\n  전용 UI를 구현하라는 요청으로 넓히지 않는다.\\n\\n## 실행 기록\\n\\n아직 적용 기록 없음. 기록 문서 작성과 후보 알림만으로 횟수를 올리지 않는다.\\n---\\nreviewed: false\\n---\\n\\n# 세션 종료 관찰 — PR #44 Things 호출 경로와 저장 결과 확인\\n\\n- 대상: mogi-productivity PR #44, 판독 SHA `5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7`.\\n- 도메인 친숙도: 모기는 Things의 checklist·Notes·reminder 연결 경로가 서로 달랐다는 과거 기억을 직접 밝혔다. 현재 구현의 구체 경로·함수 역할은 이번 질문 대상이며 숙련 수준을 추정하지 않는다.\\n- 세션 길이: 시간 미측정.\\n- 모기가 명시한 컨디션: 피로·건강 상태의 명시 없음. “지금 배우는 내용 되게 좋고 재밌고 중요한것같다옹”이라는 학습 경험 평가와 브릿지가 복잡하다는 평가가 있었다.\\n- 종료 의사: “그리고 마지막으로 세번째설명만 보고 마무리하자옹”. 마지막 시험 설명 뒤 종료하며 그 설명에 대한 후속 반응은 미관찰이다.\\n- 원문: [세션 기록](../raw/2026-10-22-01-pr44-things-call-paths-and-verification.md). 원문 파일은 이름만 주제에 맞춰 한 번 변경했고 `codex_session_key`와 사용자·답변 원문은 보존했다.\\n\\n## 처음 막힌 지점\\n\\nSCRATCHPAD에서 PR 본문의 동작 표는 좋다고 평가하면서도, 어떤 파일·함수가 호출되는지와 설정 담당 위치가 보이지 않아 추상적으로 이해하는 것 같다고 밝혔다. Notes·checklist·reminder가 AppleScript·Things URL·내부 DB와 어떻게 연결되는지도 질문했다.\\n\\n후속 문답에서는 `prepareNotesVerification()`이 왜 필요한지, `buildThingsAddUrl()`과 update/create를 나눠 맡는 관계인지 질문했다. 이는 함수 역할과 요청·확인 경계를 설명해야 하는 지점이며 개인 수준의 원인으로 해석하지 않는다.\\n\\n## 설명 추가 없이 바로 연결한 지점\\n\\n- 모기는 고정된 파일 이름이 그 자체로 나쁜 것은 아니며 지금 단계에서 경로 결정을 옮기는 리팩토링은 과할 수 있다고 의견을 냈다.\\n- 모기는 인자 개수 자체와 실행 보안 문제를 구분해 재진술하고 환경변수·심볼릭 링크로 실행 대상을 바꿀 수 있는지 질문했다. 과외냥이는 누가 환경·파일을 통제할 수 있는지의 조건과 셸 없이도 생기는 경로 검색 문제를 보충했다. 조건까지 처음부터 독립적으로 완성했다고 기록하지 않는다.\\n- SCRATCHPAD에는 리뷰 코멘트를 읽고 “Someday로 옮겨지징낳았는데도 인자가 verified가되는문제”라고 스스로 연결한 원문이 있었다. 실제 알림·프로젝트 보존 등 미확인 범위 전체를 이해한 것으로 넓히지 않는다.\\n\\n## 설명·외부화 뒤 달라진 점\\n\\n기존 할 일의 Someday 이동을 구체 제목·ID의 주인·호출 주체로 따라가는 텍스트 호출 트리와 설정 담당 표, 연결 코드 몇 줄을 보였다. 모기는 “방금 설명 뭔가 느낌좋고 맘에들어”라고 평가하고 답변 원문을 노트로 보존해 달라고 요청했다. 이후 “call stack tree 만들어준거 너무좋다”, 구체 예시와 설정 담당 표가 좋다는 반응도 명시했다. [보존 노트](../code-diff-notes/mogi-productivity/2026-10-22-pr44-someday-call-flow-and-settings.md)에 답변 본문을 그대로 저장했다.\\n\\nNotes·checklist·시간 지정 경로를 펼친 뒤에는 함수 두 개의 역할, 미지원 기능, URL 수정 토큰, evening의 DB 확인에 질문이 이어졌다. 과외냥이는 Notes 비교 기준 준비와 생성 URL 구성을 대조하고, 새 생성에서도 둘 다 실행됨을 작은 흐름으로 보충했다. AppleScript·URL의 지원 차이, 브릿지 미구현 범위, 쓰기와 쓰기 후 확인을 구분했다. 이 보충 뒤 전체 코드 독해가 완료됐다는 독립 재진술은 관찰하지 않았다.\\n\\n모기는 복잡함과 리팩토링 필요 여부를 질문했고, 과외냥이는 외부 API 제약·구현 선택·미구현 기능·설명 방식의 영향을 나눴다. 모기 요청으로 그 답변 원문을 `master-delivery-memos.md`에 보존·전달했다. 투두냥은 PR #44 머지 뒤 별도 PR에서 동작 계약부터 검토하고 리팩토링 범위를 정하는 후속 작업 `td-0fd`에 인수했다고 회신했다. 구현·검증 완료 보고는 아니다.\\n\\n## 아직 미관찰이거나 다음에 확인할 점\\n\\n- 별도의 새 사례 적용: 시행하지 않아 미관찰. 다음 세션의 의무 과제로 승계하지 않는다.\\n- 마지막 Someday 시험 설명에 대한 사용자 반응·독립 재진술: 미관찰.\\n- 첫 호출 트리 설명의 긍정 반응과 뒤의 브릿지 복잡함 평가는 각각 보존한다. 전체 설명 성공이나 이해·기억 능력 평가로 합치지 않는다.\\n- 후속 설계 검토는 투두냥 작업 `td-0fd`에 인수됐다. 과외냥이가 제품 리팩토링 범위·머지 여부를 결정하지 않았다.\\n\\n## 마지막 설명의 직접 확인 근거\\n\\n제품 checkout은 읽기 전용으로 유지했다. 판독 SHA의 `integrations/things/`와 `package.json`을 저장소 밖 임시 폴더에 복사하고 아래 기존 시험을 실행했다. `notes.test.js`는 `execImpl` 모의 응답으로 Things 읽기·쓰기를 대신하므로 실제 앱을 호출하지 않는다.\\n\\n```sh\\nnode --test --test-name-pattern='Someday (create|reuse)' integrations/things/test/notes.test.js\\n```\\n\\n- 정상 사본: 관련 시험 7개 통과, 실패 0, 건너뜀 0, 종료 코드 0.\\n- 고장 사본: `src/write-verification.js:76`의 `value.scheduled === wantedDate && (!someday || value.someday)`를 `value.scheduled === wantedDate`로 바꿔 소속 조건만 제거했다. 시험 파일은 바꾸지 않았다.\\n- 같은 시험 재실행: 5개 통과·2개 실패, 건너뜀 0, 종료 코드 1. create/reuse 각각의 `a move left outside Someday reports mismatch, not verified`가 actual `verified`, expected `mismatch`로 실패했다.\\n- 이 실험은 현재 시험이 해당 확인 조건 제거를 잡는다는 근거다. 원래 구현 당시 고장 심은 시험을 했다거나 모든 버그를 검출한다는 근거가 아니다.\\n- 실제 Someday 목록 이동, 알림 해제·실제 알림 발생·프로젝트 소속 유지는 이 모의 시험에서 확인하지 않았다. 임시 폴더는 종료 때 삭제했다.\\n\\n## 학습 마찰·재확인·새 발견\\n\\n- “그냥 preparㄷ어쩌구는 업데이트할때 필요한거고 buildThings어쩌구는 create할때필요한그런거차이인가” — 두 함수는 비교 기준과 생성 요청을 각각 만드는 함수이며 서로 배타적인 분기가 아니라는 설명이 필요했다.\\n- “왤케복잡해.. 이거 코드 리팩토링해야되나??” — 사용자 평가를 보존하며 과거의 점진적 확장 때문이라는 원인은 코드 이력 미확인으로 남겼다.\\n- Notes append·기존 체크리스트 추가는 Things 공식 URL의 지원 여부와 현재 브릿지의 구현 여부를 구분했다. 현재 브릿지 미지원 사실을 새로 구현된 별도 경로처럼 설명하지 않았다.\\n\\n## 정리 범위\\n\\n종료 기록을 먼저 저장하고 나서 SCRATCHPAD의 세션 메모 구간만 비우며 제목 대상을 `[다음 PR]`로 되돌린다. 개인 보존 메모·frontmatter·사용 안내·표식은 보존한다. 설명 깊이 파일럿에는 PR #44 호출 흐름과 연결된 후속 문답을 한 건으로 기록했고 현재 2/3건이다.\\n\"}}",
+    "type": "input_text"
+  }
+]
+~~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_8651bb6f02264d51a43b1decd698a495`
+
+입력:
+
+~~~text
+text(await tools.apply_patch("*** Begin Patch\n*** Add File: /Users/leechaerim/orca/mogi-cards/head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md\n+---\n+reviewed: false\n+---\n+\n+# 세션 종료 관찰 — PR #45 커밋 읽기와 변경 전후 그림 구상\n+\n+- 범위: 앞선 [PR #44 종료 기록](./2026-10-22-pr44-things-call-paths-and-verification-session-end-analysis.md) 이후 이어진 구조 초안 설명, PR #45 읽기 경험과 replay 구상이다.\n+- 같은 원문 세션(`codex_session_key: a28be4cbfbf40c91`)의 후반 종료 기록이다. 누적 검토에서 앞 기록과 별개 독립 세션 두 건으로 세지 않는다.\n+- 도메인 친숙도: 모기는 앞선 Things 브릿지 설명을 보았고 PR #45 본문·커밋 메시지를 직접 읽었다고 보고했다. diff는 자세히 보지 않았다고 밝혔다. 세부 코드 독해 숙련도를 추정하지 않는다.\n+- 세션 길이: 시간 미측정.\n+- 모기가 명시한 컨디션: 피로·건강 상태의 명시 없음. 커밋 읽기 뒤 이해가 꽤 됐다는 사용감과 그림으로 따라보는 아이디어에 대한 기대를 표현했다.\n+- 종료 요청: “좋다옹 세션종료절차 하고나서 푸시까지해줘 ㅋ”.\n+- 원문: [이번 세션 기록](../raw/2026-10-22-01-pr44-things-call-paths-and-verification.md). 원문의 파일명·세션 키는 그대로 유지한다.\n+\n+## 처음 막힌 지점\n+\n+투두냥이 리팩토링 구조 초안을 보냈을 때 과외냥이는 전달·수신 확인만 보고했다. 모기는 자세히 이해하려고 보낸 것이라고 정정했다. 이는 과외 요청을 운영 알림 처리로 축소한 응답 문제이며 학습자의 이해 문제로 기록하지 않는다.\n+\n+이후 커밋 메시지에 변경 전후 그림을 붙이는 예시를 Mermaid로 보여주자, 모기는 터미널에서 보이지 않는다고 알렸다. 현재 대화 표면에서 읽을 수 없는 형식을 선택한 문제다.\n+\n+## 설명 추가 없이 바로 연결한 지점\n+\n+모기는 PR #45 본문을 완독하고, 표의 커밋 링크를 눌러 커밋 메시지도 순서대로 읽었다고 보고했다. “오오 이해 꽤됨. (diff는자세히안봄ㅋㅋ)”이라고 평가한 뒤 이전의 구현 궤적 replay 아이디어와 스스로 연결했다. 이는 모기의 읽기 경험 보고와 아이디어 연결이며 raw diff 독해·구체 코드 이해 완료를 검증한 결과는 아니다.\n+\n+모기는 커밋 메시지에 그림 몇 개가 있으면 좋겠다고 제안하고, 모든 PR이 아니라 여러 커밋에 걸쳐 수정하는 경우에 시험해보고 싶다고 범위를 정했다.\n+\n+## 설명·외부화 뒤 달라진 점\n+\n+구조 초안 설명에서는 mogi-productivity main `e5be55fc6169f2288174a50691a1fc96fc1d1aba`의 날짜·시각·저녁 함수에서 대상 찾기·생성/재사용 결정·미리보기·Notes 비교 기준·전송·확인·결과 조립이 반복되는 것을 직접 읽었다. 공통 흐름을 한곳으로 모으고 전송·확인 역할을 나누는 제안을 기존/제안 호출 트리와 같은 할 일 예시로 설명했다. 모기는 “아 한마디로말하면 쪼개는거네!ㅋ”라고 반응했고, 과외냥이는 역할을 나누는 것과 중복 흐름을 합치는 것을 함께 설명했다. 그 뒤의 별도 독립 적용은 하지 않았다.\n+\n+PR #45의 본문·커밋 메시지 조회 HEAD는 `650d419a49175ec9fab2b5c34c704dd1dbe87367`이다. 이 대목에서 전체 diff 검토·시험 실행·실앱 UAT를 수행한 것은 아니다.\n+\n+모기가 지정한 `mogi-harness-study`의 채팅 원문에서 2026-09-10 「과외냥이 관측형 에이전트」, 같은 날 「등장인물 한 줄 추가」, 2026-09-11 「이해부채 중간 레이어」를 읽었다. 모기가 과거에도 파일 읽기·편집·테스트·실패 뒤 다른 파일로 이동하는 외부 실행 흔적을 타임랩스처럼 보고 싶다고 말한 것을 확인했다. 당시 assistant의 실패·방향 전환 중심 제안과 모기의 더 넓은 과정 관측 관심을 구분했다. 이전 파일럿의 실제 효용이 검증됐다고 해석하지 않았다.\n+\n+검사 함수 분리의 변경 전후 예시를 글자 그림으로 다시 보여주자 모기는 “ㅇㅇㅇ!!”라고 반응하고 기록·시험을 요청했다. [커밋 메시지와 변경 전후 그림 파일럿](../harness/pilots/2026-10-22-commit-change-scenes.md)에 조건에 맞는 PR 한 건부터 시도하는 계획과 터미널용 글자 그림, 커밋 근거 확인, 관찰·중단 조건을 남겼다. 짧은 예시는 계기로 보존하며 새 파일럿 수행으로 소급 집계하지 않았다.\n+\n+## 아직 미관찰이거나 다음에 확인할 점\n+\n+- 실제 파일럿 수행: 0/1건. 여러 커밋의 변경 전후 그림을 순서대로 본 사용감은 아직 확인하지 않았다.\n+- 커밋 메시지 읽기의 도움, 단일 글자 그림에 대한 반응, 실제 코드 독해와 새 사례 적용은 서로 구분한다. 새 사례 적용은 시행하지 않아 미관찰이다.\n+- 커밋의 변경 순서는 실제 파일 열람·검색·편집 순서의 증거가 아니다. 이번 구상에서 과거 작업 장면이나 당시 의도를 추정해 재현하지 않는다.\n+- 설명 깊이 파일럿은 기존 2/3건을 유지한다. 이번 아이디어 기록 작업을 별도 PR·리뷰 설명 수행으로 세지 않았다. 새 그림 파일럿도 0/1건을 유지한다.\n+- 새 파일럿은 모기가 허용한 범위에서 자연스럽게 조건에 맞는 PR을 다룰 때만 시도하며, 횟수를 채우기 위한 추가 학습 과제는 만들지 않는다.\n+\n+## 학습 마찰·재확인·새 발견\n+\n+- “아니 그게 내가 자세히더이해하려고.. ㅂ너한테보내라고한거라옹 ㅡㅡ” — 전달된 설계 초안은 과외 재료로 읽어야 했는데 수신 보고만 한 응답을 정정했다.\n+- “그정도만 되어도 좋을듯... 근데 여기 터미널이라 머메이드 안보임 ㅠ” — 터미널에서 읽히는 글자 그림으로 바꿨다.\n+- “모든 pr은 아니더라도 커밋몇개에 걸쳐서 수정하는거라면 이 아이디어?를 시험해보고싶어” — 모든 PR에 강제하지 않는 한시 시험 요청으로 보존했다.\n+\n+## 종료 정리\n+\n+종료 기록 작성 전에 SCRATCHPAD를 읽었다. 세션 메모 구간은 앞 종료 정리 이후 비어 있고 제목도 `[다음 PR]`이므로 추가로 삭제할 내용은 없다. frontmatter·사용 안내·두 표식과 개인 보존 메모 구간은 보존한다. 종료 기록과 미푸시 파일럿 문서, 별도 커밋한 원문 저장분을 이번 사용자 요청에 따라 push한다.\n*** End Patch"));
+text(await tools.exec_command({cmd:"git diff --check -- head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md\npython3 - <<'PY'\nfrom pathlib import Path\nimport subprocess\nlog=Path('head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md')\nassert log.read_text().startswith('---\\nreviewed: false\\n---\\n')\ns=Path('SCRATCHPAD.md').read_text()\na='<!-- mogi-session-notes:start -->'\nb='<!-- mogi-session-notes:end -->'\nassert not s.split(a,1)[1].split(b,1)[0].strip()\nassert '# PR 첫 완독 러프 메모: [다음 PR]' in s\np=Path('raw/2026-10-22-01-pr44-things-call-paths-and-verification.md')\nold=subprocess.run(['git','show','HEAD:'+str(p)],check=True,capture_output=True).stdout\nassert p.read_bytes().startswith(old)\nprint('종료 기록 frontmatter·빈 스크래치패드·원문 append-only 확인')\nPY\ngit add -- head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md\ngit commit -m \"docs: PR45 커밋 읽기와 그림 구상 종료 관찰\" -- head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md","max_output_tokens":1400}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_8651bb6f02264d51a43b1decd698a495`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.3 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"dc6949\",\"wall_time_seconds\":0.000004792,\"exit_code\":0,\"original_token_count\":70,\"output\":\"종료 기록 frontmatter·빈 스크래치패드·원문 append-only 확인\\n[main 428f03e] docs: PR45 커밋 읽기와 그림 구상 종료 관찰\\n 1 file changed, 53 insertions(+)\\n create mode 100644 head-test/2026-10-22-pr45-commit-reading-and-replay-session-end-analysis.md\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 03 — `exec`
+
+Call ID: `call_35a9a9fc54be439eb3823ae53a54d4c5`
+
+입력:
+
+~~~text
+const commit=await tools.exec_command({cmd:'git add -- raw/2026-10-22-01-pr44-things-call-paths-and-verification.md\ngit commit -m "docs: PR45와 replay 구상 대화 원문 보존" -- raw/2026-10-22-01-pr44-things-call-paths-and-verification.md',"max_output_tokens":1300});
+text(commit);
+if(commit.exit_code!==0)exit();
+text(await tools.exec_command({cmd:"git push origin main","max_output_tokens":1500,"yield_time_ms":1000}));
+~~~
+
+#### 출력 03
+
+Call ID: `call_35a9a9fc54be439eb3823ae53a54d4c5`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 1.3 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"7b1b6e\",\"wall_time_seconds\":0.000004542,\"exit_code\":0,\"original_token_count\":25,\"output\":\"[main 6f48105] docs: PR45와 replay 구상 대화 원문 보존\\n 1 file changed, 706 insertions(+)\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"0bedc3\",\"wall_time_seconds\":1.0025715,\"session_id\":67204,\"original_token_count\":0,\"output\":\"\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 04 — `exec`
+
+Call ID: `call_1e07c5b5fa544e948c9446c557cc5b5f`
+
+입력:
+
+~~~text
+text(await tools.write_stdin({session_id:67204,chars:"","yield_time_ms":1000,"max_output_tokens":1600}));
+text(await tools.exec_command({cmd:"git rev-parse --short HEAD; git rev-parse --short refs/remotes/origin/main; git status --short","max_output_tokens":1000}));
+~~~
+
+#### 출력 04
+
+Call ID: `call_1e07c5b5fa544e948c9446c557cc5b5f`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.2 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"e892b4\",\"wall_time_seconds\":0.000015709,\"exit_code\":0,\"original_token_count\":21,\"output\":\"To https://github.com/samkimpepper/mogi-cards.git\\n   85696e7..6f48105  main -> main\\n\"}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"c135eb\",\"wall_time_seconds\":0.000005791,\"exit_code\":0,\"original_token_count\":4,\"output\":\"6f48105\\n6f48105\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+종료 기록 남기고 스크래치패드도 확인했어. 새 파일럿과 대화 원문까지 커밋해서 `origin/main`에 푸시 완료했다옹 ㅋ
+
+마지막 커밋: `6f48105`. 오늘은 여기까지!
+~~~
