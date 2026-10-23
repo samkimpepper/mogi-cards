@@ -1,8 +1,8 @@
 ---
 reviewed: false
-status: pilot
+status: awaiting-review
 planned_cases: 3
-completed_cases: 2
+completed_cases: 3
 ---
 
 # 필요한 설명 깊이 선택 — jargon·diff·배경 공부를 자동으로 늘리지 않기
@@ -75,3 +75,10 @@ completed_cases: 2
 - 결과: completed
 - 근거: raw/2026-10-22-01-pr44-things-call-paths-and-verification.md
 - 기록: 대상 mogi-productivity PR #44, 판독 HEAD 5e0abf9a8a1500f29e6698c5c29f1fc6d68a2db7. 원래 질문은 SCRATCHPAD의 어떤 파일·코드로 호출되는지와 설정 위치, Notes·checklist·reminder 경로 차이였다. 사용자 사건과 구체 값으로 실행 순서·주체·대상을 펼치는 첫 설명을 선택했고, 기존 할 일의 Someday 이동 호출 트리·설정 담당 표·실제 코드 몇 줄을 보였다. 같은 요청 흐름과 기능 경계의 후속 문답은 한 건으로 묶었다. 모기는 첫 설명에 느낌좋고 맘에든다며 원문 노트 보존을 요청했고, call stack tree·구체 예시·설정 표가 좋다고 명시했다. 이후 prepareNotesVerification과 buildThingsAddUrl을 update/create의 짝으로 해석해 질문했고, 비교 기준 준비와 생성 요청 준비라는 서로 다른 역할이며 create에서도 둘 다 호출됨을 보충했다. URL 수정 인증·기존 체크리스트 미지원·읽기와 쓰기 경계도 보충했다. 모기는 브릿지가 복잡하다고 평가하고 후속 PR 검토 전달을 요청했다. 첫 설명의 긍정 평가를 전체 구현 독해 완료로 확대하지 않는다. 마지막 시험 설명에 대한 사용자 반응과 별도 새 사례 적용은 미관찰.
+
+<!-- pilot-run:ad04d5d333d0ac48b8e154668ad23730451209c375987d0183c23ffaaa38a4f4:completed -->
+### 2026-10-23T06:12:59+00:00 · todo-ops-pr11-mutation-explanation-4cffa469ecf78d0a
+
+- 결과: completed
+- 근거: head-test/2026-10-23-pr11-story-first-and-reader-ab-session-end-analysis.md
+- 기록: 대상 todo-ops PR #11 원본 HEAD 0ecc0bae920a748a09665cc0e82440b05b6443b9, 제품 44a45ca. SCRATCHPAD의 310/283·sent:true 상황·Stryker·뒤에서 거부 질문을 한 사건의 후속 문답으로 묶었다. 첫 깊이는 용어를 동작으로 풀기와 체크리스트 100/101개 비교표·국소 코드 몇 줄로 골랐다. 모기는 첫 사례에 이해 반응을 보였지만 숫자 방향 혼동이 남았고, 미리보기 설명에는 요청·정상 리턴·왜 고장을 심는지 맥락을 먼저 쓰라고 story-first를 재차 요구했다. 사례 문장은 일반 설명 방식의 예시라는 정정도 있었다. 이후 283은 고칠 구멍 수가 아니라 기존 시험이 고장을 알아챈 수라는 표 뒤 이해했다고 말했다. 제작 방식을 알기 전 본문 버전2 선호를 밝혔다. 선호와 설명 원인 가설·제작 방식 효과는 구분했고 새 사례 독립 적용은 미관찰이다. 기록은 실제 수행 1건의 종료이며 최초 설명 성공이나 영구 승격 판정이 아니다.
