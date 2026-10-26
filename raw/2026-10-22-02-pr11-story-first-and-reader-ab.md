@@ -3017,3 +3017,74 @@ Codex turn key: `47160f360fbbda7a`
 ~~~text
 푸시도해줘 앞으로 ㅡㅡ
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_50ce3e0353b241f3bea587486b19460a`
+
+입력:
+
+~~~text
+text(await tools.exec_command({cmd:"git status --short; git branch --show-current; git remote -v; git pull; rg -n 'push|푸시|세션 종료|종료 처리|raw/' guide-tutor-preamble.md guide-mogi-head-test.md AGENTS.md README.md | head -n 65","max_output_tokens":3500}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_50ce3e0353b241f3bea587486b19460a`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"81f696\",\"wall_time_seconds\":0.444286375,\"exit_code\":0,\"original_token_count\":1552,\"output\":\" M raw/2026-10-22-02-pr11-story-first-and-reader-ab.md\\nmain\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (fetch)\\norigin\\thttps://github.com/samkimpepper/mogi-cards.git (push)\\nAlready up to date.\\nAGENTS.md:9:3. 모기가 PR·코드·질문을 주면 채팅에서 바로 시작한다. 카드를 먼저 만들거나 읽게 하지 않는다. 재료가 없을 때만 **선택한 레포의 각 종류 폴더 바로 아래**에서 `reviewed: false`이고 파일명 날짜가 최신인 문서 1개씩을 제시한다. 없으면 \\\"미검토 문서 없음\\\"으로 표시한다. 다른 레포의 카드를 대신 제시하지 않는다. `reviewed`가 없는 기존 문서는 처리한 레거시로 보고, `temp/`·`archive/`·`raw/`는 기본 목록에서 제외한다.\\nREADME.md:15:재료가 없을 때만 `pr-cards/<레포>/`·`plan-cards/<레포>/`·`code-diff-notes/<레포>/`의 **바로 아래 문서 중 `reviewed: false`인 최신 문서 각 1개씩**을 제시한다. 없으면 \\\"미검토 문서 없음\\\"으로 표시하며 다른 레포의 자료를 대신 제시하지 않는다. `reviewed`가 없는 문서는 처리한 레거시로 보고 `temp/`·`archive/`·`raw/`는 기본 목록에서 제외한다.\\nREADME.md:37:공통 과외 지침, `raw/`, `head-test/`, `SCRATCHPAD.md`, `master-delivery-memos.md`는 루트에서 함께 관리한다. 제품별 PR 번호는 해당 레포 문맥 안에서 읽고 새 발견물 메모 제목에는 제품명을 붙인다. 기존 swatch 자료 68개(요청형 워크북 포함)는 `swatch-v2` 아래로 옮겼으며 상태 값은 보존했다.\\nREADME.md:83:실행 뒤 Orca 브라우저에서 `http://127.0.0.1:8766`을 연다. 상태판은 기본으로 `mogi-productivity`를 보여주고 레포 선택으로 `swatch-v2`로 전환할 수 있다. 선택한 레포의 각 종류 폴더 바로 아래 `reviewed: false` 문서만 보여주며, 모기가 체크한 문서의 frontmatter만 `reviewed: true`로 바꾼다. `temp/`·`archive/`·상태 필드가 없는 레거시는 제외하고 commit과 push는 자동으로 하지 않는다. 종료할 때는 상태판을 실행한 터미널에서 `Ctrl+C`를 누른다.\\nguide-mogi-head-test.md:55:## 세션 종료 기록 기본값 (모기 개정 2026-08-20)\\nguide-mogi-head-test.md:57:모기가 과외 세션 종료를 알리면 `head-test/<날짜>-<주제>-session-end-analysis.md`에 종료 관찰을 남긴다. 과거 관찰일지는 당시 판독의 이력이므로 새 형식에 맞춰 다시 쓰지 않는다.\\nguide-mogi-head-test.md:59:매 세션 종료 기록에는 다음만 넣는다.\\nguide-mogi-head-test.md:69:모기가 과외 세션 종료를 알리면 종료 관찰일지를 쓰기 전에 [`SCRATCHPAD.md`](./SCRATCHPAD.md)의 `mogi-session-notes:start`와 `mogi-session-notes:end` 사이를 읽는다. 관찰 근거가 된 메모와 아직 답하지 못한 질문은 위 종료 기록의 해당 항목이나 `학습 마찰·재확인·새 발견`에 필요한 만큼 먼저 남긴다.\\nguide-mogi-head-test.md:71:종료 관찰일지가 실제로 작성된 뒤에만 두 표식 사이의 모기 메모를 비우고, 문서 제목의 대상 PR을 `[다음 PR]`로 되돌린다. frontmatter·사용 안내·두 표식은 보존한다. 일시 중단·compaction·카드 전환만으로는 비우지 않으며, 종료 관찰일지 작성이 실패했거나 미해결 메모의 보존 위치를 확정하지 못했으면 먼저 지우지 않는다. 종료 관찰일지와 `SCRATCHPAD.md` 정리는 같은 커밋에 두고, 대화 원문 `raw/` 커밋은 기존 규칙대로 별도로 둔다.\\nguide-tutor-preamble.md:53:과외 세션의 사용자 문답과 도구 호출·출력은 저장소 루트의 `raw/`에 보존한다. 이 기록은 native\\nguide-tutor-preamble.md:58:  `raw/<날짜>-*.md` 중 가장 큰 번호 다음 값을 쓰고, 날짜가 바뀌면 `01`부터 시작한다.\\nguide-tutor-preamble.md:69:- `raw/`는 기본 과외 재료와 `reviewed` 상태 관리 대상이 아니다. raw 훅은 대화 중\\nguide-tutor-preamble.md:70:  `git pull`·stage·commit을 하지 않고 파일만 쓴다. 과외냥이는 세션 종료나 통제된\\nguide-tutor-preamble.md:140:1. **제품 저장소는 읽기 전용.** mogi-productivity·swatch-v2 등 제품·운영 저장소에는 파일 쓰기·커밋·push를 하지 않는다. 보여줄 코드는 채팅으로만. 모기가 써달라고 해도 \\\"제품 쪽은 마스터 경로로 보내자\\\"라고 답한다. **예외: mogi-cards 저장소(모기 개인 공책)에는 쓸 수 있다** — 카드에 모기 메모 추가, 해설 초안 저장, 새 문서 frontmatter의 상태 기본값 작성이 허용 범위다. 모기가 이 공책의 폴더·지침·상태판 정리를 명시적으로 요청하면 그 범위도 허용한다. 모든 새 활성 문서에는 `reviewed: false`를 쓰고, `pr-cards/` 문서에만 `merge_ready: false`도 쓴다. 기존 문서의 상태 값을 `true`로 바꾸는 일은 모기가 직접 한다. 쓰기 전에 `git pull`, 쓰고 나면 커밋해둔다 (push는 모기가 원할 때).\\nguide-tutor-preamble.md:147:8. **같은 사건의 반복 재조립은 중단·인계한다.** 하나의 PR을 전체 완독한 뒤 모기가 막힌 동일한 사용자 사건·상태 변화에 대해 집중 raw diff 과외를 한 번 마치고도, 새 해설 문서를 만들거나 채팅에서 같은 값의 주인·변경 경로·동작 계약을 두 번째로 재구성하게 되면 과외를 중단한다. 완독과 앞선 과외 여부는 현재 대화와 `raw/`·`code-diff-notes/` 실물로 확인하며, 근거가 없으면 했다고 추측하지 않는다. 이를 모기의 이해·기억 문제로 더 추궁하거나 새 카드·노트를 만들지 않고, `PR 범위·가독성 문제`·`제품 책임 분산·코드 품질 문제`·`둘 다` 중 하나로 분류한다. 모기의 막힌 질문 원문, 추적한 파일·함수·테이블, PR 안에서 답이 드러나지 않은 이유, 한곳에 고정되지 않은 동작 계약, 판독 SHA를 규칙 2의 마스터 전달용 메모로 남긴다. 이 중단은 학습 포기나 머지 판정이 아니라 제품 쪽에서 다시 조사할 경계를 넘기는 것이다.\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_0165e1e716f9432e8c6a5d36ffa52938`
+
+입력:
+
+~~~text
+text(await tools.apply_patch("*** Begin Patch\n*** Update File: /Users/leechaerim/orca/mogi-cards/guide-mogi-head-test.md\n@@\n 종료 관찰일지가 실제로 작성된 뒤에만 두 표식 사이의 모기 메모를 비우고, 문서 제목의 대상 PR을 `[다음 PR]`로 되돌린다. frontmatter·사용 안내·두 표식은 보존한다. 일시 중단·compaction·카드 전환만으로는 비우지 않으며, 종료 관찰일지 작성이 실패했거나 미해결 메모의 보존 위치를 확정하지 못했으면 먼저 지우지 않는다. 종료 관찰일지와 `SCRATCHPAD.md` 정리는 같은 커밋에 두고, 대화 원문 `raw/` 커밋은 기존 규칙대로 별도로 둔다.\n+\n+모기 요청(2026-10-23)으로 **세션 종료 절차에는 이 공책의 커밋을 원격 저장소에 push하는 것까지 포함한다.** 관찰 기록·스크래치패드 정리와 별도 raw 커밋을 마친 뒤 push하며, 매번 추가 요청이나 확인을 기다리지 않는다.\n*** Update File: /Users/leechaerim/orca/mogi-cards/guide-tutor-preamble.md\n@@\n-1. **제품 저장소는 읽기 전용.** mogi-productivity·swatch-v2 등 제품·운영 저장소에는 파일 쓰기·커밋·push를 하지 않는다. 보여줄 코드는 채팅으로만. 모기가 써달라고 해도 \"제품 쪽은 마스터 경로로 보내자\"라고 답한다. **예외: mogi-cards 저장소(모기 개인 공책)에는 쓸 수 있다** — 카드에 모기 메모 추가, 해설 초안 저장, 새 문서 frontmatter의 상태 기본값 작성이 허용 범위다. 모기가 이 공책의 폴더·지침·상태판 정리를 명시적으로 요청하면 그 범위도 허용한다. 모든 새 활성 문서에는 `reviewed: false`를 쓰고, `pr-cards/` 문서에만 `merge_ready: false`도 쓴다. 기존 문서의 상태 값을 `true`로 바꾸는 일은 모기가 직접 한다. 쓰기 전에 `git pull`, 쓰고 나면 커밋해둔다 (push는 모기가 원할 때).\n+1. **제품 저장소는 읽기 전용.** mogi-productivity·swatch-v2 등 제품·운영 저장소에는 파일 쓰기·커밋·push를 하지 않는다. 보여줄 코드는 채팅으로만. 모기가 써달라고 해도 \"제품 쪽은 마스터 경로로 보내자\"라고 답한다. **예외: mogi-cards 저장소(모기 개인 공책)에는 쓸 수 있다** — 카드에 모기 메모 추가, 해설 초안 저장, 새 문서 frontmatter의 상태 기본값 작성이 허용 범위다. 모기가 이 공책의 폴더·지침·상태판 정리를 명시적으로 요청하면 그 범위도 허용한다. 모든 새 활성 문서에는 `reviewed: false`를 쓰고, `pr-cards/` 문서에만 `merge_ready: false`도 쓴다. 기존 문서의 상태 값을 `true`로 바꾸는 일은 모기가 직접 한다. 쓰기 전에 `git pull`, 쓰고 나면 커밋해둔다. 모기 요청(2026-10-23)으로 세션 종료 때는 관찰 기록·스크래치패드 정리와 별도 raw 커밋을 마친 뒤 이 공책을 push까지 한다. 추가 확인은 받지 않는다.\n*** End Patch"));
+text(await tools.exec_command({cmd:"git diff --check; git add guide-mogi-head-test.md guide-tutor-preamble.md; git commit -m 'Include push in the default session closing procedure'; git add raw/2026-10-22-02-pr11-story-first-and-reader-ab.md; git commit -m 'Archive session closing transcript'; git push origin main; git status --short; git rev-list --left-right --count HEAD...origin/main","max_output_tokens":1800,"yield_time_ms":10000}));
+~~~
+
+#### 출력 02
+
+Call ID: `call_0165e1e716f9432e8c6a5d36ffa52938`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 2.6 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"chunk_id\":\"ea0677\",\"wall_time_seconds\":2.320229792,\"exit_code\":0,\"original_token_count\":73,\"output\":\"[main 681b417] Include push in the default session closing procedure\\n 2 files changed, 3 insertions(+), 1 deletion(-)\\n[main 1f8642a] Archive session closing transcript\\n 1 file changed, 233 insertions(+)\\nTo https://github.com/samkimpepper/mogi-cards.git\\n   6f48105..1f8642a  main -> main\\n0\\t0\\n\"}",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+푸시했어. 앞으로는 **세션 종료 때 커밋·원문 보존·푸시까지** 기본으로 할게. 기존 지침에도 반영했어.
+~~~
