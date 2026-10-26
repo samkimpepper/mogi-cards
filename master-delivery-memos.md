@@ -376,3 +376,5 @@
 - 중복 확인·상태: append 직전 현재 메모의 PR #51 날짜 함수 소속·Upcoming CLI 시험 공백과 대조했고 원인·영향이 다르다. 제품의 STATE에서 작업 정본으로 연결된 todo-ops에서 읽기 전용 제목 조회 Notes·verification·readback·Things를 확인했으며, 관련 제목의 열린 검사 재검토 작업은 찾지 못했다(전수 부재를 주장하지 않음). 기존 T40 결정의 재검토 의견으로 기록했으며 제품 변경·새 테스트 실행·담당자 메시지 발송은 하지 않았다.
 
 - 전달 시도·미전송 (2026-10-26): 모기의 “전달하자옹ㅋ” 요청으로 이 Notes 재검토 절만 전송하려 했으나, `resolve todo`가 `Registered agentIdentity changed; the role owner must register again`으로 거부했다. 진단에서 등록 주소는 `agentIdentity: claude`이고 같은 handle의 `terminal show`도 claude였지만, resolve가 실제 사용한 `terminal list` 스냅샷에는 해당 필드가 없어 `null`로 비교됐음을 확인했다. Run·handle 변경으로 단정하지 않으며 상대 주소를 덮어쓰거나 검증을 우회하지 않았다. 메시지 send는 호출하지 않았고 전송 접수도 없다. 주소 조회의 필드 누락·검증 문제를 해소한 뒤 같은 절의 전달이 남아 있다.
+
+- 조회 재확인·전송 접수 (2026-10-26): 등록 Run·현재 Run은 모두 `run_885652410aef`·consumerGeneration 3으로 동일했다. 이후 같은 등록 주소로 `resolve todo`가 통과했고 전송 직전 자기·상대 resolve도 모두 통과했다. 주소 파일이나 검증 코드를 변경하지 않고 Notes 재검토 절만 한 번 보냈다. 접수 `msg_767a871672d5`, `2026-10-26T09:02:01Z`이며 접수 당시 `delivered_at: null`이다. 앞의 미전송 기록은 이 전송 전 상태이며 현재 메시지는 큐에 접수됐다. 담당자의 읽음·인수·제품 반영은 아직 확인하지 않았다. 이전 실패에서 관찰한 것은 목록 응답의 agentIdentity 누락이고, Orca가 그 필드를 누락한 내부 원인까지 확정한 것은 아니다.
