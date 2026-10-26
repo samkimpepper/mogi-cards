@@ -2,7 +2,7 @@
 reviewed: false
 status: pilot
 planned_runs: 3
-completed_runs: 0
+completed_runs: 1
 ---
 
 # 실패상황 테스트 요청 — 잘못된 사용과 고장 난 도구 나누기
@@ -59,10 +59,16 @@ completed_runs: 0
 
 ## 사용 기록
 
-아직 적용 기록 없음. 사용했을 때 요청한 기능·약속, 만든 입력·고장, 실제 결과·미실행 범위, 도움이 됐거나 번거로웠던 점만 짧게 남기고 `completed_runs`를 올린다. 세부 제품 발견물은 기존 규칙대로 `master-delivery-memos.md`에 둔다.
 
 ## 계기와 근거
 
 - [2026-10-16 PR #1 대화](../../raw/2026-10-16-01-todo-ops-pr1-guard-review.md): 검증 대상 조건을 실제 입력으로 만들기, 원하는 이유로 차단됐는지 보기, 해당 검사 기능을 끈 복사본에서 같은 시험이 실패하는지 확인하기를 구분했다.
 - [todo-ops PR #4 A/B 리뷰](https://github.com/samkimpepper/todo-ops/pull/4#pullrequestreview-5566090082): 도구 HEAD `2b27fdc`, 테스트 A와 B의 고정 버전·고장 사본 비교를 보고했다. 이번 과외에서는 리뷰 원문을 읽었고 해당 비교를 직접 재실행하지 않았다.
 - 2026-10-19 모기는 위 두 종류의 표를 다음 프롬프트에 활용할 수 있도록 임시 파일럿으로 보존해달라고 요청했다.
+
+<!-- pilot-run:8231c93d4929a14af8b6c611e046d250cee8cd256198b8b86b0ddc9ae2de4a1f:completed -->
+### 2026-10-26T05:57:18+00:00 · pr51-upcoming-tests-2026-10-26
+
+- 결과: completed
+- 근거: master-delivery-memos.md
+- 기록: PR51 27817e5: 원본 upcoming 8개 통과, 독립 고장 10개 중 9개는 시험 실패·CLI 날짜검사 호출 우회 1개는 8개 모두 통과. 가짜 osascript로 --days 15의 원본 읽기 0회·고장 사본 1회 확인. 실제 앱 미접근, 사본 원복 후 8개 통과. 프롬프트 형식의 개선 효과·사용자 부담은 아직 미관찰.
