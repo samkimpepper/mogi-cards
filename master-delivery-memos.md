@@ -502,3 +502,12 @@ https://github.com/anthropics/sandbox-runtime#filesystem-configuration
 - 보고서와 후속 확인의 차이: 투두냥은 A.json/manual의 제품 touch EPERM, pull의 FETCH_HEAD EPERM, BAD.json의 설정 파일 전체 무시와 bypass 쓰기를 독립 재현했다고 보고했다. 다만 보고서의 '오류·경고 없이 sandbox가 꺼진다'는 표현과 달리, claude -p 텍스트 출력에서는 설정 검증 경고를 봤다고 밝혔다. stream-json 출력에서 경고를 관찰하지 못한 것과 경고 자체가 없는 것은 구분하고, 보고서 원문이 아직 고쳐지지 않았다는 사실도 보존한다.
 - 미확인 범위: Orca daemon 위임 쓰기는 도움말 조사만, 워커 터미널 적용은 문서 해석만이며 실제 GitHub push도 시험하지 않았다. 실제 설정·제품 저장소를 변경하거나 투두냥에게 새 실험을 요청하지 않았다.
 - 자기 주소: Orca runtime 변경으로 기존 resolve가 실패했다. 환경의 자기 handle·terminal show·현재 Run·같은 incarnation 및 consumerGeneration을 확인하고, 동일 담당 주소의 runtime을 재등록한 뒤 resolve를 통과했다. 상대 주소·Run 연결은 바꾸지 않았다.
+
+### [todo-ops] sandbox 조사 추가 — Bash만 제한한 실험과 에이전트 전체 격리 후보를 구분 (2026-10-27)
+
+- 모기 질문: “와 진짜 답이없네.. 와.. 이거 우리가 직접 이렇게 구현하는게맞아? 괜찮은 오픈소스나, 앤트로픽 openai는 뭐 어떻게해결했는지 찾아봐야할거같은데ㅠ”
+- 중복 확인: 현재 메모와 `bd --readonly show td-xfp`, `td-xfp.1`을 확인했다. 기존 작업에 sandbox-runtime 조사와 Bash sandbox 실험은 이미 있으므로 같은 결함을 새로 등록하지 않는다. 이번 delta는 공식 문서가 안내하는 **Claude Code 전체 프로세스를 runtime으로 감싸는 배치**와 VM 대안이다.
+- 근거: Anthropic 공식 `https://code.claude.com/docs/en/sandbox-environments`의 비교 표·Sandbox runtime 절(조회 결과 50–58, 102–134행)은 내장 Bash sandbox와 전체 Claude 프로세스 격리를 구분하고, 설정 뒤 `srt claude`로 시작하는 경로를 안내한다. 공개 `https://github.com/anthropics/sandbox-runtime`은 프로세스 트리 전체에 OS 제한을 적용하는 Apache-2.0 연구 미리보기다. `https://code.claude.com/docs/en/sandboxing` 1033행은 허용한 Unix socket으로 외부 서비스 권한을 얻는 위험도 명시한다.
+- 왜 중요한지: Edit/Write가 이번 Bash 실험 밖에서 썼다는 결과를 'sandbox 방식으로는 직접 편집 도구를 제한할 수 없다'로 일반화하면 기존 공개 구현으로 전체 프로세스를 제한할 대안을 놓친다. 반대로 전체 프로세스를 감싸도 이미 밖에서 실행 중인 Orca에 광범위한 요청 권한을 주면 그 서비스의 실제 작업까지 자동 격리되는 것은 아니며, 제품 최신화와 임의 편집이 같은 파일을 쓰는 운영 예외도 별도 문제로 남는다.
+- 다른 공식 구현: OpenAI `https://learn.chatgpt.com/docs/agent-approvals-security`는 macOS Seatbelt, Linux bwrap/seccomp, 별도 승인 정책 및 Dev Container 외부 경계를 안내한다. `https://github.com/microsoft/quicksand`는 macOS 포함 여러 플랫폼의 QEMU Linux VM을 만들고 제어하는 MIT 공개 구현이다. `https://docs.docker.com/ai/sandboxes/security/`는 에이전트 전체를 microVM에서 실행하는 제품 사례이며, 공유한 호스트 경로와 외부 MCP는 별도 연결로 취급한다. 이 목록은 보안 감사 완료·Orca 호환성 검증·도입 결정이 아니다.
+- 판독 시점: todo-ops checkout HEAD `577308b5eb08d17c75fb1425cd0f96a2bf8910a2`를 확인했다. 새 제품 코드 판독이나 이 HEAD에서의 재현은 하지 않았고, 위 외부 문서는 2026-10-27 조회 시점이다. 설치·설정 변경·제품 수정·추가 실험·메시지 전송은 하지 않았다.
