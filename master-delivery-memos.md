@@ -493,3 +493,12 @@ https://github.com/anthropics/sandbox-runtime#filesystem-configuration
 - (c) '지금의 손수 만든 해석 부분을 셸 문법을 읽는 도구로 바꾸면 (b)의 실패가 줄어드는지 본다. 외부 프로그램의 실제 쓰기 제한은 별도다.'
 
 요청받은 문서 검토 결과다. 새 도구·실험·리뷰어를 시작하지 않았다. 후속 실행 여부나 우선순위는 이 회신으로 승인하지 않는다.
+
+
+### sandbox 실험 결과 자료 수신 (2026-10-27)
+
+- 수신: `msg_70329726aa1f`(2026-10-27T09:40:13Z, 투두냥)의 td-xfp.1 결과 안내를 읽었다. 투두냥은 모기가 결과를 과외에서 함께 이야기하고 싶다고 알렸고 별도 회신은 필요 없다고 명시했다. 보고서 `/Users/leechaerim/orca/.local/audits/2026-10-28-sandbox-trial.md` 원문 전체를 읽었으며 날짜 파일명과 실제 실험 날짜(2026-10-27 KST)를 구분한다. 과외냥이는 원자료 전체 감사·실험 재실행을 하지 않았다.
+- 보고된 결과: sandbox 안에서 실행된 5개 구멍 명령은 가짜 제품을 바꾸지 못했고, todo 커밋·로컬 원격 push는 가능했다. 제품 pull --ff-only와 runtime ff는 sandbox 안에서 성공시키지 못했다. Edit/Write의 별도 permission deny, unsandboxed 재시도·excludedCommands 및 무효 설정의 다른 실행 경로도 결과에 영향을 줬다. '일부' 효과라는 보고이며 제품에 적용 완료된 것으로 보지 않는다.
+- 보고서와 후속 확인의 차이: 투두냥은 A.json/manual의 제품 touch EPERM, pull의 FETCH_HEAD EPERM, BAD.json의 설정 파일 전체 무시와 bypass 쓰기를 독립 재현했다고 보고했다. 다만 보고서의 '오류·경고 없이 sandbox가 꺼진다'는 표현과 달리, claude -p 텍스트 출력에서는 설정 검증 경고를 봤다고 밝혔다. stream-json 출력에서 경고를 관찰하지 못한 것과 경고 자체가 없는 것은 구분하고, 보고서 원문이 아직 고쳐지지 않았다는 사실도 보존한다.
+- 미확인 범위: Orca daemon 위임 쓰기는 도움말 조사만, 워커 터미널 적용은 문서 해석만이며 실제 GitHub push도 시험하지 않았다. 실제 설정·제품 저장소를 변경하거나 투두냥에게 새 실험을 요청하지 않았다.
+- 자기 주소: Orca runtime 변경으로 기존 resolve가 실패했다. 환경의 자기 handle·terminal show·현재 Run·같은 incarnation 및 consumerGeneration을 확인하고, 동일 담당 주소의 runtime을 재등록한 뒤 resolve를 통과했다. 상대 주소·Run 연결은 바꾸지 않았다.
