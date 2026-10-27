@@ -378,3 +378,14 @@
 - 전달 시도·미전송 (2026-10-26): 모기의 “전달하자옹ㅋ” 요청으로 이 Notes 재검토 절만 전송하려 했으나, `resolve todo`가 `Registered agentIdentity changed; the role owner must register again`으로 거부했다. 진단에서 등록 주소는 `agentIdentity: claude`이고 같은 handle의 `terminal show`도 claude였지만, resolve가 실제 사용한 `terminal list` 스냅샷에는 해당 필드가 없어 `null`로 비교됐음을 확인했다. Run·handle 변경으로 단정하지 않으며 상대 주소를 덮어쓰거나 검증을 우회하지 않았다. 메시지 send는 호출하지 않았고 전송 접수도 없다. 주소 조회의 필드 누락·검증 문제를 해소한 뒤 같은 절의 전달이 남아 있다.
 
 - 조회 재확인·전송 접수 (2026-10-26): 등록 Run·현재 Run은 모두 `run_885652410aef`·consumerGeneration 3으로 동일했다. 이후 같은 등록 주소로 `resolve todo`가 통과했고 전송 직전 자기·상대 resolve도 모두 통과했다. 주소 파일이나 검증 코드를 변경하지 않고 Notes 재검토 절만 한 번 보냈다. 접수 `msg_767a871672d5`, `2026-10-26T09:02:01Z`이며 접수 당시 `delivered_at: null`이다. 앞의 미전송 기록은 이 전송 전 상태이며 현재 메시지는 큐에 접수됐다. 담당자의 읽음·인수·제품 반영은 아직 확인하지 않았다. 이전 실패에서 관찰한 것은 목록 응답의 agentIdentity 누락이고, Orca가 그 필드를 누락한 내부 원인까지 확정한 것은 아니다.
+
+## 2026-10-27 [todo-ops] PR #18 — LOCAL.md 부재 지적을 우리 설치의 실제 경로와 대조
+
+- 모기 질문 원문: “그 파일이 없을리가있어? 어떤 케이스에서 없어진다는거야 내가 새 맥북을 살때??” 이어 “이거 마스터메모에 남겨줘 ㅋ 그리고 다음 설명해줘 ㅋ”라고 기록을 요청했다.
+- 판독 SHA: PR #18 HEAD `e8e4083d779c5332158aab0006bd107118605972`(append 직전 GitHub OPEN·동일 HEAD 확인). [Cubic 해당 지적](https://github.com/samkimpepper/todo-ops/pull/18#discussion_r4384340207)은 `LOCAL.md`가 없을 때 공통 카드가 세션에 마스터 역할을 무조건 부여할 수 있다고 주장한다.
+- 근거: 해당 HEAD의 `workspace-card/AGENTS.md:3,9`는 마스터 역할을 선언하고 LOCAL.md가 있을 때 읽도록 한다. 담당자·다른 작업공간 제한은 `workspace-card/LOCAL.md:5-7`로 이동했다. `workspace-card/README.md:32-36`은 LOCAL.md가 선택적 설치별 파일이고, Git으로 보관하며, 공통 템플릿은 제공하지 않고 `template-apply`는 변경하지 않는다고 명시한다. 현재 PR에는 이 파일이 실제로 있다.
+- 우리 업데이트 경로: 현재 작업 계약 `../todo-ops/contracts/2026-10-27-harness-upgrade-v0.5.278.md:6-14`는 `upstream-template`의 3-way merge와 우리 역할 문장의 LOCAL.md 이관·누락 대조를 요구하며 `template-apply --write`는 금지한다. 따라서 template-apply의 보호를 우리 업데이트 절차 자체로 설명하지 않는다. 새 맥북에서 이 PR이 반영된 우리 todo-ops를 그대로 clone하면 Git에 들어 있는 LOCAL.md도 내려오지만, 새 환경의 절대 경로·배포본 연결까지 자동으로 유효하다는 뜻은 아니다.
+- 왜 문제인지: 공통 템플릿만 새로 설치하면 LOCAL.md가 처음부터 없을 수 있다는 사실과, 우리 기존 설치에서 이번 업그레이드 때문에 그 파일이 빠진다는 주장은 다르다. 적용 가능한 부재 경로를 확인하지 않은 채 우리에게 곧 발생할 회귀처럼 설명하면, 사용자가 불필요한 예외 대응과 변경 비용을 실제 요구로 받아들일 수 있다.
+- 마스터 확인 요청: 이 리뷰가 우리 설치에서 성립하는 구체 경로(설치·업데이트·경로 이동·파일 읽기 실패 등)와 필요한 보장을 먼저 확인해 달라. 부재 조건의 현실성, 공통 템플릿에 담당자 제한을 둘 필요, 파일이 있는 현재 설치에서 공통 카드와 LOCAL.md의 규칙이 충돌하는지는 구분해서 판단한다. 이번 질문을 리뷰 오탐 확정·지적 무시·특정 수정 승인으로 해석하지 않는다.
+- 설명 정정: 과외냥이는 처음에 “없는 설치본”이라고만 설명해 우리 설치와 공통 템플릿의 범위를 생략했다. 후속 문답에서 현재 파일 존재·Git clone 시 동반·공통 템플릿만 설치할 때의 부재를 구분했으며, 우리 설치에서 파일이 빠지는 경로는 아직 입증하지 않았다.
+- 중복 확인·상태: append 직전 현재 메모에서 PR #18·LOCAL.md 부재 관련 항목을 찾지 못했고, todo-ops의 현재 업그레이드 계약과 `bd --readonly list --title-contains harness --limit 15` 및 `--title-contains LOCAL --limit 10`을 확인했다(각 No issues found; 이슈 전수 부재를 주장하지 않음). 별도 `2026-10-27-local-card-inject-hook.md` 계약은 LOCAL.md 내용을 세션 시작에 자동 제공하는 작업으로, 이번 부재 조건의 현실성 확인과 구분한다. 공책 기록만 요청받았으며 메시지 발송·제품 수정·추가 시험·머지 판단은 하지 않았다.
