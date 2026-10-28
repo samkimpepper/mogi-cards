@@ -1,10 +1,10 @@
 ---
 reviewed: false
-status: pilot
+status: awaiting-review
 event: review
 requires_request: false
 planned_cases: 1
-completed_cases: 0
+completed_cases: 1
 ---
 
 # 커밋 메시지와 변경 전후 그림으로 순서 따라보기
@@ -70,4 +70,9 @@ completed_cases: 0
 
 ## 실행 기록
 
-아직 적용 기록 없음. 기록 문서 작성과 후보 알림만으로 횟수를 올리지 않는다.
+<!-- pilot-run:697ccc32c9ebc67383d0c86b8093445201d9120433456dfb059f31d29d89d2e0:completed -->
+### 2026-10-28T02:29:55+00:00 · 982ecb63e85eca19:mogi-productivity:pr53
+
+- 결과: completed
+- 근거: raw/2026-10-28-01-pr53-launcher-signing-and-tests.md
+- 기록: mogi-productivity PR #53 한 건. base 2f05929de204c100446a45c182dd3d9af0fbb0bb, 판독 HEAD a6d89b70b4b2b702414989ef03bf93faa6236a2c. 커밋 91f10003(부모 2f05929), 56157fb(부모 91f10003), a6d89b7(부모 56157fb)의 메시지·diff를 읽고 공통 빌더 이동 전후, 두 앱 제작·실행 관계, 교체 실패 뒤 복구 전후를 글자 그림으로 설명했다. 제작 화살표와 실행 화살표를 구분했다. 모기는 권한 분리 설명 뒤 이해했다고 표현했으나 그림 자체의 사용감은 미관찰이다. 뒤에는 새 앱·기존 앱의 대상 및 빌드 때와 매일 예약 실행 때의 구분 누락을 질문해 시점·위치 지도를 보완했다. 그림이 구조 이해를 단독으로 해결했다고 판정하지 않는다. 주관식 1~3번에서 재빌드 경계·서명된 파일 비교·복구 필요성을 답했고, 4번 시험 결과의 증명 범위는 추가 설명했다. 이는 앞선 설명을 본 같은 사례 답변이며 별도 새 사례의 독립 적용·지연 후 유지는 미관찰이다. 1/1 수행 뒤 자동 적용을 멈추며 유지·수정·폐기는 미결이다.
