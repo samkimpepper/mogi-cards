@@ -6670,3 +6670,116 @@ Codex turn key: `6d6e8f3e7cb8c19c`
 ~~~text
 앗ㅋ 그것도 포함해서 커밋 푸시도해줘
 ~~~
+
+### 도구 호출·출력
+
+#### 호출 01 — `exec`
+
+Call ID: `call_a06a0816eddc4afaaeb73eed9f6f2f7f`
+
+입력:
+
+~~~text
+const r=await Promise.allSettled([
+tools.exec_command({cmd:"git status --short","max_output_tokens":2000}),
+tools.exec_command({cmd:"sed -n '1,100p' code-diff-notes/mogi-productivity/2026-10-26-pr51-upcoming-call-flow-and-test-boundaries.md","max_output_tokens":8500}),
+tools.exec_command({cmd:"git pull --ff-only","max_output_tokens":1500})
+]);r.forEach((x,i)=>text({i,result:x}));
+~~~
+
+#### 출력 01
+
+Call ID: `call_a06a0816eddc4afaaeb73eed9f6f2f7f`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 0.7 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":0,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"eba95f\",\"wall_time_seconds\":0.000007625,\"exit_code\":0,\"original_token_count\":38,\"output\":\" M raw/2026-10-27-01-todo-ops-pr18-stop-and-sandbox.md\\n?? code-diff-notes/mogi-productivity/2026-10-26-pr51-upcoming-call-flow-and-test-boundaries.md\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":1,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"218027\",\"wall_time_seconds\":0.00000825,\"exit_code\":0,\"original_token_count\":1845,\"output\":\"---\\nreviewed: false\\n---\\n\\n# PR #51 — 미래 할 일 읽기부터 생성·수정 구조와 시험 경계까지\\n\\n모기는 도수치료 가는 길에 다이소에 들러. 그런데 도수치료는 내일인데 다이소 할 일은 오늘로 잡혀 있었어. 투두냥이 이 어긋남을 찾으려면 Calendar 일정과 함께 **미래에 예약된 Things 할 일**을 읽을 수 있어야 해.\\n\\n이번 PR은 그 목록을 가져오는 `things:upcoming`을 추가해. 읽은 목록을 보고 날짜 변경을 판단하는 건 투두냥이고, 실제 변경은 기존 `things:add` 명령을 별도로 실행해서 해. Upcoming 명령 자체가 Calendar와 비교하거나 할 일 날짜를 고치지는 않아.\\n\\n이 노트는 한꺼번에 큰 호출 트리를 외우지 않고 **두 갈래의 입구 → 함수 안의 큰 흐름 → 공용 날짜 계산 → 시험** 순서로 펼쳐 보는 읽기 화면이야. 각 절 끝에는 짧은 주관식 퀴즈가 있어. 설명을 다시 보면서 한두 문장으로 써도 되고, 막히면 헷갈리는 부분만 적어도 돼. 3번과 5번은 연습용으로 만든 잘못된 리뷰 댓글에 답하는 문제야. 답과 해설은 미리 넣지 않았어. 코드 흐름과 테스트는 서로 다른 구간이니, 한 번에 다 읽을 필요는 없어.\\n\\n문항은 [주관식 이해 체크 가이드](../../guide-subjective-checks.md)를 따라 만들었어. 답을 쓴 뒤 채점을 요청하면 **정답 / 부분 이해 / 다시 보기**로 구분하고, 맞은 부분·빠진 핵심·오해한 경계를 짚을게. 함수 이름을 똑같이 외웠는지보다 사건의 원인과 결과를 연결했는지로 볼 거야. 모든 문항을 채워야 읽기를 마칠 수 있는 건 아니야.\\n\\n## 판독 시점과 변경 파일\\n\\n- PR: [mogi-productivity #51](https://github.com/samkimpepper/mogi-productivity/pull/51).\\n- PR 시작 base: `ba0c34f55b5710d3a27f2d33f8f2e222f8b78d86`.\\n- 처음 함께 본 HEAD: `b3da91b92922c93a8550be50d0d7032d7bf50246`.\\n- 이 노트의 최종 코드: **`27817e591d3320af57b1a6de2184fb9290c93795`**. 본문의 줄 위치는 별도 표시가 없으면 이 SHA 기준이야.\\n- GitHub에서 머지 확인: 2026-10-26. merge commit은 `63adda948fd72df5eb3aa1dad559e3e2d172e7b1`.\\n- 앞선 구조 변경: [PR #45](https://github.com/samkimpepper/mogi-productivity/pull/45). 날짜·시각·저녁의 생성·수정 절차를 공통 `addTodo()`에 모으고 전송·결과 확인·결과 조립의 역할을 나눴어. #51은 독립된 읽기 기능이어서 그 공통 쓰기 경로를 직접 이용하지는 않아.\\n\\n최종 PR 전체는 **9개 파일, +333/-9**야. 파일명은 아래 설명의 근거 목록이고 먼저 외울 대상은 아니야.\\n\\n| 파일 | 변경 | 역할 |\\n| --- | ---: | --- |\\n| `integrations/things/CONTRACT.md` | +1 | 새 조회 명령의 약속·호출 경로 |\\n| `integrations/things/README.md` | +2 | 사용 명령과 범위 안내 |\\n| `integrations/things/bin/things-upcoming.js` | +50, 새 파일 | 명령 인자를 받아 읽기를 호출하고 JSON 출력 |\\n| `integrations/things/scripts/read-upcoming.applescript` | +64, 새 파일 | 실제 Things에서 목록과 필드 읽기 |\\n| `integrations/things/src/add/verifiers.js` | +1/-9 | 서울 날짜 계산을 공용 파일에서 가져오도록 변경 |\\n| `integrations/things/src/seoul-date.js` | +8, 새 파일 | 서울 기준 오늘 날짜 계산 |\\n| `integrations/things/src/upcoming.js` | +98, 새 파일 | 날짜 범위·읽기·파싱·선별 |\\n| `integrations/things/test/upcoming.test.js` | +108, 새 파일 | 새 기능의 자동 시험 8개 |\\n| `package.json` | +1 | `things:upcoming` 명령 등록 |\\n\\n## 1. 첫 지도 — 읽기와 생성·수정의 입구\\n\\n**현재 위치: 투두냥이 어떤 명령을 실행하는지 보는 단계.** 여기서 수정은 `things:add`가 같은 제목의 기존 할 일을 재사용하는 경우를 말해. 다른 제목 변경·태그 변경 명령 전체를 그린 지도는 아니야.\\n\\n```text\\n투두냥\\n│\\n├─ “내일부터 사흘 동안 예약된 할 일을 보여줘”\\n│\\n│   things:upcoming\\n│        ↓\\n│   bin/things-upcoming.js\\n│   명령 입력을 받는다\\n│        ↓\\n│   readUpcoming()                  [src/upcoming.js]\\n│   미래 할 일을 읽는 과정을 진행한다\\n│        ↓\\n│   날짜 범위 + 할 일 목록 반환\\n│\\n└─ “다이소 할 일을 내일로 잡아줘”\\n\\n    things:add\\n         ↓\\n    bin/things-add.js\\n    명령 입력을 받는다\\n         ↓\\n    addTodo()                       [src/add/add-todo.js]\\n    새 할 일을 만들거나 기존 할 일을 수정한다\\n         ↓\\n    처리 결과 + 확인한 내용(summary) 반환\\n```\\n\\n두 함수가 서로를 호출하지는 않아. **목록을 읽은 뒤 변경이 필요하다고 판단하는 주체는 투두냥**이고, 그때 생성·수정 명령을 별도로 실행해. 같은 시점의 한 호출 스택이 아니라, 두 명령을 나란히 놓은 호출 지도야.\\n\\n> [!question] 모기 퀴즈 1 — 주관식 — 목록을 읽은 다음\\n> 설명용 상황: 도수치료와 다이소 할 일이 둘 다 미래 날짜에 잡혀 있어서 Upcoming 결과에 나왔어. 투두냥이 Calendar와 대조해 보니 서로 다른 날이야. Upcoming 조회는 성공했어.\\n>\\n> Q1. 조회가 성공했다는 것만으로 다이소 날짜도 맞춰졌다고 볼 수 있을까? 날짜를 맞추려면 누가 무엇을 더 해야 하는지 적어줘.\\n>\\n> 모기 답: 아니 안맞춰짐ㅋ 이거 하고나서 투두냥이가 정합성 검사를 해야함 정합성검사는 근데 기계적으로 하는게아니라 투두냥이가 알아서 playbooks에 있는거 참고해서 things의 생성,수정 파이프라인에 있는 애들을 호출해야되.. 맞나 ㅋ 냐옹.. \\n\\n## 2. 한 층 펼치기 — readUpcoming과 addTodo 나란히\\n\\n**현재 위치: 두 함수가 맡은 일의 순서를 비교하는 단계.** 각 열은 위에서 아래로 읽어. 좌우의 같은 줄이 동시에 실행되거나 서로 대응하는 한 단계라는 뜻은 아니야. 입력 검증·전송 방식별 분기 같은 세부는 접어둔 그림이야.\\n\\n```text\\nreadUpcoming()                         addTodo()\\n[src/upcoming.js]                      [src/add/add-todo.js]\\n미래 할 일 읽기                         할 일 생성·수정\\n│                                      │\\n├─ ① 읽을 날짜 범위 정하기              ├─ ① 같은 제목의 할 일 찾기\\n│                                      │\\n├─ ② Things에서 목록 읽기               ├─ ② 새 생성 / 기존 수정 결정\\n│                                      │\\n├─ ③ 받은 문자열을 객체로 바꾸기         ├─ ③ 미리보기 구성\\n│                                      │     --apply 없으면 여기서 반환\\n├─ ④ 조건에 맞는 할 일 선별·정렬         │\\n│                                      ├─ ④ 필요하면 기존 Notes 읽기\\n└─ ⑤ 날짜 범위와 할 일 목록 반환         │     쓰기 전 값을 기억해두기\\n                                       │\\n                                       ├─ ⑤ Things에 생성·수정 요청\\n                                       │\\n                                       ├─ ⑥ 저장된 값을 다시 읽어 확인\\n\"}}}",
+    "type": "input_text"
+  },
+  {
+    "text": "{\"i\":2,\"result\":{\"status\":\"fulfilled\",\"value\":{\"chunk_id\":\"62ea3d\",\"wall_time_seconds\":0.426486417,\"exit_code\":0,\"original_token_count\":5,\"output\":\"Already up to date.\\n\"}}}",
+    "type": "input_text"
+  }
+]
+~~~
+
+#### 호출 02 — `exec`
+
+Call ID: `call_8baf5114ec154d0ab061cfefb86ecd9d`
+
+입력:
+
+~~~text
+text((await tools.exec_command({cmd:"python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,re\np=Path('code-diff-notes/mogi-productivity/2026-10-26-pr51-upcoming-call-flow-and-test-boundaries.md')\ns=p.read_text()\nassert s.startswith('---\\nreviewed: false\\n---\\n')\nprint('Saved answers:',len(re.findall(r'^> 모기 답:',s,re.M)))\nprint('sha256:',hashlib.sha256(p.read_bytes()).hexdigest())\nfor link in re.findall(r'\\]\\(([^)]+)\\)',s):\n if not link.startswith(('https:','http:','#','/')):\n  assert (p.parent/link.split('#')[0]).exists(),link\nprint('Local links checked; file contents left unchanged.')\nPY","max_output_tokens":1500})).output);
+text((await tools.exec_command({cmd:"git add -- code-diff-notes/mogi-productivity/2026-10-26-pr51-upcoming-call-flow-and-test-boundaries.md","max_output_tokens":1000})).output);
+text((await tools.exec_command({cmd:"git commit -m 'docs: save PR51 learning note and Mogi answers'","max_output_tokens":1800})).output);
+text((await tools.exec_command({cmd:"git add -- raw/2026-10-27-01-todo-ops-pr18-stop-and-sandbox.md","max_output_tokens":1000})).output);
+text((await tools.exec_command({cmd:"git commit -m 'docs: archive session closure follow-up'","max_output_tokens":1800})).output);
+text((await tools.exec_command({cmd:"git push origin main","max_output_tokens":2000,"yield_time_ms":10000})).output);
+text((await tools.exec_command({cmd:"git rev-list --left-right --count HEAD...origin/main","max_output_tokens":500})).output);
+text((await tools.exec_command({cmd:"git status --short","max_output_tokens":1000})).output);
+~~~
+
+#### 출력 02
+
+Call ID: `call_8baf5114ec154d0ab061cfefb86ecd9d`
+
+출력:
+
+~~~text
+[
+  {
+    "text": "Script completed\nWall time 2.5 seconds\nOutput:\n",
+    "type": "input_text"
+  },
+  {
+    "text": "Saved answers: 7\nsha256: a952355feef8f6c2131738d3dc662760f3c3fd3e15bb3aafa19d6ea25f7678f8\nLocal links checked; file contents left unchanged.\n",
+    "type": "input_text"
+  },
+  {
+    "text": "",
+    "type": "input_text"
+  },
+  {
+    "text": "[main cec1c0a] docs: save PR51 learning note and Mogi answers\n 1 file changed, 368 insertions(+)\n create mode 100644 code-diff-notes/mogi-productivity/2026-10-26-pr51-upcoming-call-flow-and-test-boundaries.md\n",
+    "type": "input_text"
+  },
+  {
+    "text": "",
+    "type": "input_text"
+  },
+  {
+    "text": "[main 15d75c0] docs: archive session closure follow-up\n 1 file changed, 337 insertions(+)\n",
+    "type": "input_text"
+  },
+  {
+    "text": "To https://github.com/samkimpepper/mogi-cards.git\n   974f9a8..15d75c0  main -> main\n",
+    "type": "input_text"
+  },
+  {
+    "text": "0\t0\n",
+    "type": "input_text"
+  },
+  {
+    "text": "",
+    "type": "input_text"
+  }
+]
+~~~
+
+### 과외냥이
+
+~~~text
+완료했다옹ㅋ PR #51 노트와 모기 답안 7개도 **내용 그대로** 커밋·push했어. 종료 후 추가된 대화 원문도 함께 올렸어.
+~~~
