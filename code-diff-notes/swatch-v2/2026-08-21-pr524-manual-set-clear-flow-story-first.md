@@ -7,7 +7,7 @@ reviewed: true
 
 대상 PR: [#524](https://github.com/baksohyeon/swatch-v2/pull/524)
 
-원본 노트: [`2026-08-21-pr524-manual-set-clear-flow.md`](./2026-08-21-pr524-manual-set-clear-flow.md)
+원본 노트: [`2026-08-21-pr524-manual-set-clear-flow.md`](./archive/2026-08-21-pr524-manual-set-clear-flow.md)
 
 이 문서는 원본을 지우지 않고 설명 순서만 비교하기 위해 만든 모기용 버전이다. 같은
 구현 근거를 먼저 **사용자에게 일어난 일**로 읽고, 정확한 함수명과 raw diff는 뒤에서

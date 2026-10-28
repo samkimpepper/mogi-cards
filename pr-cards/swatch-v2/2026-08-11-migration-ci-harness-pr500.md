@@ -69,4 +69,4 @@ merge_ready: true
 - 처음에는 공개 컬럼을 RPC가 빠뜨리면 RPC 자체가 권한 오류를 낸다고 보았으나, 이 경우 RPC는 성공할 수 있고 계약 비교 테스트가 집합 불일치로 실패시킨다는 점을 구분했다.
 - 일반적인 미처리 exception처럼 `RAISE EXCEPTION`만으로 프로세스가 실패 종료할 것으로 예상했으나, `psql`의 기본 계속 실행 동작과 `ON_ERROR_STOP`의 역할을 구분했다.
 
-자세한 코드 해설: [PR #500 migration workflow code diff note](../../code-diff-notes/swatch-v2/2026-08-12-migration-verify-workflow-pr500.md)
+자세한 코드 해설: [PR #500 migration workflow code diff note](../../code-diff-notes/swatch-v2/archive/2026-08-12-migration-verify-workflow-pr500.md)
