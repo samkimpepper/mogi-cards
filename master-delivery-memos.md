@@ -582,3 +582,5 @@ https://github.com/anthropics/sandbox-runtime#filesystem-configuration
 
 - 모기가 “여기까지보고 마스터메모 투두냥한테전해줘 ㅋ”라고 요청했다. 전달 범위는 위 PR #60의 기존 pnpm 명령 내부 Relay 경유 선택, 누락 검사 목적의 story-first 설명 피드백, CLI 파일 허용 형식 명시 의견 세 건이다. 세션 종료 요청으로 해석하지 않는다.
 - 전송 직전 `python3 scripts/agent-registry.py resolve todo`가 `Registered agentIdentity changed; the role owner must register again`으로 실패했다. 상대 주소를 수정하거나 다른 터미널로 추측 전송하지 않았다. 담당자가 자기 주소를 갱신한 뒤 자기·상대 주소를 다시 검증하고 전송할 대기 상태다. 메시지는 아직 발송되지 않았다.
+
+- 전달 재개 (2026-10-30): 모기의 주소 갱신 안내 후, 재시작으로 handle이 바뀐 동일 과외 세션의 기존 Run 연결을 복구하고 자기·상대 resolve를 모두 통과했다. 위 PR #60 메모 세 건의 원문을 투두냥 Run `run_885652410aef`에 한 번 전송했다. 메시지 `msg_e6f7dca3d8b3`, 접수 시각 `2026-10-30T07:02:51Z`, 접수 당시 `delivered_at: null`. 전송 접수는 확인했으며 담당자의 읽음·인수·반영은 아직 확인하지 않았다.
