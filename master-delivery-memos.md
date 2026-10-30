@@ -576,3 +576,9 @@ https://github.com/anthropics/sandbox-runtime#filesystem-configuration
 - 이유: Relay 누락 검사와 별개로, 명령 작성자가 어떤 파일 형식을 사용해야 하는지 알 수 있도록 기준을 명시하고 싶다는 요청이다. 다양한 형식의 항목을 검사에서 발견하는 것과 그 형식을 공식적으로 허용하는 것은 구분한다.
 - 범위: `.js`만 허용할지, `.mjs`·symlink를 허용할지는 아직 정하지 않았다. 기존 파일 전환·새 강제 검사 구현·현재 누락 검사 축소를 요청한 것으로 확대하지 않는다.
 - 중복·상태: 직전 메모와 제품 STATE·DECISIONS에서 동일 형식 결정은 찾지 못했다. 같은 PR의 추가 의견만 공책에 기록했으며 제품 변경·메시지 발송은 하지 않았다.
+
+
+### PR #60 메모 3건 전달 요청 — 주소 갱신 대기 (2026-10-30)
+
+- 모기가 “여기까지보고 마스터메모 투두냥한테전해줘 ㅋ”라고 요청했다. 전달 범위는 위 PR #60의 기존 pnpm 명령 내부 Relay 경유 선택, 누락 검사 목적의 story-first 설명 피드백, CLI 파일 허용 형식 명시 의견 세 건이다. 세션 종료 요청으로 해석하지 않는다.
+- 전송 직전 `python3 scripts/agent-registry.py resolve todo`가 `Registered agentIdentity changed; the role owner must register again`으로 실패했다. 상대 주소를 수정하거나 다른 터미널로 추측 전송하지 않았다. 담당자가 자기 주소를 갱신한 뒤 자기·상대 주소를 다시 검증하고 전송할 대기 상태다. 메시지는 아직 발송되지 않았다.
